@@ -1,0 +1,78 @@
+{
+  "project": "PrivateDAO",
+  "evidence_type": "hackathon_and_product_verification",
+  "last_updated": "2026-06-01",
+  "status": "live-testnet",
+  "positioning": "Private coordination layer for DAOs with public verification.",
+  "claims": [
+    {
+      "claim": "PrivateDAO has a live website",
+      "status": "verified",
+      "evidence": "https://privatedao.org"
+    },
+    {
+      "claim": "PrivateDAO has a public GitHub repository",
+      "status": "verified",
+      "evidence": "https://github.com/X-PACT/PrivateDAO"
+    },
+    {
+      "claim": "PrivateDAO has judge-facing proof routes",
+      "status": "verified",
+      "evidence": "https://privatedao.org/judge"
+    },
+    {
+      "claim": "PrivateDAO has live Testnet proof evidence",
+      "status": "verified",
+      "evidence": "https://privatedao.org/proof/?judge=1"
+    },
+    {
+      "claim": "PrivateDAO exposes an AI-readable judge summary",
+      "status": "verified",
+      "evidence": "https://privatedao.org/judge-ai"
+    },
+    {
+      "claim": "PrivateDAO has a machine-readable AI manifest",
+      "status": "verified",
+      "evidence": "https://privatedao.org/ai.json"
+    },
+    {
+      "claim": "PrivateDAO has a machine-readable evidence manifest",
+      "status": "verified",
+      "evidence": "https://privatedao.org/evidence.json"
+    },
+    {
+      "claim": "PrivateDAO integrates QVAC as a local-first AI capability",
+      "status": "verified",
+      "evidence": "https://api.privatedao.org/api/v1/qvac/runtime-proof"
+    },
+    {
+      "claim": "PrivateDAO exposes privacy execution claims",
+      "status": "verified",
+      "evidence": "https://api.privatedao.org/api/v1/privacy-execution-claims"
+    },
+    {
+      "claim": "PrivateDAO exposes provider integration status",
+      "status": "verified",
+      "evidence": "https://api.privatedao.org/api/v1/provider-integrations/status"
+    },
+    {
+      "claim": "PrivateDAO is not a concept-only or mock-only submission",
+      "status": "verified",
+      "evidence": "Live website, public GitHub repository, judge route, runtime proof, Testnet proof routes, and AI-readable manifests are public."
+    }
+  ],
+  "important_routes": [
+    "https://privatedao.org/",
+    "https://privatedao.org/value/",
+    "https://privatedao.org/try/",
+    "https://privatedao.org/judge",
+    "https://privatedao.org/judge-ai",
+    "https://privatedao.org/proof/?judge=1",
+    "https://privatedao.org/rooms/",
+    "https://privatedao.org/android/",
+    "https://privatedao.org/services/qvac-sovereign-ai/",
+    "https://privatedao.org/services/jupiter-treasury-route/",
+    "https://privatedao.org/services/pusd-stablecoin/",
+    "https://privatedao.org/services/torque-growth-loop/"
+  ]
+}

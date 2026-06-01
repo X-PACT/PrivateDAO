@@ -1,9 +1,9 @@
 import { supportedLocales } from "@/lib/i18n";
 
 export const siteName = "PrivateDAO";
-export const siteTitle = "PrivateDAO | Private Governance, Payroll, and Treasury on Solana";
+export const siteTitle = "PrivateDAO - Confidential Governance OS on Solana";
 export const siteDescription =
-  "Your DAO votes, payroll, and treasury are public. They shouldn't be. PrivateDAO bridges organizational privacy and onchain verifiability with confidential governance, encrypted treasury coordination, and Solana-native operational infrastructure.";
+  "Live Solana Testnet product for private governance, treasury coordination, QVAC local AI, and public proof verification.";
 export const siteUrl = process.env.NEXT_PUBLIC_LIVE_SITE_URL?.replace(/\/+$/, "") ?? "https://privatedao.org";
 export const defaultOgImage = `${siteUrl}/opengraph-image.png`;
 
@@ -12,6 +12,9 @@ export const siteKeywords = [
   "Private DAO",
   "PrivateDAO workflow",
   "PrivateDAO Stack",
+  "PrivateDAO AI judge summary",
+  "PrivateDAO evidence manifest",
+  "confidential governance OS",
   "PrivateDAO Solana Testnet",
   "PrivateDAO private rooms",
   "PrivateDAO public DAO",
@@ -119,9 +122,11 @@ export function buildOrganizationJsonLd() {
       "https://github.com/X-PACT/PrivateDAO",
       "https://www.youtube.com/@privatedao",
       "https://discord.gg/GjJykUtTTt",
+      "https://discord.gg/dpD5c7Gfcc",
       "https://arena.colosseum.org/projects/explore/praivatedao",
       "https://superteam.fun/earn/t/Private-dao-1",
       "https://x.com/privateDAOOS",
+      "https://t.me/privateDAOOS",
       "https://t.me/Fahdkotb",
     ],
   };
@@ -151,9 +156,15 @@ export function buildSoftwareApplicationJsonLd() {
     name: siteName,
     alternateName: ["Private DAO", "PrivateDAO Solana"],
     url: siteUrl,
-    applicationCategory: "BusinessApplication",
+    codeRepository: "https://github.com/X-PACT/PrivateDAO",
+    applicationCategory: "Blockchain Governance Infrastructure",
     operatingSystem: "Web, Android",
-    description: siteDescription,
+    description:
+      "PrivateDAO is a live confidential governance and treasury coordination operating system on Solana with ZK privacy, confidential execution, QVAC local AI, and public proof verification.",
+    creator: {
+      "@type": "Person",
+      name: "Fahd Kotb",
+    },
     keywords: siteKeywords.join(", "),
     softwareHelp: `${siteUrl}/learn/`,
     downloadUrl: `${siteUrl}/android/`,
@@ -178,8 +189,10 @@ export function buildSoftwareApplicationJsonLd() {
       "https://x.com/privateDAOOS",
       "https://www.youtube.com/@privatedao",
       "https://discord.gg/GjJykUtTTt",
+      "https://discord.gg/dpD5c7Gfcc",
       "https://arena.colosseum.org/projects/explore/praivatedao",
       "https://superteam.fun/earn/t/Private-dao-1",
+      "https://t.me/privateDAOOS",
       "https://t.me/Fahdkotb",
     ],
   };

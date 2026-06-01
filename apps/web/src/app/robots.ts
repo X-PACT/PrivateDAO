@@ -9,7 +9,15 @@ export default function robots(): MetadataRoute.Robots {
     rules: [
       {
         userAgent: "*",
-        allow: "/",
+        allow: [
+          "/",
+          "/llms.txt",
+          "/ai.json",
+          "/evidence.json",
+          "/judge-ai",
+          "/proof/",
+          "/judge",
+        ],
       },
     ],
     sitemap: `${siteUrl}/sitemap.xml`,

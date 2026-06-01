@@ -69,6 +69,9 @@ export function buildRouteMetadata({
       "content-language": languageCodes,
       "ai-crawl": "allowed",
       "llms-txt": "/llms.txt",
+      "ai-manifest": "/ai.json",
+      "evidence-manifest": "/evidence.json",
+      "ai-judge-summary": "/judge-ai",
       "product-surface":
         "PrivateDAO wallet-first Solana Testnet governance, private rooms, encrypted treasury, confidential payroll, intelligence, and proof routes.",
     },
@@ -116,6 +119,9 @@ export function buildBrandHomeMetadata(): Metadata {
       "content-language": languageCodes,
       "ai-crawl": "allowed",
       "llms-txt": "/llms.txt",
+      "ai-manifest": "/ai.json",
+      "evidence-manifest": "/evidence.json",
+      "ai-judge-summary": "/judge-ai",
       "product-surface":
         "PrivateDAO is the operating system for everything that happens after governance on Solana: review, approve, execute, and audit with privacy.",
     },

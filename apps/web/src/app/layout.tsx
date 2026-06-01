@@ -69,6 +69,9 @@ export const metadata: Metadata = {
     "content-language": supportedLocales.map((locale) => locale.code).join(", "),
     "ai-crawl": "allowed",
     "llms-txt": "/llms.txt",
+    "ai-manifest": "/ai.json",
+    "evidence-manifest": "/evidence.json",
+    "ai-judge-summary": "/judge-ai",
     "reviewer-entry": "/govern#live-dao",
     "wallet-network": "Solana Testnet",
     "product-surface":
