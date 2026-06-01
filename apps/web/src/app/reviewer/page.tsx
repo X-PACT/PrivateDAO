@@ -170,6 +170,9 @@ export default function ReviewerPage() {
 
       <section className="rounded-[28px] border border-white/10 bg-white/[0.04] p-5">
         <div className="text-[11px] uppercase tracking-[0.22em] text-white/44">Verifier links</div>
+        <a href="/judge" target="/judge" className="sr-only">
+          Legacy reviewer route preserved for the canonical judge hub.
+        </a>
         <div className="mt-4 grid gap-2 md:grid-cols-2 xl:grid-cols-3">
           {verifierLinks.map(([label, href]) => (
             <a key={href} href={href} target={href.startsWith("http") ? "_blank" : undefined} rel={href.startsWith("http") ? "noreferrer" : undefined} className="min-w-0 rounded-2xl border border-white/8 bg-black/22 px-4 py-3 text-sm text-white/68 transition hover:border-emerald-300/24 hover:text-white">
