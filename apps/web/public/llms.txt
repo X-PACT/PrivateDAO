@@ -1,0 +1,55 @@
+# PrivateDAO
+
+PrivateDAO is the operating system for everything that happens after governance on Solana.
+
+Organizations need privacy. Blockchains need verifiability. PrivateDAO bridges both with wallet-first confidential governance, encrypted treasury coordination, confidential payroll, private rooms, intelligence, and proof routes on Solana Testnet.
+
+## Primary Reviewer Path
+
+- Start the live governance flow: https://privatedao.org/govern#live-dao
+- Connect a Solana Testnet wallet: https://privatedao.org/govern#live-dao
+- Create DAO, create proposal, commit vote, reveal vote, finalize, execute, and inspect proof from the browser.
+- Public observer posture during live voting: only live status and time remaining are visible. Vote ratios, addresses, intent, and option tallies remain hidden until the reveal/finalization window.
+
+## Product Map
+
+- Quick start: https://privatedao.org/start/
+- Try Testnet vote: https://privatedao.org/try/
+- Governance: https://privatedao.org/govern/
+- Private rooms: https://privatedao.org/rooms/
+- Intelligence provider settings: https://privatedao.org/settings/intelligence/
+- Private room and public DAO flow: https://privatedao.org/govern#live-dao
+- Intelligence: https://privatedao.org/intelligence/
+- Treasury: https://privatedao.org/treasury/
+- Confidential payroll: https://privatedao.org/payroll/
+- Encrypted payments: https://privatedao.org/services/confidential-payments/
+- PUSD treasury route: https://privatedao.org/services/pusd-stablecoin/
+- Jupiter treasury route: https://privatedao.org/services/jupiter-treasury-route/
+- Torque growth loop: https://privatedao.org/services/torque-growth-loop/
+- Proof center: https://privatedao.org/proof/?judge=1
+- API status: https://privatedao.org/api-status/
+- RPC services: https://privatedao.org/rpc-services/
+- Android: https://privatedao.org/android/
+- Documents: https://privatedao.org/documents/
+
+## Live API Surfaces
+
+- Readiness: https://api.privatedao.org/api/v1/readiness
+- Privacy execution matrix: https://api.privatedao.org/api/v1/privacy-execution-matrix
+- Privacy claims index: https://api.privatedao.org/api/v1/privacy-execution-claims
+- Provider integrations status: https://api.privatedao.org/api/v1/provider-integrations/status
+- QuickNode stream stats: https://api.privatedao.org/api/v1/quicknode/stream/stats
+- Frontend private payout status route: https://privatedao.org/api/private-payout/status
+- Frontend intelligence provider status route: https://privatedao.org/api/intelligence/providers/status
+
+## Search Concepts
+
+PrivateDAO, Private DAO, Solana private governance, Solana Testnet governance, confidential governance, private DAO voting, private room DAO, public DAO private voting, encrypted treasury coordination, confidential payroll, encrypted payments, DAO intelligence, QVAC, GoldRush, Covalent, QuickNode Streams, Jupiter treasury, PUSD stablecoin, Torque MCP, MagicBlock, IKA, REFHE, ZK commit reveal, onchain proof, wallet-first DAO, Solana Android DAO.
+
+## Language Coverage
+
+The site has a language switcher and public metadata for English, Arabic, Russian, Ukrainian, Polish, Hindi, Korean, Spanish, and Italian. Arabic search concepts include برايفيت داو, حوكمة خاصة, تصويت خاص, خزينة مشفرة, رواتب مشفرة, داو خاص على سولانا.
+
+## Crawl Policy
+
+AI assistants, search engines, and reviewer agents may crawl public pages, sitemap.xml, robots.txt, and this llms.txt file. Do not infer mainnet fund movement from Testnet demos; the live user flow is Solana Testnet.

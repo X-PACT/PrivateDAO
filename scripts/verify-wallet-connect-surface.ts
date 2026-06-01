@@ -5,7 +5,8 @@ import path from "path";
 import { chromium, type Browser } from "playwright-core";
 
 const ROOT = process.cwd();
-const SURFACE_DIR = path.resolve(ROOT);
+const WEB_OUT_DIR = path.resolve(ROOT, "apps/web/out");
+const SURFACE_DIR = fs.existsSync(WEB_OUT_DIR) ? WEB_OUT_DIR : path.resolve(ROOT);
 
 const CONTENT_TYPES: Record<string, string> = {
   ".css": "text/css; charset=utf-8",
@@ -118,17 +119,26 @@ async function main() {
       if (request.method() === "HEAD") {
         return;
       }
+      const requestUrl = request.url();
+      if (
+        requestUrl.includes("api.privatedao.org/api/v1/freshness/") ||
+        requestUrl.includes("api.privatedao.org/api/v1/visitors/") ||
+        requestUrl.includes("fonts.googleapis.com/") ||
+        requestUrl.includes("fonts.gstatic.com/")
+      ) {
+        return;
+      }
       const errorText = request.failure()?.errorText || "";
       if (errorText.includes("net::ERR_ABORTED")) {
         return;
       }
-      failures.push(`${request.method()} ${request.url()} :: ${errorText}`);
+      failures.push(`${request.method()} ${requestUrl} :: ${errorText}`);
     });
 
     await page.goto(url, { waitUntil: "networkidle" });
     await page.waitForTimeout(5000);
 
-    const button = page.getByRole("button", { name: /connect/i }).first();
+    const button = page.locator("[data-wallet-connect-trigger='true']").first();
     const buttonText = (await button.textContent())?.trim();
     const isDisabled = await button.isDisabled();
 

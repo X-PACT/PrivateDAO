@@ -12,7 +12,7 @@ import { useSiteUrls } from "@/lib/site-urls";
 import { cn } from "@/lib/utils";
 
 const navItems = [
-  { href: "/start", label: "Start" },
+  { href: "/try", label: "Start", rel: "nofollow" },
   { href: "/learn", label: "Learn" },
   { href: "/govern", label: "Govern", rel: "nofollow" },
   { href: "/treasury", label: "Treasury", rel: "nofollow" },
@@ -42,6 +42,8 @@ export function SiteHeader() {
   const resolvePrimaryLabel = (href: string, fallback: string) => {
     switch (href) {
       case "/start":
+      case "/govern#live-dao":
+      case "/try":
         return copy.chrome.start;
       case "/learn":
         return copy.chrome.learn;
@@ -80,7 +82,7 @@ export function SiteHeader() {
     }
   };
   const operationSteps = [
-    { label: "Try Private DAO", href: "/govern#live-dao" },
+    { label: "Try Testnet Vote", href: "/try" },
     { label: "Review", href: "/intelligence" },
     { label: "Vote", href: "/govern#commit-vote-action" },
     { label: "Verify", href: "/proof" },
@@ -148,10 +150,10 @@ export function SiteHeader() {
               {copy.chrome.openApp}
             </a>
             <Link
-              href="/govern#live-dao"
+              href="/try"
               className={cn(buttonVariants({ size: "sm" }), "hidden whitespace-nowrap xl:inline-flex")}
             >
-              Try Private DAO
+              Try Testnet Vote
               <ArrowRight className="h-4 w-4" />
             </Link>
             <WalletConnectButton className="max-w-full flex-1 px-3 sm:flex-none" />

@@ -42,6 +42,47 @@ export default function StartPage() {
       <LocalizedRouteSummary routeKey="start" />
       <SectionExplainerVideo variant="start" compact />
       <ProductCommandCenter compact />
+      <section className="rounded-[30px] border border-cyan-300/18 bg-[radial-gradient(circle_at_16%_0%,rgba(20,241,149,0.18),transparent_32%),radial-gradient(circle_at_90%_0%,rgba(153,69,255,0.18),transparent_34%),linear-gradient(180deg,rgba(7,14,27,0.96),rgba(4,7,16,0.98))] p-5 md:p-6">
+        <div className="grid gap-5 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
+          <div>
+            <div className="text-[11px] uppercase tracking-[0.28em] text-cyan-100/78">One-minute product path</div>
+            <h2 className="mt-2 max-w-2xl text-2xl font-semibold tracking-[-0.035em] text-white md:text-3xl">
+              Vote freely. Reveal fairly.
+            </h2>
+            <p className="mt-3 max-w-2xl text-sm leading-7 text-white/66">
+              PrivateDAO is built for a simple problem: public vote counts, visible whale wallets, and live momentum influence members before a DAO decision ends. The product hides influence signals during voting, then reveals and verifies the result when the voting window closes.
+            </p>
+            <div className="mt-4 flex flex-wrap gap-3">
+              <Link href="/govern#live-dao" className={cn(buttonVariants({ size: "sm" }))}>
+                Create DAO
+              </Link>
+              <Link href="/govern#commit-vote-action" className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>
+                Try Testnet vote
+              </Link>
+              <Link href="/proof/?judge=1" className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
+                Verify proof
+              </Link>
+            </div>
+          </div>
+          <div className="grid gap-3 sm:grid-cols-2">
+            {[
+              ["Create Proposal", "Example: Should we fund Project X with $10,000?"],
+              ["Intelligence Before Signing", "QVAC, GoldRush/Covalent, treasury context, risk analysis, history, and similar decisions."],
+              ["Private Voting Phase", "No vote counts, no percentages, no voter identities, no visible voting intent."],
+              ["Reveal + Verify + Execute", "The result becomes public, the proof can be checked, and the approved decision executes."],
+            ].map(([title, detail]) => (
+              <Link
+                key={title}
+                href="/govern#live-dao"
+                className="rounded-[22px] border border-white/10 bg-black/22 p-4 transition hover:-translate-y-0.5 hover:border-cyan-300/28 hover:bg-white/[0.055]"
+              >
+                <div className="text-base font-semibold text-white">{title}</div>
+                <p className="mt-2 text-sm leading-6 text-white/58">{detail}</p>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
       <section className="rounded-[30px] border border-emerald-300/18 bg-[radial-gradient(circle_at_12%_0%,rgba(20,241,149,0.20),transparent_34%),radial-gradient(circle_at_92%_10%,rgba(0,194,255,0.16),transparent_30%),linear-gradient(180deg,rgba(7,14,27,0.96),rgba(4,7,16,0.98))] p-5 md:p-6">
         <div className="grid gap-5 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
           <div>

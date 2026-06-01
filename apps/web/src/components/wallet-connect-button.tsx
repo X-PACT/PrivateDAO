@@ -5,7 +5,7 @@ import { useEffect, useMemo, useState } from "react";
 import { type WalletName, WalletReadyState } from "@solana/wallet-adapter-base";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { useWalletModal } from "@solana/wallet-adapter-react-ui";
-import { Check, ChevronDown, Copy, ExternalLink, LogOut, QrCode, Wallet } from "lucide-react";
+import { Check, ChevronDown, Copy, ExternalLink, LogOut, QrCode, ShieldCheck, Wallet } from "lucide-react";
 
 import { type ButtonProps, buttonVariants } from "@/components/ui/button";
 import { SOLANA_NETWORK_LABEL } from "@/lib/solana-network";
@@ -212,7 +212,6 @@ export function WalletConnectButton({
           buttonVariants({ size, variant }),
           className,
         )}
-        disabled={connecting || disconnecting}
         onClick={() => {
           setFeedback(null);
           if (connected) {
@@ -283,10 +282,10 @@ export function WalletConnectButton({
           >
             <div className="flex items-start justify-between gap-4">
               <div>
-                <div className="text-[11px] uppercase tracking-[0.24em] text-white/44">Wallet-first connect</div>
+                <div className="text-[11px] uppercase tracking-[0.24em] text-white/44">Wallet-first Testnet connect</div>
                 <h3 className="mt-3 text-2xl font-semibold text-white">Choose a {SOLANA_NETWORK_LABEL} wallet</h3>
                 <p className="mt-3 text-sm leading-7 text-white/62">
-                  Wallets are auto-detected in this browser. The UX leads the operation: review first, sign second, verify third. Select any detected wallet to connect immediately, or open/install a wallet from the list below.
+                  Wallets are auto-detected in this browser. Select any detected wallet, open the full Solana wallet modal, or scan the session QR from mobile. The flow is always review first, sign second, verify third.
                 </p>
               </div>
               <button
@@ -299,12 +298,18 @@ export function WalletConnectButton({
             </div>
             <div className="mt-6">
               <div className="rounded-[20px] border border-white/10 bg-black/20 p-4">
-                <div className="text-[11px] uppercase tracking-[0.2em] text-white/44">Wallet-orchestrated flow</div>
-                <div className="mt-3 grid gap-2 text-sm text-white/72">
-                  <div>1. Connect wallet and create local app session.</div>
-                  <div>2. Review action, policy, and network context.</div>
-                  <div>3. Sign with the selected wallet.</div>
-                  <div>4. Return to the app and verify receipt + proof.</div>
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  <div className="text-[11px] uppercase tracking-[0.2em] text-white/44">Wallet-orchestrated flow</div>
+                  <div className="inline-flex items-center gap-2 rounded-full border border-emerald-300/18 bg-emerald-300/10 px-3 py-1 text-[11px] uppercase tracking-[0.18em] text-emerald-100">
+                    <ShieldCheck className="h-3.5 w-3.5" />
+                    Testnet only
+                  </div>
+                </div>
+                <div className="mt-3 grid gap-2 text-sm text-white/72 sm:grid-cols-2">
+                  <div>1. Pick a wallet or scan the mobile session QR.</div>
+                  <div>2. Confirm the wallet is on {SOLANA_NETWORK_LABEL}.</div>
+                  <div>3. Review DAO action, privacy policy, and proof route.</div>
+                  <div>4. Sign, return, and verify the receipt from the app.</div>
                 </div>
                 <div className="mt-3 grid gap-2 text-xs text-white/60 sm:grid-cols-2">
                   <div className="rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2">
@@ -312,6 +317,12 @@ export function WalletConnectButton({
                   </div>
                   <div className="rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2">
                     Mobile: use deep links or scan the session QR, then return to the app flow.
+                  </div>
+                  <div className="rounded-xl border border-emerald-300/15 bg-emerald-300/[0.07] px-3 py-2">
+                    PrivateDAO never asks for a seed phrase, private key, or mainnet funds.
+                  </div>
+                  <div className="rounded-xl border border-cyan-300/15 bg-cyan-300/[0.07] px-3 py-2">
+                    Wallet warnings should show a normal connection/sign request for this domain and {SOLANA_NETWORK_LABEL}.
                   </div>
                 </div>
                 <div className="mt-3 grid gap-2 text-xs text-white/60 sm:grid-cols-3">
@@ -325,6 +336,24 @@ export function WalletConnectButton({
                     Proof route: <span className="text-white">/proof</span>
                   </div>
                 </div>
+                <div className="mt-4 flex flex-wrap gap-2">
+                  <button
+                    type="button"
+                    className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}
+                    onClick={() => {
+                      setIsWalletPickerOpen(false);
+                      setWalletModalVisible(true);
+                    }}
+                  >
+                    Open all wallet options
+                  </button>
+                  <a
+                    href="/start"
+                    className={cn(buttonVariants({ size: "sm", variant: "outline" }))}
+                  >
+                    Open Testnet setup
+                  </a>
+                </div>
               </div>
               <div className="mt-4 text-[11px] uppercase tracking-[0.2em] text-white/44">Available on this device</div>
             </div>
@@ -335,7 +364,7 @@ export function WalletConnectButton({
                   <button
                     key={entry.adapter.name}
                     type="button"
-                    className="flex items-center justify-between rounded-[24px] border border-white/10 bg-white/[0.04] px-4 py-4 text-left transition hover:border-cyan-300/25 hover:bg-white/[0.07]"
+                    className="flex items-center justify-between gap-3 rounded-[24px] border border-white/10 bg-white/[0.04] px-4 py-4 text-left transition hover:border-cyan-300/25 hover:bg-white/[0.07]"
                     onClick={() => void handleWalletSelection(entry.adapter.name)}
                   >
                     <div className="flex min-w-0 items-center gap-3">
@@ -358,7 +387,7 @@ export function WalletConnectButton({
                         {describeReadyState(entry.readyState)}
                       </div>
                     </div>
-                    <div className="flex items-center gap-2 text-sm text-white/64">
+                    <div className="flex shrink-0 items-center gap-2 text-sm text-white/64">
                       {isCurrent ? <Check className="h-4 w-4 text-emerald-300" /> : null}
                       {isCurrent ? "Selected" : "Use wallet"}
                     </div>
@@ -414,7 +443,7 @@ export function WalletConnectButton({
                 Mobile QR connect
               </div>
               <div className="mt-2 text-sm leading-7 text-white/72">
-                Scan to open this exact session on your mobile wallet browser, then connect and sign from mobile.
+                Scan to open this exact PrivateDAO session in a mobile wallet browser, then connect on {SOLANA_NETWORK_LABEL} and sign the same review-first flow.
               </div>
               {sessionUrl ? (
                 <div className="mt-3 flex flex-wrap items-center gap-4">
@@ -427,7 +456,7 @@ export function WalletConnectButton({
                     className="h-[140px] w-[140px] rounded-xl border border-white/12 bg-white p-2"
                   />
                   <div className="min-w-0 flex-1 space-y-2">
-                    <div className="rounded-xl border border-white/10 bg-black/20 px-3 py-2 text-xs text-white/68">
+                    <div className="rounded-xl border border-white/10 bg-black/20 px-3 py-2 text-xs text-white/68 break-all">
                       {sessionUrl}
                     </div>
                     <div className="flex flex-wrap gap-2">
@@ -457,6 +486,16 @@ export function WalletConnectButton({
                       >
                         Open Solflare
                       </a>
+                      <button
+                        type="button"
+                        className={cn(buttonVariants({ size: "sm", variant: "outline" }))}
+                        onClick={() => {
+                          setIsWalletPickerOpen(false);
+                          setWalletModalVisible(true);
+                        }}
+                      >
+                        More wallets
+                      </button>
                     </div>
                   </div>
                 </div>

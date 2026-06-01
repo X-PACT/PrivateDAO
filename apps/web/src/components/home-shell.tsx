@@ -57,9 +57,9 @@ const homeCopyByLocale: Record<
 > = {
   en: {
     eyebrow: "Coordination Layer",
-    title: "Your DAO votes, payroll, and treasury are public. They shouldn't be.",
+    title: "PrivateDAO",
     body:
-      "Most DAOs expose everything: votes, salaries, treasury activity, and internal operations. PrivateDAO enables organizations to operate privately while remaining cryptographically verifiable on Solana.",
+      "Hide vote counts, percentages, voter identity, and voting intent during voting. Reveal final outcomes and proofs after voting ends.",
     launch: "Start a private DAO",
     android: "Install Android APK",
     verify: "Open verification view",
@@ -83,9 +83,9 @@ const homeCopyByLocale: Record<
   },
   ar: {
     eyebrow: "طبقة التنسيق",
-    title: "تصويت DAO والرواتب والخزانة عندك مكشوفة. المفروض لا.",
+    title: "PrivateDAO",
     body:
-      "معظم الـ DAOs تكشف كل شيء: التصويت، الرواتب، حركة الخزانة، والعمليات الداخلية. PrivateDAO يمكّن المؤسسات أن تعمل بخصوصية مع بقاء النتائج قابلة للتحقق تشفيرياً على سولانا.",
+      "اخفِ عدد الأصوات والنسب وهوية المصوتين ونية التصويت أثناء فترة التصويت. اكشف النتيجة النهائية والإثباتات بعد انتهاء التصويت.",
     launch: "ابدأ DAO خاص الآن",
     android: "ثبّت تطبيق أندرويد",
     verify: "افتح التحقق",
@@ -109,7 +109,7 @@ const homeCopyByLocale: Record<
   },
   ru: {
     eyebrow: "Coordination Layer",
-    title: "Голоса DAO, зарплаты и казна публичны. Так быть не должно.",
+    title: "PrivateDAO",
     body:
       "Большинство DAO раскрывают все: голоса, зарплаты, активность казны и внутренние операции. PrivateDAO позволяет организациям работать приватно, оставаясь криптографически проверяемыми на Solana.",
     launch: "Try the 3-minute Testnet flow",
@@ -134,7 +134,7 @@ const homeCopyByLocale: Record<
   },
   uk: {
     eyebrow: "Coordination Layer",
-    title: "Голоси DAO, зарплати й казна публічні. Так не має бути.",
+    title: "PrivateDAO",
     body:
       "Більшість DAO відкривають усе: голоси, зарплати, рух казни та внутрішні операції. PrivateDAO дозволяє організаціям працювати приватно й залишатися криптографічно перевірюваними на Solana.",
     launch: "Try the 3-minute Testnet flow",
@@ -159,7 +159,7 @@ const homeCopyByLocale: Record<
   },
   pl: {
     eyebrow: "Coordination Layer",
-    title: "Głosy DAO, payroll i treasury są publiczne. Nie powinny być.",
+    title: "PrivateDAO",
     body:
       "Większość DAO ujawnia wszystko: głosy, pensje, aktywność treasury i operacje wewnętrzne. PrivateDAO pozwala organizacjom działać prywatnie, pozostając kryptograficznie weryfikowalnymi na Solana.",
     launch: "Try the 3-minute Testnet flow",
@@ -184,7 +184,7 @@ const homeCopyByLocale: Record<
   },
   hi: {
     eyebrow: "Coordination Layer",
-    title: "आपके DAO votes, payroll और treasury public हैं. ऐसा नहीं होना चाहिए.",
+    title: "PrivateDAO",
     body:
       "Most DAOs सब कुछ expose करते हैं: votes, salaries, treasury activity और internal operations. PrivateDAO organizations को privately operate करने देता है while remaining cryptographically verifiable on Solana.",
     launch: "Try the 3-minute Testnet flow",
@@ -209,7 +209,7 @@ const homeCopyByLocale: Record<
   },
   ko: {
     eyebrow: "Coordination Layer",
-    title: "DAO 투표, 급여, treasury가 공개되어 있습니다. 그래서는 안 됩니다.",
+    title: "PrivateDAO",
     body:
       "Most DAOs expose everything: votes, salaries, treasury activity, and internal operations. PrivateDAO enables organizations to operate privately while remaining cryptographically verifiable on Solana.",
     launch: "Try the 3-minute Testnet flow",
@@ -234,7 +234,7 @@ const homeCopyByLocale: Record<
   },
   es: {
     eyebrow: "Coordination Layer",
-    title: "Los votos, payroll y treasury de tu DAO son públicos. No deberían serlo.",
+    title: "PrivateDAO",
     body:
       "La mayoría de DAOs exponen todo: votos, salarios, actividad de treasury y operaciones internas. PrivateDAO permite que las organizaciones operen en privado y sigan siendo criptográficamente verificables en Solana.",
     launch: "Try the 3-minute Testnet flow",
@@ -259,7 +259,7 @@ const homeCopyByLocale: Record<
   },
   it: {
     eyebrow: "Coordination Layer",
-    title: "I voti, il payroll e la treasury della tua DAO sono pubblici. Non dovrebbero esserlo.",
+    title: "PrivateDAO",
     body:
       "La maggior parte delle DAO espone tutto: voti, stipendi, attività di treasury e operazioni interne. PrivateDAO consente alle organizzazioni di operare privatamente restando crittograficamente verificabili su Solana.",
     launch: "Try the 3-minute Testnet flow",
@@ -575,18 +575,15 @@ export function HomeShell() {
         <div className="grid items-start gap-8 xl:grid-cols-[1.14fr_0.86fr] xl:gap-10">
           <div className="space-y-6 sm:space-y-8">
             <div className="flex flex-wrap gap-3">
+              <Badge variant="cyan">Vote privately</Badge>
+              <Badge variant="success">Reveal fairly</Badge>
+              <Badge variant="violet">Verify on Solana Testnet</Badge>
               <Badge variant="cyan">Private governance on Solana</Badge>
-              <Badge variant="violet">Anchor 1 Testnet</Badge>
-              <Badge variant="violet">QVAC local AI</Badge>
-              <Badge variant="cyan">QuickNode live telemetry</Badge>
-              <Badge variant="success">Readiness API live</Badge>
-              <Badge variant="success">Private by design</Badge>
-              <Badge variant="success">Try it now: web + Android</Badge>
             </div>
             <div className="space-y-4 sm:space-y-5">
-              <div className="text-[11px] uppercase tracking-[0.34em] text-emerald-300/80">{homeCopy.eyebrow}</div>
+              <div className="text-[11px] uppercase tracking-[0.34em] text-emerald-300/80">Vote privately while it matters. Reveal transparently when it counts.</div>
               <div className="text-sm font-semibold uppercase tracking-[0.24em] text-cyan-100/82">
-                  Privacy, secrecy, and proof for Solana organizations
+                  Unbiased governance for public and private DAOs.
               </div>
               <div className="max-w-3xl text-3xl font-semibold tracking-[-0.045em] text-white sm:text-5xl lg:text-[4rem] xl:text-[4.35rem]">
                 {homeCopy.title}
@@ -604,6 +601,61 @@ export function HomeShell() {
                   <Link href="/learn" className="px-1 font-semibold text-cyan-100 underline decoration-cyan-300/50 underline-offset-4">Learn</Link>,
                   connect a wallet, review the plain-English action, sign the exact request, then inspect when intent became visible, where payroll or treasury movement is proven, and how encrypted IKA / REFHE-style payment evidence stays linked to proof.
                 </p>
+              </div>
+              <div className="max-w-3xl rounded-[28px] border border-white/10 bg-[linear-gradient(135deg,rgba(20,241,149,0.10),rgba(0,194,255,0.08),rgba(153,69,255,0.10))] p-5">
+                <div className="text-[11px] uppercase tracking-[0.28em] text-cyan-100/78">Product in one minute</div>
+                <h2 className="mt-3 text-2xl font-semibold tracking-[-0.035em] text-white sm:text-3xl">
+                  Vote freely. Reveal fairly.
+                </h2>
+                <p className="mt-3 max-w-2xl text-sm leading-7 text-white/68">
+                  Visible vote counts, whale wallets, and public momentum influence voters before a DAO decision ends. PrivateDAO hides those influence signals during voting, then reveals the outcome with public proof after the voting window closes.
+                </p>
+                <div className="mt-5 grid gap-3 sm:grid-cols-2">
+                  {[
+                    ["During voting", "No vote counts, no percentages, no whale tracking, no visible voting intent."],
+                    ["After voting", "Reveal the outcome, verify the proof, and execute the approved decision."],
+                    ["What changes", "Members vote independently instead of following the crowd."],
+                    ["Why it matters", "Privacy protects decision quality; timed transparency protects trust."],
+                  ].map(([title, body]) => (
+                    <div key={title} className="rounded-2xl border border-white/10 bg-black/22 p-4">
+                      <div className="text-sm font-semibold text-white">{title}</div>
+                      <div className="mt-2 text-xs leading-6 text-white/62">{body}</div>
+                    </div>
+                  ))}
+                </div>
+                <div className="mt-5 flex flex-wrap gap-3">
+                  <Link href="/govern#live-dao" className={cn(buttonVariants({ size: "sm" }))}>
+                    Create DAO
+                    <ArrowRight className="h-4 w-4" />
+                  </Link>
+                  <Link href="/govern#commit-vote-action" className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>
+                    Try Testnet
+                  </Link>
+                  <Link href="/proof/?judge=1" className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
+                    Verify proof
+                  </Link>
+                </div>
+              </div>
+              <div className="max-w-3xl rounded-[28px] border border-violet-300/16 bg-violet-300/[0.08] p-5">
+                <div className="text-[11px] uppercase tracking-[0.28em] text-violet-100/80">The flow users understand</div>
+                <div className="mt-4 grid gap-3 sm:grid-cols-3 lg:grid-cols-6">
+                  {[
+                    ["1", "Create Proposal"],
+                    ["2", "Intelligence Before Signing"],
+                    ["3", "Vote Without Influence"],
+                    ["4", "Reveal"],
+                    ["5", "Verify"],
+                    ["6", "Execute"],
+                  ].map(([step, title]) => (
+                    <Link key={title} href="/govern#live-dao" className="rounded-2xl border border-white/10 bg-black/24 p-3 transition hover:border-violet-300/35 hover:bg-white/[0.055]">
+                      <div className="text-[10px] uppercase tracking-[0.22em] text-violet-100/72">{step}</div>
+                      <div className="mt-2 text-sm font-semibold leading-5 text-white">{title}</div>
+                    </Link>
+                  ))}
+                </div>
+                <div className="mt-4 rounded-2xl border border-white/10 bg-black/20 p-4 text-sm leading-7 text-white/66">
+                  Intelligence happens before signing: QVAC, GoldRush/Covalent, treasury analysis, risk context, historical evidence, and similar decisions give members context without exposing live vote momentum.
+                </div>
               </div>
               <div className="max-w-3xl rounded-[26px] border border-cyan-300/18 bg-cyan-300/[0.08] p-5">
                 <div className="text-[11px] uppercase tracking-[0.28em] text-cyan-100/80">Three DAO modes, one simple flow</div>
@@ -682,34 +734,13 @@ export function HomeShell() {
 
             <div className="flex flex-wrap gap-3">
               <WalletConnectButton size="lg" variant="default" connectLabel="Connect Testnet Wallet" />
-              <Link className={cn(buttonVariants({ size: "lg" }))} href="/govern#live-dao">
-                {homeCopy.launch}
+              <Link className={cn(buttonVariants({ size: "lg" }))} href="/try">
+                Try Testnet Vote
                 <ArrowRight className="h-4 w-4" />
               </Link>
-              <Link className={cn(buttonVariants({ size: "lg", variant: "secondary" }))} href="/android">
-                {homeCopy.android}
-                <ArrowRight className="h-4 w-4" />
+              <Link className={cn(buttonVariants({ size: "lg", variant: "outline" }))} href="/proof/?judge=1">
+                Open verification view
               </Link>
-              <Link className={cn(buttonVariants({ size: "lg", variant: "secondary" }))} href="/proof">
-                {homeCopy.verify}
-              </Link>
-              <Link className={cn(buttonVariants({ size: "lg", variant: "secondary" }))} href="/judge">
-                {homeCopy.judge}
-              </Link>
-              <Link className={cn(buttonVariants({ size: "lg", variant: "outline" }))} href="/rpc-services">
-                Live readiness
-              </Link>
-              <Link className={cn(buttonVariants({ size: "lg", variant: "outline" }))} href="/learn">
-                {homeCopy.workflow}
-              </Link>
-              <a
-                className={cn(buttonVariants({ size: "lg", variant: "outline" }))}
-                href="https://faucet.solana.com/"
-                rel="noreferrer"
-                target="_blank"
-              >
-                Get Testnet SOL
-              </a>
             </div>
 
             <div className="rounded-[28px] border border-cyan-300/14 bg-[linear-gradient(180deg,rgba(8,19,34,0.96),rgba(6,10,22,0.99))] p-4 sm:p-5">

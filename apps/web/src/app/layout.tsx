@@ -19,6 +19,7 @@ import {
   siteTitle,
   siteUrl,
 } from "@/lib/site-brand";
+import { supportedLocales } from "@/lib/i18n";
 
 const spaceGrotesk = Space_Grotesk({
   variable: "--font-space-grotesk",
@@ -63,6 +64,15 @@ export const metadata: Metadata = {
     title: siteTitle,
     description: siteDescription,
     images: [defaultOgImage],
+  },
+  other: {
+    "content-language": supportedLocales.map((locale) => locale.code).join(", "),
+    "ai-crawl": "allowed",
+    "llms-txt": "/llms.txt",
+    "reviewer-entry": "/govern#live-dao",
+    "wallet-network": "Solana Testnet",
+    "product-surface":
+      "PrivateDAO lets organizations keep votes, payroll, treasury intent, and private rooms confidential while producing verifiable Solana Testnet receipts.",
   },
 };
 

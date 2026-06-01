@@ -41,6 +41,7 @@ import { cn } from "@/lib/utils";
 
 const operationsNav = [
   { href: "/judge", label: "Judge Route", icon: Trophy, summary: "Canonical reviewer path with product proof, integrations, awards context, and runtime evidence" },
+  { href: "/try", label: "Try", icon: PlayCircle, summary: "Shortest Testnet vote path" },
   { href: "/start", label: "Start", icon: Compass, summary: "Guided onboarding and wallet-first flow" },
   { href: "/learn", label: "Learn", icon: FileText, summary: "Workflow-first onboarding and product operating guide" },
   { href: "/assistant", label: "AI Assistant", icon: Sparkles, summary: "Product guide across routes, docs, and proof" },
@@ -74,6 +75,7 @@ const operationsNav = [
 ];
 
 const guidedNav = [
+  { href: "/try", label: "Try", icon: PlayCircle, summary: "Connect and run the shortest Testnet vote path" },
   { href: "/start", label: "Start", icon: Compass, summary: "Connect a wallet and understand the first move" },
   { href: "/learn", label: "Learn", icon: FileText, summary: "Pick the right workflow before signing anything" },
   { href: "/govern", label: "Govern", icon: SquareTerminal, summary: "Create a DAO, propose, vote, and execute" },

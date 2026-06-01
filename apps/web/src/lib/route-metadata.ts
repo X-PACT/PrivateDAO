@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 
+import { supportedLocales } from "@/lib/i18n";
 import { defaultOgImage, siteDescription, siteKeywords, siteName, siteTitle } from "@/lib/site-brand";
 
 type BuildRouteMetadataInput = {
@@ -20,6 +21,7 @@ export function buildRouteMetadata({
   const urlPath = path.startsWith("/") ? path : `/${path}`;
   const canonicalPath = urlPath === "/" ? "/" : `${urlPath.replace(/\/+$/, "")}/`;
   const fullTitle = `${title} | ${siteName}`;
+  const languageCodes = supportedLocales.map((locale) => locale.code).join(", ");
 
   return {
     title: fullTitle,
@@ -63,10 +65,19 @@ export function buildRouteMetadata({
     },
     category: "technology",
     applicationName: siteName,
+    other: {
+      "content-language": languageCodes,
+      "ai-crawl": "allowed",
+      "llms-txt": "/llms.txt",
+      "product-surface":
+        "PrivateDAO wallet-first Solana Testnet governance, private rooms, encrypted treasury, confidential payroll, intelligence, and proof routes.",
+    },
   };
 }
 
 export function buildBrandHomeMetadata(): Metadata {
+  const languageCodes = supportedLocales.map((locale) => locale.code).join(", ");
+
   return {
     title: siteTitle,
     description: siteDescription,
@@ -101,5 +112,12 @@ export function buildBrandHomeMetadata(): Metadata {
     },
     category: "technology",
     applicationName: siteName,
+    other: {
+      "content-language": languageCodes,
+      "ai-crawl": "allowed",
+      "llms-txt": "/llms.txt",
+      "product-surface":
+        "PrivateDAO is the operating system for everything that happens after governance on Solana: review, approve, execute, and audit with privacy.",
+    },
   };
 }

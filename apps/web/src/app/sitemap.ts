@@ -7,6 +7,7 @@ export const dynamic = "force-static";
 
 const coreRoutes = [
   "",
+  "/try",
   "/start",
   "/about",
   "/judge",
@@ -36,6 +37,9 @@ const coreRoutes = [
   "/engage",
   "/android",
   "/services",
+  "/rooms",
+  "/rooms/new",
+  "/settings/intelligence",
   "/services/confidential-payments",
   "/services/consumer-governance-ux",
   "/services/eitherway-live-dapp",
