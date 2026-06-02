@@ -14,6 +14,10 @@ type LauncherService = {
   title: string;
   pain: string;
   outcome: string;
+  intelligence: {
+    checks: string[];
+    route: string;
+  };
   icon: typeof Gavel;
   actions: LauncherAction[];
 };
@@ -23,6 +27,10 @@ const services: LauncherService[] = [
     title: "DAO Governance",
     pain: "Public vote counts, whale signals, and visible momentum influence members before the vote ends.",
     outcome: "Create a DAO, join a live vote, or start a VIP room with private voting and public reveal.",
+    intelligence: {
+      checks: ["proposal risk", "treasury impact", "privacy mode", "historical outcomes"],
+      route: "/intelligence?focus=governance",
+    },
     icon: Gavel,
     actions: [
       { label: "Create DAO", href: "/try?flow=create-dao", primary: true },
@@ -34,6 +42,10 @@ const services: LauncherService[] = [
     title: "Private Rooms",
     pain: "Grant reviews, incidents, hiring, and partnerships break down when every sensitive detail is public too early.",
     outcome: "Invite members, add a proposal, run a private vote, reveal the outcome, and export proof.",
+    intelligence: {
+      checks: ["room access policy", "reviewer assignment", "sensitive notes boundary", "reveal policy"],
+      route: "/settings/intelligence?focus=private-rooms",
+    },
     icon: ShieldAlert,
     actions: [
       { label: "Create private room", href: "/rooms/new", primary: true },
@@ -45,6 +57,10 @@ const services: LauncherService[] = [
     title: "Treasury Coordination",
     pain: "Treasury actions expose strategy, counterparties, and timing before the organization is ready.",
     outcome: "Preview route context, coordinate privately, then publish verifiable execution evidence.",
+    intelligence: {
+      checks: ["asset context", "price/oracle context", "route risk", "counterparty review"],
+      route: "/intelligence?focus=treasury",
+    },
     icon: Coins,
     actions: [
       { label: "Run treasury route", href: "/services/jupiter-treasury-route", primary: true },
@@ -56,6 +72,10 @@ const services: LauncherService[] = [
     title: "Private Payments & Payroll",
     pain: "Contributor payouts, payroll, and vendor payments should not become public spreadsheets.",
     outcome: "Prepare private payout, payroll, or REFHE proof lanes with wallet-first Testnet receipts.",
+    intelligence: {
+      checks: ["recipient privacy", "payout policy", "receipt boundary", "payroll integrity"],
+      route: "/intelligence?focus=payments-payroll",
+    },
     icon: KeyRound,
     actions: [
       { label: "Private payout", href: "/services/confidential-payments", primary: true },
@@ -67,6 +87,10 @@ const services: LauncherService[] = [
     title: "Intelligence Before Signing",
     pain: "Members sign governance and treasury actions without enough context, or send sensitive context to hosted AI.",
     outcome: "Use QVAC/local intelligence, risk context, and provider-safe analysis before the private vote.",
+    intelligence: {
+      checks: ["QVAC local mode", "provider router status", "data sent disclosure", "no hidden vote intent"],
+      route: "/settings/intelligence",
+    },
     icon: BrainCircuit,
     actions: [
       { label: "Run intelligence", href: "/intelligence", primary: true },
@@ -78,6 +102,10 @@ const services: LauncherService[] = [
     title: "GamingDAO Rewards",
     pain: "Guild rewards, tournaments, and prize pools lose trust when reward decisions and payouts are messy.",
     outcome: "Create a tournament, route reward distribution through governance, and keep reward proof visible.",
+    intelligence: {
+      checks: ["reward pool policy", "tournament payout risk", "winner privacy", "proof route"],
+      route: "/intelligence?focus=gamingdao",
+    },
     icon: Gamepad2,
     actions: [
       { label: "Open GamingDAO", href: "/gaming", primary: true },
@@ -89,6 +117,10 @@ const services: LauncherService[] = [
     title: "Provider & Growth Rails",
     pain: "Provider integrations become noise when users cannot see the action they enable.",
     outcome: "Use Torque, SDK/API starter, and proof routes as backend rails under simple execution flows.",
+    intelligence: {
+      checks: ["provider status", "API availability", "growth event policy", "execution receipt"],
+      route: "/api-status",
+    },
     icon: WalletCards,
     actions: [
       { label: "Torque growth loop", href: "/services/torque-growth-loop", primary: true },
@@ -135,6 +167,24 @@ export function ServiceLauncher({ compact = false }: { compact?: boolean }) {
               </div>
               <div className="mt-4 rounded-2xl border border-cyan-300/14 bg-cyan-300/[0.07] p-3 text-sm leading-6 text-white/68">
                 {service.outcome}
+              </div>
+              <div className="mt-3 rounded-2xl border border-violet-300/16 bg-violet-300/[0.08] p-3">
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.2em] text-violet-100/78">
+                    <BrainCircuit className="h-3.5 w-3.5" />
+                    Intelligence before signing
+                  </div>
+                  <Link href={service.intelligence.route} className="text-xs font-medium text-cyan-100 underline underline-offset-4">
+                    Review intelligence
+                  </Link>
+                </div>
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {service.intelligence.checks.map((check) => (
+                    <span key={`${service.title}-${check}`} className="rounded-full border border-white/10 bg-black/24 px-2.5 py-1 text-xs text-white/64">
+                      {check}
+                    </span>
+                  ))}
+                </div>
               </div>
               <div className="mt-4 flex flex-wrap gap-2">
                 {service.actions.map((action) => (
