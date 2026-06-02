@@ -12,7 +12,7 @@ export const siteKeywords = [
   "Private DAO",
   "PrivateDAO workflow",
   "PrivateDAO Stack",
-  "PrivateDAO AI judge summary",
+  "PrivateDAO AI guide",
   "PrivateDAO evidence manifest",
   "confidential governance OS",
   "PrivateDAO Solana Testnet",
