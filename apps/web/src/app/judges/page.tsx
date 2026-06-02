@@ -34,12 +34,14 @@ const primaryLinks = [
     body: "Canonical reviewer hub with technology guide, launch paths, runtime logs, and Testnet proof.",
     href: "/judge/",
     icon: ClipboardCheck,
+    primary: false,
   },
   {
     title: "AI / judge summary",
     body: "Plain AI-readable explanation for automated reviewers and human judges who need context fast.",
     href: "/judge-ai",
     icon: ShieldCheck,
+    primary: false,
   },
 ] as const;
 
