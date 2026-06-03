@@ -2,10 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
-import { AssetContextCard } from "@/components/asset-context-card";
 import { OperationsShell } from "@/components/operations-shell";
-import { PrivatePayoutModes } from "@/components/private-payout-modes";
-import { TransparencyReportPreview } from "@/components/transparency-report-preview";
+import { PublicDaoDirectory } from "@/components/public-dao-directory";
 import { WalletConnectButton } from "@/components/wallet-connect-button";
 import { buttonVariants } from "@/components/ui/button";
 import { buildRouteMetadata } from "@/lib/route-metadata";
@@ -33,7 +31,7 @@ export default function TryPage() {
       eyebrow="Try PrivateDAO"
       title="Connect → Intelligence → Private Vote → Reveal → Verify → Execute"
       description="This route is the shortest product path. It hides technical complexity and lets a first-time visitor understand the value before seeing the provider stack."
-      navigationMode="guided"
+      navigationMode="focused"
       badges={[
         { label: "No code", variant: "success" },
         { label: "Testnet", variant: "cyan" },
@@ -52,9 +50,12 @@ export default function TryPage() {
             </p>
             <div className="mt-5 flex flex-wrap gap-3">
               <WalletConnectButton connectLabel="Connect Testnet Wallet" />
-              <Link href="/govern#live-dao" className={cn(buttonVariants({ size: "sm" }))}>
-                Start vote
+              <Link href="/govern?flow=create-dao#dao-start" className={cn(buttonVariants({ size: "sm" }))}>
+                Create a new DAO
                 <ArrowRight className="h-4 w-4" />
+              </Link>
+              <Link href="/rooms" className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>
+                Enter a private room
               </Link>
               <Link href="/proof/?judge=1" className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
                 Verify proof
@@ -63,7 +64,7 @@ export default function TryPage() {
           </div>
           <div className="grid gap-3 sm:grid-cols-2">
             {steps.map(([number, title, body]) => (
-              <Link key={title} href={number === "6" ? "/proof/?judge=1" : "/govern#live-dao"} className="rounded-[22px] border border-white/10 bg-black/22 p-4 transition hover:border-emerald-300/28 hover:bg-white/[0.055]">
+              <Link key={title} href={number === "6" ? "/proof/?judge=1" : "/govern?flow=create-dao#dao-start"} className="rounded-[22px] border border-white/10 bg-black/22 p-4 transition hover:border-emerald-300/28 hover:bg-white/[0.055]">
                 <div className="text-[10px] uppercase tracking-[0.22em] text-emerald-100/70">{number}</div>
                 <div className="mt-2 text-base font-semibold text-white">{title}</div>
                 <p className="mt-2 text-sm leading-6 text-white/58">{body}</p>
@@ -72,9 +73,7 @@ export default function TryPage() {
           </div>
         </div>
       </section>
-      <AssetContextCard symbol="USDC" amount="10000" useCase="treasury" />
-      <PrivatePayoutModes />
-      <TransparencyReportPreview compact />
+      <PublicDaoDirectory />
     </OperationsShell>
   );
 }

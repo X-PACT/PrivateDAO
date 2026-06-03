@@ -33,7 +33,7 @@ const services: LauncherService[] = [
     },
     icon: Gavel,
     actions: [
-      { label: "Create DAO", href: "/try?flow=create-dao", primary: true },
+      { label: "Create DAO", href: "/govern?flow=create-dao#dao-start", primary: true },
       { label: "Join live DAO", href: "/govern#live-dao" },
       { label: "Create VIP room", href: "/rooms/new" },
     ],

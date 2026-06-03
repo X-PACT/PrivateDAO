@@ -175,6 +175,12 @@ type GovernanceSessionContextValue = GovernanceSessionState & {
     source: string;
   }) => void;
   createDao: (liveRuntime?: LiveDaoRuntime | null) => void;
+  selectLiveDao: (input: {
+    daoName: string;
+    proposalTitle: string;
+    daoRuntime: LiveDaoRuntime;
+    proposalRuntime: LiveProposalRuntime;
+  }) => void;
   createProposal: (liveRuntime?: LiveProposalRuntime | null) => void;
   commitVote: (liveRuntime?: LiveVoteRuntime | null) => void;
   revealVote: (liveRuntime?: Pick<LiveVoteRuntime, "network" | "proposalAddress" | "revealSignature" | "saltHex" | "voteChoice"> | null) => void;
@@ -398,6 +404,27 @@ export function GovernanceSessionProvider({ children }: { children: ReactNode })
             liveRuntime
               ? `${current.daoName} bootstrapped live on ${SOLANA_NETWORK_LABEL} at ${liveRuntime.address}.`
               : `${current.daoName} staged in the product shell and ready for proposal creation.`,
+          ),
+        ),
+      selectLiveDao: ({ daoName, proposalTitle, daoRuntime, proposalRuntime }) =>
+        setState((current) =>
+          withLog(
+            {
+              ...current,
+              daoName,
+              daoCreated: true,
+              liveDaoRuntime: daoRuntime,
+              proposalTitle,
+              proposalCreated: true,
+              liveProposalRuntime: proposalRuntime,
+              voteCommitted: false,
+              voteRevealed: false,
+              proposalFinalized: false,
+              proposalExecuted: false,
+              liveVoteRuntime: null,
+            },
+            "Public DAO selected",
+            `${daoName} loaded from the Testnet public DAO directory.`,
           ),
         ),
       createProposal: (liveRuntime) =>

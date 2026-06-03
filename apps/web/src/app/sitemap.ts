@@ -50,6 +50,7 @@ const coreRoutes = [
   "/services",
   "/rooms",
   "/rooms/new",
+  "/rooms/join",
   "/settings/intelligence",
   "/services/confidential-payments",
   "/services/consumer-governance-ux",

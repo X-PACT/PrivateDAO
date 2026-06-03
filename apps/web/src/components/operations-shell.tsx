@@ -90,7 +90,7 @@ type OperationsShellProps = {
   eyebrow: string;
   title: string;
   description: string;
-  navigationMode?: "full" | "guided";
+  navigationMode?: "full" | "guided" | "focused";
   badges?: Array<{
     label: string;
     variant?: "cyan" | "violet" | "success" | "warning";
@@ -171,9 +171,10 @@ export function OperationsShell({
         return fallback;
     }
   };
-  const useMinimalGuidedChrome = navigationMode === "guided";
+  const useMinimalGuidedChrome = navigationMode !== "full";
   const isGovernRoute = pathname === "/govern" || pathname.startsWith("/govern/");
   const isGuidedRoute = navigationMode === "guided";
+  const isFocusedRoute = navigationMode === "focused";
   const heroTitleClass = useMinimalGuidedChrome
     ? "max-w-4xl text-2xl font-semibold tracking-[-0.03em] text-white sm:text-4xl lg:text-[2.8rem]"
     : "max-w-4xl text-3xl font-semibold tracking-[-0.035em] text-white sm:text-5xl";
@@ -315,7 +316,7 @@ export function OperationsShell({
                 ) : null}
               </div>
 
-              <div className={cn("flex flex-wrap gap-3", useMinimalGuidedChrome ? "mt-6" : "mt-8")}>
+              {!isFocusedRoute ? <div className={cn("flex flex-wrap gap-3", useMinimalGuidedChrome ? "mt-6" : "mt-8")}>
                 {isGovernRoute ? (
                   <>
                     <a className={buttonVariants({ size: "sm" })} href="#proposal-review-action">
@@ -348,7 +349,7 @@ export function OperationsShell({
                     )}
                   </>
                 )}
-              </div>
+              </div> : null}
             </CardContent>
           </Card>
 

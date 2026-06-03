@@ -9,8 +9,10 @@ import { Activity, ArrowUpRight, ChevronRight, FilePlus2, Flag, FolderPlus, List
 
 import { ActionReviewModal } from "@/components/action-review-modal";
 import { GovernanceVoiceCommandPanel } from "@/components/governance-voice-command-panel";
+import { useI18n } from "@/components/i18n-provider";
 import { useGovernanceSession } from "@/components/governance-session";
 import { OnchainParityPanel } from "@/components/onchain-parity-panel";
+import { PublicDaoDirectory } from "@/components/public-dao-directory";
 import { WalletConnectButton } from "@/components/wallet-connect-button";
 import { Badge } from "@/components/ui/badge";
 import { Button, buttonVariants } from "@/components/ui/button";
@@ -30,6 +32,8 @@ import {
   fetchProposalAccountDetails,
 } from "@/lib/dao-bootstrap";
 import { buildServiceHandoffQuery } from "@/lib/service-handoff-state";
+import { entryFlowCopy } from "@/lib/entry-flow-copy";
+import { PRIVATE_ROOM_SESSION_KEY } from "@/lib/room-invite";
 import { getProposalById, type ProposalCardModel } from "@/lib/site-data";
 import { buildSolanaTxUrl, SOLANA_NETWORK, SOLANA_NETWORK_LABEL } from "@/lib/solana-network";
 import { persistOperationReceipt } from "@/lib/supabase/operation-receipts";
@@ -44,41 +48,6 @@ const voteChoices = ["Approve", "Reject"] as const;
 const LIVE_TESTNET_VOTING_DURATION_SECONDS = 180;
 const LIVE_TESTNET_REVEAL_WINDOW_SECONDS = 180;
 const LIVE_TESTNET_EXECUTION_DELAY_SECONDS = 30;
-
-const daoExperienceProfiles = [
-  {
-    id: "public-private",
-    title: "Public DAO, private voting",
-    label: "For open communities",
-    daoName: "PrivateDAO Public Council",
-    proposalTitle: "Private vote for public treasury policy",
-    pain: "Open DAOs need public outcomes, but early visible votes can create pressure, copying, and vote buying.",
-    privacy: "Commit/reveal hides voting intent during the decision window.",
-    reveal: "After finalize, the result, receipt, and execution path are visible for everyone to audit.",
-  },
-  {
-    id: "private-room",
-    title: "Private room DAO",
-    label: "For grants, payroll, incidents",
-    daoName: "PrivateDAO Review Room",
-    proposalTitle: "Confidential review room approval",
-    pain: "Small groups need to discuss grants, payroll, security incidents, or partnerships before public disclosure.",
-    privacy: "Sensitive intent, reviewers, rationale, and coordination stay inside the room while the decision is active.",
-    reveal: "The approved outcome becomes verifiable with a public receipt and scoped proof route.",
-  },
-  {
-    id: "institutional",
-    title: "Institutional DAO",
-    label: "For companies and councils",
-    daoName: "PrivateDAO Institution",
-    proposalTitle: "Institutional treasury authorization",
-    pain: "Organizations need privacy for treasury, payroll, vendor terms, and committee decisions without losing accountability.",
-    privacy: "Decision context is encrypted, reviewed by roles, and protected until authorization is complete.",
-    reveal: "Auditors see the outcome, policy boundary, receipt, and execution evidence at the right time.",
-  },
-] as const;
-
-type DaoExperienceProfileId = (typeof daoExperienceProfiles)[number]["id"];
 
 const zkProofArtifactLinks = [
   {
@@ -618,10 +587,11 @@ function RuntimeStatusPanel({
 }
 
 export function GovernanceActionWorkbench() {
+  const { locale } = useI18n();
+  const entryCopy = entryFlowCopy[locale];
   const searchParams = useSearchParams();
   const [reviewAction, setReviewAction] = useState<CoreGovernanceInstructionName | null>(null);
   const [showAdvanced, setShowAdvanced] = useState(false);
-  const [selectedDaoProfileId, setSelectedDaoProfileId] = useState<DaoExperienceProfileId>("public-private");
   const [daoPrivacyMode, setDaoPrivacyMode] = useState<DaoPrivacyModeId>("public-live");
   const [proposalPublication, setProposalPublication] = useState<ProposalPublicationId>("partial");
   const [createDaoRuntime, setCreateDaoRuntime] = useState<{
@@ -694,6 +664,7 @@ export function GovernanceActionWorkbench() {
     stageReviewContext,
     stageExecutionIntent,
     createDao,
+    selectLiveDao,
     createProposal,
     commitVote,
     revealVote,
@@ -816,6 +787,7 @@ export function GovernanceActionWorkbench() {
   const appliedReviewRef = useRef<string | null>(null);
   const autoOpenReviewRef = useRef<string | null>(null);
   const appliedPackRef = useRef<string | null>(null);
+  const privateRoomLoadedRef = useRef(false);
   const stagedProposal = handoff?.proposalId ? getProposalById(handoff.proposalId) ?? null : null;
   const continuityRequestPayload = handoff?.requestPayload ?? null;
   const stagedReviewAction = resolveStagedReviewAction(stagedProposal);
@@ -1023,6 +995,54 @@ export function GovernanceActionWorkbench() {
   ]);
 
   useEffect(() => {
+    const flow = searchParams.get("flow");
+    if (flow !== "private-room") return;
+    setDaoPrivacyMode("private-room");
+    setProposalPublication("sealed");
+    if (daoCreated || privateRoomLoadedRef.current) return;
+    try {
+      const stored = window.sessionStorage.getItem(PRIVATE_ROOM_SESSION_KEY);
+      const room = stored ? JSON.parse(stored) as { roomId?: string } : null;
+      if (!room?.roomId) return;
+      privateRoomLoadedRef.current = true;
+      setDaoName(`PDAO-room-${room.roomId.slice(0, 12)}`);
+      setProposalTitle("PrivateDAO sealed room proposal");
+      recordLog("Private room session loaded", "A safe room alias is ready for Testnet execution. The private room name stays off-chain.");
+    } catch {
+      // An unreadable browser session must not block a fresh private-room flow.
+    }
+  }, [daoCreated, recordLog, searchParams, setDaoName, setProposalTitle]);
+
+  useEffect(() => {
+    if (searchParams.get("flow") !== "join-dao") return;
+    const daoAddress = searchParams.get("dao");
+    const proposalAddress = searchParams.get("proposal");
+    const governanceMint = searchParams.get("mint");
+    const selectedDaoName = searchParams.get("name");
+    const selectedProposalTitle = searchParams.get("title");
+    const authority = searchParams.get("authority") || undefined;
+    if (!daoAddress || !proposalAddress || !governanceMint || !selectedDaoName || !selectedProposalTitle) return;
+    if (liveDaoRuntime?.address === daoAddress && liveProposalRuntime?.address === proposalAddress) return;
+
+    selectLiveDao({
+      daoName: selectedDaoName,
+      proposalTitle: selectedProposalTitle,
+      daoRuntime: {
+        address: daoAddress,
+        authority,
+        governanceMint,
+        network: SOLANA_NETWORK,
+        signature: "",
+      },
+      proposalRuntime: {
+        address: proposalAddress,
+        network: SOLANA_NETWORK,
+        signature: "",
+      },
+    });
+  }, [liveDaoRuntime?.address, liveProposalRuntime?.address, searchParams, selectLiveDao]);
+
+  useEffect(() => {
     if (!handoff) return;
     const continuityKey = `${handoff.proposalId}:${handoff.telemetryMode}:${handoff.source}:${handoff.payoutIntent?.reference ?? "no-payout"}:${continuityRequestPayload?.requestId ?? "no-request"}:${handoff.requestDelivery?.state ?? "draft"}`;
     if (appliedReviewRef.current === continuityKey) return;
@@ -1089,25 +1109,6 @@ export function GovernanceActionWorkbench() {
     setProposalTreasuryTokenMint("");
     appliedReviewRef.current = null;
     autoOpenReviewRef.current = null;
-  }
-
-  function applyDaoExperienceProfile(profileId: DaoExperienceProfileId) {
-    const profile = daoExperienceProfiles.find((item) => item.id === profileId) ?? daoExperienceProfiles[0];
-    setSelectedDaoProfileId(profile.id);
-    if (profile.id === "private-room" || profile.id === "institutional") {
-      setDaoPrivacyMode("private-room");
-      setProposalPublication("sealed");
-    } else {
-      setDaoPrivacyMode("public-live");
-      setProposalPublication("partial");
-    }
-    setDaoName(profile.daoName);
-    setProposalTitle(profile.proposalTitle);
-    setProposalTreasuryMode("standard");
-    setProposalTreasuryRecipient("");
-    setProposalTreasuryAmountSol("");
-    setProposalTreasuryTokenMint("");
-    recordLog("DAO profile selected", `${profile.title} · ${profile.privacy}`);
   }
 
   const currentStep = useMemo(() => {
@@ -2085,68 +2086,6 @@ export function GovernanceActionWorkbench() {
             </div>
           </div>
 
-          {showDaoCard ? (
-            <div className="rounded-[24px] border border-cyan-300/16 bg-[linear-gradient(135deg,rgba(20,241,149,0.09),rgba(153,69,255,0.08),rgba(3,8,20,0.96))] p-5 md:col-span-2">
-              <div className="flex flex-wrap items-start justify-between gap-4">
-                <div className="max-w-3xl">
-                  <div className="text-[11px] uppercase tracking-[0.24em] text-cyan-100/78">Choose the DAO experience</div>
-                  <div className="mt-2 text-xl font-semibold text-white">Same on-chain core, different privacy posture</div>
-                  <p className="mt-2 text-sm leading-7 text-white/64">
-                    Public DAOs can keep vote intent private until the result is ready. Private rooms can protect grants,
-                    payroll, incident response, and partnerships. Institutions can run role-based approvals with audit
-                    proof at the right time. The user still follows one simple path: connect, create DAO, create proposal,
-                    commit, reveal, finalize, execute, verify.
-                  </p>
-                </div>
-                <Link href="/services/?claim=confidential-treasury-request#privacy-claim-console" className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
-                  Open privacy matrix
-                  <ArrowUpRight className="h-4 w-4" />
-                </Link>
-              </div>
-              <div className="mt-5 grid gap-3 lg:grid-cols-3">
-                {daoExperienceProfiles.map((profile) => {
-                  const isSelected = selectedDaoProfileId === profile.id;
-                  return (
-                    <button
-                      key={profile.id}
-                      type="button"
-                      className={cn(
-                        "rounded-[22px] border p-4 text-left transition",
-                        isSelected
-                          ? "border-emerald-300/36 bg-emerald-300/[0.12] shadow-[0_18px_50px_rgba(20,241,149,0.10)]"
-                          : "border-white/10 bg-black/22 hover:border-cyan-300/25 hover:bg-white/[0.05]",
-                      )}
-                      onClick={() => applyDaoExperienceProfile(profile.id)}
-                    >
-                      <div className="text-[11px] uppercase tracking-[0.22em] text-cyan-100/70">{profile.label}</div>
-                      <div className="mt-2 text-base font-semibold text-white">{profile.title}</div>
-                      <p className="mt-3 text-sm leading-6 text-white/58">{profile.pain}</p>
-                      <div className="mt-4 rounded-2xl border border-white/10 bg-black/20 p-3 text-xs leading-6 text-white/66">
-                        <span className="font-semibold text-emerald-100">During voting:</span> {profile.privacy}
-                      </div>
-                      <div className="mt-2 rounded-2xl border border-white/10 bg-black/20 p-3 text-xs leading-6 text-white/66">
-                        <span className="font-semibold text-cyan-100">After decision:</span> {profile.reveal}
-                      </div>
-                    </button>
-                  );
-                })}
-              </div>
-              <div className="mt-4 grid gap-3 md:grid-cols-4">
-                {[
-                  ["Intent hidden", "Votes are committed before reveal so voters are not pressured by visible momentum."],
-                  ["Outcome public", "Final result, proof, and execution receipt become auditable after the decision closes."],
-                  ["Roles scoped", "Reviewers, treasury operators, and auditors can see the right evidence for their job."],
-                  ["Intelligence before signing", "QVAC, GoldRush, and risk context explain the decision before wallet approval."],
-                ].map(([title, body]) => (
-                  <div key={title} className="rounded-2xl border border-white/10 bg-black/20 p-3">
-                    <div className="text-sm font-semibold text-white">{title}</div>
-                    <div className="mt-2 text-xs leading-6 text-white/58">{body}</div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          ) : null}
-
           {hasPayloadDrivenExecution ? (
             <div className="rounded-[24px] border border-amber-300/18 bg-amber-300/[0.08] p-5 md:col-span-2">
               <div className="flex flex-wrap items-start justify-between gap-4">
@@ -2294,7 +2233,7 @@ export function GovernanceActionWorkbench() {
             </div>
           ) : null}
 
-          {showDaoCard ? (
+          {showDaoCard && showAdvanced ? (
           <GovernanceVoiceCommandPanel
             daoName={daoName}
             proposalTitle={proposalTitle}
@@ -2311,11 +2250,15 @@ export function GovernanceActionWorkbench() {
           ) : null}
 
           {showDaoCard ? (
-          <div className="rounded-[24px] border border-white/10 bg-white/[0.03] p-5 md:col-span-2">
+          <div id="dao-start" className="scroll-mt-28 rounded-[24px] border border-white/10 bg-white/[0.03] p-5 md:col-span-2">
             <div className="flex items-center gap-3">
               <FolderPlus className="h-4 w-4 text-emerald-300" />
-              <div className="text-base font-medium text-white">Step 1 · Create DAO</div>
+              <div className="text-base font-medium text-white">Step 1 · {entryCopy.joinOrCreateDao}</div>
             </div>
+            <div className="mt-4">
+              <PublicDaoDirectory />
+            </div>
+            <div className="mt-5 text-[11px] uppercase tracking-[0.22em] text-emerald-100/72">{entryCopy.createNewPublicDao}</div>
             <input
               value={daoName}
               onChange={(event) => setDaoName(event.target.value)}
@@ -2344,7 +2287,7 @@ export function GovernanceActionWorkbench() {
               ) : null}
             </div>
             <Button className="mt-4 w-full" disabled={!canCreateDao} onClick={() => openReview("initialize_dao")}>
-              {createDaoRuntime.status === "submitting" ? "Awaiting wallet..." : "Create DAO on Testnet"}
+              {createDaoRuntime.status === "submitting" ? "Awaiting wallet..." : entryCopy.createDaoOnTestnet}
             </Button>
             <RuntimeStatusPanel
               status={createDaoRuntime.status}
