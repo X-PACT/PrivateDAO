@@ -15,7 +15,7 @@ export async function GET() {
 
   return NextResponse.json({
     ok: true,
-    productFrame: "Private coordination layer for DAOs with public verification.",
+    productFrame: "Confidential Coordination Infrastructure for Organizations on Solana.",
     userVisibleFlow: "Context before decisions, private coordination during decisions, public proof after execution.",
     providers: {
       assetContext: tokenProvider.getStatus(),

@@ -24,8 +24,8 @@ const primaryLinks = [
   },
   {
     title: "Pitch deck link",
-    body: "The submitted pitch URL now opens the strongest proof packet, demo path, and traction metrics.",
-    href: "/proof/?judge=1",
+    body: "The current pitch deck: vision, problem, market, product, architecture, use cases, ecosystem, roadmap, team, and contact.",
+    href: "/deck",
     icon: FileText,
     primary: true,
   },
@@ -109,7 +109,7 @@ export default function JudgesPage() {
           <Link href="/try/" className={cn(buttonVariants({ size: "sm" }))}>
             Open demo
           </Link>
-          <Link href="/proof/?judge=1" className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>
+          <Link href="/deck" className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>
             Open pitch deck link
           </Link>
           <Link href="/judge/" className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>

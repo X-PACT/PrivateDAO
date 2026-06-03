@@ -3,7 +3,7 @@
   "evidence_type": "hackathon_and_product_verification",
   "last_updated": "2026-06-01",
   "status": "live-testnet",
-  "positioning": "Private coordination layer for DAOs with public verification.",
+  "positioning": "Confidential Coordination Infrastructure for Organizations on Solana.",
   "claims": [
     {
       "claim": "PrivateDAO has a live website",
@@ -26,9 +26,24 @@
       "evidence": "https://privatedao.org/try/"
     },
     {
-      "claim": "PrivateDAO has a direct pitch deck / reviewer packet link",
+      "claim": "PrivateDAO has a direct pitch deck link",
+      "status": "verified",
+      "evidence": "https://privatedao.org/deck/"
+    },
+    {
+      "claim": "PrivateDAO has a direct reviewer packet link",
       "status": "verified",
       "evidence": "https://privatedao.org/reviewer/"
+    },
+    {
+      "claim": "PrivateDAO has an investor page",
+      "status": "verified",
+      "evidence": "https://privatedao.org/investors/"
+    },
+    {
+      "claim": "PrivateDAO has a coordination thesis page",
+      "status": "verified",
+      "evidence": "https://privatedao.org/thesis/"
     },
     {
       "claim": "PrivateDAO exposes application-ready traction metrics for reviewers",
@@ -90,8 +105,11 @@
     "https://privatedao.org/",
     "https://privatedao.org/value/",
     "https://privatedao.org/try/",
+    "https://privatedao.org/deck/",
     "https://privatedao.org/reviewer/",
     "https://privatedao.org/reviewer/#application-ready-metrics",
+    "https://privatedao.org/investors/",
+    "https://privatedao.org/thesis/",
     "https://privatedao.org/judge",
     "https://privatedao.org/judge-ai",
     "https://privatedao.org/proof/?judge=1",

@@ -182,13 +182,13 @@ export default function ProofPage() {
         </h2>
         <p className="mt-3 max-w-4xl text-sm leading-7 text-white/64">
           For competitions and grant reviewers that already received `/proof/?judge=1`, this page keeps the proof center
-          intact and routes immediately to the current demo, reviewer packet, and application-ready traction metrics.
+          intact and routes immediately to the current demo, pitch deck, reviewer packet, and application-ready traction metrics.
         </p>
         <div className="mt-5 flex flex-wrap gap-3">
           <Link href="/try/" className={cn(buttonVariants({ size: "sm" }))}>
             Open demo link
           </Link>
-          <Link href="/reviewer/" className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>
+          <Link href="/deck" className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>
             Open pitch deck
           </Link>
           <Link href="/reviewer/#application-ready-metrics" className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>

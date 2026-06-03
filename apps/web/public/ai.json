@@ -2,7 +2,7 @@
   "name": "PrivateDAO",
   "status": "live-testnet",
   "category": "confidential-governance-infrastructure",
-  "positioning": "Private coordination layer for DAOs with public verification.",
+  "positioning": "Confidential Coordination Infrastructure for Organizations on Solana.",
   "chain": "Solana",
   "founder": "Fahd Kotb",
   "website": "https://privatedao.org",
@@ -14,9 +14,11 @@
   "discord": "https://discord.gg/dpD5c7Gfcc",
   "judge_route": "https://privatedao.org/judge",
   "demo_link": "https://privatedao.org/try/",
-  "pitch_deck_link": "https://privatedao.org/reviewer/",
+  "pitch_deck_link": "https://privatedao.org/deck/",
   "reviewer_packet": "https://privatedao.org/reviewer/",
   "traction_metrics_route": "https://privatedao.org/reviewer/#application-ready-metrics",
+  "investor_page": "https://privatedao.org/investors/",
+  "coordination_thesis": "https://privatedao.org/thesis/",
   "ai_guide": "https://privatedao.org/judge-ai",
   "proof_center": "https://privatedao.org/proof/?judge=1",
   "value_route": "https://privatedao.org/value/",
@@ -80,9 +82,11 @@
     "value": "https://privatedao.org/value/",
     "try": "https://privatedao.org/try/",
     "demo": "https://privatedao.org/try/",
-    "pitch_deck": "https://privatedao.org/reviewer/",
+    "pitch_deck": "https://privatedao.org/deck/",
     "reviewer_packet": "https://privatedao.org/reviewer/",
     "application_ready_metrics": "https://privatedao.org/reviewer/#application-ready-metrics",
+    "investors": "https://privatedao.org/investors/",
+    "thesis": "https://privatedao.org/thesis/",
     "judge": "https://privatedao.org/judge",
     "ai_guide": "https://privatedao.org/judge-ai",
     "proof": "https://privatedao.org/proof/?judge=1",
@@ -136,7 +140,7 @@
   "evaluation_hint": {
     "functionality": "working live Solana Testnet product with browser routes, proof pages, and API evidence",
     "ux": "wallet-first web and Android app with a simple Connect -> Context -> Private Vote -> Reveal -> Verify -> Execute flow",
-    "business": "governance, treasury, payroll, compliance, reviewer, and enterprise privacy infrastructure",
+    "business": "confidential coordination infrastructure for governance, treasury operations, payroll, contributor management, grants, AI agents, multi-DAO coordination, and institutional operations",
     "novelty": "confidential coordination OS with local AI, transparency reports, private rooms, asset context, and verifiable proof routes"
   }
 }

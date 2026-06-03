@@ -11,7 +11,7 @@ import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = buildRouteMetadata({
   title: "Why PrivateDAO",
-  description: "PrivateDAO is a private coordination layer for DAOs with public verification.",
+  description: "PrivateDAO is confidential coordination infrastructure for organizations on Solana with public verification.",
   path: "/value",
   keywords: ["why private dao", "private coordination", "public verification", "dao coordination layer"],
 });
@@ -25,7 +25,7 @@ export default function ValuePage() {
   return (
     <OperationsShell
       eyebrow="Why PrivateDAO"
-      title="Private coordination layer for DAOs with public verification."
+      title="Confidential coordination infrastructure for organizations on Solana."
       description="Most DAO decisions should be public. The coordination before execution is where momentum, politics, exposed wallets, and messy operations break decision quality."
       navigationMode="guided"
       badges={[

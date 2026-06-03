@@ -12,9 +12,9 @@ import { cn } from "@/lib/utils";
 export const metadata: Metadata = buildRouteMetadata({
   title: "Whitepaper",
   description:
-    "PrivateDAO whitepaper: sovereign infrastructure roadmap for encrypted governance, private settlement, QVAC intelligence, Mainnet review, and cross-chain expansion.",
+    "PrivateDAO whitepaper: confidential coordination infrastructure for organizations on Solana, with governance, treasury, payroll, intelligence, agent workflows, and public proof.",
   path: "/whiteprint",
-  keywords: ["Whitepaper", "PrivateDAO roadmap", "Solana governance", "encrypted infrastructure"],
+  keywords: ["Whitepaper", "PrivateDAO roadmap", "confidential coordination infrastructure", "Solana organizations", "encrypted treasury", "confidential payroll"],
 });
 
 const downloadHref = "/assets/private-dao-founder-whiteprint.md";
@@ -91,6 +91,15 @@ const architectureCards = [
   ["Phase 3 cross-chain", "The infrastructure expands beyond Solana while Solana remains the guardian chain and first decision home.", Network],
 ] as const;
 
+const coordinationLayers = [
+  ["Coordination Layer", "The operating layer for context, review, approval, execution, continuity, and proof."],
+  ["Governance Layer", "The first use case: private voting while influence signals matter, public reveal when accountability matters."],
+  ["Treasury Layer", "Confidential treasury requests, payout routing, stablecoin context, and execution receipts."],
+  ["Payroll Layer", "Contributor compensation and confidential payroll workflows linked to the earlier founder-built payroll lineage."],
+  ["Intelligence Layer", "QVAC and provider-routed intelligence before signing, without sending hidden vote intent to external providers."],
+  ["Agent Layer", "Future AI-assisted organizational operations where agents prepare work but authority remains wallet-first and auditable."],
+] as const;
+
 const documentStack = [
   ["Whitepaper", "How the system works: encryption layers, QVAC/local intelligence, ZK direction, treasury logic, emergency continuity, wallet-first execution, and threat-aware operations."],
   ["Vision Paper", "Why the system exists: privacy as the condition for honest coordination, blockchain as civilization record, and Solana as the first guardian chain."],
@@ -113,12 +122,12 @@ export default function WhitepaperPage() {
   return (
     <OperationsShell
       eyebrow="Whitepaper"
-      title="PrivateDAO Sovereign Infrastructure Roadmap"
-      description="A technical whitepaper for reviewers, partners, and ecosystem decision makers: why PrivateDAO exists, what is live now, and how the encrypted customer delivery, Mainnet review, and cross-chain roadmap will unfold."
+      title="PrivateDAO Confidential Coordination Infrastructure"
+      description="Organizations need more than voting. They need secure coordination, authority routing, execution, continuity, and proof. Governance is only the first use case."
       badges={[
-        { label: "Ecosystem-first", variant: "cyan" },
-        { label: "Solana guardian chain", variant: "success" },
-        { label: "Phase 2 + Phase 3", variant: "violet" },
+        { label: "Coordination layer", variant: "cyan" },
+        { label: "Solana organizations", variant: "success" },
+        { label: "Governance is first", variant: "violet" },
       ]}
     >
       <section className="rounded-[30px] border border-cyan-300/18 bg-cyan-300/[0.07] p-6">
@@ -128,13 +137,12 @@ export default function WhitepaperPage() {
           <Badge variant="success">Reviewer-downloadable</Badge>
         </div>
         <h2 className="mt-5 max-w-4xl text-3xl font-semibold tracking-tight text-white">
-          Blockchain is a record layer for civilization only if privacy becomes a first-class primitive.
+          The least decentralized part of every DAO is not voting. It is everything before and after the vote.
         </h2>
         <p className="mt-4 max-w-5xl text-sm leading-7 text-white/68">
-          PrivateDAO is built for the hardest adoption gap in the ecosystem: governments, institutions, supply chains,
-          builders, and governance users need public verification without exposing sensitive operational data. The first
-          proof lives on Solana Testnet; the next phases move into encrypted customer delivery, Mainnet security review,
-          and cross-chain infrastructure anchored by Solana as the guardian chain.
+          PrivateDAO provides the infrastructure layer required for confidential organizational operations on Solana:
+          coordination, governance, treasury operations, payroll, grants, security response, AI-assisted workflows, and
+          public proof. Governance is the first use case; secure coordination is the larger system.
         </p>
         <div className="mt-6 flex flex-wrap gap-3">
           <a href={downloadHref} download className={cn(buttonVariants({ size: "sm" }))}>
@@ -143,6 +151,12 @@ export default function WhitepaperPage() {
           </a>
           <Link href="/trust#whitepaper" className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>
             Open trust route
+          </Link>
+          <Link href="/thesis" className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>
+            Read coordination thesis
+          </Link>
+          <Link href="/deck" className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>
+            Open pitch deck
           </Link>
           <Link href="/intelligence" className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>
             Open intelligence
@@ -170,6 +184,24 @@ export default function WhitepaperPage() {
           {founderBuildNotes.map((item) => (
             <div key={item} className="rounded-2xl border border-white/10 bg-black/20 p-4 text-sm leading-7 text-white/64">
               {item}
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="rounded-[30px] border border-emerald-300/18 bg-emerald-300/[0.07] p-6">
+        <div className="text-[11px] uppercase tracking-[0.28em] text-emerald-100/78">Core thesis</div>
+        <h2 className="mt-3 text-2xl font-semibold text-white">Organizations need secure coordination before they need another voting screen.</h2>
+        <p className="mt-3 max-w-5xl text-sm leading-7 text-white/66">
+          PrivateDAO starts with governance because voting exposes the coordination problem clearly. The durable product
+          is broader: a confidential infrastructure layer for organizations that need to coordinate, authorize, execute,
+          and audit sensitive operations without leaking the process before the result is ready.
+        </p>
+        <div className="mt-5 grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+          {coordinationLayers.map(([title, body]) => (
+            <div key={title} className="rounded-2xl border border-white/10 bg-black/20 p-4">
+              <div className="text-base font-semibold text-white">{title}</div>
+              <p className="mt-2 text-sm leading-6 text-white/62">{body}</p>
             </div>
           ))}
         </div>

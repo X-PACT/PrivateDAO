@@ -25,10 +25,10 @@ const reviewerLinks = [
   },
   {
     title: "Pitch deck link",
-    href: "/reviewer/",
+    href: "/deck",
     icon: FileText,
-    description: "Use this page as the short judge-facing pitch packet for product value, traction, proof, and routes.",
-    cta: "Open packet",
+    description: "Open the current ten-section investor and reviewer deck built around confidential coordination infrastructure.",
+    cta: "Open deck",
   },
   {
     title: "Proof center",
