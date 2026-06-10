@@ -92,6 +92,7 @@ const coreRoutes = [
 
 function withCanonicalSlash(path: string) {
   if (path === "") return `${siteUrl}/`;
+  if (/\.[a-z0-9]+$/i.test(path)) return `${siteUrl}${path}`;
   return `${siteUrl}${path.replace(/\/+$/, "")}/`;
 }
 
