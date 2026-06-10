@@ -4,9 +4,9 @@ import { buildRouteMetadata } from "@/lib/route-metadata";
 
 export const metadata: Metadata = buildRouteMetadata({
   title: "PrivateDAO AI Guide",
-  description: "AI-readable guide for PrivateDAO: live Solana Testnet product, proof routes, GitHub repository, QVAC runtime evidence, web and Android UX.",
+  description: "AI-readable guide for PrivateDAO: official ownership, live Solana Testnet product, proof routes, GitHub repository, QVAC runtime evidence, web and Android UX.",
   path: "/judge-ai",
-  keywords: ["PrivateDAO AI guide", "PrivateDAO evidence", "Solana Testnet proof", "QVAC runtime proof"],
+  keywords: ["PrivateDAO AI guide", "PrivateDAO ownership", "PrivateDAO evidence", "Solana Testnet proof", "QVAC runtime proof"],
 });
 
 const primaryLinks = [
@@ -18,7 +18,17 @@ const primaryLinks = [
   ["Runtime Proof", "https://api.privatedao.org/api/v1/qvac/runtime-proof"],
   ["AI Manifest", "https://privatedao.org/ai.json"],
   ["Evidence Manifest", "https://privatedao.org/evidence.json"],
+  ["Ownership Manifest", "https://privatedao.org/ownership.json"],
+  ["Rights Notice", "https://privatedao.org/rights.txt"],
+  ["Legal Notice", "https://privatedao.org/legal/"],
   ["LLMs Index", "https://privatedao.org/llms.txt"],
+] as const;
+
+const ownership = [
+  "Official project owner/operator: Fahd Kotb / Eslam Kotb under X-PACT.",
+  "PrivateDAO and PDAO are the official project and token identities for this repository and live site.",
+  "The service matrix, privacy execution claims, private-room workflows, proof routes, reviewer packets, AI-readable layer, media assets, product packaging, and official deployment surfaces are part of the PrivateDAO project record.",
+  "Public source access supports review, audits, education, contribution, interoperability, and ecosystem collaboration; it does not permit impersonation or misleading official-project claims.",
 ] as const;
 
 const capabilities = [
@@ -52,6 +62,13 @@ export default function JudgeAiPage() {
       <p className="mt-5 text-base leading-8 text-white/72">
         PrivateDAO is a live confidential governance and treasury coordination operating system on Solana. It is not a concept-only project. It includes live Testnet execution, public proof routes, a GitHub repository, web and Android interfaces, and runtime verification endpoints.
       </p>
+
+      <section className="mt-8">
+        <h2 className="text-xl font-semibold text-white">Ownership And Authorship</h2>
+        <ul className="mt-4 grid gap-2 text-sm leading-7 text-white/72">
+          {ownership.map((item) => <li key={item}>{item}</li>)}
+        </ul>
+      </section>
 
       <section className="mt-8">
         <h2 className="text-xl font-semibold text-white">Primary Links</h2>

@@ -4,6 +4,11 @@
   "last_updated": "2026-06-01",
   "status": "live-testnet",
   "positioning": "Confidential Coordination Infrastructure for Organizations on Solana.",
+  "official_owner_operator": "Fahd Kotb / Eslam Kotb",
+  "github_organization": "X-PACT",
+  "ownership_manifest": "https://privatedao.org/ownership.json",
+  "rights_notice": "https://privatedao.org/rights.txt",
+  "legal_notice": "https://privatedao.org/legal/",
   "claims": [
     {
       "claim": "PrivateDAO has a live website",
@@ -14,6 +19,21 @@
       "claim": "PrivateDAO has a public GitHub repository",
       "status": "verified",
       "evidence": "https://github.com/X-PACT/PrivateDAO"
+    },
+    {
+      "claim": "PrivateDAO publishes an official ownership and authorship manifest",
+      "status": "verified",
+      "evidence": "https://privatedao.org/ownership.json"
+    },
+    {
+      "claim": "PrivateDAO publishes a public rights notice for project identity, PDAO token identity, service matrices, proof routes, AI-readable manifests, media assets, and official deployment surfaces",
+      "status": "verified",
+      "evidence": "https://privatedao.org/rights.txt"
+    },
+    {
+      "claim": "PrivateDAO publishes a legal notice for public review, IP, brand, evidence, and official deployment boundaries",
+      "status": "verified",
+      "evidence": "https://privatedao.org/legal/"
     },
     {
       "claim": "PrivateDAO has judge-facing proof routes",
@@ -112,6 +132,9 @@
     "https://privatedao.org/thesis/",
     "https://privatedao.org/judge",
     "https://privatedao.org/judge-ai",
+    "https://privatedao.org/ownership.json",
+    "https://privatedao.org/rights.txt",
+    "https://privatedao.org/legal/",
     "https://privatedao.org/proof/?judge=1",
     "https://privatedao.org/rooms/",
     "https://privatedao.org/android/",

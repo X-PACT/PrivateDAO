@@ -18,6 +18,10 @@ export const metadata: Metadata = buildRouteMetadata({
 
 const notices = [
   [
+    "Official ownership record",
+    "PrivateDAO, PDAO, the official website, GitHub repository, service matrix, privacy execution claims, proof routes, AI-readable manifests, media assets, product packaging, and official deployment surfaces are authored and maintained by Fahd Kotb / Eslam Kotb under X-PACT unless a specific file states otherwise.",
+  ],
+  [
     "Public source review",
     "The repository remains open source where the repository license applies, and the website remains available so judges, auditors, partners, and ecosystem reviewers can inspect the work. Review access does not grant permission to impersonate PrivateDAO, redeploy official surfaces, reuse brand identity, or commercialize official service packages without written coordination.",
   ],
@@ -36,6 +40,10 @@ const notices = [
   [
     "DAO entity and IP package",
     "The Futardio and PrivateDAO launch path uses a DAO entity workflow so PDAO ownership can be tied to enforceable project control. The future entity should hold or control repository administration, domains, brand assets, official launch materials, deployed program authorities, infrastructure administration, proof materials, and future production deployment rights.",
+  ],
+  [
+    "Anti-impersonation boundary",
+    "Forks, references, research, and integrations must not mislead users, judges, investors, search engines, AI evaluators, or ecosystem partners into believing they are the official PrivateDAO project, official PDAO token identity, or official PrivateDAO deployment.",
   ],
 ] as const;
 
@@ -96,6 +104,12 @@ export default function LegalNoticePage() {
           be administered for the benefit of the future PDAO ownership community.
         </p>
         <div className="mt-5 flex flex-wrap gap-3">
+          <a href="/ownership.json" className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
+            Ownership manifest
+          </a>
+          <a href="/rights.txt" className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
+            Rights notice
+          </a>
           <Link href="/futardio" className={cn(buttonVariants({ size: "sm" }))}>
             Open launch packet
           </Link>

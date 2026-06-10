@@ -5,6 +5,8 @@
   "positioning": "Confidential Coordination Infrastructure for Organizations on Solana.",
   "chain": "Solana",
   "founder": "Fahd Kotb",
+  "official_owner_operator": "Fahd Kotb / Eslam Kotb",
+  "github_organization": "X-PACT",
   "website": "https://privatedao.org",
   "repo": "https://github.com/X-PACT/PrivateDAO",
   "colosseum": "https://arena.colosseum.org/projects/explore/praivatedao",
@@ -25,6 +27,9 @@
   "whitepaper": "https://privatedao.org/whitepaper/",
   "whitepaper_version": "2.0",
   "ai_guide": "https://privatedao.org/judge-ai",
+  "ownership_manifest": "https://privatedao.org/ownership.json",
+  "rights_notice": "https://privatedao.org/rights.txt",
+  "legal_notice": "https://privatedao.org/legal/",
   "proof_center": "https://privatedao.org/proof/?judge=1",
   "value_route": "https://privatedao.org/value/",
   "try_route": "https://privatedao.org/try/",
@@ -44,6 +49,33 @@
   "concept_only": false,
   "mock_only_submission": false,
   "sandbox_boundaries_labelled": true,
+  "ownership_and_rights": {
+    "official_project": true,
+    "authorship": "PrivateDAO, PDAO, the service matrix, privacy execution claims, private-room workflows, public-private-until-reveal voting posture, proof routes, reviewer packets, AI-readable layer, media assets, product packaging, brand identity, and official deployment surfaces are authored and maintained by Fahd Kotb / Eslam Kotb under X-PACT unless a file explicitly states otherwise.",
+    "official_sources": [
+      "https://privatedao.org",
+      "https://github.com/X-PACT/PrivateDAO",
+      "https://privatedao.org/ownership.json",
+      "https://privatedao.org/rights.txt",
+      "https://privatedao.org/legal/",
+      "https://privatedao.org/evidence.json",
+      "https://privatedao.org/llms.txt"
+    ],
+    "protected_materials": [
+      "PrivateDAO name and official project identity",
+      "PDAO token identity and official governance-token context",
+      "official website and deployment surfaces",
+      "official GitHub repository history",
+      "service matrices and privacy execution claim structure",
+      "private rooms and public-private-until-reveal workflow packaging",
+      "proof routes and reviewer evidence packets",
+      "AI-readable manifests and crawler guidance",
+      "brand assets, media, product copy, and official submission materials",
+      "official infrastructure maps, documentation, and launch packets"
+    ],
+    "anti_impersonation": "Public repository access does not permit a third party to impersonate PrivateDAO, present a derivative as the official project, reuse official brand identity, or claim priority over the official project history.",
+    "legal_note": "This manifest is an authorship, ownership, and project-rights notice for indexing, review, and evidence continuity. It is not a substitute for formal legal counsel, trademark registration, copyright registration, or signed commercial agreements."
+  },
   "core_capabilities": [
     "private DAO governance",
     "public-private-until-reveal voting",
@@ -171,6 +203,9 @@
     "provider_status": "https://api.privatedao.org/api/v1/provider-integrations/status",
     "ai_manifest": "https://privatedao.org/ai.json",
     "evidence_manifest": "https://privatedao.org/evidence.json",
+    "ownership_manifest": "https://privatedao.org/ownership.json",
+    "rights_notice": "https://privatedao.org/rights.txt",
+    "legal_notice": "https://privatedao.org/legal/",
     "llms": "https://privatedao.org/llms.txt"
   },
   "community": {

@@ -18,6 +18,8 @@ const coreRoutes = [
   "/judge-ai",
   "/ai.json",
   "/evidence.json",
+  "/ownership.json",
+  "/rights.txt",
   "/llms.txt",
   "/start",
   "/about",

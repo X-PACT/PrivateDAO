@@ -1,9 +1,9 @@
 import { supportedLocales } from "@/lib/i18n";
 
 export const siteName = "PrivateDAO";
-export const siteTitle = "PrivateDAO - Confidential Governance OS on Solana";
+export const siteTitle = "PrivateDAO - Make Your DAO Private Where It Matters";
 export const siteDescription =
-  "Live Solana Testnet product for private governance, treasury coordination, QVAC local AI, and public proof verification.";
+  "Create a public DAO or private room on Solana. Hide vote counts and voter intent during decisions, then reveal outcomes and proof when it counts.";
 export const siteUrl = process.env.NEXT_PUBLIC_LIVE_SITE_URL?.replace(/\/+$/, "") ?? "https://privatedao.org";
 export const defaultOgImage = `${siteUrl}/opengraph-image.png`;
 
@@ -160,11 +160,22 @@ export function buildSoftwareApplicationJsonLd() {
     applicationCategory: "Blockchain Governance Infrastructure",
     operatingSystem: "Web, Android",
     description:
-      "PrivateDAO is a live confidential governance and treasury coordination operating system on Solana with ZK privacy, confidential execution, QVAC local AI, and public proof verification.",
+      "PrivateDAO lets organizations create public DAOs and private rooms on Solana, hide vote counts and voter intent during decisions, then reveal outcomes and proof when it counts.",
+    copyrightYear: 2026,
+    copyrightHolder: {
+      "@type": "Person",
+      name: "Fahd Kotb / Eslam Kotb",
+    },
     creator: {
       "@type": "Person",
       name: "Fahd Kotb",
     },
+    maintainer: {
+      "@type": "Organization",
+      name: "X-PACT",
+      url: "https://github.com/X-PACT",
+    },
+    license: "https://github.com/X-PACT/PrivateDAO/blob/main/LICENSE",
     keywords: siteKeywords.join(", "),
     softwareHelp: `${siteUrl}/learn/`,
     downloadUrl: `${siteUrl}/android/`,

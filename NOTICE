@@ -1,8 +1,37 @@
 PrivateDAO
-Copyright (c) 2026 Eslam Kotb (X-PACT).
+Copyright (c) 2026 Fahd Kotb / Eslam Kotb (X-PACT).
+
+PrivateDAO, PDAO, the PrivateDAO public website, official deployment surfaces,
+AI-readable manifests, proof routes, service matrices, governance workflows,
+private-room flows, privacy execution claims, reviewer packets, product copy,
+media assets, brand identity, and official infrastructure coordination are
+authored and maintained by Fahd Kotb / Eslam Kotb under the X-PACT GitHub
+organization unless a file explicitly states otherwise.
+
+The public repository is open for review, contribution, audits, education,
+interoperability, and ecosystem collaboration under the applicable file and
+directory licenses. Public source availability does not grant permission to
+impersonate PrivateDAO, present a derivative as the official PrivateDAO project,
+reuse the PrivateDAO brand or PDAO token identity, copy official service
+packaging, or make misleading authorship, priority, or partnership claims.
+
+Official project surfaces:
+- Website: https://privatedao.org
+- GitHub: https://github.com/X-PACT/PrivateDAO
+- AI manifest: https://privatedao.org/ai.json
+- Evidence manifest: https://privatedao.org/evidence.json
+- LLM index: https://privatedao.org/llms.txt
+- Ownership manifest: https://privatedao.org/ownership.json
+- Rights notice: https://privatedao.org/rights.txt
+- Legal notice: https://privatedao.org/legal/
 
 Licensing model:
 - Core protocol (`programs/`): AGPL-3.0-or-later
 - SDK (`sdk/`): Apache-2.0
 - Frontend/docs (`frontend/`, `docs/`): MIT
 - Optional proprietary terms: `LICENSE-COMMERCIAL.md`
+
+Trademark, brand, official deployment, data, evidence packet, media, product
+packaging, and commercial rights are reserved except where explicitly licensed.
+Nothing in this notice replaces formal legal counsel, trademark registration,
+copyright registration, or signed commercial agreements.
