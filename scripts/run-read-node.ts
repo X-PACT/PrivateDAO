@@ -2827,6 +2827,83 @@ function buildConfidentialRequestServiceMatrix(cryptographicReadiness: ReturnTyp
 function privacyExecutionMatrixStatus() {
   const cryptographicReadiness = cryptographicReadinessStatus();
   const generatedAt = new Date().toISOString();
+  const engineeringReports = {
+    proofLedger: "https://privatedao.org/documents/engineering-proof-ledger-2026-06-11/",
+    proofLedgerJson: "https://privatedao.org/engineering-proof-ledger.json",
+    magicblock: "https://privatedao.org/documents/magicblock-engineering-report-2026-06-11/",
+    intelligence: "https://privatedao.org/documents/intelligence-provider-engineering-report-2026-06-11/",
+    privacyEncryption: "https://privatedao.org/documents/privacy-encryption-engineering-report-2026-06-11/",
+    treasuryAssetOracle: "https://privatedao.org/documents/treasury-asset-oracle-engineering-report-2026-06-11/",
+    infrastructureTelemetry: "https://privatedao.org/documents/infrastructure-telemetry-engineering-report-2026-06-11/",
+  };
+  const specialistReviewMap = [
+    {
+      specialist: "Ika / 2PC-MPC engineer",
+      services: ["ika-custody-and-interoperability", "ika-2pc-mpc-final-approval", "browser-encrypt-manifest"],
+      report: engineeringReports.privacyEncryption,
+      reviewerStart: "https://privatedao.org/services/encrypt-ika-operations/",
+      proofEndpoints: [
+        "/api/v1/ika/solana-prealpha/final-approval",
+        "/api/v1/ika/solana-prealpha/readiness",
+        "/api/v1/ika/custody/prepare",
+      ],
+      boundary:
+        "Ika Solana approval, SDK readiness, and custody preparation are active. Final funded Ika-network dWallet DKG and final 2PC-MPC signature remain a separate stronger receipt class.",
+    },
+    {
+      specialist: "REFHE engineer",
+      services: ["confidential-payroll", "refhe-payroll-computation"],
+      report: engineeringReports.privacyEncryption,
+      reviewerStart: "https://privatedao.org/services/refhe-payroll-proof/",
+      proofEndpoints: ["/api/v1/refhe/payroll/proof", "/api/v1/cryptographic-readiness"],
+      boundary:
+        "REFHE configure, settle, and payout execution evidence are Testnet proof. Full production FHE verifier acceptance remains a separate audit/release gate.",
+    },
+    {
+      specialist: "ZK / commit-reveal engineer",
+      services: ["private-governance", "zk-commit-reveal-governance"],
+      report: engineeringReports.privacyEncryption,
+      reviewerStart: "https://privatedao.org/try/",
+      proofEndpoints: [
+        "/api/v1/privacy-execution-claims/prepare?claim=zk-commit-reveal-governance",
+        "/api/v1/cryptographic-readiness",
+      ],
+      boundary:
+        "Commit/reveal and ZK proof artifacts are reviewer-visible. Native governance verifier CPI is not overclaimed unless a separate execution receipt is attached.",
+    },
+    {
+      specialist: "Treasury / stablecoin / oracle engineer",
+      services: ["treasury-routing-and-growth", "confidential-payroll", "refhe-payroll-computation"],
+      report: engineeringReports.treasuryAssetOracle,
+      reviewerStart: "https://privatedao.org/treasury/",
+      proofEndpoints: ["/api/v1/provider-integrations/status", "/api/v1/jupiter/order"],
+      boundary:
+        "Asset context, price context, and route preview are separated from final signed real-funds settlement.",
+    },
+    {
+      specialist: "QVAC / intelligence-provider engineer",
+      services: ["intelligence-and-risk"],
+      report: engineeringReports.intelligence,
+      reviewerStart: "https://privatedao.org/intelligence/",
+      proofEndpoints: [
+        "/api/v1/qvac/runtime-proof",
+        "/api/v1/provider-integrations/status",
+        "/api/v1/goldrush/query",
+        "/api/v1/zerion/portfolio",
+      ],
+      boundary:
+        "Intelligence runs before signing and must not receive hidden vote intent, encrypted vote contents, or private room notes by default.",
+    },
+    {
+      specialist: "Infrastructure / RPC / telemetry engineer",
+      services: ["intelligence-and-risk", "treasury-routing-and-growth"],
+      report: engineeringReports.infrastructureTelemetry,
+      reviewerStart: "https://api.privatedao.org/healthz",
+      proofEndpoints: ["/api/v1/quicknode/stream/stats", "/api/v1/provider-integrations/status"],
+      boundary:
+        "RPC and stream counters are operational telemetry. They support proof monitoring but do not replace proposal-specific signatures.",
+    },
+  ];
   return {
     ok: true,
     source: "privatedao-privacy-execution-matrix",
@@ -2836,6 +2913,10 @@ function privacyExecutionMatrixStatus() {
     posture: "wallet-first-private-operations",
     summary:
       "PrivateDAO routes every sensitive service through review, encryption or privacy intent, wallet execution, and public-safe verification. Public outputs prove state transitions without exposing payroll rows, recipient context, private balances, or strategy intent.",
+    engineeringReports,
+    specialistReviewMap,
+    matrixUpgrade:
+      "Every core privacy, encryption, intelligence, treasury, and infrastructure lane is now mapped to a specialist review path, engineering report, public proof endpoint, repository-backed boundary, and visitor-repeatable Testnet claim where applicable.",
     serviceMatrix: [
       ...buildConfidentialRequestServiceMatrix(cryptographicReadiness),
       {

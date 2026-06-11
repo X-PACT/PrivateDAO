@@ -8,6 +8,11 @@ Provider health for GoldRush, Zerion, Torque, Jupiter, and QVAC is exposed separ
 
 `https://api.privatedao.org/api/v1/provider-integrations/status`
 
+Engineering proof is now exposed in two human-readable and machine-readable surfaces:
+
+- Engineering proof ledger: `https://privatedao.org/documents/engineering-proof-ledger-2026-06-11/`
+- Engineering proof ledger JSON: `https://privatedao.org/engineering-proof-ledger.json`
+
 This endpoint exists so the product, reviewers, and operators can see how sensitive services move through:
 
 `Review -> Sign -> Verify`
@@ -35,6 +40,20 @@ without exposing private payroll rows, private balances, strategy text, provider
 | Ika custody | Solana final approval for Ika dWallet / 2PC-MPC route plus custody preparation | `onchain-signature` | yes | `/api/v1/ika/solana-prealpha/final-approval`, `/api/v1/ika/solana-prealpha/readiness`, `/api/v1/ika/solana-prealpha/approval/prepare`, `/api/v1/ika/custody/prepare` |
 | Intelligence | GoldRush, Zerion, QVAC, QuickNode Stream telemetry | `provider-plus-rpc-receipt` | yes | `/api/v1/provider-integrations/status`, `/api/v1/goldrush/query`, `/api/v1/zerion/portfolio`, `/api/v1/qvac/runtime-proof`, `/api/v1/quicknode/stream/stats` |
 | Treasury / growth | Jupiter order preview, Torque custom event relay, execution event stats | `wallet-reviewed-route-plus-ingestion-receipt` | yes | `/api/v1/provider-integrations/status`, `/api/v1/jupiter/order`, `/api/v1/torque/custom-event`, `/api/v1/execution-events/stats` |
+
+## Specialist Review Routing
+
+Each technology can now be reviewed by the engineer responsible for that domain without forcing them through unrelated product pages.
+
+| Specialist | Services | Start route | Report | Proof endpoints |
+| --- | --- | --- | --- | --- |
+| Ika / 2PC-MPC engineer | Ika custody, Ika final approval, browser encrypted manifest | `/services/encrypt-ika-operations/` | `/documents/privacy-encryption-engineering-report-2026-06-11/` | `/api/v1/ika/solana-prealpha/final-approval`, `/api/v1/ika/solana-prealpha/readiness`, `/api/v1/ika/custody/prepare` |
+| REFHE engineer | Confidential payroll, REFHE payroll computation | `/services/refhe-payroll-proof/` | `/documents/privacy-encryption-engineering-report-2026-06-11/` | `/api/v1/refhe/payroll/proof`, `/api/v1/cryptographic-readiness` |
+| ZK / commit-reveal engineer | Private governance, ZK commit-reveal governance | `/try/` | `/documents/privacy-encryption-engineering-report-2026-06-11/` | `/api/v1/privacy-execution-claims/prepare?claim=zk-commit-reveal-governance`, `/api/v1/cryptographic-readiness` |
+| MagicBlock engineer | Private payment corridor | `/documents/magicblock-engineering-report-2026-06-11/` | `/documents/magicblock-engineering-report-2026-06-11/` | `/api/v1/magicblock/onchain-proof`, `/api/v1/magicblock/health` |
+| QVAC / intelligence engineer | Intelligence and risk | `/intelligence/` | `/documents/intelligence-provider-engineering-report-2026-06-11/` | `/api/v1/qvac/runtime-proof`, `/api/v1/provider-integrations/status`, `/api/v1/goldrush/query`, `/api/v1/zerion/portfolio` |
+| Treasury / stablecoin / oracle engineer | Treasury routing, stablecoin context, price context, payroll execution | `/treasury/` | `/documents/treasury-asset-oracle-engineering-report-2026-06-11/` | `/api/v1/provider-integrations/status`, `/api/v1/jupiter/order` |
+| Infrastructure / RPC engineer | QuickNode stream, AWS hosted API, Supabase-backed receipts | `/api-status/` | `/documents/infrastructure-telemetry-engineering-report-2026-06-11/` | `/api/v1/quicknode/stream/stats`, `/api/v1/provider-integrations/status`, `/healthz` |
 
 Every service row in the live API now carries `executionProofClass`, `nativeProofClass`, `visitorRepeatable`, `visitorClaimRepeatable`, `claimPrepareUrl`, `claimMemoTemplate`, `blockchainVerificationUrl`, and `currentOnchainStatus`. That is the enforcement layer: on-chain signature rails stay visibly on-chain, while intent/readiness rails stay visitor-repeatable but cannot be mislabeled as final chain settlement before the missing signature exists.
 

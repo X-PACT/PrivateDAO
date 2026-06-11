@@ -170,10 +170,25 @@ npm run verify:operation-ledger
 
 Open these in order:
 
-1. `/documents/cryptographic-onchain-matrix-2026-05-25`
-2. `/documents/testnet-encrypted-integrations-activation-2026-05-23`
-3. `/documents/zk-capability-matrix`
-4. `/documents/operation-ledger.generated`
-5. `/judge`
+1. `/documents/engineering-proof-ledger-2026-06-11`
+2. `/engineering-proof-ledger.json`
+3. `/documents/cryptographic-onchain-matrix-2026-05-25`
+4. `/documents/privacy-encryption-engineering-report-2026-06-11`
+5. `/documents/intelligence-provider-engineering-report-2026-06-11`
+6. `/documents/treasury-asset-oracle-engineering-report-2026-06-11`
+7. `/documents/infrastructure-telemetry-engineering-report-2026-06-11`
+8. `/documents/magicblock-engineering-report-2026-06-11`
+9. `/judge`
 
 The expected reading is: encrypted operations have real Testnet execution evidence; ZK has both local proof discipline and a standalone on-chain verifier receipt; the newest integrated binary is protected by Squads timelock until the scheduled release.
+
+## Specialist Report Links
+
+- Ika / 2PC-MPC / Encrypt: `/documents/privacy-encryption-engineering-report-2026-06-11` and `/services/encrypt-ika-operations/`
+- REFHE: `/documents/privacy-encryption-engineering-report-2026-06-11` and `/services/refhe-payroll-proof/`
+- ZK / Commit-reveal: `/documents/privacy-encryption-engineering-report-2026-06-11`, `/documents/zk-capability-matrix`, and `/try/`
+- Verification / proof center: `/documents/engineering-proof-ledger-2026-06-11` and `/proof/?judge=1`
+- Treasury / assets / stablecoins / oracle: `/documents/treasury-asset-oracle-engineering-report-2026-06-11` and `/treasury/`
+- Intelligence / QVAC / provider router: `/documents/intelligence-provider-engineering-report-2026-06-11` and `/intelligence/`
+- MagicBlock: `/documents/magicblock-engineering-report-2026-06-11` and `/services/magicblock-private-payments/`
+- Infrastructure / QuickNode / Supabase / AWS: `/documents/infrastructure-telemetry-engineering-report-2026-06-11` and `/api-status/`
