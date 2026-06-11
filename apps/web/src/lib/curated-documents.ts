@@ -66,6 +66,18 @@ const curatedDocuments: CuratedDocument[] = [
     rawHref: `${repositoryBlobBase}/docs/live-service-execution-gate-2026-05-26.md`,
   },
   {
+    slug: "magicblock-engineering-report-2026-06-11",
+    title: "MagicBlock Engineering Report",
+    category: "Protocol",
+    summary:
+      "Protocol-engineering report mapping PrivateDAO's MagicBlock private payment corridor across Anchor account state, configure/settle instructions, execution gating, live proof endpoints, tests, product strategy, and the ER/PER upgrade path.",
+    audience: "MagicBlock protocol engineers, Solana reviewers, security reviewers, judges, operators",
+    boundary:
+      "Engineering report only; it verifies the current MagicBlock Payments API plus PrivateDAO on-chain corridor gate and explicitly separates that from future ER/PER-native account delegation, Magic Actions, cranks, and VRF work.",
+    docPath: "docs/magicblock-engineering-report-2026-06-11.md",
+    rawHref: `${repositoryBlobBase}/docs/magicblock-engineering-report-2026-06-11.md`,
+  },
+  {
     slug: "site-execution-route-inventory-2026-05-27",
     title: "Site Execution Route Inventory",
     category: "Reviewer core",
