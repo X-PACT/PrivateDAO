@@ -31,7 +31,12 @@
 	}
 
 	handle {
-		try_files {path} {path}/ /index.html
+		@missing_page {
+			not file {path} {path}/index.html
+			not path /_next/* /assets/* /favicon.ico /manifest.webmanifest /robots.txt /sitemap.xml /llms.txt /ai.json /evidence.json /ownership.json /rights.txt /opengraph-image.png /twitter-image.png
+		}
+		redir @missing_page /thesis/ 302
+		try_files {path} {path}/index.html /index.html
 		file_server
 	}
 }
