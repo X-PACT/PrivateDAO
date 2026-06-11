@@ -111,6 +111,21 @@ writeFileSync(
     body: `<main><h1>PrivateDAO route recovery</h1><p>Historical links are routed to the official PrivateDAO website.</p><p><a href="${targetOrigin}/thesis/">Open PrivateDAO thesis</a></p></main>`,
   })
 );
+
+for (const route of knownRoutes) {
+  if (route === "/") continue;
+  const routeDir = join(outRoot, route.replace(/^\/+|\/+$/g, ""));
+  mkdirSync(routeDir, { recursive: true });
+  writeFileSync(
+    join(routeDir, "index.html"),
+    html({
+      title: "PrivateDAO redirect",
+      canonical: `${targetOrigin}${route}`,
+      body: `<main><h1>PrivateDAO</h1><p>Redirecting to the official PrivateDAO route.</p><p><a href="${targetOrigin}${route}">Open PrivateDAO route</a></p></main>`,
+    })
+  );
+}
+
 writeFileSync(
   join(outRoot, "routes.json"),
   `${JSON.stringify({ targetOrigin, generatedAt: new Date().toISOString(), knownRoutes }, null, 2)}\n`
