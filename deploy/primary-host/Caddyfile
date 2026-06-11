@@ -45,6 +45,10 @@
 	import privatedao_primary_host
 }
 
-{$PRIMARY_DOMAIN:privatedao.org} {
+{$PRIMARY_DOMAIN:api.privatedao.org} {
+	import privatedao_primary_host
+}
+
+privatedao.org, www.privatedao.org {
 	import privatedao_primary_host
 }
