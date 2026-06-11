@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useEffect } from "react";
 import { ArrowRight, Bot, FileText, Search, ShieldCheck, Sparkles } from "lucide-react";
 
 import { buttonVariants } from "@/components/ui/button";
@@ -66,6 +67,14 @@ function scoreRoute(pathname: string, keywords: readonly string[]) {
 
 export function RouteRecoveryPanel() {
   const pathname = usePathname() ?? "/";
+  useEffect(() => {
+    const target =
+      window.location.hostname === "x-pact.github.io"
+        ? "https://privatedao.org/thesis/"
+        : "/thesis/";
+    window.location.replace(target);
+  }, []);
+
   const recommended =
     recoveryRoutes
       .map((route) => ({ route, score: scoreRoute(pathname, route.keywords) }))
