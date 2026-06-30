@@ -33,7 +33,7 @@ jobs:
           npm run verify:devnet-canary
 
       - name: Upload canary artifacts
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v7
         with:
           name: devnet-canary-artifacts
           path: |

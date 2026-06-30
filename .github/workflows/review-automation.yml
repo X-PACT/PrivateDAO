@@ -33,7 +33,7 @@ jobs:
         run: npm run build:review-bundle
 
       - name: Upload reviewer automation bundle
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v7
         with:
           name: review-automation-bundle
           path: |
