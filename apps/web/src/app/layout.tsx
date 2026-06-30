@@ -5,9 +5,8 @@ import Script from "next/script";
 import "@solana/wallet-adapter-react-ui/styles.css";
 import "./globals.css";
 import { AppShellProviders } from "@/components/app-shell-providers";
-import { SiteFooter } from "@/components/site-footer";
-import { SiteHeader } from "@/components/site-header";
 import { SiteActivityBeacon } from "@/components/site-activity-beacon";
+import { SiteChrome } from "@/components/site-chrome";
 import {
   buildOrganizationJsonLd,
   buildSoftwareApplicationJsonLd,
@@ -75,9 +74,9 @@ export const metadata: Metadata = {
     "rights-notice": "/rights.txt",
     "ai-guide": "/judge-ai",
     "reviewer-entry": "/govern#live-dao",
-    "wallet-network": "Solana Testnet",
+    "wallet-network": "Solana Mainnet",
     "product-surface":
-      "PrivateDAO lets organizations keep votes, payroll, treasury intent, and private rooms confidential while producing verifiable Solana Testnet receipts.",
+      "PrivateDAO lets organizations keep decisions, treasury intent, and proof workflows private while producing verifiable receipts.",
   },
 };
 
@@ -128,9 +127,7 @@ export default function RootLayout({
             <div className="relative flex min-h-full flex-col overflow-x-hidden">
               <div className="pointer-events-none absolute inset-x-0 top-0 h-[420px] bg-[radial-gradient(circle_at_top,rgba(153,69,255,0.28),transparent_44%),radial-gradient(circle_at_20%_20%,rgba(20,241,149,0.2),transparent_26%),radial-gradient(circle_at_80%_0%,rgba(0,194,255,0.18),transparent_28%)]" />
               <SiteActivityBeacon />
-              <SiteHeader />
-              <div className="relative z-10 flex-1">{children}</div>
-              <SiteFooter />
+              <SiteChrome>{children}</SiteChrome>
             </div>
         </AppShellProviders>
       </body>

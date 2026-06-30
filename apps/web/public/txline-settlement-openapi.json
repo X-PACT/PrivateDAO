@@ -1,0 +1,87 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "PrivateDAO Match Settlement API",
+    "version": "1.0.0",
+    "description": "TxLINE match settlement workflow: matches, resolve, verify, and Solana receipt."
+  },
+  "servers": [
+    {
+      "url": "https://api.privatedao.org/api/v1"
+    }
+  ],
+  "paths": {
+    "/txline/status": {
+      "get": {
+        "summary": "Get TxLINE settlement provider status",
+        "responses": {
+          "200": {
+            "description": "Status response"
+          }
+        }
+      }
+    },
+    "/txline/matches": {
+      "get": {
+        "summary": "List TxLINE or simulated matches",
+        "responses": {
+          "200": {
+            "description": "Match list"
+          }
+        }
+      }
+    },
+    "/txline/guest/start": {
+      "post": {
+        "summary": "Start a free TxLINE guest session",
+        "description": "Calls the documented TxLINE guest session endpoint and returns the 30-day guest JWT used before wallet-signed free subscription activation.",
+        "responses": {
+          "200": { "description": "Guest JWT issued" },
+          "502": { "description": "Guest session unavailable" }
+        }
+      }
+    },
+    "/txline/resolve": {
+      "post": {
+        "summary": "Resolve a final match market and issue a proof package",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "matchId": { "type": "string" },
+                  "marketId": { "type": "string" }
+                },
+                "required": ["matchId", "marketId"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Settlement proof issued" },
+          "422": { "description": "Settlement blocked" }
+        }
+      }
+    },
+    "/txline/verify": {
+      "post": {
+        "summary": "Verify settlement proof package and tamper status",
+        "responses": {
+          "200": { "description": "Verified" },
+          "422": { "description": "Mismatch or invalid package" }
+        }
+      }
+    },
+    "/txline/onchain-receipt": {
+      "post": {
+        "summary": "Store settlement hashes in a Solana Memo receipt",
+        "responses": {
+          "200": { "description": "Receipt stored" },
+          "422": { "description": "Receipt not stored" }
+        }
+      }
+    }
+  }
+}

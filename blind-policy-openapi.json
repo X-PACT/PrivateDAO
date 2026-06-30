@@ -1,0 +1,195 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "PrivateDAO Blind Policy Verification API",
+    "version": "0.1.0",
+    "description": "API for proving and verifying that a private policy was satisfied without exposing private policy inputs."
+  },
+  "servers": [
+    {
+      "url": "https://api.privatedao.org/api/v1"
+    }
+  ],
+  "paths": {
+    "/proof-workflows/blind-policy/status": {
+      "get": {
+        "summary": "Get Blind Policy proof status",
+        "responses": {
+          "200": {
+            "description": "Status response"
+          }
+        }
+      }
+    },
+    "/proof-workflows/blind-policy/sample": {
+      "get": {
+        "summary": "Get sample private input and sample proof package",
+        "responses": {
+          "200": {
+            "description": "Sample response"
+          }
+        }
+      }
+    },
+    "/proof-workflows/blind-policy/prove": {
+      "post": {
+        "summary": "Generate a Groth16 Blind Policy proof package",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["privateInputs"],
+                "properties": {
+                  "workflowId": {
+                    "type": "string"
+                  },
+                  "privateInputs": {
+                    "$ref": "#/components/schemas/BlindPolicyPrivateInputs"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Proof issued"
+          },
+          "422": {
+            "description": "Proof not issued because the private policy was not satisfied or input validation failed"
+          }
+        }
+      }
+    },
+    "/proof-workflows/blind-policy/verify": {
+      "post": {
+        "summary": "Verify a public Blind Policy proof package",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["publicProofPackage"],
+                "properties": {
+                  "publicProofPackage": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Proof package verified"
+          },
+          "422": {
+            "description": "Proof package mismatch or invalid proof"
+          }
+        }
+      }
+    },
+    "/proof-workflows/blind-policy/onchain-receipt": {
+      "post": {
+        "summary": "Store verified Blind Policy receipt hashes in the Solana Anchor receipt registry",
+        "description": "The API first verifies the Groth16 proof package and hash match. If verification passes, it stores proofIdHash, proofHash, policyCommitmentHash, inputCommitmentHash, verificationKeyHash, circuitVersionHash, and policyVersionHash in a Solana PDA receipt account and returns Explorer links.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["publicProofPackage"],
+                "properties": {
+                  "publicProofPackage": {
+                    "$ref": "#/components/schemas/BlindPolicyProofPackage"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Receipt stored or already exists on Solana"
+          },
+          "422": {
+            "description": "Proof package failed verification or on-chain receipt submission failed"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "BlindPolicyProofPackage": {
+        "type": "object",
+        "required": [
+          "proofId",
+          "nonce",
+          "issuedAt",
+          "expiresAt",
+          "circuitId",
+          "circuitVersion",
+          "policyVersion",
+          "policyCommitment",
+          "inputCommitment",
+          "verificationKeyHash",
+          "originalProofHash",
+          "groth16Proof"
+        ],
+        "properties": {
+          "proofId": { "type": "string" },
+          "nonce": { "type": "string" },
+          "issuedAt": { "type": "string", "format": "date-time" },
+          "expiresAt": { "type": "string", "format": "date-time" },
+          "circuitId": { "type": "string", "enum": ["private_dao_blind_policy_overlay"] },
+          "circuitVersion": { "type": "string", "enum": ["groth16-v1"] },
+          "policyVersion": { "type": "string" },
+          "policyCommitment": { "type": "string" },
+          "inputCommitment": { "type": "string" },
+          "verificationKeyHash": { "type": "string" },
+          "originalProofHash": { "type": "string" },
+          "groth16Proof": { "type": "object" }
+        }
+      },
+      "BlindPolicyPrivateInputs": {
+        "type": "object",
+        "required": ["organizationId", "subjectId", "membershipVerified", "records", "riskScore", "liabilitiesUsd"],
+        "properties": {
+          "organizationId": {
+            "type": "string"
+          },
+          "subjectId": {
+            "type": "string"
+          },
+          "membershipVerified": {
+            "type": "boolean"
+          },
+          "records": {
+            "type": "array",
+            "minItems": 3,
+            "items": {
+              "type": "object",
+              "required": ["amountUsd"],
+              "properties": {
+                "amountUsd": {
+                  "type": "number"
+                }
+              }
+            }
+          },
+          "riskScore": {
+            "type": "number"
+          },
+          "liabilitiesUsd": {
+            "type": "number"
+          }
+        }
+      }
+    }
+  }
+}

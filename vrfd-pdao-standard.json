@@ -1,0 +1,130 @@
+{
+  "version": "2026.06.29",
+  "generatedAt": "2026-06-29",
+  "mode": "jupiter-standard-vrfd",
+  "expressVerification": false,
+  "token": {
+    "id": "9isGuumtaqvJeJeyLF44fvfskk2cv5mYsopexMBfpump",
+    "mint": "9isGuumtaqvJeJeyLF44fvfskk2cv5mYsopexMBfpump",
+    "name": "PrivateDAO",
+    "symbol": "PDAO",
+    "chain": "solana",
+    "network": "mainnet-beta",
+    "decimals": 6,
+    "tokenProgram": "TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb",
+    "mintAuthority": null,
+    "freezeAuthority": null
+  },
+  "standardSubmission": {
+    "status": "pending",
+    "tier": "basic",
+    "submissionId": 13951,
+    "requestOrigin": "ui",
+    "submitterTwitterHandle": "privateDAOOS",
+    "projectTwitterHandle": "privateDAOOS",
+    "createdAt": "2026-06-22 23:39:12.071167+00",
+    "updatedAt": "2026-06-22 23:39:12.071167+00",
+    "verifiedAt": null,
+    "evaluationCount": 0,
+    "duplicateSubmissionGuard": "Jupiter currently reports an existing basic verification request and an existing basic metadata update request for this token."
+  },
+  "jupiterPublicChecks": {
+    "basicEligibility": {
+      "url": "https://token-verify-api.jup.ag/basic/check-eligibility?tokenId=9isGuumtaqvJeJeyLF44fvfskk2cv5mYsopexMBfpump",
+      "lastObserved": "2026-06-29",
+      "tokenExists": true,
+      "isVerified": false,
+      "canVerify": false,
+      "canMetadata": false,
+      "verificationError": "A basic verification request for this token already exists",
+      "metadataError": "A basic metadata update request for this token already exists"
+    },
+    "verificationStatus": {
+      "url": "https://token-verify-api.jup.ag/verifications/token/9isGuumtaqvJeJeyLF44fvfskk2cv5mYsopexMBfpump",
+      "lastObserved": "2026-06-29",
+      "status": "pending",
+      "verificationTier": "basic",
+      "requestOrigin": "ui"
+    },
+    "submissionHistory": {
+      "url": "https://token-verify-api.jup.ag/submissions/history?tokenId=9isGuumtaqvJeJeyLF44fvfskk2cv5mYsopexMBfpump",
+      "lastObserved": "2026-06-29",
+      "items": [
+        {
+          "kind": "metadata",
+          "status": "pending",
+          "tier": "basic",
+          "updatedAt": "2026-06-22 23:39:12.139979+00",
+          "senderTwitterHandle": "privateDAOOS"
+        },
+        {
+          "kind": "verification",
+          "status": "pending",
+          "tier": "basic",
+          "evaluationCount": 0,
+          "updatedAt": "2026-06-22 23:39:12.070904+00",
+          "senderTwitterHandle": "privateDAOOS"
+        }
+      ]
+    }
+  },
+  "standardReviewUrl": "https://verified.jup.ag/tokens/submit?token=9isGuumtaqvJeJeyLF44fvfskk2cv5mYsopexMBfpump&tier=standard",
+  "vrfdAccount": "https://x.com/jup_VRFD",
+  "metadata": {
+    "icon": "https://privatedao.org/assets/token/pdao-token-logo.png",
+    "name": "PrivateDAO",
+    "symbol": "PDAO",
+    "website": "https://privatedao.org/token/",
+    "telegram": "https://t.me/PrivateDAOO",
+    "twitter": "https://x.com/privateDAOOS",
+    "discord": "https://discord.gg/PRcD9nFeVf",
+    "circulatingSupply": "965554358.433758",
+    "circulatingSupplyUrl": "https://privatedao.org/token.json",
+    "description": "PDAO is the PrivateDAO community token connected to proof workflows, private governance, treasury coordination, sealed auctions, payment-gated access receipts, public APIs, GitHub evidence, and live market references.",
+    "otherUrl": "https://dexscreener.com/solana/EZiPEFFGhvU7BmZTcsJxKFVw7Edby7KxN91fGfzpxHpz"
+  },
+  "description": "PrivateDAO is a live Solana product ecosystem with public GitHub evidence, AWS-hosted APIs, Solana payment-gated utility, Proof Workflows, Private Governance, Treasury Coordination, Sealed Auctions, and the PDAO community token.",
+  "founderProof": {
+    "founder": "Fahd Kotb",
+    "officialSourcesOnly": true,
+    "sources": {
+      "superteamTalent": "https://superteam.fun/earn/t/Private-dao-1",
+      "colosseumProject": "https://arena.colosseum.org/projects/explore/praivatedao",
+      "githubRepository": "https://github.com/X-PACT/PrivateDAO",
+      "officialTokenPage": "https://privatedao.org/token/",
+      "investorPage": "https://privatedao.org/investors/",
+      "pitchDeck": "https://privatedao.org/deck/"
+    },
+    "investmentConfidence": "PrivateDAO publicly links founder identity, product routes, GitHub evidence, Superteam profile, Colosseum surface, Streamflow lock, and live APIs as long-term alignment signals."
+  },
+  "marketAndDiscoveryLinks": {
+    "tokenPage": "https://privatedao.org/token/",
+    "tokenMetadata": "https://privatedao.org/token.json",
+    "jupiterSwap": "https://jup.ag/swap/SOL-9isGuumtaqvJeJeyLF44fvfskk2cv5mYsopexMBfpump",
+    "jupiterPluginDocs": "https://dev.jup.ag/docs/tool-kits/plugin",
+    "pumpFun": "https://pump.fun/coin/9isGuumtaqvJeJeyLF44fvfskk2cv5mYsopexMBfpump",
+    "dexScreener": "https://dexscreener.com/solana/EZiPEFFGhvU7BmZTcsJxKFVw7Edby7KxN91fGfzpxHpz",
+    "geckoTerminal": "https://www.geckoterminal.com/solana/pools/EZiPEFFGhvU7BmZTcsJxKFVw7Edby7KxN91fGfzpxHpz",
+    "birdeye": "https://birdeye.so/solana/token/9isGuumtaqvJeJeyLF44fvfskk2cv5mYsopexMBfpump?tab=trades&trades_layout=table",
+    "solscan": "https://solscan.io/token/9isGuumtaqvJeJeyLF44fvfskk2cv5mYsopexMBfpump",
+    "solanaFm": "https://solana.fm/address/9isGuumtaqvJeJeyLF44fvfskk2cv5mYsopexMBfpump",
+    "solanaTracker": "https://www.solanatracker.io/tokens/9isGuumtaqvJeJeyLF44fvfskk2cv5mYsopexMBfpump",
+    "rugCheck": "https://rugcheck.xyz/tokens/9isGuumtaqvJeJeyLF44fvfskk2cv5mYsopexMBfpump",
+    "dexTools": "https://www.dextools.io/app/en/solana/pair-explorer/EZiPEFFGhvU7BmZTcsJxKFVw7Edby7KxN91fGfzpxHpz",
+    "gmgn": "https://gmgn.ai/sol/token/9isGuumtaqvJeJeyLF44fvfskk2cv5mYsopexMBfpump",
+    "streamflowLock": "https://app.streamflow.finance/contract/solana/mainnet/3s5gg6upQXd4USTUQKdrWPBexEa2sZwzoD4P3HLA4tUK",
+    "github": "https://github.com/X-PACT/PrivateDAO",
+    "colosseum": "https://arena.colosseum.org/projects/explore/praivatedao",
+    "superteam": "https://superteam.fun/earn/t/Private-dao-1",
+    "x": "https://x.com/privateDAOOS",
+    "telegram": "https://t.me/PrivateDAOO",
+    "discord": "https://discord.gg/PRcD9nFeVf"
+  },
+  "safety": {
+    "noPrivateKeys": true,
+    "noApiKeys": true,
+    "noTransactionSigning": true,
+    "noFundMovement": true,
+    "notes": "This packet records the Standard VRFD state and public metadata only. It is not an Express verification transaction."
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "id": "txline-match-settlement-2026-06-29",
+  "title": "Introducing TxLINE Match Settlement",
+  "url": "https://privatedao.org/txline-settlement/",
+  "date": "2026-06-29",
+  "product": "TxLINE Match Settlement",
+  "summary": "PrivateDAO's first World Cup-focused infrastructure product for verifiable sports settlement, privacy-preserving workflows, independent proof verification, and Solana receipt anchoring.",
+  "channels": {
+    "x": [
+      "Introducing TxLINE Match Settlement.\n\nOur first World Cup-focused infrastructure product brings verifiable settlement to sports-based applications on Solana.\n\nVerifiable outcomes. Private settlement workflows. Independent proof verification.\n\nhttps://privatedao.org/txline-settlement/",
+      "Every prediction, reward, competition, insurance trigger, or settlement depends on one question:\n\nCan everyone trust the final result?\n\nTxLINE Match Settlement is infrastructure for applications that need trusted, verifiable settlement."
+    ],
+    "telegram": "Introducing TxLINE Match Settlement.\n\nOur first World Cup-focused infrastructure product brings verifiable settlement to sports-based applications on Solana.\n\nWhy it matters:\n- Verifiable match outcomes\n- Privacy-preserving settlement workflows\n- Independent proof verification\n- Solana receipt anchoring path\n- Built for World Cup applications and beyond\n\nPotential use cases:\nPrediction markets, community competitions, fantasy sports, reward distribution, sports insurance, enterprise settlement workflows, and audit-ready verification.\n\nThis is not just another sports dashboard. It is infrastructure for applications that need trusted, verifiable settlement.\n\nhttps://privatedao.org/txline-settlement/",
+    "discord": "## Introducing TxLINE Match Settlement\n\nOur first World Cup-focused infrastructure product brings verifiable settlement to sports-based applications on Solana.\n\n**Why it matters**\nEvery prediction, reward, competition, insurance trigger, or settlement ultimately depends on one question: can everyone trust the final result?\n\n**The result**\n- Verifiable match outcomes\n- Privacy-preserving settlement workflows\n- Independent proof verification\n- Solana receipt anchoring path\n- Built for World Cup applications and beyond\n\n**Use cases**\nPrediction markets, community competitions, fantasy sports, reward distribution, sports insurance, enterprise settlement workflows, and audit-ready verification.\n\nhttps://privatedao.org/txline-settlement/"
+  },
+  "links": [
+    "https://privatedao.org/txline-settlement/",
+    "https://privatedao.org/developers/txline-settlement-api",
+    "https://privatedao.org/documents/txline-settlement-architecture"
+  ],
+  "safety": {
+    "paymentGateSeparate": true,
+    "noSecretMaterial": true,
+    "noWalletSpendRequired": true
+  }
+}

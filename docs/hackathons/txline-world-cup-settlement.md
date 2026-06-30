@@ -62,6 +62,27 @@ The free World Cup API path still requires the wallet-signed TxLINE activation f
 
 PrivateDAO must not invent the activated API token. When both `TXLINE_SESSION_JWT` and `TXLINE_API_TOKEN` are configured, match data switches to `live-txline-provider`.
 
+Operator command:
+
+```bash
+npm run txline:activate-free-tier:dry-run
+```
+
+After the project wallet has enough Solana Mainnet SOL for rent and fees:
+
+```bash
+npm run txline:activate-free-tier -- --write-secret-file /home/x-pact/Desktop/PrivateDAO-Project-Command-Center-LOCAL-DO-NOT-COMMIT/txline-mainnet-activation.json
+```
+
+The activation command follows the official TxLINE World Cup free-tier path:
+
+- mainnet program: `9ExbZjAapQww1vfcisDmrngPinHTEfpjYRWMunJgcKaA`
+- TxL Token-2022 mint: `Zhw9TVKp68a1QrftncMSd6ELXKDtpVMNuMGr1jNwdeL`
+- service level `1` by default
+- no TxL purchase
+- no P2P TxLINE token transfer
+- only the Solana transaction fees and any required associated token account rent are paid by the wallet
+
 ## Demo Flow
 
 1. Open `/txline-settlement/`.

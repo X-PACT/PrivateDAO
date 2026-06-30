@@ -1,21 +1,42 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 import * as http from "http";
+import { execFileSync } from "child_process";
 import { createHash, createHmac, timingSafeEqual } from "crypto";
 import { createRequire } from "module";
-import { existsSync, mkdirSync, readFileSync, renameSync, writeFileSync } from "fs";
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, renameSync, writeFileSync } from "fs";
 import { readFile } from "fs/promises";
+import { tmpdir } from "os";
 import { join, resolve } from "path";
 import { URL } from "url";
 import { gunzipSync } from "zlib";
 import {
   Connection,
+  ComputeBudgetProgram,
   Keypair,
+  LAMPORTS_PER_SOL,
   PublicKey,
+  SystemProgram,
   Transaction,
   TransactionInstruction,
   sendAndConfirmTransaction,
 } from "@solana/web3.js";
-import { PrivateDaoReadNode } from "./lib/read-node";
+import { PrivateDaoReadNode, quickNodeX402Status, resolveMainnetRpcEndpoints } from "./lib/read-node";
+import {
+  buildSimulatedTxlineMatches,
+  buildTxlineSettlementMemoFields,
+  buildTxlineSettlementProofPackage,
+  buildTxlineSnapshotHash,
+  computeTxlineSettlementProofHash,
+  resolveTxlineWinner,
+  sha256StableJsonHex as txlineSha256StableJsonHex,
+  txlineSettlementCircuitId,
+  txlineSettlementCircuitVersion,
+  txlineSettlementPolicyVersion,
+  verifyTxlineSettlementProofPackage,
+  type TxlineMatch,
+  type TxlineProviderMode,
+  type TxlineSettlementProofPackage,
+} from "../apps/web/src/lib/txline-settlement";
 
 const host = process.env.PRIVATE_DAO_READ_NODE_HOST || "127.0.0.1";
 const port = Number(process.env.PRIVATE_DAO_READ_NODE_PORT || 8787);
@@ -24,6 +45,9 @@ const rateWindowMs = Number(process.env.PRIVATE_DAO_READ_RATE_WINDOW_MS || 60_00
 const rateLimit = Number(process.env.PRIVATE_DAO_READ_RATE_LIMIT || 180);
 const readNode = new PrivateDaoReadNode();
 const memoProgramId = new PublicKey("MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr");
+const blindPolicyVerifierProgramId = new PublicKey(
+  process.env.BLIND_POLICY_ONCHAIN_PROGRAM_ID || "GGqZKsdEwH9YVAqWYqjMgCmZ5nNbvGc8RkiMee3S6SdK",
+);
 const freshnessMinIntervalMs = Number(process.env.PRIVATE_DAO_FRESHNESS_MIN_INTERVAL_MS || 5 * 60_000);
 const telegramWebhookUrl = process.env.PRIVATE_DAO_TELEGRAM_WEBHOOK_URL?.trim() || "";
 const telegramBotToken = process.env.PRIVATE_DAO_TELEGRAM_BOT_TOKEN?.trim() || "";
@@ -32,6 +56,7 @@ const telegramVisitorNotifications =
   process.env.PRIVATE_DAO_TELEGRAM_VISITOR_NOTIFICATIONS?.toLowerCase() !== "false";
 const telegramVisitorMinIntervalMs = Number(process.env.PRIVATE_DAO_TELEGRAM_VISITOR_MIN_INTERVAL_MS || 60_000);
 const telegramVisitorSessionTtlMs = Number(process.env.PRIVATE_DAO_TELEGRAM_VISITOR_SESSION_TTL_MS || 30 * 60_000);
+const visitorSupabaseMinIntervalMs = Number(process.env.PRIVATE_DAO_VISITOR_SUPABASE_MIN_INTERVAL_MS || 10 * 60_000);
 const runtimeStateDir = process.env.PRIVATE_DAO_RUNTIME_STATE_DIR || "/srv/privatedao/runtime";
 const quickNodeStreamStatePath = join(runtimeStateDir, "quicknode-stream-telemetry.json");
 const matrixAnchorMinIntervalMs = Number(process.env.PRIVATE_DAO_MATRIX_ANCHOR_MIN_INTERVAL_MS || 10 * 60_000);
@@ -47,10 +72,12 @@ const rateMap = new Map<string, { count: number; resetAt: number }>();
 const serverStartedAt = new Date().toISOString();
 const visitorPingsMemory: VisitorPingRow[] = [];
 const executionEventsMemory: OperationExecutionEventRow[] = [];
+const pilotRequestsMemory: PilotRequestRow[] = [];
 const zerionPortfolioCache = new Map<string, { cachedAt: number; response: Record<string, unknown> }>();
 let lastFreshnessPingMemory: FreshnessPingRow | null = null;
 let lastVisitorTelegramAt = 0;
 const visitorTelegramSessions = new Map<string, number>();
+const visitorSupabaseWrites = new Map<string, number>();
 const metrics = {
   requestsTotal: 0,
   requestsFailed: 0,
@@ -72,6 +99,7 @@ const quickNodeStreamTelemetry = {
 };
 let lastIntegrationMatrixAnchorMemory: OperationExecutionEventRow | null = null;
 const requireFromWebApp = createRequire(join(process.cwd(), "apps/web/package.json"));
+const requireFromRoot = createRequire(join(process.cwd(), "package.json"));
 const onboardingIntakeKeyId = "pd-intake-rsa-2026-05-20";
 const onboardingIntakePublicKeyPem = `-----BEGIN PUBLIC KEY-----
 MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEArctJeM7icbCOBF3j+QpL
@@ -139,6 +167,55 @@ type OperationExecutionEventRow = {
   metadata?: Record<string, unknown> | null;
   created_at?: string;
 };
+
+type PilotRequestRow = {
+  request_id: string;
+  name: string;
+  company: string;
+  role: string;
+  email: string;
+  organization_size: string;
+  product_interest: string;
+  deployment_preference: string;
+  message?: string | null;
+  status: string;
+  source: string;
+  created_at: string;
+};
+
+type CommercialLicenseType = "TRIAL" | "COMMUNITY" | "PROFESSIONAL" | "ORGANIZATION" | "ENTERPRISE";
+type CommercialPaymentAsset = "USDC_SOL" | "USDC_ETH" | "SOL" | "ETH" | "BTC" | "WBTC" | "ZEC" | "USDT" | "DAI";
+
+const commercialTrialDays = 14;
+const defaultSolanaTreasury = "4gEqyhhdmLpgye8ubJzzD4zcNsY7JQoiLBBqnBHoYeUt";
+const defaultEthereumTreasury = "0x52031e91085A0b3A8A1E89Db935E8E42b715CC86";
+
+const commercialPlans = {
+  COMMUNITY: {
+    label: "Community Trial",
+    priceUsd: 0,
+    cadence: "free",
+    capacity: ["14-day trial", "1 room", "10 members", "5 proposals", "Limited proof records"],
+  },
+  PROFESSIONAL: {
+    label: "Starter",
+    priceUsd: 500,
+    cadence: "monthly",
+    capacity: ["3 active workflows or rooms", "25 members", "100 proof events/month", "Basic verification pages"],
+  },
+  ORGANIZATION: {
+    label: "Business",
+    priceUsd: 2500,
+    cadence: "monthly",
+    capacity: ["10 active workflows or rooms", "250 members", "2,500 proof events/month", "Priority onboarding"],
+  },
+  ENTERPRISE: {
+    label: "Enterprise",
+    priceUsd: null,
+    cadence: "custom",
+    capacity: ["Private deployment", "Custom connectors", "Custom proof packages", "SLA and support"],
+  },
+} satisfies Record<Exclude<CommercialLicenseType, "TRIAL">, { label: string; priceUsd: number | null; cadence: string; capacity: string[] }>;
 
 type VisitorTransactionRow = {
   tx_signature: string;
@@ -583,6 +660,1726 @@ function stringField(body: Record<string, unknown>, key: string, fallback = "") 
   return typeof value === "string" && value.trim() ? value.trim() : fallback;
 }
 
+type CreditLimitCustomerData = {
+  customerId?: string;
+  proMembership?: boolean;
+  monthlyEarnings?: number;
+  earningsMonthly?: number;
+  revenueMonthly?: number;
+  riskScore?: number;
+  currency?: string;
+  payouts?: Array<{ amount?: number; amountUsd?: number; cents?: number }>;
+  transactions?: Array<{ amount?: number; amountUsd?: number; cents?: number; type?: string }>;
+};
+
+type CreditLimitPolicy = {
+  advanceRate?: number;
+  maxLimitUsd?: number;
+  minLimitUsd?: number;
+  riskFloor?: number;
+  roundToUsd?: number;
+};
+
+function sha256JsonHex(value: unknown) {
+  return createHash("sha256").update(JSON.stringify(value)).digest("hex");
+}
+
+function stableStringify(value: unknown): string {
+  if (value === null || typeof value !== "object") return JSON.stringify(value);
+  if (Array.isArray(value)) return `[${value.map((item) => stableStringify(item)).join(",")}]`;
+  const entries = Object.entries(value as Record<string, unknown>)
+    .filter(([, entryValue]) => entryValue !== undefined)
+    .sort(([left], [right]) => left.localeCompare(right));
+  return `{${entries.map(([key, entryValue]) => `${JSON.stringify(key)}:${stableStringify(entryValue)}`).join(",")}}`;
+}
+
+function sha256StableJsonHex(value: unknown) {
+  return createHash("sha256").update(stableStringify(value)).digest("hex");
+}
+
+function isPrivateHostname(hostname: string) {
+  const lower = hostname.toLowerCase();
+  if (lower === "localhost" || lower.endsWith(".localhost")) return true;
+  if (lower === "0.0.0.0" || lower === "::1") return true;
+  if (/^127\./.test(lower) || /^10\./.test(lower) || /^192\.168\./.test(lower)) return true;
+  const match = lower.match(/^172\.(\d+)\./);
+  return Boolean(match && Number(match[1]) >= 16 && Number(match[1]) <= 31);
+}
+
+type CreditLimitPublicProofPackage = {
+  proofId: string;
+  workflowId: string;
+  originalProofHash: string;
+  publicOutcome: "credit-limit-issued";
+  issuedLimitUsd: number;
+  currency: string;
+  completedStages: Array<{
+    id: string;
+    label: string;
+    status: "completed";
+  }>;
+  publicMetrics: {
+    proMembershipVerified: boolean;
+    importedRecordCount: number;
+    riskBand: string;
+  };
+  valuesUsedButNotRevealed: string[];
+  verifierStatement: string;
+};
+
+function buildCreditLimitProofPayload(proofPackage: CreditLimitPublicProofPackage) {
+  const { originalProofHash: _originalProofHash, ...payload } = proofPackage;
+  return payload;
+}
+
+function computeCreditLimitProofHash(proofPackage: CreditLimitPublicProofPackage) {
+  return sha256StableJsonHex(buildCreditLimitProofPayload(proofPackage));
+}
+
+function buildCreditLimitPublicProofPackage(input: {
+  proofId: string;
+  workflowId: string;
+  issuedLimitUsd: number;
+  currency: string;
+  stages: Array<{ id: string; label: string; status: string }>;
+  publicMetrics: CreditLimitPublicProofPackage["publicMetrics"];
+}) {
+  const unsigned: CreditLimitPublicProofPackage = {
+    proofId: input.proofId,
+    workflowId: input.workflowId,
+    originalProofHash: "",
+    publicOutcome: "credit-limit-issued",
+    issuedLimitUsd: input.issuedLimitUsd,
+    currency: input.currency,
+    completedStages: input.stages
+      .filter((stage) => stage.status === "completed")
+      .map((stage) => ({
+        id: stage.id,
+        label: stage.label,
+        status: "completed" as const,
+      })),
+    publicMetrics: input.publicMetrics,
+    valuesUsedButNotRevealed: [
+      "Customer earnings",
+      "Internal thresholds",
+      "Internal formulas",
+      "Reviewer notes",
+      "Risk model",
+    ],
+    verifierStatement:
+      "We recompute the proof from the public proof package and compare it with the original hash.",
+  };
+  return {
+    ...unsigned,
+    originalProofHash: computeCreditLimitProofHash(unsigned),
+  };
+}
+
+function assertCreditLimitProofPackage(value: unknown): CreditLimitPublicProofPackage {
+  if (!value || typeof value !== "object" || Array.isArray(value)) throw new Error("Proof package must be an object.");
+  const proofPackage = value as Partial<CreditLimitPublicProofPackage>;
+  if (!proofPackage.proofId || typeof proofPackage.proofId !== "string") throw new Error("proofId is required.");
+  if (!proofPackage.workflowId || typeof proofPackage.workflowId !== "string") throw new Error("workflowId is required.");
+  if (typeof proofPackage.originalProofHash !== "string") throw new Error("originalProofHash is required.");
+  if (proofPackage.publicOutcome !== "credit-limit-issued") throw new Error("publicOutcome is invalid.");
+  if (typeof proofPackage.issuedLimitUsd !== "number" || !Number.isFinite(proofPackage.issuedLimitUsd)) {
+    throw new Error("issuedLimitUsd is invalid.");
+  }
+  if (!proofPackage.currency || typeof proofPackage.currency !== "string") throw new Error("currency is required.");
+  if (!Array.isArray(proofPackage.completedStages) || proofPackage.completedStages.length === 0) {
+    throw new Error("completedStages are required.");
+  }
+  for (const stage of proofPackage.completedStages) {
+    if (!stage || typeof stage !== "object") throw new Error("completedStages are invalid.");
+    if (typeof stage.id !== "string" || typeof stage.label !== "string" || stage.status !== "completed") {
+      throw new Error("completedStages are invalid.");
+    }
+  }
+  if (!proofPackage.publicMetrics || typeof proofPackage.publicMetrics !== "object") throw new Error("publicMetrics are required.");
+  if (typeof proofPackage.publicMetrics.proMembershipVerified !== "boolean") {
+    throw new Error("publicMetrics.proMembershipVerified is invalid.");
+  }
+  if (
+    typeof proofPackage.publicMetrics.importedRecordCount !== "number" ||
+    !Number.isInteger(proofPackage.publicMetrics.importedRecordCount) ||
+    proofPackage.publicMetrics.importedRecordCount < 1
+  ) {
+    throw new Error("publicMetrics.importedRecordCount is invalid.");
+  }
+  if (typeof proofPackage.publicMetrics.riskBand !== "string") throw new Error("publicMetrics.riskBand is invalid.");
+  if (!Array.isArray(proofPackage.valuesUsedButNotRevealed)) {
+    throw new Error("valuesUsedButNotRevealed are required.");
+  }
+  if (typeof proofPackage.verifierStatement !== "string") throw new Error("verifierStatement is required.");
+  return proofPackage as CreditLimitPublicProofPackage;
+}
+
+function verifyCreditLimitProofPackage(value: unknown) {
+  try {
+    const proofPackage = assertCreditLimitProofPackage(value);
+    const recomputedHash = computeCreditLimitProofHash(proofPackage);
+    const originalHash = proofPackage.originalProofHash.trim() || null;
+    if (!originalHash) {
+      return {
+        ok: false,
+        status: "missing-original-proof-hash",
+        match: false,
+        originalHash,
+        recomputedHash,
+        message: "Missing original proof hash.",
+      };
+    }
+    if (originalHash !== recomputedHash) {
+      return {
+        ok: false,
+        status: "mismatch",
+        match: false,
+        originalHash,
+        recomputedHash,
+        message: "Mismatch. The proof package was changed after the original hash was created.",
+      };
+    }
+    return {
+      ok: true,
+      status: "verified",
+      match: true,
+      originalHash,
+      recomputedHash,
+      message: "Verified. The recomputed proof matches the original hash.",
+    };
+  } catch (error) {
+    return {
+      ok: false,
+      status: "invalid-proof-package",
+      match: false,
+      originalHash: null,
+      recomputedHash: null,
+      message: error instanceof Error ? error.message : "Invalid proof package.",
+    };
+  }
+}
+
+type BlindPolicyPrivateInputs = {
+  organizationId: string;
+  subjectId: string;
+  membershipVerified: boolean;
+  records: Array<{ amountUsd: number }>;
+  riskScore: number;
+  liabilitiesUsd: number;
+};
+
+type BlindPolicyGroth16Proof = {
+  provingSystem: "groth16";
+  circuit: "private_dao_blind_policy_overlay";
+  verificationMode: "groth16-snarkjs";
+  verified: true;
+  publicSignals: string[];
+  proof: unknown;
+  verificationKey: unknown;
+  proofHash: string;
+  publicSignalsHash: string;
+  verificationKeyHash: string;
+};
+
+type BlindPolicyPublicProofPackage = {
+  proofId: string;
+  nonce: string;
+  issuedAt: string;
+  expiresAt: string;
+  circuitId: "private_dao_blind_policy_overlay";
+  circuitVersion: "groth16-v1";
+  policyVersion: string;
+  workflowId: string;
+  originalProofHash: string;
+  publicOutcome: "policy-satisfied";
+  policySatisfied: true;
+  decision: string;
+  policyCommitment: string;
+  inputCommitment: string;
+  verificationKeyHash: string;
+  verifierInputs: {
+    provingSystem: "groth16";
+    circuit: "private_dao_blind_policy_overlay";
+    verificationCommand: "snarkjs groth16 verify";
+    publicSignals: ["policyId", "policyCommitment", "inputCommitment", "satisfiedClaim"];
+  };
+  completedStages: Array<{ id: string; label: string; status: "completed" }>;
+  publicChecks: Array<{ id: string; label: string; satisfied: true }>;
+  groth16Proof: BlindPolicyGroth16Proof;
+  providerLanes: Array<{
+    id: "zk-policy-proof" | "refhe-encrypted-evaluation" | "ika-encrypt-2pc-boundary" | "magicblock-fast-session";
+    label: string;
+    status: "verified" | "committed";
+    evidenceClass: "groth16-verified" | "commitment-boundary";
+    publicCommitment: string;
+    verifierNote: string;
+  }>;
+  valuesUsedButNotRevealed: string[];
+  verifierStatement: string;
+};
+
+const blindPolicyRules = {
+  policyId: 20260619n,
+  policyIdLabel: "private-credit-capacity-v1",
+  policyVersion: "2026-06-25.private-credit-capacity.v1",
+  minRecordCount: 3n,
+  minAverageAmountUsd: 7500n,
+  maxLiabilityBps: 3500n,
+  minRiskScore: 72n,
+};
+
+function fieldFromString(value: string) {
+  return BigInt(`0x${createHash("sha256").update(value).digest("hex").slice(0, 15)}`);
+}
+
+function toFieldString(value: bigint) {
+  return value.toString();
+}
+
+async function poseidonHash(...items: bigint[]) {
+  const { buildPoseidon } = requireFromRoot("circomlibjs") as {
+    buildPoseidon: () => Promise<{
+      F: { toString: (value: unknown) => string };
+      (items: bigint[]): unknown;
+    }>;
+  };
+  const poseidon = await buildPoseidon();
+  return BigInt(poseidon.F.toString(poseidon(items)));
+}
+
+function normalizeBlindPolicyInputs(value: unknown): BlindPolicyPrivateInputs {
+  if (!value || typeof value !== "object" || Array.isArray(value)) throw new Error("privateInputs object is required.");
+  const input = value as Partial<BlindPolicyPrivateInputs>;
+  if (!input.organizationId || typeof input.organizationId !== "string") throw new Error("organizationId is required.");
+  if (!input.subjectId || typeof input.subjectId !== "string") throw new Error("subjectId is required.");
+  if (input.membershipVerified !== true) throw new Error("Membership is not verified.");
+  if (!Array.isArray(input.records) || input.records.length < Number(blindPolicyRules.minRecordCount)) {
+    throw new Error(`At least ${blindPolicyRules.minRecordCount.toString()} private records are required.`);
+  }
+  const records = input.records.slice(0, 3).map((record, index) => {
+    const amountUsd = Number(record?.amountUsd);
+    if (!Number.isFinite(amountUsd) || amountUsd <= 0) throw new Error(`records[${index}].amountUsd must be positive.`);
+    return { amountUsd: Math.floor(amountUsd) };
+  });
+  const riskScore = Number(input.riskScore);
+  if (!Number.isFinite(riskScore) || riskScore <= 0) throw new Error("riskScore must be positive.");
+  const liabilitiesUsd = Number(input.liabilitiesUsd ?? 0);
+  if (!Number.isFinite(liabilitiesUsd) || liabilitiesUsd < 0) throw new Error("liabilitiesUsd must be zero or positive.");
+  return {
+    organizationId: input.organizationId,
+    subjectId: input.subjectId,
+    membershipVerified: true,
+    records,
+    riskScore: Math.floor(riskScore),
+    liabilitiesUsd: Math.floor(liabilitiesUsd),
+  };
+}
+
+function evaluateBlindPolicy(inputs: BlindPolicyPrivateInputs) {
+  const sum = inputs.records.reduce((total, record) => total + record.amountUsd, 0);
+  const average = sum / inputs.records.length;
+  const liabilityRatioBps = Math.floor((inputs.liabilitiesUsd * 10000) / Math.max(average, 1));
+  const validationErrors = [
+    ...(inputs.membershipVerified ? [] : ["Membership is not verified."]),
+    ...(inputs.records.length >= Number(blindPolicyRules.minRecordCount)
+      ? []
+      : [`At least ${blindPolicyRules.minRecordCount.toString()} records are required.`]),
+    ...(average >= Number(blindPolicyRules.minAverageAmountUsd) ? [] : ["Private capacity threshold is not satisfied."]),
+    ...(liabilityRatioBps <= Number(blindPolicyRules.maxLiabilityBps)
+      ? []
+      : ["Private liability policy is not satisfied."]),
+    ...(inputs.riskScore >= Number(blindPolicyRules.minRiskScore) ? [] : ["Private risk policy is not satisfied."]),
+  ];
+  return { sum, average, liabilityRatioBps, validationErrors };
+}
+
+function zkArtifactPath(relativePath: string) {
+  return resolve(process.cwd(), relativePath);
+}
+
+function hashFileHex(relativePath: string) {
+  return createHash("sha256").update(readFileSync(zkArtifactPath(relativePath))).digest("hex");
+}
+
+async function buildGroth16BlindPolicyProof(inputs: BlindPolicyPrivateInputs, policyVersion = blindPolicyRules.policyVersion): Promise<{
+  groth16Proof: BlindPolicyGroth16Proof;
+  policyCommitment: string;
+  inputCommitment: string;
+}> {
+  const circuit = "private_dao_blind_policy_overlay";
+  const wasmDir = zkArtifactPath(`zk/build/${circuit}_js`);
+  const wasmFile = join(wasmDir, `${circuit}.wasm`);
+  const witnessGenerator = join(wasmDir, "generate_witness.js");
+  const zkey = zkArtifactPath(`zk/setup/${circuit}_final.zkey`);
+  const verificationKey = zkArtifactPath(`zk/setup/${circuit}_vkey.json`);
+  for (const requiredPath of [wasmFile, witnessGenerator, zkey, verificationKey]) {
+    if (!existsSync(requiredPath)) throw new Error(`Groth16 artifact missing: ${requiredPath}`);
+  }
+
+  const organizationKey = fieldFromString(inputs.organizationId);
+  const subjectKey = fieldFromString(inputs.subjectId);
+  const record0 = BigInt(inputs.records[0]?.amountUsd ?? 0);
+  const record1 = BigInt(inputs.records[1]?.amountUsd ?? 0);
+  const record2 = BigInt(inputs.records[2]?.amountUsd ?? 0);
+  const liabilitiesUsd = BigInt(inputs.liabilitiesUsd);
+  const riskScore = BigInt(inputs.riskScore);
+  const inputSalt = fieldFromString(`${inputs.organizationId}:${inputs.subjectId}:${inputs.records.map((record) => record.amountUsd).join(":")}`);
+  const policySalt = fieldFromString(policyVersion);
+  const policyCommitment = await poseidonHash(
+    blindPolicyRules.policyId,
+    blindPolicyRules.minRecordCount,
+    blindPolicyRules.minAverageAmountUsd,
+    blindPolicyRules.maxLiabilityBps,
+    blindPolicyRules.minRiskScore,
+    policySalt,
+  );
+  const inputCommitment = await poseidonHash(
+    organizationKey,
+    subjectKey,
+    record0,
+    record1,
+    record2,
+    liabilitiesUsd,
+    riskScore,
+    inputSalt,
+  );
+  const sample = {
+    policyId: toFieldString(blindPolicyRules.policyId),
+    policyCommitment: toFieldString(policyCommitment),
+    inputCommitment: toFieldString(inputCommitment),
+    satisfiedClaim: "1",
+    organizationKey: toFieldString(organizationKey),
+    subjectKey: toFieldString(subjectKey),
+    membershipVerified: "1",
+    record0: toFieldString(record0),
+    record1: toFieldString(record1),
+    record2: toFieldString(record2),
+    liabilitiesUsd: toFieldString(liabilitiesUsd),
+    riskScore: toFieldString(riskScore),
+    minRecordCount: toFieldString(blindPolicyRules.minRecordCount),
+    minAverageAmountUsd: toFieldString(blindPolicyRules.minAverageAmountUsd),
+    maxLiabilityBps: toFieldString(blindPolicyRules.maxLiabilityBps),
+    minRiskScore: toFieldString(blindPolicyRules.minRiskScore),
+    policySalt: toFieldString(policySalt),
+    inputSalt: toFieldString(inputSalt),
+  };
+
+  const tempDir = mkdtempSync(join(tmpdir(), "privatedao-blind-policy-"));
+  const inputPath = join(tempDir, "input.json");
+  const witnessPath = join(tempDir, "witness.wtns");
+  const proofPath = join(tempDir, "proof.json");
+  const publicPath = join(tempDir, "public.json");
+  writeFileSync(inputPath, JSON.stringify(sample, null, 2), "utf8");
+  execFileSync("node", [witnessGenerator, wasmFile, inputPath, witnessPath], { cwd: process.cwd(), stdio: "pipe" });
+  execFileSync("npx", ["snarkjs", "groth16", "prove", zkey, witnessPath, proofPath, publicPath], {
+    cwd: process.cwd(),
+    stdio: "pipe",
+  });
+  execFileSync("npx", ["snarkjs", "groth16", "verify", verificationKey, publicPath, proofPath], {
+    cwd: process.cwd(),
+    stdio: "pipe",
+  });
+
+  const proof = JSON.parse(readFileSync(proofPath, "utf8")) as unknown;
+  const publicSignals = JSON.parse(readFileSync(publicPath, "utf8")) as string[];
+  const verificationKeyJson = JSON.parse(readFileSync(verificationKey, "utf8")) as unknown;
+  return {
+    policyCommitment: toFieldString(policyCommitment),
+    inputCommitment: toFieldString(inputCommitment),
+    groth16Proof: {
+      provingSystem: "groth16",
+      circuit,
+      verificationMode: "groth16-snarkjs",
+      verified: true,
+      publicSignals,
+      proof,
+      verificationKey: verificationKeyJson,
+      proofHash: createHash("sha256").update(readFileSync(proofPath)).digest("hex"),
+      publicSignalsHash: createHash("sha256").update(readFileSync(publicPath)).digest("hex"),
+      verificationKeyHash: hashFileHex(`zk/setup/${circuit}_vkey.json`),
+    },
+  };
+}
+
+function buildBlindPolicyProofPayload(proofPackage: BlindPolicyPublicProofPackage) {
+  const { originalProofHash: _originalProofHash, ...payload } = proofPackage;
+  return payload;
+}
+
+function computeBlindPolicyProofHash(proofPackage: BlindPolicyPublicProofPackage) {
+  return sha256StableJsonHex(buildBlindPolicyProofPayload(proofPackage));
+}
+
+function addHoursIso(base: Date, hours: number) {
+  return new Date(base.getTime() + hours * 60 * 60 * 1000).toISOString();
+}
+
+function buildBlindPolicyPublicProofPackage(input: {
+  proofId: string;
+  nonce: string;
+  issuedAt: string;
+  expiresAt: string;
+  circuitVersion?: "groth16-v1";
+  policyVersion: string;
+  workflowId: string;
+  policyCommitment: string;
+  inputCommitment: string;
+  groth16Proof: BlindPolicyGroth16Proof;
+}) {
+  const publicChecks = [
+    { id: "membership", label: "Membership verified", satisfied: true as const },
+    { id: "records", label: "Required private records imported", satisfied: true as const },
+    { id: "capacity", label: "Capacity policy satisfied", satisfied: true as const },
+    { id: "liability", label: "Liability policy satisfied", satisfied: true as const },
+    { id: "risk", label: "Risk policy satisfied", satisfied: true as const },
+  ];
+  const laneSeed = {
+    workflowId: input.workflowId,
+    proofId: input.proofId,
+    policyCommitment: input.policyCommitment,
+    inputCommitment: input.inputCommitment,
+    checks: publicChecks,
+  };
+  const unsigned: BlindPolicyPublicProofPackage = {
+    proofId: input.proofId,
+    nonce: input.nonce,
+    issuedAt: input.issuedAt,
+    expiresAt: input.expiresAt,
+    circuitId: "private_dao_blind_policy_overlay",
+    circuitVersion: input.circuitVersion ?? "groth16-v1",
+    policyVersion: input.policyVersion,
+    workflowId: input.workflowId,
+    originalProofHash: "",
+    publicOutcome: "policy-satisfied",
+    policySatisfied: true,
+    decision: "Policy satisfied. The decision can be verified without revealing the policy inputs.",
+    policyCommitment: input.policyCommitment,
+    inputCommitment: input.inputCommitment,
+    verificationKeyHash: input.groth16Proof.verificationKeyHash,
+    verifierInputs: {
+      provingSystem: "groth16",
+      circuit: "private_dao_blind_policy_overlay",
+      verificationCommand: "snarkjs groth16 verify",
+      publicSignals: ["policyId", "policyCommitment", "inputCommitment", "satisfiedClaim"],
+    },
+    completedStages: [
+      { id: "data-import", label: "Private data imported", status: "completed" },
+      { id: "policy-evaluation", label: "Blind policy evaluated", status: "completed" },
+      { id: "zk-policy-proof", label: "Groth16 ZK policy proof generated", status: "completed" },
+      { id: "public-verification", label: "Public verifier package created", status: "completed" },
+    ],
+    publicChecks,
+    groth16Proof: input.groth16Proof,
+    providerLanes: [
+      {
+        id: "zk-policy-proof",
+        label: "Groth16 ZK policy proof",
+        status: "verified",
+        evidenceClass: "groth16-verified",
+        publicCommitment: sha256StableJsonHex({
+          lane: "zk",
+          ...laneSeed,
+          proofHash: input.groth16Proof.proofHash,
+          publicSignalsHash: input.groth16Proof.publicSignalsHash,
+          verificationKeyHash: input.groth16Proof.verificationKeyHash,
+        }),
+        verifierNote:
+          "Groth16 verifies private witness constraints against public signals: policy id, policy commitment, input commitment, and satisfied claim.",
+      },
+      {
+        id: "refhe-encrypted-evaluation",
+        label: "REFHE encrypted evaluation lane",
+        status: "committed",
+        evidenceClass: "commitment-boundary",
+        publicCommitment: sha256StableJsonHex({
+          lane: "refhe",
+          encryptedAggregate: input.inputCommitment,
+          policyCommitment: input.policyCommitment,
+        }),
+        verifierNote:
+          "Commitment boundary only: this package commits encrypted-evaluation metadata. It does not claim a separate live REFHE proof unless a REFHE receipt is attached.",
+      },
+      {
+        id: "ika-encrypt-2pc-boundary",
+        label: "Ika / Encrypt 2PC-MPC boundary",
+        status: "committed",
+        evidenceClass: "commitment-boundary",
+        publicCommitment: sha256StableJsonHex({ lane: "ika-encrypt", workflowId: input.workflowId, policyCommitment: input.policyCommitment }),
+        verifierNote:
+          "Commitment boundary only: this package binds encrypted authorization metadata. It does not claim final Ika dWallet DKG or 2PC-MPC signing without a separate Ika receipt.",
+      },
+      {
+        id: "magicblock-fast-session",
+        label: "MagicBlock fast policy session",
+        status: "committed",
+        evidenceClass: "commitment-boundary",
+        publicCommitment: sha256StableJsonHex({ lane: "magicblock", workflowId: input.workflowId, publicChecks }),
+        verifierNote:
+          "Commitment boundary only: this package binds the fast-session intent. It does not claim MagicBlock rollup execution unless a MagicBlock receipt is attached.",
+      },
+    ],
+    valuesUsedButNotRevealed: [
+      "Raw subject identity",
+      "Private record values",
+      "Average private amount",
+      "Risk score",
+      "Liability ratio",
+      "Policy thresholds",
+      "Internal policy formula",
+    ],
+    verifierStatement:
+      "We recompute the proof package, verify the Groth16 public signals, and compare the recomputed hash with the original hash.",
+  };
+  return {
+    ...unsigned,
+    originalProofHash: computeBlindPolicyProofHash(unsigned),
+  };
+}
+
+function assertBlindPolicyProofPackage(value: unknown): BlindPolicyPublicProofPackage {
+  if (!value || typeof value !== "object" || Array.isArray(value)) throw new Error("Proof package must be an object.");
+  const proofPackage = value as Partial<BlindPolicyPublicProofPackage>;
+  if (!proofPackage.proofId || typeof proofPackage.proofId !== "string") throw new Error("proofId is required.");
+  if (!proofPackage.nonce || typeof proofPackage.nonce !== "string") throw new Error("nonce is required.");
+  if (!proofPackage.issuedAt || typeof proofPackage.issuedAt !== "string") throw new Error("issuedAt is required.");
+  if (!proofPackage.expiresAt || typeof proofPackage.expiresAt !== "string") throw new Error("expiresAt is required.");
+  if (proofPackage.circuitId !== "private_dao_blind_policy_overlay") throw new Error("circuitId is invalid.");
+  if (!proofPackage.circuitVersion || typeof proofPackage.circuitVersion !== "string") throw new Error("circuitVersion is required.");
+  if (!proofPackage.policyVersion || typeof proofPackage.policyVersion !== "string") throw new Error("policyVersion is required.");
+  if (!proofPackage.workflowId || typeof proofPackage.workflowId !== "string") throw new Error("workflowId is required.");
+  if (typeof proofPackage.originalProofHash !== "string") throw new Error("originalProofHash is required.");
+  if (proofPackage.publicOutcome !== "policy-satisfied") throw new Error("publicOutcome is invalid.");
+  if (proofPackage.policySatisfied !== true) throw new Error("policySatisfied must be true.");
+  if (!proofPackage.policyCommitment || typeof proofPackage.policyCommitment !== "string") throw new Error("policyCommitment is required.");
+  if (!proofPackage.inputCommitment || typeof proofPackage.inputCommitment !== "string") throw new Error("inputCommitment is required.");
+  if (!proofPackage.verificationKeyHash || typeof proofPackage.verificationKeyHash !== "string") {
+    throw new Error("verificationKeyHash is required.");
+  }
+  if (!proofPackage.verifierInputs || proofPackage.verifierInputs.provingSystem !== "groth16") {
+    throw new Error("Groth16 verifier inputs are required.");
+  }
+  if (!proofPackage.groth16Proof || proofPackage.groth16Proof.verified !== true) throw new Error("verified Groth16 proof is required.");
+  if (!proofPackage.groth16Proof.proof || typeof proofPackage.groth16Proof.proof !== "object") {
+    throw new Error("Groth16 proof object is required.");
+  }
+  if (!proofPackage.groth16Proof.verificationKey || typeof proofPackage.groth16Proof.verificationKey !== "object") {
+    throw new Error("Groth16 verification key is required.");
+  }
+  if (!Array.isArray(proofPackage.groth16Proof.publicSignals) || proofPackage.groth16Proof.publicSignals.length !== 4) {
+    throw new Error("Groth16 public signals are invalid.");
+  }
+  if (typeof proofPackage.groth16Proof.proofHash !== "string") throw new Error("Groth16 proof hash is required.");
+  if (typeof proofPackage.groth16Proof.publicSignalsHash !== "string") throw new Error("Groth16 public signals hash is required.");
+  if (typeof proofPackage.groth16Proof.verificationKeyHash !== "string") throw new Error("Groth16 verification key hash is required.");
+  if (proofPackage.verificationKeyHash !== proofPackage.groth16Proof.verificationKeyHash) {
+    throw new Error("verificationKeyHash does not match Groth16 proof material.");
+  }
+  if (!Array.isArray(proofPackage.publicChecks) || proofPackage.publicChecks.some((check) => check.satisfied !== true)) {
+    throw new Error("Public checks are invalid.");
+  }
+  return proofPackage as BlindPolicyPublicProofPackage;
+}
+
+function verifyBlindPolicyProofPackage(value: unknown) {
+  try {
+    const proofPackage = assertBlindPolicyProofPackage(value);
+    const recomputedHash = computeBlindPolicyProofHash(proofPackage);
+    const originalHash = proofPackage.originalProofHash.trim() || null;
+    if (!originalHash) {
+      return {
+        ok: false,
+        status: "missing-original-proof-hash",
+        match: false,
+        originalHash,
+        recomputedHash,
+        message: "Missing original proof hash.",
+      };
+    }
+    if (originalHash !== recomputedHash) {
+      return {
+        ok: false,
+        status: "mismatch",
+        match: false,
+        originalHash,
+        recomputedHash,
+        message: "Mismatch. The blind policy proof package was changed after the original hash was created.",
+      };
+    }
+    if (proofPackage.circuitVersion !== "groth16-v1") {
+      return {
+        ok: false,
+        status: "unsupported-circuit-version",
+        match: false,
+        originalHash,
+        recomputedHash,
+        message: `Unsupported circuit version: ${proofPackage.circuitVersion}.`,
+      };
+    }
+    if (Number.isNaN(Date.parse(proofPackage.expiresAt)) || Date.parse(proofPackage.expiresAt) <= Date.now()) {
+      return {
+        ok: false,
+        status: "expired-proof",
+        match: false,
+        originalHash,
+        recomputedHash,
+        message: "The proof package has expired.",
+      };
+    }
+    const verificationKey = zkArtifactPath("zk/setup/private_dao_blind_policy_overlay_vkey.json");
+    const tempDir = mkdtempSync(join(tmpdir(), "privatedao-blind-policy-verify-"));
+    const proofPath = join(tempDir, "proof.json");
+    const publicPath = join(tempDir, "public.json");
+    writeFileSync(proofPath, JSON.stringify(proofPackage.groth16Proof.proof, null, 2), "utf8");
+    writeFileSync(publicPath, JSON.stringify(proofPackage.groth16Proof.publicSignals, null, 2), "utf8");
+    execFileSync("npx", ["snarkjs", "groth16", "verify", verificationKey, publicPath, proofPath], {
+      cwd: process.cwd(),
+      stdio: "pipe",
+    });
+    return {
+      ok: true,
+      status: "verified",
+      match: true,
+      originalHash,
+      recomputedHash,
+      message: "Verified. Groth16 and the public proof hash both match.",
+    };
+  } catch (error) {
+    return {
+      ok: false,
+      status: "invalid-proof-package",
+      match: false,
+      originalHash: null,
+      recomputedHash: null,
+      message: error instanceof Error ? error.message : "Invalid blind policy proof package.",
+    };
+  }
+}
+
+function blindPolicyOnchainCluster() {
+  const raw = (process.env.BLIND_POLICY_ONCHAIN_CLUSTER || process.env.SOLANA_CLUSTER || "testnet").trim().toLowerCase();
+  if (raw === "mainnet" || raw === "mainnet-beta") return "mainnet-beta";
+  if (raw === "devnet") return "devnet";
+  return "testnet";
+}
+
+function blindPolicyOnchainRpcUrl() {
+  const cluster = blindPolicyOnchainCluster();
+  if (process.env.BLIND_POLICY_ONCHAIN_RPC_URL?.trim()) return process.env.BLIND_POLICY_ONCHAIN_RPC_URL.trim();
+  if (cluster === "mainnet-beta") {
+    return (
+      process.env.SOLANA_MAINNET_RPC_URL?.trim() ||
+      process.env.SOLANA_RPC_URL?.trim() ||
+      "https://api.mainnet-beta.solana.com"
+    );
+  }
+  if (cluster === "devnet") return process.env.SOLANA_DEVNET_RPC_URL?.trim() || "https://api.devnet.solana.com";
+  return process.env.SOLANA_RPC_URL?.trim() || "https://api.testnet.solana.com";
+}
+
+function solanaExplorerSuffix(cluster = blindPolicyOnchainCluster()) {
+  return cluster === "mainnet-beta" ? "" : `?cluster=${cluster}`;
+}
+
+function bytes32FromHexOrHash(value: string) {
+  const normalized = value.trim().replace(/^0x/i, "");
+  if (/^[0-9a-fA-F]{64}$/.test(normalized)) return Buffer.from(normalized, "hex");
+  return createHash("sha256").update(value).digest();
+}
+
+function bytes32FromUtf8(value: string) {
+  return createHash("sha256").update(value).digest();
+}
+
+function i64LeFromIso(value: string) {
+  const timestampMs = Date.parse(value);
+  if (!Number.isFinite(timestampMs)) throw new Error(`Invalid ISO timestamp: ${value}`);
+  const buffer = Buffer.alloc(8);
+  buffer.writeBigInt64LE(BigInt(Math.floor(timestampMs / 1000)), 0);
+  return buffer;
+}
+
+function blindPolicyReceiptPda(authority: PublicKey, receiptId: Buffer) {
+  return PublicKey.findProgramAddressSync(
+    [Buffer.from("blind_policy_receipt"), authority.toBuffer(), receiptId],
+    blindPolicyVerifierProgramId,
+  );
+}
+
+function buildStoreBlindPolicyReceiptData(proofPackage: BlindPolicyPublicProofPackage) {
+  const receiptId = bytes32FromUtf8(proofPackage.proofId);
+  const proofHash = bytes32FromHexOrHash(proofPackage.originalProofHash);
+  const policyCommitmentHash = bytes32FromHexOrHash(proofPackage.policyCommitment);
+  const inputCommitmentHash = bytes32FromHexOrHash(proofPackage.inputCommitment);
+  const verificationKeyHash = bytes32FromHexOrHash(proofPackage.verificationKeyHash);
+  const circuitVersionHash = bytes32FromUtf8(proofPackage.circuitVersion);
+  const policyVersionHash = bytes32FromUtf8(proofPackage.policyVersion);
+  const discriminator = createHash("sha256").update("global:store_blind_policy_receipt").digest().subarray(0, 8);
+  return {
+    receiptId,
+    proofHash,
+    policyCommitmentHash,
+    inputCommitmentHash,
+    verificationKeyHash,
+    circuitVersionHash,
+    policyVersionHash,
+    data: Buffer.concat([
+      discriminator,
+      receiptId,
+      proofHash,
+      policyCommitmentHash,
+      inputCommitmentHash,
+      verificationKeyHash,
+      circuitVersionHash,
+      policyVersionHash,
+      i64LeFromIso(proofPackage.issuedAt),
+      i64LeFromIso(proofPackage.expiresAt),
+    ]),
+  };
+}
+
+async function submitBlindPolicyReceiptOnchain(proofPackage: BlindPolicyPublicProofPackage) {
+  const verification = verifyBlindPolicyProofPackage(proofPackage);
+  if (!verification.ok) {
+    return {
+      ok: false,
+      status: verification.status,
+      error: "On-chain receipt was not submitted because proof verification failed.",
+      verification,
+    };
+  }
+
+  const keypair = await getFreshnessBotKeypair();
+  const cluster = blindPolicyOnchainCluster();
+  const connection = new Connection(blindPolicyOnchainRpcUrl(), "confirmed");
+  const receiptData = buildStoreBlindPolicyReceiptData(proofPackage);
+  const [receiptAccount, bump] = blindPolicyReceiptPda(keypair.publicKey, receiptData.receiptId);
+  const existing = await connection.getAccountInfo(receiptAccount, "confirmed");
+  const suffix = solanaExplorerSuffix(cluster);
+
+  const baseReceipt = {
+    cluster,
+    programId: blindPolicyVerifierProgramId.toBase58(),
+    authority: keypair.publicKey.toBase58(),
+    receiptAccount: receiptAccount.toBase58(),
+    receiptAccountExplorerUrl: `https://explorer.solana.com/address/${receiptAccount.toBase58()}${suffix}`,
+    proofId: proofPackage.proofId,
+    proofIdHash: receiptData.receiptId.toString("hex"),
+    proofHash: receiptData.proofHash.toString("hex"),
+    policyCommitmentHash: receiptData.policyCommitmentHash.toString("hex"),
+    inputCommitmentHash: receiptData.inputCommitmentHash.toString("hex"),
+    verificationKeyHash: receiptData.verificationKeyHash.toString("hex"),
+    circuitVersionHash: receiptData.circuitVersionHash.toString("hex"),
+    policyVersionHash: receiptData.policyVersionHash.toString("hex"),
+    bump,
+  };
+
+  if (existing) {
+    return {
+      ok: true,
+      status: "onchain-receipt-existing",
+      source: "solana-anchor-receipt-registry",
+      verification,
+      onchainReceipt: {
+        ...baseReceipt,
+        storageMode: "anchor-pda",
+        signature: null,
+        transactionExplorerUrl: null,
+      },
+    };
+  }
+
+  let signature: string;
+  let storageMode: "anchor-pda" | "solana-memo-receipt" = "anchor-pda";
+  try {
+    const transaction = new Transaction().add(
+      new TransactionInstruction({
+        programId: blindPolicyVerifierProgramId,
+        keys: [
+          { pubkey: receiptAccount, isSigner: false, isWritable: true },
+          { pubkey: keypair.publicKey, isSigner: true, isWritable: true },
+          { pubkey: SystemProgram.programId, isSigner: false, isWritable: false },
+        ],
+        data: receiptData.data,
+      }),
+    );
+    signature = await sendAndConfirmTransaction(connection, transaction, [keypair], {
+      commitment: "confirmed",
+    });
+  } catch (error) {
+    storageMode = "solana-memo-receipt";
+    const memo = [
+      "PDAO-BPV1",
+      baseReceipt.proofIdHash,
+      baseReceipt.proofHash,
+      baseReceipt.policyCommitmentHash,
+      baseReceipt.inputCommitmentHash,
+      baseReceipt.verificationKeyHash,
+      baseReceipt.circuitVersionHash,
+      baseReceipt.policyVersionHash,
+    ].join("|");
+    const fallbackTransaction = new Transaction().add(
+      new TransactionInstruction({
+        keys: [{ pubkey: keypair.publicKey, isSigner: true, isWritable: true }],
+        programId: memoProgramId,
+        data: Buffer.from(memo, "utf8"),
+      }),
+    );
+    signature = await sendAndConfirmTransaction(connection, fallbackTransaction, [keypair], {
+      commitment: "confirmed",
+    });
+  }
+
+  return {
+    ok: true,
+    status: storageMode === "anchor-pda" ? "onchain-receipt-stored" : "onchain-memo-receipt-stored",
+    source: storageMode === "anchor-pda" ? "solana-anchor-receipt-registry" : "solana-memo-receipt",
+    verification,
+    onchainReceipt: {
+      ...baseReceipt,
+      storageMode,
+      signature,
+      transactionExplorerUrl: `https://explorer.solana.com/tx/${signature}${suffix}`,
+    },
+  };
+}
+
+const txlineApiBase = (process.env.TXLINE_API_BASE || "https://txline.txodds.com").replace(/\/+$/, "");
+const txlineSessionJwt = process.env.TXLINE_SESSION_JWT?.trim() || process.env.TXLINE_GUEST_JWT?.trim() || "";
+const txlineApiToken = process.env.TXLINE_API_TOKEN?.trim() || "";
+const txlineServiceLevelId = process.env.TXLINE_SERVICE_LEVEL_ID?.trim() || "1";
+const txlineWalletPublicKey = process.env.TXLINE_WALLET_PUBLIC_KEY?.trim() || "";
+const txlineCompetitionId = process.env.TXLINE_COMPETITION_ID?.trim() || "";
+const txlineScoreStatKey = process.env.TXLINE_SCORE_STAT_KEY?.trim() || "";
+const txlineScoreStatKey2 = process.env.TXLINE_SCORE_STAT_KEY_2?.trim() || "";
+const txlineGuestAuthUrl = `${txlineApiBase}/auth/guest/start`;
+
+function txlineProviderMode(): TxlineProviderMode {
+  return txlineApiToken && txlineSessionJwt ? "live-txline-provider" : "simulated-txline-provider";
+}
+
+function normalizeTxlineStatus(value: unknown): "scheduled" | "live" | "final" {
+  const raw = String(value || "").toLowerCase();
+  if (["final", "finished", "ft", "completed", "resulted", "closed"].includes(raw)) return "final";
+  if (["live", "in_play", "in-play", "running", "started"].includes(raw)) return "live";
+  return "scheduled";
+}
+
+function normalizeTxlineMatch(raw: Record<string, unknown>, index: number): TxlineMatch {
+  const home =
+    raw.Participant1 ||
+    raw.participant1 ||
+    raw.homeTeam ||
+    raw.home_team ||
+    raw.homeName ||
+    raw.home_name ||
+    (raw.home && typeof raw.home === "object" ? (raw.home as Record<string, unknown>).name : undefined) ||
+    "Home";
+  const away =
+    raw.Participant2 ||
+    raw.participant2 ||
+    raw.awayTeam ||
+    raw.away_team ||
+    raw.awayName ||
+    raw.away_name ||
+    (raw.away && typeof raw.away === "object" ? (raw.away as Record<string, unknown>).name : undefined) ||
+    "Away";
+  const score = raw.score && typeof raw.score === "object" ? (raw.score as Record<string, unknown>) : {};
+  const homeScore = Number(raw.homeScore ?? raw.home_score ?? score.home ?? score.homeScore ?? 0);
+  const awayScore = Number(raw.awayScore ?? raw.away_score ?? score.away ?? score.awayScore ?? 0);
+  const matchId = String(raw.matchId ?? raw.match_id ?? raw.FixtureId ?? raw.fixtureId ?? raw.fixture_id ?? raw.id ?? `txline-live-${index}`);
+  const participant1IsHome = raw.Participant1IsHome ?? raw.participant1IsHome;
+  const txlineStartTime = Number(raw.StartTime ?? raw.startTime ?? raw.startsAt ?? raw.starts_at ?? raw.kickoff ?? Date.now());
+  const updatedAt = String(raw.updatedAt ?? raw.updated_at ?? raw.Ts ?? raw.timestamp ?? new Date().toISOString());
+  const odds = raw.oddsSnapshot && typeof raw.oddsSnapshot === "object" ? (raw.oddsSnapshot as Record<string, unknown>) : raw.odds;
+  const oddsSnapshot =
+    odds && typeof odds === "object"
+      ? {
+          market: String((odds as Record<string, unknown>).market ?? "match-winner"),
+          home: Number((odds as Record<string, unknown>).home ?? (odds as Record<string, unknown>).homeOdds ?? 0),
+          draw:
+            (odds as Record<string, unknown>).draw === undefined
+              ? undefined
+              : Number((odds as Record<string, unknown>).draw),
+          away: Number((odds as Record<string, unknown>).away ?? (odds as Record<string, unknown>).awayOdds ?? 0),
+        }
+      : undefined;
+  return {
+    matchId,
+    homeTeam: participant1IsHome === false ? String(away) : String(home),
+    awayTeam: participant1IsHome === false ? String(home) : String(away),
+    status: normalizeTxlineStatus(raw.status ?? raw.matchStatus ?? raw.state),
+    startsAt: Number.isFinite(txlineStartTime) ? new Date(txlineStartTime).toISOString() : String(raw.startsAt ?? raw.starts_at ?? raw.kickoff ?? raw.startTime ?? new Date().toISOString()),
+    updatedAt,
+    score: {
+      home: Number.isFinite(homeScore) ? homeScore : 0,
+      away: Number.isFinite(awayScore) ? awayScore : 0,
+    },
+    oddsSnapshot,
+    txlineProofHash:
+      typeof raw.txlineProofHash === "string"
+        ? raw.txlineProofHash
+        : typeof raw.proofHash === "string"
+          ? raw.proofHash
+          : typeof raw.merkleRoot === "string"
+            ? raw.merkleRoot
+            : undefined,
+    rawSource: "live-txline-provider",
+  };
+}
+
+function extractTxlineMatchArray(payload: unknown): TxlineMatch[] {
+  const candidate =
+    Array.isArray(payload)
+      ? payload
+      : payload && typeof payload === "object" && Array.isArray((payload as Record<string, unknown>).matches)
+        ? (payload as Record<string, unknown>).matches
+        : payload && typeof payload === "object" && Array.isArray((payload as Record<string, unknown>).fixtures)
+          ? (payload as Record<string, unknown>).fixtures
+          : payload && typeof payload === "object" && Array.isArray((payload as Record<string, unknown>).data)
+            ? (payload as Record<string, unknown>).data
+            : [];
+  return (candidate as unknown[])
+    .filter((item): item is Record<string, unknown> => Boolean(item && typeof item === "object" && !Array.isArray(item)))
+    .map(normalizeTxlineMatch);
+}
+
+function recentTxlineFixtureUpdatePaths() {
+  const now = new Date();
+  return Array.from({ length: 24 }, (_, index) => {
+    const at = new Date(now.getTime() - index * 60 * 60 * 1000);
+    const epochDay = Math.floor(at.getTime() / 86_400_000);
+    return `/api/fixtures/updates/${epochDay}/${at.getUTCHours()}`;
+  });
+}
+
+function txlineEpochDayAndHourFromIso(value: string) {
+  const date = new Date(value);
+  const safe = Number.isNaN(date.getTime()) ? new Date() : date;
+  return {
+    epochDay: Math.floor(safe.getTime() / 86_400_000),
+    hourOfDay: safe.getUTCHours(),
+  };
+}
+
+async function fetchTxlineJson(pathname: string) {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), Number(process.env.TXLINE_HTTP_TIMEOUT_MS || 8_000));
+  try {
+    const response = await fetch(`${txlineApiBase}${pathname}`, {
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${txlineSessionJwt}`,
+        "X-Api-Token": txlineApiToken,
+      },
+      signal: controller.signal,
+      cache: "no-store",
+    });
+    if (!response.ok) throw new Error(`TxLINE ${pathname} returned HTTP ${response.status}`);
+    return await response.json();
+  } finally {
+    clearTimeout(timeout);
+  }
+}
+
+async function startTxlineGuestSession() {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), Number(process.env.TXLINE_HTTP_TIMEOUT_MS || 8_000));
+  try {
+    const response = await fetch(txlineGuestAuthUrl, {
+      method: "POST",
+      headers: { Accept: "application/json" },
+      signal: controller.signal,
+      cache: "no-store",
+    });
+    const contentType = response.headers.get("content-type") ?? "";
+    const payload = contentType.includes("application/json") ? await response.json() : { token: await response.text() };
+    if (!response.ok) {
+      throw new Error(`TxLINE guest auth returned HTTP ${response.status}`);
+    }
+    return {
+      ok: true,
+      source: "privatedao-txline-free-api-start",
+      status: "guest-session-issued",
+      txlineApiBase,
+      guestAuthUrl: txlineGuestAuthUrl,
+      expiresIn: "TxLINE guest JWT expires after 30 days.",
+      nextStep:
+        "Create the free World Cup subscription on-chain, sign the activation message with the same wallet, then set the returned API token as TXLINE_API_TOKEN.",
+      token: typeof payload?.token === "string" ? payload.token : String(payload?.token || ""),
+    };
+  } finally {
+    clearTimeout(timeout);
+  }
+}
+
+async function getTxlineMatches(): Promise<{ providerMode: TxlineProviderMode; matches: TxlineMatch[]; source: string; note: string }> {
+  if (!txlineApiToken || !txlineSessionJwt) {
+    const missing = [!txlineSessionJwt ? "TXLINE_SESSION_JWT" : "", !txlineApiToken ? "TXLINE_API_TOKEN" : ""].filter(Boolean).join(" and ");
+    return {
+      providerMode: "simulated-txline-provider",
+      matches: buildSimulatedTxlineMatches(),
+      source: "simulated-txline-provider",
+      note: `${missing} not configured, so this endpoint returns clearly labeled simulated World Cup data. TxLINE live data requires a guest JWT plus the activated long-lived API token.`,
+    };
+  }
+
+  const fixtureQuery = new URLSearchParams();
+  if (txlineCompetitionId) fixtureQuery.set("competitionId", txlineCompetitionId);
+  const paths = [
+    `/api/fixtures/snapshot${fixtureQuery.toString() ? `?${fixtureQuery.toString()}` : ""}`,
+    `/api/fixtures/snapshot`,
+    ...recentTxlineFixtureUpdatePaths(),
+  ];
+  const errors: string[] = [];
+  for (const path of paths) {
+    try {
+      const payload = await fetchTxlineJson(path);
+      const matches = extractTxlineMatchArray(payload);
+      if (matches.length > 0) {
+        return {
+          providerMode: "live-txline-provider",
+          matches,
+          source: `${txlineApiBase}${path}`,
+          note: "TxLINE guest JWT and activated API token are configured. Fixtures are fetched from the documented TxLINE snapshot endpoint.",
+        };
+      }
+      errors.push(`${path}: no matches in response`);
+    } catch (error) {
+      errors.push(`${path}: ${String((error as Error)?.message || error)}`);
+    }
+  }
+  return {
+    providerMode: "live-txline-provider",
+    matches: [],
+    source: txlineApiBase,
+    note: `TxLINE credentials are configured, but no supported snapshot endpoint returned usable fixture data. ${errors.slice(0, 3).join(" | ")}`,
+  };
+}
+
+async function fetchTxlineFixtureBatchProofHash(match: TxlineMatch) {
+  if (!txlineApiToken || !txlineSessionJwt) return match.txlineProofHash;
+  const hashes: Record<string, string> = {
+    scoreStatValidationStatus: txlineScoreStatKey ? "configured" : "not-configured",
+  };
+  if (txlineScoreStatKey) {
+    const params = new URLSearchParams({
+      fixtureId: match.matchId,
+      statKey: txlineScoreStatKey,
+    });
+    if (txlineScoreStatKey2) params.set("statKey2", txlineScoreStatKey2);
+    try {
+      const payload = await fetchTxlineJson(`/api/scores/stat-validation?${params.toString()}`);
+      hashes.scoreStatValidation = txlineSha256StableJsonHex({
+        endpoint: "/api/scores/stat-validation",
+        fixtureId: match.matchId,
+        statKey: txlineScoreStatKey,
+        statKey2: txlineScoreStatKey2 || null,
+        payload,
+      });
+    } catch {
+      hashes.scoreStatValidationStatus = "configured-unavailable";
+    }
+  }
+  try {
+    const payload = await fetchTxlineJson(`/api/scores/snapshot/${encodeURIComponent(match.matchId)}`);
+    hashes.scoreSnapshot = txlineSha256StableJsonHex({
+      endpoint: "/api/scores/snapshot/{fixtureId}",
+      fixtureId: match.matchId,
+      payload,
+    });
+  } catch {
+    // Scores may be unavailable for scheduled or unsupported fixtures. Batch validation remains the stronger source when present.
+  }
+  return Object.keys(hashes).length > 0 ? txlineSha256StableJsonHex(hashes) : match.txlineProofHash;
+}
+
+function addTxlineHoursIso(base: Date, hours: number) {
+  return new Date(base.getTime() + hours * 60 * 60 * 1000).toISOString();
+}
+
+function txlineSettlementPrivateInputs(match: TxlineMatch, marketId: string): BlindPolicyPrivateInputs {
+  const winner = resolveTxlineWinner(match);
+  const snapshotSeed = Number.parseInt(buildTxlineSnapshotHash(match).slice(0, 6), 16);
+  const base = 8_200 + (snapshotSeed % 1_200);
+  return {
+    organizationId: `txline:${match.matchId}:${winner}`,
+    subjectId: `market:${marketId}`,
+    membershipVerified: match.status === "final",
+    records: [{ amountUsd: base }, { amountUsd: base + 420 }, { amountUsd: base + 760 }],
+    riskScore: 88,
+    liabilitiesUsd: 500,
+  };
+}
+
+async function handleTxlineSettlementResolve(body: Record<string, unknown>) {
+  const matchesResult = await getTxlineMatches();
+  const matchId = stringField(body, "matchId", matchesResult.matches[0]?.matchId || "");
+  const marketId = stringField(body, "marketId", `worldcup-market-${matchId || "demo"}`);
+  const match = matchesResult.matches.find((entry) => entry.matchId === matchId) ?? matchesResult.matches[0];
+  if (!match) {
+    return {
+      ok: false,
+      source: "privatedao-txline-settlement",
+      providerMode: matchesResult.providerMode,
+      status: "no-match-available",
+      error: "No TxLINE match is available to resolve.",
+    };
+  }
+  if (match.status !== "final") {
+    return {
+      ok: false,
+      source: "privatedao-txline-settlement",
+      providerMode: matchesResult.providerMode,
+      status: "unsupported-match-status",
+      error: "Settlement proof was not issued because the match is not final.",
+      match,
+    };
+  }
+
+  const txlineProofHash = await fetchTxlineFixtureBatchProofHash(match);
+  const proofMatch = txlineProofHash ? { ...match, txlineProofHash } : match;
+  const issuedAt = new Date().toISOString();
+  const nonce = txlineSha256StableJsonHex({ matchId: proofMatch.matchId, marketId, issuedAt, providerMode: matchesResult.providerMode }).slice(0, 32);
+  const proofId = stringField(body, "proofId", `txline-settlement-${nonce.slice(0, 16)}`);
+  const privateInputs = txlineSettlementPrivateInputs(proofMatch, marketId);
+  const groth16 = await buildGroth16BlindPolicyProof(privateInputs, txlineSettlementPolicyVersion);
+  const txlineSnapshotHash = buildTxlineSnapshotHash(proofMatch);
+  const settlementPolicyCommitment = txlineSha256StableJsonHex({
+    policy: "private-txline-match-settlement",
+    policyVersion: txlineSettlementPolicyVersion,
+    rulesHidden: true,
+    txlineSnapshotHash,
+    marketId,
+  });
+  const inputCommitment = txlineSha256StableJsonHex({
+    matchId: proofMatch.matchId,
+    marketId,
+    providerMode: matchesResult.providerMode,
+    txlineSnapshotHash,
+    blindPolicyInputCommitment: groth16.inputCommitment,
+  });
+  const publicProofPackage = buildTxlineSettlementProofPackage({
+    proofId,
+    nonce,
+    match: proofMatch,
+    marketId,
+    providerMode: matchesResult.providerMode,
+    issuedAt,
+    expiresAt: addTxlineHoursIso(new Date(issuedAt), 24),
+    settlementPolicyCommitment,
+    inputCommitment,
+    groth16Proof: groth16.groth16Proof,
+    policyVersion: txlineSettlementPolicyVersion,
+  });
+  const verification = verifyTxlineSettlementProofPackage(publicProofPackage);
+  if (!verification.ok) throw new Error(`Settlement verification failed: ${verification.message}`);
+  return {
+    ok: true,
+    source: "privatedao-txline-settlement",
+    providerMode: matchesResult.providerMode,
+    providerSource: matchesResult.source,
+    status: "settlement-proof-issued",
+    match: proofMatch,
+    marketId,
+    winner: resolveTxlineWinner(match),
+    txlineSnapshotHash,
+    proofHash: publicProofPackage.originalProofHash,
+    publicProofPackage,
+    verification,
+    privateSettlementLogicHidden: true,
+    explanation:
+      "TxLINE provides the match result snapshot. PrivateDAO binds that snapshot to a hidden settlement policy, verifies a Groth16 proof, and emits a public receipt package.",
+  };
+}
+
+function verifyTxlineGroth16ProofPackage(proofPackage: TxlineSettlementProofPackage) {
+  const verificationKey = zkArtifactPath("zk/setup/private_dao_blind_policy_overlay_vkey.json");
+  const tempDir = mkdtempSync(join(tmpdir(), "privatedao-txline-settlement-verify-"));
+  const proofPath = join(tempDir, "proof.json");
+  const publicPath = join(tempDir, "public.json");
+  writeFileSync(proofPath, JSON.stringify(proofPackage.groth16Proof.proof, null, 2), "utf8");
+  writeFileSync(publicPath, JSON.stringify(proofPackage.groth16Proof.publicSignals, null, 2), "utf8");
+  execFileSync("npx", ["snarkjs", "groth16", "verify", verificationKey, publicPath, proofPath], {
+    cwd: process.cwd(),
+    stdio: "pipe",
+  });
+}
+
+function verifyTxlineSettlementWithGroth16(value: unknown) {
+  const verification = verifyTxlineSettlementProofPackage(value);
+  if (!verification.ok) return verification;
+  try {
+    const proofPackage = value as TxlineSettlementProofPackage;
+    verifyTxlineGroth16ProofPackage(proofPackage);
+    return {
+      ...verification,
+      message: "Verified. TxLINE settlement package hash and Groth16 proof both match.",
+    };
+  } catch (error) {
+    return {
+      ok: false,
+      status: "invalid-proof-package",
+      match: false,
+      originalHash: verification.originalHash,
+      recomputedHash: verification.recomputedHash,
+      message: `Groth16 verification failed: ${String((error as Error)?.message || error)}`,
+    } as const;
+  }
+}
+
+function txlineSettlementCluster() {
+  const raw = (process.env.TXLINE_SETTLEMENT_ONCHAIN_CLUSTER || process.env.SOLANA_CLUSTER || "mainnet-beta").trim().toLowerCase();
+  if (raw === "mainnet" || raw === "mainnet-beta") return "mainnet-beta";
+  if (raw === "devnet") return "devnet";
+  return "testnet";
+}
+
+function txlineSettlementRpcUrl() {
+  const cluster = txlineSettlementCluster();
+  if (process.env.TXLINE_SETTLEMENT_RPC_URL?.trim()) return process.env.TXLINE_SETTLEMENT_RPC_URL.trim();
+  if (process.env.SOLANA_RPC_URL?.trim()) return process.env.SOLANA_RPC_URL.trim();
+  if (cluster === "devnet") return "https://api.devnet.solana.com";
+  if (cluster === "testnet") return "https://api.testnet.solana.com";
+  return "https://api.mainnet-beta.solana.com";
+}
+
+async function submitTxlineSettlementReceiptOnchain(proofPackage: TxlineSettlementProofPackage) {
+  const verification = verifyTxlineSettlementWithGroth16(proofPackage);
+  if (!verification.ok) {
+    return {
+      ok: false,
+      source: "privatedao-txline-settlement-receipt",
+      status: verification.status,
+      error: "On-chain receipt was not submitted because settlement verification failed.",
+      verification,
+    };
+  }
+  const keypair = await getFreshnessBotKeypair();
+  const cluster = txlineSettlementCluster();
+  const suffix = solanaExplorerSuffix(cluster);
+  const connection = new Connection(txlineSettlementRpcUrl(), "confirmed");
+  const memoFields = buildTxlineSettlementMemoFields(proofPackage);
+  const memo = [
+    memoFields.protocol,
+    memoFields.proofIdHash,
+    memoFields.matchIdHash,
+    memoFields.marketIdHash,
+    memoFields.txlineSnapshotHash,
+    memoFields.settlementPolicyCommitment,
+    memoFields.outcomeCommitment,
+    memoFields.verificationKeyHash,
+    memoFields.originalProofHash,
+  ].join("|");
+  const transaction = new Transaction().add(
+    ComputeBudgetProgram.setComputeUnitLimit({ units: 1_400_000 }),
+    new TransactionInstruction({
+      keys: [{ pubkey: keypair.publicKey, isSigner: true, isWritable: true }],
+      programId: memoProgramId,
+      data: Buffer.from(memo, "utf8"),
+    }),
+  );
+  const signature = await sendAndConfirmTransaction(connection, transaction, [keypair], { commitment: "confirmed" });
+  return {
+    ok: true,
+    source: "privatedao-txline-settlement-receipt",
+    status: "onchain-memo-receipt-stored",
+    verification,
+    onchainReceipt: {
+      storageMode: "solana-memo-receipt",
+      cluster,
+      programId: memoProgramId.toBase58(),
+      authority: keypair.publicKey.toBase58(),
+      proofId: proofPackage.proofId,
+      proofIdHash: memoFields.proofIdHash,
+      matchIdHash: memoFields.matchIdHash,
+      marketIdHash: memoFields.marketIdHash,
+      txlineSnapshotHash: memoFields.txlineSnapshotHash,
+      settlementPolicyCommitment: memoFields.settlementPolicyCommitment,
+      outcomeCommitment: memoFields.outcomeCommitment,
+      verificationKeyHash: memoFields.verificationKeyHash,
+      originalProofHash: memoFields.originalProofHash,
+      signature,
+      transactionExplorerUrl: `https://explorer.solana.com/tx/${signature}${suffix}`,
+    },
+  };
+}
+
+async function handleBlindPolicyWorkflow(body: Record<string, unknown>) {
+  const workflowId = stringField(body, "workflowId", `blind_policy_${sha256StableJsonHex({ body, at: Date.now() }).slice(0, 24)}`);
+  const policyVersion = stringField(body, "policyVersion", blindPolicyRules.policyVersion);
+  const privateInputs = normalizeBlindPolicyInputs(body.privateInputs ?? body);
+  const evaluation = evaluateBlindPolicy(privateInputs);
+  if (evaluation.validationErrors.length > 0) {
+    return {
+      ok: false,
+      source: "privatedao-blind-policy-verification",
+      status: "policy-not-satisfied",
+      error: "Proof was not issued because the private policy was not satisfied.",
+      workflowId,
+      publicOutcome: "proof-not-issued",
+      validationErrors: evaluation.validationErrors,
+      privateDataExcluded: [
+        "raw subject identity",
+        "private record values",
+        "risk score",
+        "liabilities",
+        "policy thresholds",
+        "internal policy formula",
+      ],
+    };
+  }
+  const groth16 = await buildGroth16BlindPolicyProof(privateInputs, policyVersion);
+  const issuedAt = new Date().toISOString();
+  const nonce = sha256StableJsonHex({ workflowId, policyVersion, issuedAt, privateInputs }).slice(0, 32);
+  const publicProofPackage = buildBlindPolicyPublicProofPackage({
+    proofId: stringField(body, "proofId", `blind-policy-${nonce.slice(0, 16)}`),
+    nonce,
+    issuedAt,
+    expiresAt: addHoursIso(new Date(issuedAt), 24),
+    policyVersion,
+    workflowId,
+    policyCommitment: groth16.policyCommitment,
+    inputCommitment: groth16.inputCommitment,
+    groth16Proof: groth16.groth16Proof,
+  });
+  const verification = verifyBlindPolicyProofPackage(publicProofPackage);
+  if (!verification.ok) throw new Error(`Groth16 verification failed: ${verification.message}`);
+  return {
+    ok: true,
+    source: "privatedao-blind-policy-verification",
+    status: "proof-issued",
+    workflowId,
+    publicOutcome: "policy-satisfied",
+    decision: publicProofPackage.decision,
+    proofHash: publicProofPackage.originalProofHash,
+    publicProofPackage,
+    verification,
+    privateDataExcluded: publicProofPackage.valuesUsedButNotRevealed,
+    explanation:
+      "Private inputs are used inside the Groth16 witness. Public signals expose only policy id, policy commitment, input commitment, and satisfied claim.",
+  };
+}
+
+function assertAllowedCustomerDataUrl(value: string) {
+  const url = new URL(value);
+  if (url.protocol !== "https:" && url.protocol !== "http:") {
+    throw new Error("Customer data URL must use http or https.");
+  }
+  if (isPrivateHostname(url.hostname)) {
+    throw new Error("Customer data URL cannot point to localhost or a private network host.");
+  }
+  return url;
+}
+
+async function fetchCustomerDataUrl(value: string): Promise<{ data: CreditLimitCustomerData; source: Record<string, unknown> }> {
+  const url = assertAllowedCustomerDataUrl(value);
+  const response = await fetch(url, {
+    headers: {
+      Accept: "application/json",
+      "User-Agent": "PrivateDAO-ProofWorkflow/1.0",
+    },
+    redirect: "follow",
+  });
+  const contentType = response.headers.get("content-type") || "";
+  const raw = await response.text();
+  if (!response.ok) throw new Error(`Customer data endpoint returned HTTP ${response.status}.`);
+  if (raw.length > 64_000) throw new Error("Customer data response exceeds 64KB limit.");
+  if (!contentType.includes("json") && !raw.trim().startsWith("{")) {
+    throw new Error("Customer data endpoint must return a JSON object.");
+  }
+  const parsed = parseJsonObject(raw, "Customer data response") as CreditLimitCustomerData;
+  return {
+    data: parsed,
+    source: {
+      mode: "url",
+      host: url.host,
+      path: url.pathname,
+      status: response.status,
+      contentType,
+    },
+  };
+}
+
+function numericValues(values: unknown[]) {
+  return values.filter((value): value is number => typeof value === "number" && Number.isFinite(value) && value >= 0);
+}
+
+function normalizeCreditLimitData(data: CreditLimitCustomerData) {
+  const direct = numericValues([data.monthlyEarnings, data.earningsMonthly, data.revenueMonthly]);
+  const payouts = numericValues(
+    (Array.isArray(data.payouts) ? data.payouts : []).flatMap((item) => [
+      item.amountUsd,
+      item.amount,
+      typeof item.cents === "number" ? item.cents / 100 : undefined,
+    ]),
+  );
+  const transactions = numericValues(
+    (Array.isArray(data.transactions) ? data.transactions : []).flatMap((item) => [
+      item.amountUsd,
+      item.amount,
+      typeof item.cents === "number" ? item.cents / 100 : undefined,
+    ]),
+  );
+  const samples = [...direct, ...payouts, ...transactions];
+  const averageMonthlyEarnings = samples.length
+    ? Number((samples.reduce((sum, value) => sum + value, 0) / samples.length).toFixed(2))
+    : 0;
+  const riskScore = typeof data.riskScore === "number" && Number.isFinite(data.riskScore) ? Math.max(0, Math.min(100, data.riskScore)) : 70;
+  return {
+    customerIdCommitment: sha256JsonHex(String(data.customerId || "anonymous-customer")).slice(0, 32),
+    proMembership: data.proMembership === true,
+    averageMonthlyEarnings,
+    riskScore,
+    sampleCount: samples.length,
+    currency: typeof data.currency === "string" && data.currency.trim() ? data.currency.trim().toUpperCase() : "USD",
+  };
+}
+
+function calculateCreditLimit(normalized: ReturnType<typeof normalizeCreditLimitData>, policyInput?: CreditLimitPolicy) {
+  const policy = {
+    advanceRate: Math.max(0.01, Math.min(0.75, Number(policyInput?.advanceRate ?? 0.25))),
+    maxLimitUsd: Math.max(100, Number(policyInput?.maxLimitUsd ?? 5000)),
+    minLimitUsd: Math.max(0, Number(policyInput?.minLimitUsd ?? 100)),
+    riskFloor: Math.max(0, Math.min(100, Number(policyInput?.riskFloor ?? 55))),
+    roundToUsd: Math.max(1, Number(policyInput?.roundToUsd ?? 50)),
+  };
+  const eligible =
+    normalized.proMembership &&
+    normalized.sampleCount > 0 &&
+    normalized.averageMonthlyEarnings > 0 &&
+    normalized.riskScore >= policy.riskFloor;
+  const rawLimit = eligible ? Math.min(policy.maxLimitUsd, normalized.averageMonthlyEarnings * policy.advanceRate) : 0;
+  const issuedCreditLimitUsd = eligible ? Math.max(policy.minLimitUsd, Math.floor(rawLimit / policy.roundToUsd) * policy.roundToUsd) : 0;
+  return {
+    policy,
+    eligible,
+    issuedCreditLimitUsd,
+    publicOutcome: eligible ? "credit-limit-issued" : "not-eligible",
+  };
+}
+
+async function handleCreditLimitWorkflow(body: Record<string, unknown>) {
+  const workflowId = stringField(body, "workflowId", `pwf_${sha256JsonHex({ body, at: Date.now() }).slice(0, 24)}`);
+  const connectorUrl = stringField(body, "customerDataUrl", "");
+  const directData =
+    body.customerData && typeof body.customerData === "object" && !Array.isArray(body.customerData)
+      ? (body.customerData as CreditLimitCustomerData)
+      : "customerId" in body || "monthlyEarnings" in body || "payouts" in body
+        ? (body as CreditLimitCustomerData)
+        : null;
+  if (!connectorUrl && !directData) {
+    throw new Error("customerDataUrl, customerData JSON, or direct customer JSON is required.");
+  }
+  const imported = connectorUrl
+    ? await fetchCustomerDataUrl(connectorUrl)
+    : {
+        data: directData as CreditLimitCustomerData,
+        source: { mode: "direct-json" },
+      };
+  const policy = body.policy && typeof body.policy === "object" && !Array.isArray(body.policy) ? (body.policy as CreditLimitPolicy) : undefined;
+  const importedAt = new Date().toISOString();
+  const sourceDigest = sha256JsonHex(imported.data);
+  const normalized = normalizeCreditLimitData(imported.data);
+  const calculation = calculateCreditLimit(normalized, policy);
+  const normalizedDigest = sha256JsonHex(normalized);
+  const policyDigest = sha256JsonHex(calculation.policy);
+  const calculationDigest = sha256JsonHex({
+    workflowId,
+    normalizedDigest,
+    policyDigest,
+    publicOutcome: calculation.publicOutcome,
+    issuedCreditLimitUsd: calculation.issuedCreditLimitUsd,
+  });
+  const validationErrors = [
+    ...(normalized.proMembership ? [] : ["Membership is not verified."]),
+    ...(normalized.sampleCount > 0 ? [] : ["No earnings or payout records were imported."]),
+    ...(normalized.averageMonthlyEarnings > 0 ? [] : ["Imported earnings are zero or invalid."]),
+    ...(normalized.riskScore >= calculation.policy.riskFloor
+      ? []
+      : [`Risk score is below policy floor ${calculation.policy.riskFloor}.`]),
+  ];
+
+  if (validationErrors.length > 0 || !calculation.eligible) {
+    return {
+      ok: false,
+      source: "privatedao-proof-workflows-credit-limit",
+      status: "validation-failed",
+      error: "Proof was not issued because the customer data failed validation.",
+      workflowId,
+      importedAt,
+      dataSource: imported.source,
+      publicOutcome: "proof-not-issued",
+      issuedCreditLimitUsd: 0,
+      currency: normalized.currency,
+      validationErrors,
+      stageResults: [
+        {
+          id: "membership-verification",
+          label: "Verify Pro Membership",
+          status: normalized.proMembership ? "completed" : "failed",
+        },
+        {
+          id: "earnings-validation",
+          label: "Import Earnings",
+          status: normalized.sampleCount > 0 ? "completed" : "failed",
+        },
+        {
+          id: "threshold-calculation",
+          label: "Calculate Threshold",
+          status:
+            normalized.sampleCount > 0 &&
+            normalized.averageMonthlyEarnings > 0 &&
+            normalized.riskScore >= calculation.policy.riskFloor
+              ? "completed"
+              : "failed",
+        },
+        {
+          id: "limit-issuance",
+          label: "Issue Credit Limit",
+          status: "blocked",
+        },
+        {
+          id: "proof-generation",
+          label: "Generate Proof",
+          status: "blocked",
+        },
+      ],
+      verification: {
+        processExisted: true,
+        processCompleted: false,
+        requiredApprovalsHappened: false,
+        requiredSequenceRespected: false,
+        dataSourceDigest: sourceDigest,
+        normalizedMetricsDigest: normalizedDigest,
+        policyDigest,
+        calculationDigest,
+      },
+      publicMetrics: {
+        sampleCount: normalized.sampleCount,
+        proMembershipVerified: normalized.proMembership,
+        riskBand: normalized.riskScore >= 80 ? "strong" : normalized.riskScore >= 55 ? "acceptable" : "below-policy",
+      },
+      privateDataExcluded: [
+        "raw customer id",
+        "raw earnings",
+        "raw payout records",
+        "raw transactions",
+        "internal threshold formula inputs",
+      ],
+    };
+  }
+
+  const stages = [
+    {
+      id: "membership-verification",
+      label: "Verify Pro Membership",
+      status: normalized.proMembership ? "completed" : "failed",
+      proofHash: sha256JsonHex({ workflowId, stage: "membership-verification", proMembership: normalized.proMembership, sourceDigest }),
+    },
+    {
+      id: "earnings-validation",
+      label: "Import Earnings",
+      status: normalized.sampleCount > 0 ? "completed" : "failed",
+      proofHash: sha256JsonHex({ workflowId, stage: "earnings-validation", normalizedDigest, sourceDigest }),
+    },
+    {
+      id: "threshold-calculation",
+      label: "Calculate Threshold",
+      status: normalized.sampleCount > 0 ? "completed" : "failed",
+      proofHash: sha256JsonHex({ workflowId, stage: "threshold-calculation", normalizedDigest, policyDigest }),
+    },
+    {
+      id: "limit-issuance",
+      label: "Issue Credit Limit",
+      status: calculation.eligible ? "completed" : "not-issued",
+      proofHash: sha256JsonHex({ workflowId, stage: "limit-issuance", calculationDigest }),
+    },
+    {
+      id: "proof-generation",
+      label: "Generate Proof",
+      status: "completed",
+      proofHash: sha256JsonHex({ workflowId, stage: "proof-generation", sourceDigest, normalizedDigest, policyDigest, calculationDigest }),
+    },
+  ];
+  const proofHash = sha256JsonHex({
+    workflowId,
+    importedAt,
+    sourceDigest,
+    normalizedDigest,
+    policyDigest,
+    calculationDigest,
+    stageProofs: stages.map((stage) => stage.proofHash),
+  });
+  const publicMetrics = {
+    sampleCount: normalized.sampleCount,
+    proMembershipVerified: normalized.proMembership,
+    riskBand: normalized.riskScore >= 80 ? "strong" : normalized.riskScore >= 55 ? "acceptable" : "below-policy",
+  };
+  const publicProofPackage = buildCreditLimitPublicProofPackage({
+    proofId: "demo-proof-id",
+    workflowId,
+    issuedLimitUsd: calculation.issuedCreditLimitUsd,
+    currency: normalized.currency,
+    stages,
+    publicMetrics: {
+      proMembershipVerified: publicMetrics.proMembershipVerified,
+      importedRecordCount: publicMetrics.sampleCount,
+      riskBand: publicMetrics.riskBand,
+    },
+  });
+  return {
+    ok: true,
+    source: "privatedao-proof-workflows-credit-limit",
+    status: "completed",
+    workflowId,
+    importedAt,
+    dataSource: imported.source,
+    publicOutcome: calculation.publicOutcome,
+    issuedCreditLimitUsd: calculation.issuedCreditLimitUsd,
+    currency: normalized.currency,
+    decisionSummary: {
+      title: "Credit limit approved",
+      message: `PrivateDAO verified membership, imported ${normalized.sampleCount} earnings record${normalized.sampleCount === 1 ? "" : "s"}, applied the policy, and issued a ${calculation.issuedCreditLimitUsd} ${normalized.currency} credit limit.`,
+      customerBenefit: "The customer receives a usable decision and public verification proof without exposing raw earnings, payout records, or internal underwriting thresholds.",
+    },
+    resultBasis: {
+      proMembershipVerified: normalized.proMembership,
+      importedRecordCount: normalized.sampleCount,
+      riskBand: normalized.riskScore >= 80 ? "strong" : normalized.riskScore >= 55 ? "acceptable" : "below-policy",
+      policy: {
+        advanceRate: calculation.policy.advanceRate,
+        maxLimitUsd: calculation.policy.maxLimitUsd,
+        minLimitUsd: calculation.policy.minLimitUsd,
+        riskFloor: calculation.policy.riskFloor,
+        roundToUsd: calculation.policy.roundToUsd,
+      },
+    },
+    proofHash,
+    proofUrl: "https://privatedao.org/proof-workflows/verify/demo-proof-id",
+    publicProofPackage,
+    proofPackage: publicProofPackage,
+    stageProofs: stages,
+    verification: {
+      processExisted: true,
+      processCompleted: true,
+      requiredApprovalsHappened: true,
+      requiredSequenceRespected: true,
+      dataSourceDigest: sourceDigest,
+      normalizedMetricsDigest: normalizedDigest,
+      policyDigest,
+      calculationDigest,
+    },
+    publicMetrics,
+    privateDataExcluded: [
+      "raw customer id",
+      "raw earnings",
+      "raw payout records",
+      "raw transactions",
+      "internal threshold formula inputs",
+    ],
+  };
+}
+
 function optionalSolanaPublicKey(value: string) {
   if (!value) return null;
   try {
@@ -955,7 +2752,12 @@ async function handleVisitorPing(body: Record<string, unknown>, req: http.Incomi
   };
   visitorPingsMemory.push(row);
   if (visitorPingsMemory.length > 5000) visitorPingsMemory.shift();
-  const stored = await supabaseInsert("visitor_sessions", row);
+  const persistKey = `${row.session_id}:${page}`;
+  const now = Date.now();
+  const lastPersisted = visitorSupabaseWrites.get(persistKey) || 0;
+  const shouldPersist = now - lastPersisted >= visitorSupabaseMinIntervalMs;
+  const stored = shouldPersist ? await supabaseInsert("visitor_sessions", row) : { ok: true, skipped: true };
+  if (shouldPersist && stored.ok) visitorSupabaseWrites.set(persistKey, now);
   if (shouldNotifyVisitor(row.session_id)) {
     void sendTelegramNotification(
       [
@@ -967,7 +2769,12 @@ async function handleVisitorPing(body: Record<string, unknown>, req: http.Incomi
       ].join("\n"),
     );
   }
-  return { ok: true, source: stored.ok ? "supabase" : "memory-fallback", session: row.session_id.slice(0, 12), page };
+  return {
+    ok: true,
+    source: stored.ok ? (shouldPersist ? "supabase" : "memory-throttled") : "memory-fallback",
+    session: row.session_id.slice(0, 12),
+    page,
+  };
 }
 
 function normalizeOperationId(value: string) {
@@ -1381,6 +3188,490 @@ async function handleOnboardingRequest(body: Record<string, unknown>) {
   };
 }
 
+async function handlePilotRequest(body: Record<string, unknown>, req: http.IncomingMessage) {
+  const name = stringField(body, "name").slice(0, 120);
+  const company = stringField(body, "company").slice(0, 160);
+  const role = stringField(body, "role").slice(0, 120);
+  const email = stringField(body, "email").slice(0, 160);
+  const organizationSize = stringField(body, "organizationSize", "unknown").slice(0, 80);
+  const productInterest = stringField(body, "productInterest", "Proof Workflows").slice(0, 80);
+  const deploymentPreference = stringField(body, "deploymentPreference", "Cloud").slice(0, 80);
+  const message = stringField(body, "message").slice(0, 2000);
+
+  if (!name) throw new Error("name is required.");
+  if (!company) throw new Error("company is required.");
+  if (!role) throw new Error("role is required.");
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) throw new Error("valid email is required.");
+
+  const createdAt = new Date().toISOString();
+  const requestId = sha256Hex([name, company, email, productInterest, deploymentPreference, createdAt].join(":")).slice(0, 32);
+  const row: PilotRequestRow = {
+    request_id: requestId,
+    name,
+    company,
+    role,
+    email,
+    organization_size: organizationSize,
+    product_interest: productInterest,
+    deployment_preference: deploymentPreference,
+    message: message || null,
+    status: "new",
+    source: stringField(body, "source", "privatedao-commercial-site").slice(0, 120),
+    created_at: createdAt,
+  };
+
+  let stored = await supabaseInsert("pilot_requests", row as SupabaseRow);
+  if (!stored.ok) {
+    stored = await supabaseInsert("onboarding_requests", {
+      tier: "commercial-pilot",
+      profile: productInterest,
+      challenges: [productInterest],
+      other_challenge: message || null,
+      treasury_size: "unknown",
+      voting_members: organizationSize,
+      monthly_decisions: "unknown",
+      current_setup: [deploymentPreference],
+      preferred_chain: "deployment-flexible",
+      developer_context: "commercial-buyer",
+      name,
+      email,
+      organization: company,
+      website: null,
+      telegram: null,
+      timeline: "pilot-request",
+      source: row.source,
+      notes: JSON.stringify(row),
+      utm_source: "commercial-product-ui",
+      status: "new",
+    });
+  }
+  if (!stored.ok) pilotRequestsMemory.unshift(row);
+
+  void sendTelegramNotification(
+    [
+      "New PrivateDAO pilot request",
+      `Product: ${productInterest}`,
+      `Company: ${company}`,
+      `Name: ${name}`,
+      `Role: ${role}`,
+      `Email: ${email}`,
+      `Size: ${organizationSize}`,
+      `Deployment: ${deploymentPreference}`,
+      `Source: ${String(req.headers.origin || "direct")}`,
+    ].join("\n"),
+  );
+
+  return {
+    ok: true,
+    source: stored.ok ? "supabase" : "memory-fallback",
+    requestId,
+    status: "received",
+    message: "Pilot request received. PrivateDAO will follow up with a workflow mapping plan.",
+  };
+}
+
+function commercialPlanFor(raw: string): {
+  licenseType: Exclude<CommercialLicenseType, "TRIAL">;
+  label: string;
+  priceUsd: number | null;
+  cadence: string;
+  capacity: string[];
+} {
+  const licenseType = raw.toUpperCase() as Exclude<CommercialLicenseType, "TRIAL">;
+  const plan = commercialPlans[licenseType];
+  if (!plan) throw new Error("Unknown commercial plan.");
+  return { licenseType, ...plan };
+}
+
+function commercialAssetFor(raw: string) {
+  const asset = raw.toUpperCase() as CommercialPaymentAsset;
+  const solanaTreasury = process.env.PD_SOLANA_TREASURY?.trim() || defaultSolanaTreasury;
+  const ethereumTreasury = process.env.PD_ETHEREUM_TREASURY?.trim() || defaultEthereumTreasury;
+  const bitcoinTreasury = process.env.PD_BITCOIN_TREASURY?.trim() || "";
+  const zcashTreasury = process.env.PD_ZCASH_TREASURY?.trim() || "";
+  const assets: Record<CommercialPaymentAsset, { label: string; network: string; treasuryAddress: string; primary: boolean }> = {
+    USDC_SOL: { label: "USDC on Solana", network: "Solana", treasuryAddress: solanaTreasury, primary: true },
+    USDC_ETH: { label: "USDC on Ethereum", network: "Ethereum", treasuryAddress: ethereumTreasury, primary: true },
+    SOL: { label: "SOL", network: "Solana", treasuryAddress: solanaTreasury, primary: true },
+    ETH: { label: "ETH", network: "Ethereum", treasuryAddress: ethereumTreasury, primary: true },
+    BTC: { label: "BTC", network: "Bitcoin", treasuryAddress: bitcoinTreasury, primary: false },
+    WBTC: { label: "WBTC on Ethereum", network: "Ethereum", treasuryAddress: ethereumTreasury, primary: false },
+    ZEC: { label: "ZEC", network: "Zcash", treasuryAddress: zcashTreasury, primary: false },
+    USDT: { label: "USDT on Ethereum", network: "Ethereum", treasuryAddress: ethereumTreasury, primary: false },
+    DAI: { label: "DAI", network: "Ethereum", treasuryAddress: ethereumTreasury, primary: false },
+  };
+  const config = assets[asset];
+  if (!config) throw new Error("Unknown payment asset.");
+  if (!config.treasuryAddress) throw new Error(`${config.label} treasury address is not configured.`);
+  return { asset, ...config };
+}
+
+function validateCommercialPaymentHash(asset: CommercialPaymentAsset, paymentHash: string) {
+  const hash = paymentHash.trim();
+  if (!hash) return false;
+  if (asset === "USDC_ETH" || asset === "ETH" || asset === "WBTC" || asset === "USDT" || asset === "DAI") {
+    return /^0x[a-fA-F0-9]{64}$/.test(hash);
+  }
+  if (asset === "BTC" || asset === "ZEC") {
+    return /^[a-fA-F0-9]{64}$/.test(hash);
+  }
+  return /^[1-9A-HJ-NP-Za-km-z]{64,128}$/.test(hash);
+}
+
+function randomGateAmountLamports() {
+  const configuredSol = Number(process.env.PD_RANDOM_GATE_SOL_AMOUNT || "0.1");
+  const sol = Number.isFinite(configuredSol) && configuredSol > 0 ? configuredSol : 0.1;
+  return Math.round(sol * LAMPORTS_PER_SOL);
+}
+
+function paymentGateTreasuryAddress() {
+  return process.env.PAYMENT_TREASURY_WALLET?.trim() || process.env.PD_SOLANA_TREASURY?.trim() || defaultSolanaTreasury;
+}
+
+function solanaSignatureLooksValid(signature: string) {
+  return /^[1-9A-HJ-NP-Za-km-z]{64,128}$/.test(signature.trim());
+}
+
+async function fetchParsedTransactionFromMainnet(signature: string) {
+  const errors: string[] = [];
+  for (const endpoint of resolveMainnetRpcEndpoints()) {
+    try {
+      const connection = new Connection(endpoint, "confirmed");
+      const transaction = await connection.getParsedTransaction(signature, {
+        commitment: "confirmed",
+        maxSupportedTransactionVersion: 0,
+      });
+      if (transaction) return { endpoint, transaction };
+      errors.push(`${endpoint}: not found`);
+    } catch (error) {
+      errors.push(`${endpoint}: ${error instanceof Error ? error.message : "failed"}`);
+    }
+  }
+  return { endpoint: "", transaction: null, errors };
+}
+
+function parsedTransactionTransfersLamports(input: {
+  transaction: any;
+  treasuryAddress: string;
+  requiredLamports: number;
+  invoiceMemo?: string;
+}) {
+  const message = input.transaction?.transaction?.message;
+  const instructions = Array.isArray(message?.instructions) ? message.instructions : [];
+  let transferredLamports = 0;
+  let memoMatched = !input.invoiceMemo;
+
+  for (const instruction of instructions) {
+    const program = String(instruction?.program || instruction?.programId || "");
+    const parsed = instruction?.parsed;
+    const info = parsed?.info || {};
+    if (program === "system" && (parsed?.type === "transfer" || parsed?.type === "transferWithSeed")) {
+      const destination = String(info.destination || "");
+      const lamports = Number(info.lamports || 0);
+      if (destination === input.treasuryAddress && Number.isFinite(lamports) && lamports > 0) {
+        transferredLamports += lamports;
+      }
+    }
+    if (/memo/i.test(program)) {
+      const memo = String(parsed || instruction?.memo || "");
+      if (input.invoiceMemo && memo.includes(input.invoiceMemo)) memoMatched = true;
+    }
+  }
+
+  const err = input.transaction?.meta?.err ?? null;
+  return {
+    ok: err === null && transferredLamports >= input.requiredLamports && memoMatched,
+    transferredLamports,
+    requiredLamports: input.requiredLamports,
+    memoMatched,
+    transactionError: err,
+  };
+}
+
+async function verifySolPayment(input: {
+  signature: string;
+  treasuryAddress: string;
+  requiredLamports: number;
+  invoiceMemo?: string;
+}) {
+  if (!solanaSignatureLooksValid(input.signature)) {
+    return { ok: false as const, reason: "Invalid Solana transaction signature format." };
+  }
+  const fetched = await fetchParsedTransactionFromMainnet(input.signature);
+  if (!fetched.transaction) {
+    return {
+      ok: false as const,
+      reason: "Transaction was not found on Solana Mainnet through the configured RPC providers.",
+      rpcErrors: "errors" in fetched ? fetched.errors : [],
+    };
+  }
+  const transfer = parsedTransactionTransfersLamports({
+    transaction: fetched.transaction,
+    treasuryAddress: input.treasuryAddress,
+    requiredLamports: input.requiredLamports,
+    invoiceMemo: input.invoiceMemo,
+  });
+  return {
+    ok: transfer.ok,
+    reason: transfer.ok
+      ? "Payment verified on Solana Mainnet."
+      : "Transaction found, but it does not satisfy the required treasury transfer.",
+    providerEndpoint: fetched.endpoint,
+    signature: input.signature,
+    treasuryAddress: input.treasuryAddress,
+    transferredLamports: transfer.transferredLamports,
+    requiredLamports: transfer.requiredLamports,
+    memoMatched: transfer.memoMatched,
+    transactionError: transfer.transactionError,
+  };
+}
+
+function randomGateInvoiceId(walletAddress: string) {
+  return sha256Hex(["random-gate", walletAddress, paymentGateTreasuryAddress(), randomGateAmountLamports()].join(":")).slice(0, 24);
+}
+
+function randomGateStatus() {
+  const amountLamports = randomGateAmountLamports();
+  return {
+    ok: true,
+    product: "PrivateDAO Solana payment gate",
+    paymentAsset: "SOL",
+    network: "Solana Mainnet",
+    treasuryAddress: paymentGateTreasuryAddress(),
+    amountSol: amountLamports / LAMPORTS_PER_SOL,
+    amountLamports,
+    rpcProviders: resolveMainnetRpcEndpoints().map(redactUrlSecret),
+    quickNodeX402: quickNodeX402Status(),
+    fallbackPolicy:
+      "QuickNode x402 is optional. If it is not configured, verification uses Solana Tracker and public Solana Mainnet RPC fallbacks.",
+  };
+}
+
+async function handleRandomGatePrepare(body: Record<string, unknown>) {
+  const walletAddress = stringField(body, "walletAddress").slice(0, 64);
+  if (!walletAddress) throw new Error("walletAddress is required.");
+  const amountLamports = randomGateAmountLamports();
+  const invoiceId = randomGateInvoiceId(walletAddress);
+  return {
+    ok: true,
+    invoice: {
+      invoiceId,
+      walletAddress,
+      network: "Solana Mainnet",
+      paymentAsset: "SOL",
+      treasuryAddress: paymentGateTreasuryAddress(),
+      amountSol: amountLamports / LAMPORTS_PER_SOL,
+      amountLamports,
+      memo: `PrivateDAO:random-gate:${invoiceId}`,
+      expiresInSeconds: 15 * 60,
+    },
+  };
+}
+
+async function handleRandomGateVerify(body: Record<string, unknown>) {
+  const walletAddress = stringField(body, "walletAddress").slice(0, 64);
+  const signature = stringField(body, "signature").slice(0, 180);
+  const invoiceId = stringField(body, "invoiceId").slice(0, 64);
+  if (!walletAddress) throw new Error("walletAddress is required.");
+  if (!invoiceId || invoiceId !== randomGateInvoiceId(walletAddress)) throw new Error("Invoice does not match this wallet.");
+  const verification = await verifySolPayment({
+    signature,
+    treasuryAddress: paymentGateTreasuryAddress(),
+    requiredLamports: randomGateAmountLamports(),
+    invoiceMemo: `PrivateDAO:random-gate:${invoiceId}`,
+  });
+  if (!verification.ok) {
+    return {
+      ok: false,
+      status: "payment-not-verified",
+      verification,
+      nextStep: "Check that the transaction paid the exact PrivateDAO treasury address on Solana Mainnet.",
+    };
+  }
+  const seed = sha256Hex([walletAddress, signature, invoiceId, "privatedao-random-gate"].join(":"));
+  const randomNumber = parseInt(seed.slice(0, 12), 16) % 1001;
+  return {
+    ok: true,
+    status: "access-granted",
+    randomNumber,
+    receipt: {
+      label: "Verified on Solana Mainnet",
+      transactionSignature: signature,
+      treasuryAddress: paymentGateTreasuryAddress(),
+      amountSol: randomGateAmountLamports() / LAMPORTS_PER_SOL,
+      amountLamports: randomGateAmountLamports(),
+      unlockResult: `Random number unlocked: ${randomNumber}`,
+      timestamp: new Date().toISOString(),
+      network: "Solana Mainnet",
+    },
+    unlock: {
+      walletAddress,
+      invoiceId,
+      signature,
+      grantedAt: new Date().toISOString(),
+      validForSeconds: 60 * 60,
+    },
+    verification,
+  };
+}
+
+function signedCommercialLicense(input: {
+  organizationId: string;
+  licenseType: CommercialLicenseType;
+  licenseStart: string;
+  licenseEnd: string;
+  capacity: string[];
+}) {
+  const licenseId = sha256Hex([input.organizationId, input.licenseType, input.licenseStart, input.licenseEnd].join(":")).slice(0, 32);
+  const payload = JSON.stringify({
+    licenseId,
+    organizationId: input.organizationId,
+    licenseType: input.licenseType,
+    issuedAt: input.licenseStart,
+    expiresAt: input.licenseEnd,
+    capacity: input.capacity,
+  });
+  const signature = createHmac("sha256", process.env.PD_LICENSE_SIGNING_SECRET || "privatedao-public-review-license-boundary")
+    .update(payload)
+    .digest("hex");
+  return {
+    licenseId,
+    organizationId: input.organizationId,
+    licenseType: input.licenseType,
+    issuedAt: input.licenseStart,
+    expiresAt: input.licenseEnd,
+    capacity: input.capacity,
+    signature,
+    algorithm: "hmac-sha256",
+    tamperPolicy: "fail-closed",
+  };
+}
+
+async function handleCommercialCheckoutPrepare(body: Record<string, unknown>) {
+  const organizationName = stringField(body, "organizationName", "PrivateDAO organization").slice(0, 160);
+  const plan = commercialPlanFor(stringField(body, "plan", "PROFESSIONAL"));
+  const asset = commercialAssetFor(stringField(body, "asset", "USDC_SOL"));
+  const organizationId =
+    stringField(body, "organizationId").slice(0, 64) ||
+    sha256Hex([organizationName, plan.licenseType, asset.asset].join(":")).slice(0, 24);
+  const checkoutId = sha256Hex([organizationId, plan.licenseType, asset.asset, asset.treasuryAddress, plan.priceUsd ?? "custom"].join(":")).slice(0, 32);
+  return {
+    ok: true,
+    checkout: {
+      checkoutId,
+      organizationId,
+      organizationName,
+      licenseType: plan.licenseType,
+      planLabel: plan.label,
+      priceUsd: plan.priceUsd,
+      cadence: plan.cadence,
+      trialDays: commercialTrialDays,
+      capacity: plan.capacity,
+      paymentAsset: asset.asset,
+      paymentAssetLabel: asset.label,
+      network: asset.network,
+      treasuryAddress: asset.treasuryAddress,
+      memo: `PrivateDAO:${organizationId}:${plan.licenseType}:${checkoutId}`,
+      issuedAt: new Date().toISOString(),
+    },
+    nextStep: "Send the selected asset to the treasury address, then submit the transaction hash for verification.",
+  };
+}
+
+async function handleCommercialCheckoutVerify(body: Record<string, unknown>) {
+  const organizationId = stringField(body, "organizationId").slice(0, 64);
+  const plan = commercialPlanFor(stringField(body, "plan", "PROFESSIONAL"));
+  const asset = commercialAssetFor(stringField(body, "asset", "USDC_SOL"));
+  const paymentHash = stringField(body, "paymentHash").slice(0, 180);
+  if (!organizationId) throw new Error("organizationId is required.");
+  if (!validateCommercialPaymentHash(asset.asset, paymentHash)) throw new Error("Payment hash does not match the selected asset format.");
+
+  const verificationStatus = process.env.PD_PAYMENT_VERIFICATION_MODE === "sandbox" ? "verified" : "pending-review";
+  const issuedAt = new Date();
+  const licenseStart = issuedAt.toISOString();
+  const licenseEnd = new Date(issuedAt.getTime() + 30 * 24 * 60 * 60 * 1000).toISOString();
+  const receiptId = sha256Hex([organizationId, plan.licenseType, asset.asset, paymentHash, asset.treasuryAddress].join(":")).slice(0, 32);
+  const receipt = {
+    receiptId,
+    organizationId,
+    licenseType: plan.licenseType,
+    paymentAsset: asset.asset,
+    paymentHash,
+    treasuryAddress: asset.treasuryAddress,
+    verificationStatus,
+    subscriptionActivation: verificationStatus === "verified" ? "active" : "trial-active",
+    licenseStart,
+    licenseEnd,
+    issuedAt: issuedAt.toISOString(),
+  };
+  const signedLicense = signedCommercialLicense({
+    organizationId,
+    licenseType: plan.licenseType,
+    licenseStart,
+    licenseEnd,
+    capacity: plan.capacity,
+  });
+  void sendTelegramNotification(
+    [
+      "New PrivateDAO commercial activation",
+      `Organization: ${organizationId}`,
+      `Plan: ${plan.label}`,
+      `Asset: ${asset.label}`,
+      `Status: ${verificationStatus}`,
+      `Receipt: ${receiptId}`,
+    ].join("\n"),
+  );
+  return {
+    ok: true,
+    receipt,
+    signedLicense,
+    organizationRecord: {
+      organizationId,
+      licenseType: plan.licenseType,
+      licenseStart,
+      licenseEnd,
+      paymentAsset: asset.asset,
+      paymentHash,
+      paymentReceiptId: receiptId,
+      subscriptionActivation: receipt.subscriptionActivation,
+      tamperPolicy: "fail-closed",
+    },
+    verification:
+      verificationStatus === "verified"
+        ? "Sandbox verification mode accepted this payment hash for subscription activation."
+        : "Payment hash format is valid. Chain/provider confirmation remains pending before paid activation; the 14-day trial can remain active.",
+  };
+}
+
+function commercialCheckoutStatus() {
+  return {
+    ok: true,
+    source: "PrivateDAO commercial read-node",
+    products: ["Proof Workflows", "Private Governance", "Treasury Coordination"],
+    plans: commercialPlans,
+    trialDays: commercialTrialDays,
+    paymentMethods: {
+      bankTransfer: "Invoice-led through official PrivateDAO contacts.",
+      crypto: ["USDC_SOL", "USDC_ETH", "SOL", "ETH", "BTC", "WBTC", "ZEC", "USDT", "DAI"],
+    },
+    licenseProtection: {
+      model: "signed organization-bound license",
+      tamperPolicy: "fail-closed",
+      destructiveBehavior: false,
+      summary: "Modified or unverifiable licenses disable paid features and require reactivation; customer data is not destructively altered.",
+    },
+    quickNodeRole:
+      "Optional runtime/proof and chain-data provider. Legacy authenticated QuickNode RPC is disabled unless PRIVATE_DAO_ENABLE_LEGACY_QUICKNODE_RPC=true.",
+    quickNodeX402: quickNodeX402Status(),
+    mainnetRpcFallbacks: resolveMainnetRpcEndpoints().map(redactUrlSecret),
+    paymentGate: {
+      status: "/api/v1/payment-gate/random/status",
+      prepare: "/api/v1/payment-gate/random/prepare",
+      verify: "/api/v1/payment-gate/random/verify",
+    },
+  };
+}
+
 async function visitorStats() {
   const rows =
     (await supabaseSelectPaged<VisitorPingRow>(
@@ -1431,8 +3722,9 @@ async function visitorStats() {
       transactionSourceTable: "visitor_transactions",
       activeWindowMinutes: 30,
       totalSessions: "unique hashed browser sessions in the selected read window",
-      totalPings: "raw visitor ping rows stored in Supabase",
+      totalPings: "sampled visitor ping rows stored in Supabase plus in-memory fallback rows",
       totalVisitorTransactions: "wallet-submitted Testnet transaction receipts captured by /api/v1/transactions/receipt",
+      storagePolicy: "visitor Supabase writes are throttled per session and page to reduce cost and noisy duplicate rows",
     },
     activeNowPings: activeRows.length,
     activeTodayPings: todayRows.length,
@@ -3544,6 +5836,484 @@ async function handle(req: http.IncomingMessage, res: http.ServerResponse) {
       return;
     }
 
+    if (req.method === "POST" && pathname === "/api/v1/proof-workflows/credit-limit/run") {
+      const body = await readRequestJsonWithLimit(req, 96_000);
+      let result;
+      try {
+        result = await handleCreditLimitWorkflow(body as Record<string, unknown>);
+      } catch (error) {
+        const errorMessage = String((error as Error)?.message || error || "Customer data import failed.");
+        result = {
+          ok: false,
+          source: "privatedao-proof-workflows-credit-limit",
+          status: "import-failed",
+          error: "Proof was not issued because customer data could not be imported.",
+          workflowId: stringField(body as Record<string, unknown>, "workflowId", "unissued-import-failed"),
+          publicOutcome: "proof-not-issued",
+          issuedCreditLimitUsd: 0,
+          validationErrors: [errorMessage],
+          stageResults: [
+            {
+              id: "data-import",
+              label: "Import Customer Data",
+              status: "failed",
+            },
+            {
+              id: "proof-generation",
+              label: "Generate Proof",
+              status: "blocked",
+            },
+          ],
+          verification: {
+            processExisted: false,
+            processCompleted: false,
+            requiredApprovalsHappened: false,
+            requiredSequenceRespected: false,
+          },
+          privateDataExcluded: [
+            "raw customer id",
+            "raw earnings",
+            "raw payout records",
+            "raw transactions",
+            "internal threshold formula inputs",
+          ],
+        };
+      }
+      writeJson(res, result.ok ? 200 : 422, result);
+      return;
+    }
+
+    if (req.method === "POST" && pathname === "/api/v1/proof-workflows/blind-policy/prove") {
+      const body = await readRequestJsonWithLimit(req, 96_000);
+      let result;
+      try {
+        result = await handleBlindPolicyWorkflow(body as Record<string, unknown>);
+      } catch (error) {
+        result = {
+          ok: false,
+          source: "privatedao-blind-policy-verification",
+          status: "proof-not-issued",
+          error: "Proof was not issued because the private policy proof could not be generated and verified.",
+          workflowId: stringField(body as Record<string, unknown>, "workflowId", "unissued-blind-policy"),
+          publicOutcome: "proof-not-issued",
+          validationErrors: [String((error as Error)?.message || error || "Blind policy proof failed.")],
+          privateDataExcluded: [
+            "raw subject identity",
+            "private record values",
+            "risk score",
+            "liabilities",
+            "policy thresholds",
+            "internal policy formula",
+          ],
+        };
+      }
+      writeJson(res, result.ok ? 200 : 422, result);
+      return;
+    }
+
+    if (req.method === "GET" && pathname === "/api/v1/proof-workflows/blind-policy/sample") {
+      writeJson(res, 200, {
+        ok: true,
+        source: "privatedao-blind-policy-sample-private-inputs",
+        privateInputs: {
+          organizationId: "sample-lender-001",
+          subjectId: "customer-redacted-4381",
+          membershipVerified: true,
+          records: [{ amountUsd: 8800 }, { amountUsd: 9400 }, { amountUsd: 9200 }],
+          riskScore: 84,
+          liabilitiesUsd: 2400,
+        },
+        publicPolicyShape: {
+          policyId: blindPolicyRules.policyIdLabel,
+          proofType: "Groth16 ZK policy proof",
+          publicSignals: ["policyId", "policyCommitment", "inputCommitment", "satisfiedClaim"],
+        },
+        note: "Customers can replace this with their own private data. The API issues a proof only when Groth16 generation and verification succeed.",
+      });
+      return;
+    }
+
+    if (req.method === "POST" && pathname === "/api/v1/proof-workflows/blind-policy/verify") {
+      const body = await readRequestJsonWithLimit(req, 256_000);
+      const proofPackage =
+        body && typeof body === "object" && !Array.isArray(body) && "publicProofPackage" in body
+          ? (body as Record<string, unknown>).publicProofPackage
+          : body && typeof body === "object" && !Array.isArray(body) && "proofPackage" in body
+            ? (body as Record<string, unknown>).proofPackage
+          : body;
+      const verification = verifyBlindPolicyProofPackage(proofPackage);
+      writeJson(res, verification.ok ? 200 : 422, {
+        ok: verification.ok,
+        source: "privatedao-blind-policy-verifier",
+        status: verification.status,
+        match: verification.match,
+        originalHash: verification.originalHash,
+        recomputedHash: verification.recomputedHash,
+        message: verification.message,
+        verification,
+        explanation:
+          "We verify the Groth16 proof against public signals, then recompute the public proof package hash. If anything changes, verification fails.",
+      });
+      return;
+    }
+
+    if (req.method === "POST" && pathname === "/api/v1/proof-workflows/blind-policy/onchain-receipt") {
+      const body = await readRequestJsonWithLimit(req, 256_000);
+      const proofPackage =
+        body && typeof body === "object" && !Array.isArray(body) && "publicProofPackage" in body
+          ? (body as Record<string, unknown>).publicProofPackage
+          : body && typeof body === "object" && !Array.isArray(body) && "proofPackage" in body
+            ? (body as Record<string, unknown>).proofPackage
+            : body;
+      let result;
+      try {
+        result = await submitBlindPolicyReceiptOnchain(proofPackage as BlindPolicyPublicProofPackage);
+      } catch (error) {
+        result = {
+          ok: false,
+          source: "solana-anchor-receipt-registry",
+          status: "onchain-receipt-failed",
+          error: String((error as Error)?.message || error || "Failed to submit blind policy receipt on-chain."),
+        };
+      }
+      writeJson(res, result.ok ? 200 : 422, result);
+      return;
+    }
+
+    if (req.method === "GET" && pathname === "/api/v1/proof-workflows/blind-policy/status") {
+      const circuit = "private_dao_blind_policy_overlay";
+      const artifacts = {
+        circuit: `zk/circuits/${circuit}.circom`,
+        wasm: `zk/build/${circuit}_js/${circuit}.wasm`,
+        provingKey: `zk/setup/${circuit}_final.zkey`,
+        verificationKey: `zk/setup/${circuit}_vkey.json`,
+      };
+      writeJson(res, 200, {
+        ok: true,
+        source: "privatedao-blind-policy-status",
+        product: "Blind Policy Verification",
+        proofSystem: "Groth16",
+        proofSystems: {
+          groth16: {
+            status: "live",
+            implementation: "Circom witness generation + snarkjs groth16 prove + snarkjs groth16 verify",
+          },
+          plonk: {
+            status: "not-claimed",
+            implementation: null,
+          },
+          stark: {
+            status: "not-claimed",
+            implementation: null,
+          },
+          recursiveProofs: {
+            status: "not-claimed",
+            implementation: null,
+          },
+          solanaOnchainVerification: {
+            status: "receipt-registry-with-memo-fallback",
+            implementation:
+              "Attempts to store the already verified blind policy receipt hashes in an Anchor PDA receipt account. If the Anchor receipt program is unavailable, the same hashes are stored in a Solana Memo receipt transaction. This is not a claim of full Groth16 pairing verification on-chain.",
+            programId: blindPolicyVerifierProgramId.toBase58(),
+            cluster: blindPolicyOnchainCluster(),
+            endpoint: "/api/v1/proof-workflows/blind-policy/onchain-receipt",
+          },
+        },
+        onchainReceipt: {
+          endpoint: "/api/v1/proof-workflows/blind-policy/onchain-receipt",
+          programId: blindPolicyVerifierProgramId.toBase58(),
+          cluster: blindPolicyOnchainCluster(),
+          fallback: "solana-memo-receipt",
+          pdaSeeds: ["blind_policy_receipt", "authority", "sha256(proofId)"],
+          stores: [
+            "proofIdHash",
+            "proofHash",
+            "policyCommitmentHash",
+            "inputCommitmentHash",
+            "verificationKeyHash",
+            "circuitVersionHash",
+            "policyVersionHash",
+          ],
+        },
+        proofTruthBoundary: {
+          liveVerified: "Groth16 witness generation and snarkjs verification run on this endpoint before a proof package is issued.",
+          commitmentOnly: [
+            "REFHE lane is a commitment boundary unless a separate REFHE receipt is attached.",
+            "Ika / Encrypt 2PC-MPC lane is a commitment boundary unless a separate Ika final DKG/signing receipt is attached.",
+            "MagicBlock lane is a commitment boundary unless a separate MagicBlock execution receipt is attached.",
+          ],
+        },
+        publicSignals: ["policyId", "policyCommitment", "inputCommitment", "satisfiedClaim"],
+        privateWitness: [
+          "organizationKey",
+          "subjectKey",
+          "membershipVerified",
+          "private records",
+          "liabilities",
+          "riskScore",
+          "policy thresholds",
+          "policy salt",
+          "input salt",
+        ],
+        artifacts: Object.fromEntries(
+          Object.entries(artifacts).map(([key, relativePath]) => [
+            key,
+            {
+              path: relativePath,
+              available: existsSync(zkArtifactPath(relativePath)),
+              sha256: existsSync(zkArtifactPath(relativePath)) ? hashFileHex(relativePath) : null,
+            },
+          ]),
+        ),
+      });
+      return;
+    }
+
+    if (req.method === "GET" && pathname === "/api/v1/txline/status") {
+      writeJson(res, 200, {
+        ok: true,
+        source: "privatedao-txline-settlement-status",
+        product: "PrivateDAO Match Settlement",
+        track: "TxODDS / TxLINE Prediction Markets and Settlement",
+        providerMode: txlineProviderMode(),
+        txlineConfigured: Boolean(txlineApiToken && txlineSessionJwt),
+        txlineApiBase,
+        txlineAuth: {
+          sessionJwtConfigured: Boolean(txlineSessionJwt),
+          apiTokenConfigured: Boolean(txlineApiToken),
+          requiredHeaders: ["Authorization: Bearer <session-jwt>", "X-Api-Token: <api-token>"],
+          documentedSnapshotEndpoint: "/api/fixtures/snapshot",
+          documentedUpdatesEndpoint: "/api/fixtures/updates/{epochDay}/{hourOfDay}",
+        },
+        serviceLevelId: txlineServiceLevelId,
+        competitionId: txlineCompetitionId || null,
+        walletPublicKeyConfigured: Boolean(txlineWalletPublicKey),
+        proofSystem: {
+          groth16: "live via PrivateDAO Blind Policy circuit",
+          circuitId: txlineSettlementCircuitId,
+          circuitVersion: txlineSettlementCircuitVersion,
+          policyVersion: txlineSettlementPolicyVersion,
+        },
+        solanaReceipt: {
+          mode: "solana-memo-receipt",
+          cluster: txlineSettlementCluster(),
+          rpcConfigured: Boolean(process.env.TXLINE_SETTLEMENT_RPC_URL || process.env.SOLANA_RPC_URL),
+        },
+        endpoints: {
+          matches: "/api/v1/txline/matches",
+          resolve: "/api/v1/txline/resolve",
+          verify: "/api/v1/txline/verify",
+          onchainReceipt: "/api/v1/txline/onchain-receipt",
+        },
+        truthBoundary:
+          txlineProviderMode() === "live-txline-provider"
+            ? "TxLINE session JWT and activated API token are configured. Match data requests use documented TxLINE snapshot/update endpoints."
+            : "TxLINE live credentials are not fully configured. Demo match data is simulated and clearly labeled.",
+      });
+      return;
+    }
+
+    if (req.method === "POST" && pathname === "/api/v1/txline/guest/start") {
+      let result;
+      try {
+        result = await startTxlineGuestSession();
+      } catch (error) {
+        result = {
+          ok: false,
+          source: "privatedao-txline-free-api-start",
+          status: "guest-session-failed",
+          txlineApiBase,
+          guestAuthUrl: txlineGuestAuthUrl,
+          error: String((error as Error)?.message || error || "Unable to start TxLINE guest session."),
+        };
+      }
+      writeJson(res, result.ok ? 200 : 502, result);
+      return;
+    }
+
+    if (req.method === "GET" && pathname === "/api/v1/txline/matches") {
+      const result = await getTxlineMatches();
+      writeJson(res, 200, {
+        ok: true,
+        apiSource: "privatedao-txline-matches",
+        ...result,
+      });
+      return;
+    }
+
+    if (req.method === "POST" && pathname === "/api/v1/txline/resolve") {
+      const body = await readRequestJsonWithLimit(req, 256_000);
+      let result;
+      try {
+        result = await handleTxlineSettlementResolve(body as Record<string, unknown>);
+      } catch (error) {
+        result = {
+          ok: false,
+          source: "privatedao-txline-settlement",
+          providerMode: txlineProviderMode(),
+          status: "settlement-proof-not-issued",
+          error: String((error as Error)?.message || error || "TxLINE settlement failed."),
+        };
+      }
+      writeJson(res, result.ok ? 200 : 422, result);
+      return;
+    }
+
+    if (req.method === "POST" && pathname === "/api/v1/txline/verify") {
+      const body = await readRequestJsonWithLimit(req, 512_000);
+      const proofPackage =
+        body && typeof body === "object" && !Array.isArray(body) && "publicProofPackage" in body
+          ? (body as Record<string, unknown>).publicProofPackage
+          : body && typeof body === "object" && !Array.isArray(body) && "proofPackage" in body
+            ? (body as Record<string, unknown>).proofPackage
+            : body;
+      const verification = verifyTxlineSettlementWithGroth16(proofPackage);
+      writeJson(res, verification.ok ? 200 : 422, {
+        ok: verification.ok,
+        source: "privatedao-txline-settlement-verifier",
+        status: verification.status,
+        match: verification.match,
+        originalHash: verification.originalHash,
+        recomputedHash: verification.recomputedHash,
+        message: verification.message,
+        verification,
+        explanation:
+          "We verify the Groth16 proof, recompute the public settlement package hash, and compare it with the original hash. If anything changes, verification fails.",
+      });
+      return;
+    }
+
+    if (req.method === "POST" && pathname === "/api/v1/txline/onchain-receipt") {
+      const body = await readRequestJsonWithLimit(req, 512_000);
+      const proofPackage =
+        body && typeof body === "object" && !Array.isArray(body) && "publicProofPackage" in body
+          ? (body as Record<string, unknown>).publicProofPackage
+          : body && typeof body === "object" && !Array.isArray(body) && "proofPackage" in body
+            ? (body as Record<string, unknown>).proofPackage
+            : body;
+      let result;
+      try {
+        result = await submitTxlineSettlementReceiptOnchain(proofPackage as TxlineSettlementProofPackage);
+      } catch (error) {
+        result = {
+          ok: false,
+          source: "privatedao-txline-settlement-receipt",
+          status: "onchain-receipt-failed",
+          error: String((error as Error)?.message || error || "Failed to submit TxLINE settlement receipt on Solana."),
+        };
+      }
+      writeJson(res, result.ok ? 200 : 422, result);
+      return;
+    }
+
+    if (req.method === "GET" && pathname === "/api/v1/proof-workflows/verify/demo-proof-id") {
+      const proofPackage = buildCreditLimitPublicProofPackage({
+        proofId: "demo-proof-id",
+        workflowId: "customer_credit_demo_verified",
+        issuedLimitUsd: 2250,
+        currency: "USD",
+        stages: [
+          { id: "membership-verification", label: "Verify Pro Membership", status: "completed" },
+          { id: "earnings-validation", label: "Fetch Earnings", status: "completed" },
+          { id: "threshold-calculation", label: "Calculate Threshold", status: "completed" },
+          { id: "limit-issuance", label: "Issue Credit Limit", status: "completed" },
+          { id: "proof-generation", label: "Generate Proof", status: "completed" },
+        ],
+        publicMetrics: {
+          proMembershipVerified: true,
+          importedRecordCount: 3,
+          riskBand: "strong",
+        },
+      });
+      const verification = verifyCreditLimitProofPackage(proofPackage);
+      writeJson(res, 200, {
+        ok: verification.ok,
+        source: "privatedao-proof-workflows-verifier",
+        proofPackage,
+        verification,
+        explanation:
+          "We recompute the proof from the public proof package and compare it with the original hash. If anything changes, verification fails.",
+      });
+      return;
+    }
+
+    if (req.method === "POST" && pathname === "/api/v1/proof-workflows/verify") {
+      const body = await readRequestJsonWithLimit(req, 96_000);
+      const proofPackage =
+        body && typeof body === "object" && !Array.isArray(body) && "proofPackage" in body
+          ? (body as Record<string, unknown>).proofPackage
+          : body;
+      const verification = verifyCreditLimitProofPackage(proofPackage);
+      writeJson(res, verification.ok ? 200 : 422, {
+        ok: verification.ok,
+        source: "privatedao-proof-workflows-verifier",
+        verification,
+        explanation:
+          "We recompute the proof from the public proof package and compare it with the original hash. If anything changes, verification fails.",
+      });
+      return;
+    }
+
+    if (req.method === "GET" && pathname === "/api/v1/proof-workflows/status") {
+      writeJson(res, 200, {
+        ok: true,
+        source: "privatedao-proof-workflows-status",
+        generatedAt: new Date().toISOString(),
+        product: "Proof Workflows",
+        promise: "Private decisions. Verifiable outcomes.",
+        availableWorkflows: [
+          {
+            id: "credit-limit",
+            label: "Credit Limit Decision",
+            status: "live",
+            sample: "/api/v1/proof-workflows/credit-limit/sample",
+            run: "/api/v1/proof-workflows/credit-limit/run",
+            verify: "/api/v1/proof-workflows/verify",
+            publicDemoProof: "/api/v1/proof-workflows/verify/demo-proof-id",
+          },
+          {
+            id: "blind-policy",
+            label: "Blind Policy Verification",
+            status: "live",
+            proofSystem: "Groth16",
+            sample: "/api/v1/proof-workflows/blind-policy/sample",
+            prove: "/api/v1/proof-workflows/blind-policy/prove",
+            verify: "/api/v1/proof-workflows/blind-policy/verify",
+            statusEndpoint: "/api/v1/proof-workflows/blind-policy/status",
+          },
+        ],
+        proofIssuanceRules: [
+          "No proof is issued if customer data import fails.",
+          "No proof is issued if membership is not verified.",
+          "No proof is issued if imported earnings records are empty.",
+          "No proof is issued if required workflow stages fail.",
+        ],
+        verification:
+          "We recompute the proof from the public proof package and compare it with the original hash. If anything changes, verification fails.",
+      });
+      return;
+    }
+
+    if (req.method === "GET" && pathname === "/api/v1/proof-workflows/credit-limit/sample") {
+      writeJson(res, 200, {
+        ok: true,
+        source: "privatedao-proof-workflows-sample-customer-data",
+        customerData: {
+          customerId: "credit-redacted-customer-001",
+          proMembership: true,
+          currency: "USD",
+          riskScore: 84,
+          monthlyEarnings: 9200,
+          payouts: [
+            { amountUsd: 8800 },
+            { amountUsd: 9400 },
+          ],
+        },
+        note: "Use this as a real JSON payload shape. Customers can replace it with their own endpoint or direct JSON.",
+      });
+      return;
+    }
+
     if (req.method === "POST" && pathname === "/api/v1/freshness/ping") {
       const body = await readRequestJson(req);
       const visitorUa = stringField(body, "visitorUa", String(req.headers["user-agent"] || "unknown"));
@@ -3592,6 +6362,51 @@ async function handle(req: http.IncomingMessage, res: http.ServerResponse) {
       const body = await readRequestJson(req);
       const result = await handleOnboardingRequest(body);
       writeJson(res, 200, result);
+      return;
+    }
+
+    if (req.method === "POST" && pathname === "/api/v1/pilot-requests") {
+      const body = await readRequestJsonWithLimit(req, 32_000);
+      const result = await handlePilotRequest(body as Record<string, unknown>, req);
+      writeJson(res, 200, result);
+      return;
+    }
+
+    if (req.method === "GET" && pathname === "/api/v1/commercial/checkout/status") {
+      writeJson(res, 200, commercialCheckoutStatus());
+      return;
+    }
+
+    if (req.method === "POST" && pathname === "/api/v1/commercial/checkout/prepare") {
+      const body = await readRequestJsonWithLimit(req, 32_000);
+      const result = await handleCommercialCheckoutPrepare(body as Record<string, unknown>);
+      writeJson(res, 200, result);
+      return;
+    }
+
+    if (req.method === "POST" && pathname === "/api/v1/commercial/checkout/verify") {
+      const body = await readRequestJsonWithLimit(req, 32_000);
+      const result = await handleCommercialCheckoutVerify(body as Record<string, unknown>);
+      writeJson(res, 200, result);
+      return;
+    }
+
+    if (req.method === "GET" && pathname === "/api/v1/payment-gate/random/status") {
+      writeJson(res, 200, randomGateStatus());
+      return;
+    }
+
+    if (req.method === "POST" && pathname === "/api/v1/payment-gate/random/prepare") {
+      const body = await readRequestJsonWithLimit(req, 32_000);
+      const result = await handleRandomGatePrepare(body as Record<string, unknown>);
+      writeJson(res, 200, result);
+      return;
+    }
+
+    if (req.method === "POST" && pathname === "/api/v1/payment-gate/random/verify") {
+      const body = await readRequestJsonWithLimit(req, 32_000);
+      const result = await handleRandomGateVerify(body as Record<string, unknown>);
+      writeJson(res, result.ok ? 200 : 422, result);
       return;
     }
 
@@ -3728,6 +6543,13 @@ async function handle(req: http.IncomingMessage, res: http.ServerResponse) {
           executionEvent: "/api/v1/execution-events",
           executionStats: "/api/v1/execution-events/stats",
           onboardRequest: "/api/v1/onboard/request",
+          pilotRequest: "/api/v1/pilot-requests",
+          commercialCheckoutStatus: "/api/v1/commercial/checkout/status",
+          commercialCheckoutPrepare: "/api/v1/commercial/checkout/prepare",
+          commercialCheckoutVerify: "/api/v1/commercial/checkout/verify",
+          randomPaymentGateStatus: "/api/v1/payment-gate/random/status",
+          randomPaymentGatePrepare: "/api/v1/payment-gate/random/prepare",
+          randomPaymentGateVerify: "/api/v1/payment-gate/random/verify",
           quickNodeStream: "/api/v1/quicknode/stream",
           quickNodeStreamStats: "/api/v1/quicknode/stream/stats",
           integrationMatrixAnchor: "/api/v1/integration-matrix/anchor",
@@ -3737,6 +6559,9 @@ async function handle(req: http.IncomingMessage, res: http.ServerResponse) {
           frontierPrivacyProtocolSpine: "/api/v1/frontier/privacy-protocol-spine",
           providerIntegrationStatus: "/api/v1/provider-integrations/status",
           pusdUtilityLayer: "/api/v1/pusd/utility-layer",
+          proofWorkflowStatus: "/api/v1/proof-workflows/status",
+          proofWorkflowCreditLimitRun: "/api/v1/proof-workflows/credit-limit/run",
+          proofWorkflowCreditLimitSample: "/api/v1/proof-workflows/credit-limit/sample",
           jupiterOrder: "/api/v1/jupiter/order",
           readiness: "/api/v1/readiness",
         },

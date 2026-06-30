@@ -1,0 +1,45 @@
+Every prediction market has one critical moment: settlement.
+
+Everyone can place bets. The hard part is proving the outcome without trusting the operator.
+
+That is what PrivateDAO built on top of TxLINE.
+
+TxLINE proves the match result.
+PrivateDAO proves everything that happens after the match.
+
+Imagine a simple product.
+
+Predict Brazil versus Japan.
+Pay zero point one SOL.
+When the match ends, TxLINE publishes the official result.
+
+PrivateDAO verifies the result, executes the private settlement policy, coordinates the reward treasury, generates proof, and publishes a Solana receipt.
+
+For the user, it feels simple.
+Predict. Pay. Settle. Verify.
+
+For the operator, it becomes infrastructure.
+Official result. Validation. Settlement policy. Blind Verification. Settlement hash. Solana receipt.
+
+Why not just use TxLINE directly?
+
+Because trusted sports data is only the first half.
+
+Applications also need private payout rules, treasury coordination, Merkle proof packets, Groth16 or ZK policy verification, public receipts, and auditability.
+
+TxLINE is the trusted data layer.
+PrivateDAO is the confidential execution and proof layer.
+
+Together, they make sports settlement understandable to users and verifiable to builders, judges, and auditors.
+
+This starts with World Cup-style applications.
+But the pattern goes beyond sports: prediction markets, community competitions, fantasy rewards, insurance triggers, and enterprise settlement workflows.
+
+TxLINE Match Settlement is powered by TxLINE data and extended by PrivateDAO settlement infrastructure.
+
+The match ends.
+The result is verified.
+The policy executes privately.
+The treasury moves rewards.
+The proof is public.
+The receipt is on Solana.

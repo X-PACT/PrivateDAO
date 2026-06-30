@@ -30,6 +30,13 @@ const solutionPoints = [
   "Preserve organizational continuity",
 ] as const;
 
+const philosophyPoints = [
+  ["Product before token", "PrivateDAO built the product ecosystem first. PDAO is the community alignment surface around that work, not the reason the company exists."],
+  ["Community before speculation", "The goal is a strong community of builders, researchers, developers, organizations, and long-term believers before short-term attention."],
+  ["Privacy as infrastructure", "PrivateDAO protects sensitive operations before public disclosure while preserving accountability through verification."],
+  ["Investor-readable trust", "A serious community holding and sharing the token helps investors see conviction, continuity, and public support around the product."],
+] as const;
+
 const whyNow = [
   ["Institutional adoption", "Organizations need privacy before they move real operations onchain."],
   ["DAO treasury growth", "Treasury decisions now involve grants, payroll, vendors, and multi-party approvals."],
@@ -124,6 +131,47 @@ export default function InvestorsPage() {
               Read thesis
             </Link>
           </div>
+        </div>
+      </section>
+
+      <section className="rounded-[28px] border border-white/10 bg-white/[0.035] p-4">
+        <video
+          className="aspect-video w-full rounded-[22px] border border-white/10 bg-black"
+          controls
+          preload="metadata"
+          poster="/videos/privatedao-investor-announcement-3min-poster.png"
+          src="/videos/privatedao-investor-announcement-3min.mp4"
+        />
+      </section>
+
+      <section className="rounded-[28px] border border-emerald-300/16 bg-emerald-300/[0.06] p-5 sm:p-6">
+        <div className="text-[11px] uppercase tracking-[0.25em] text-emerald-100/76">The PrivateDAO Philosophy</div>
+        <h2 className="mt-3 max-w-4xl text-2xl font-semibold text-white">
+          The product builds the mission. The community protects the mission. The token aligns the community.
+        </h2>
+        <p className="mt-3 max-w-5xl text-sm leading-7 text-white/64">
+          PrivateDAO is not presenting PDAO as a shortcut around execution. The product, proof routes, whitepaper,
+          settlement work, and public APIs are the foundation. PDAO gives the community a visible way to gather around
+          the mission, and that visible alignment helps serious investors understand who believes in the ecosystem.
+        </p>
+        <div className="mt-5 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+          {philosophyPoints.map(([title, body]) => (
+            <article key={title} className="rounded-2xl border border-white/10 bg-black/22 p-4">
+              <div className="text-base font-semibold text-white">{title}</div>
+              <p className="mt-2 text-sm leading-6 text-white/62">{body}</p>
+            </article>
+          ))}
+        </div>
+        <div className="mt-5 flex flex-wrap gap-3">
+          <Link href="/token/" className={cn(buttonVariants({ size: "sm" }))}>
+            Open PDAO token
+          </Link>
+          <Link href="/community" className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>
+            Community page
+          </Link>
+          <Link href="/whitepaper" className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
+            Read whitepaper
+          </Link>
         </div>
       </section>
 

@@ -79,8 +79,12 @@ Public API state observed after the local candidate update:
 
 TxLINE live API token state:
 
-- `https://api.privatedao.org/api/v1/txline/status` currently reports simulated TxLINE provider mode
-- TxLINE guest/session and subscription-token activation remain the required next step before claiming live TxLINE data settlement
+- `npm run txline:activate-free-tier` succeeded using the official TxLINE free World Cup subscription flow
+- subscription transaction: `3xrzVX1L4XX9T23JJe7xi2ic691GPE7rQAYPXtoEcbfAkBonox45P4PeYWh2symZL11AemZYt1w2QKiwiv8gpWmD`
+- AWS read-node was rebuilt and recreated after `TXLINE_SESSION_JWT` and `TXLINE_API_TOKEN` were configured
+- `https://api.privatedao.org/api/v1/txline/status` now reports `live-txline-provider`
+- `https://api.privatedao.org/api/v1/txline/matches` now fetches fixtures from `https://txline.txodds.com/api/fixtures/snapshot`
+- a live fixture resolve test returned HTTP `422` because the selected fixture was not final; this is the intended safety behavior
 
 ## Tests And Checks Run
 

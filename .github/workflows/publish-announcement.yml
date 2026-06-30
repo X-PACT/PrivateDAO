@@ -1,0 +1,44 @@
+name: Publish Product Announcement
+
+on:
+  workflow_dispatch:
+    inputs:
+      announcement:
+        description: Public announcement JSON path
+        required: true
+        default: apps/web/public/announcements/txline-match-settlement-2026-06-29.json
+      dry_run:
+        description: Keep true to update/check without posting to channels
+        required: true
+        default: "true"
+
+jobs:
+  publish:
+    name: Publish announcement
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    env:
+      PRIVATE_DAO_ANNOUNCEMENT_DRY_RUN: ${{ inputs.dry_run }}
+      PRIVATE_DAO_X_API_BASE: ${{ vars.PRIVATE_DAO_X_API_BASE || 'https://api.x.com' }}
+      PRIVATE_DAO_X_USER_BEARER_TOKEN: ${{ secrets.PRIVATE_DAO_X_USER_BEARER_TOKEN }}
+      PRIVATE_DAO_X_WEBHOOK_URL: ${{ secrets.PRIVATE_DAO_X_WEBHOOK_URL }}
+      PRIVATE_DAO_TELEGRAM_BOT_TOKEN: ${{ secrets.PRIVATE_DAO_TELEGRAM_BOT_TOKEN }}
+      PRIVATE_DAO_TELEGRAM_CHAT_ID: ${{ secrets.PRIVATE_DAO_TELEGRAM_CHAT_ID }}
+      PRIVATE_DAO_DISCORD_BOT_TOKEN: ${{ secrets.PRIVATE_DAO_DISCORD_BOT_TOKEN }}
+      PRIVATE_DAO_DISCORD_CHANNEL_ID: ${{ secrets.PRIVATE_DAO_DISCORD_CHANNEL_ID }}
+      PRIVATE_DAO_DISCORD_WEBHOOK_URL: ${{ secrets.PRIVATE_DAO_DISCORD_WEBHOOK_URL }}
+      PRIVATE_DAO_ANNOUNCEMENT_API_URL: ${{ secrets.PRIVATE_DAO_ANNOUNCEMENT_API_URL }}
+      PRIVATE_DAO_ANNOUNCEMENT_API_TOKEN: ${{ secrets.PRIVATE_DAO_ANNOUNCEMENT_API_TOKEN }}
+      PRIVATE_DAO_ANNOUNCEMENT_WEBHOOKS: ${{ secrets.PRIVATE_DAO_ANNOUNCEMENT_WEBHOOKS }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Publish announcement
+        run: node scripts/publish-product-announcement.mjs --announcement "${{ inputs.announcement }}" --update-site

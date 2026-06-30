@@ -1,0 +1,31 @@
+Most blockchain projects talk about privacy as if it only means encryption.
+
+PrivateDAO starts from a different idea.
+
+Privacy is operational infrastructure.
+
+Inside every serious organization, the real work happens before the public decision.
+
+Teams coordinate. They review budgets. They approve vendors. They manage treasury. They verify results.
+
+Every one of those steps can leak strategy, pressure a vote, expose a counterparty, or reveal information too early.
+
+PrivateDAO protects the operational lifecycle while keeping outcomes verifiable.
+
+Product one is Blind Verification: prove that a private rule was satisfied without exposing the sensitive data behind it.
+
+Product two is Proof Workflows: prove the process happened correctly without exposing documents, notes, or internal scoring.
+
+Product three is Private Rooms and Governance: coordinate proposals, protect vote intent, reveal at the right time, and keep proof visible.
+
+Product four is Treasury Coordination: move budgets, vendors, payroll, payouts, and receipts through a verifiable approval path.
+
+Product five is Sealed Auctions: keep bids and participant intent sealed until reveal, while the final outcome remains auditable.
+
+Product six is TxLINE Match Settlement: TxLINE proves the match result; PrivateDAO proves everything that happens after the match.
+
+The product builds the mission. The community protects the mission. The token aligns the community.
+
+PrivateDAO is inviting users, builders, institutions, and ecosystem partners who believe organizations need private coordination, selective disclosure, verifiable execution, and cryptographic accountability.
+
+Learn more at privatedao.org.

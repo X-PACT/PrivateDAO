@@ -71,6 +71,54 @@ AI-readable evaluation layer:
 
 Important: PrivateDAO is not a concept-only or mock-only submission. The live site, public GitHub repository, Testnet proof routes, runtime APIs, Android/web UX, and AI-readable manifests are public.
 
+## Current Live Release - 2026-06-30
+
+This repository is now synchronized with the AWS-hosted PrivateDAO public surface and the live `api.privatedao.org` runtime used by the current product submission.
+
+The current product framing is:
+
+```text
+PrivateDAO is the confidential coordination, execution, treasury, settlement, and proof layer for organizations.
+```
+
+The current public product set is:
+
+| Product | Live route | Runtime / proof surface |
+| --- | --- | --- |
+| Blind Verification | `https://privatedao.org/proof-workflows/` | `https://api.privatedao.org/api/v1/proof-workflows/blind-policy/status` |
+| Proof Workflows | `https://privatedao.org/proof-workflows/` | public workflow status, proof templates, and verification endpoints |
+| Private Governance | `https://privatedao.org/govern/` and `https://privatedao.org/rooms/` | wallet-first commit/reveal and proof routes |
+| Treasury Coordination | `https://privatedao.org/treasury/` | treasury review, payment-gate, and receipt paths |
+| Sealed Auctions | `https://privatedao.org/auctions/` | sealed-bid intent, reveal, and audit posture |
+| TxLINE Match Settlement | `https://privatedao.org/txline-settlement/` | `https://api.privatedao.org/api/v1/txline/status` and `https://api.privatedao.org/api/v1/txline/matches` |
+| PDAO Community Token | `https://privatedao.org/token/` | `https://privatedao.org/token.json` and `https://privatedao.org/vrfd-pdao-standard.json` |
+
+TxLINE Match Settlement is the current World Cup-focused infrastructure product:
+
+```text
+TxLINE proves the match result.
+PrivateDAO proves everything that happens after the match.
+
+Official Result -> Validation -> Settlement Policy -> Proof -> Solana Receipt
+```
+
+The AWS read-node is live, TxLINE provider mode is configured, the payment gate uses Solana Mainnet verification with safe RPC fallbacks, QuickNode Streams telemetry is exposed through the public API, and Supabase-backed receipt/visitor surfaces remain part of the proof and dashboard story. Secrets, keypairs, Supabase service-role keys, QuickNode credentials, TxLINE tokens, and wallet material are intentionally excluded from this repository.
+
+Current public media:
+
+- Investor video: `https://privatedao.org/videos/privatedao-investor-announcement-3min.mp4`
+- TxLINE video: `https://privatedao.org/videos/txline-settlement-demo-3min.mp4`
+- PDAO token cover: `https://privatedao.org/assets/token/pdao-token-fullscreen-cover.jpg`
+
+Current submission and machine-readable surfaces:
+
+- TxLINE product page: `https://privatedao.org/txline-settlement/`
+- Live operation verification: `https://privatedao.org/viewer/live-ops-verification-2026-06-29/`
+- Token agent metadata: `https://privatedao.org/token.json`
+- Standard Jupiter VRFD packet: `https://privatedao.org/vrfd-pdao-standard.json`
+- Announcement feed: `https://privatedao.org/announcements/feed.json`
+- AI index: `https://privatedao.org/llms.txt`
+
 
 <p align="center">
   <a href="https://privatedao.org/"><img src="https://img.shields.io/badge/Live%20Product-Open-14F195?logo=solana" alt="Live product" /></a>
