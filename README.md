@@ -122,6 +122,7 @@ Current submission and machine-readable surfaces:
 
 <p align="center">
   <a href="https://privatedao.org/"><img src="https://img.shields.io/badge/Live%20Product-Open-14F195?logo=solana" alt="Live product" /></a>
+  <a href="https://privatedao.org/token/"><img src="https://img.shields.io/badge/Support%20PDAO-4Mm5...hsMD-14F195?logo=solana" alt="Support PrivateDAO wallet 4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD" /></a>
   <a href="https://github.com/X-PACT/PrivateDAO/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/X-PACT/PrivateDAO/ci.yml?branch=main&label=CI" alt="CI status" /></a>
   <a href="docs/awards.md"><img src="https://img.shields.io/badge/Regional%20Recognition-1st%20Place-gold" alt="Regional 1st place recognition" /></a>
   <a href="https://solscan.io/account/EP9xE8MJZ6FfyEwLqns6HDdUZBknEa7WGYs1Jzsecuva?cluster=testnet"><img src="https://img.shields.io/badge/Solana-Testnet%20Program-38bdf8" alt="Testnet program" /></a>
@@ -155,6 +156,19 @@ Current submission and machine-readable surfaces:
 </p>
 
 ## Whitepaper And Review Rights
+
+## Support PrivateDAO
+
+PrivateDAO's current project wallet is:
+
+```text
+4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD
+```
+
+Use the official token page for context before interacting with the ecosystem:
+
+- `https://privatedao.org/token/`
+- `https://privatedao.org/token.json`
 
 - Whitepaper: `https://privatedao.org/trust/#whitepaper`
 - Downloadable whitepaper: `https://privatedao.org/assets/private-dao-founder-whiteprint.md`
