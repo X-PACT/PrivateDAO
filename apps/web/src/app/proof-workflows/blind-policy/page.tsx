@@ -16,6 +16,7 @@ export const metadata: Metadata = buildRouteMetadata({
     "PrivateDAO Blind Verification proves that a private decision policy was satisfied without exposing customer data, policy inputs, thresholds, or internal rules.",
   path: "/proof-workflows/blind-policy",
   keywords: ["blind verification", "private policy verification", "underwriting proof", "audit-ready decision proof"],
+  index: false,
 });
 
 const outcomes = [

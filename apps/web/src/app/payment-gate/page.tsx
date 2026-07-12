@@ -11,7 +11,7 @@ import { cn } from "@/lib/utils";
 export const metadata: Metadata = buildRouteMetadata({
   title: "Solana Payment Gate",
   description:
-    "A live PrivateDAO payment-gated demo: pay with Solana, verify the transaction on-chain, then unlock a result.",
+    "PrivateDAO commercial activation: pay with PDAO on Solana Mainnet, verify the transaction on-chain, then receive a signed self-hosted verification license.",
   path: "/payment-gate",
   keywords: ["PrivateDAO payment gate", "Solana payment verification", "wallet gated demo", "crypto subscription payment"],
 });
@@ -20,8 +20,8 @@ export default function PaymentGatePage() {
   return (
     <OperationsShell
       eyebrow="Payment activation"
-      title="A simple Solana payment gate for PrivateDAO products."
-      description="Connect a wallet, pay from the browser, verify the transaction on-chain, and unlock a result only after the payment is confirmed."
+      title="Activate the private verification engine."
+      description="Pay with PDAO on Solana Mainnet, verify the exact Token-2022 transfer, and receive a signed license for the self-hosted Blind Verification Engine."
       navigationMode="guided"
       badges={[
         { label: "Solana Mainnet payment", variant: "violet" },

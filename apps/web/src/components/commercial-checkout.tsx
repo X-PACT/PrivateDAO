@@ -5,13 +5,13 @@ import { ArrowRight, CheckCircle2, Copy, ShieldCheck, Wallet } from "lucide-reac
 import { useWallet } from "@solana/wallet-adapter-react";
 import { Buffer } from "buffer";
 import { Connection, PublicKey, SystemProgram, Transaction, TransactionInstruction } from "@solana/web3.js";
-import { createTransferCheckedInstruction, getAssociatedTokenAddress, TOKEN_PROGRAM_ID } from "@solana/spl-token";
+import { createTransferCheckedInstruction, getAssociatedTokenAddress, TOKEN_2022_PROGRAM_ID } from "@solana/spl-token";
 
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 type LicenseType = "COMMUNITY" | "PROFESSIONAL" | "ORGANIZATION" | "ENTERPRISE";
-type PaymentAsset = "USDC_SOL" | "PDAO_SOL" | "USDC_ETH" | "SOL" | "ETH" | "BTC" | "WBTC" | "ZEC" | "USDT" | "DAI";
+type PaymentAsset = "PDAO_SOL";
 
 type CheckoutResponse = {
   ok: boolean;
@@ -70,11 +70,7 @@ const planOptions: Array<{ value: LicenseType; label: string }> = [
   { value: "ENTERPRISE", label: "Enterprise - $25,000/year" },
 ];
 
-const assetOptions: Array<{ value: PaymentAsset; label: string }> = [
-  { value: "USDC_SOL", label: "USDC on Solana" },
-  { value: "PDAO_SOL", label: "PDAO on Solana" },
-  { value: "SOL", label: "SOL" },
-];
+const assetOptions: Array<{ value: PaymentAsset; label: string }> = [{ value: "PDAO_SOL", label: "PDAO on Solana (Token-2022)" }];
 
 const commercialCheckoutApiBase = "https://api.privatedao.org/api/v1/commercial/orders";
 const commercialControlPlaneBase = "https://api.privatedao.org";
@@ -91,7 +87,7 @@ export function CommercialCheckout() {
   const { connected, publicKey, sendTransaction } = useWallet();
   const [organizationName, setOrganizationName] = useState("PrivateDAO pilot organization");
   const [plan, setPlan] = useState<LicenseType>("PROFESSIONAL");
-  const [asset, setAsset] = useState<PaymentAsset>("USDC_SOL");
+  const [asset, setAsset] = useState<PaymentAsset>("PDAO_SOL");
   const [paymentHash, setPaymentHash] = useState("");
   const [checkout, setCheckout] = useState<CheckoutResponse["checkout"]>();
   const [order, setOrder] = useState<OrderResponse["order"]>();
@@ -155,11 +151,11 @@ export function CommercialCheckout() {
       if (order.asset === "SOL") {
         transaction.add(SystemProgram.transfer({ fromPubkey: publicKey, toPubkey: new PublicKey(order.treasuryAddress), lamports: Number(order.amountAtomic) }));
       } else {
-        if (!payment.tokenMint) throw new Error("The order did not include a token mint.");
+        if (!payment.tokenMint) throw new Error("The order did not include the PDAO mint.");
         const mint = new PublicKey(payment.tokenMint);
-        const source = await getAssociatedTokenAddress(mint, publicKey, false, TOKEN_PROGRAM_ID);
-        const destination = await getAssociatedTokenAddress(mint, new PublicKey(order.treasuryAddress), true, TOKEN_PROGRAM_ID);
-        transaction.add(createTransferCheckedInstruction(source, mint, destination, publicKey, BigInt(order.amountAtomic), payment.decimals, [], TOKEN_PROGRAM_ID));
+        const source = await getAssociatedTokenAddress(mint, publicKey, false, TOKEN_2022_PROGRAM_ID);
+        const destination = await getAssociatedTokenAddress(mint, new PublicKey(order.treasuryAddress), true, TOKEN_2022_PROGRAM_ID);
+        transaction.add(createTransferCheckedInstruction(source, mint, destination, publicKey, BigInt(order.amountAtomic), payment.decimals, [], TOKEN_2022_PROGRAM_ID));
       }
       transaction.add(new TransactionInstruction({ keys: [], programId: new PublicKey("MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr"), data: Buffer.from(order.memo, "utf8") }));
       const signature = await sendTransaction(transaction, solanaConnection);
@@ -179,13 +175,14 @@ export function CommercialCheckout() {
       <div className="text-[11px] uppercase tracking-[0.25em] text-cyan-100/76">Commercial activation</div>
       <h2 className="mt-3 text-2xl font-semibold text-white">Start a trial, then activate a paid PrivateDAO workspace.</h2>
       <p className="mt-3 max-w-4xl text-sm leading-7 text-white/64">
-        Choose a plan and payment path. Crypto activation can produce a receipt and organization license record from
-        this page. Bank transfer and enterprise procurement are invoice-led through official PrivateDAO contacts.
+        Choose a plan. The commercial activation path accepts PDAO on Solana Mainnet and verifies the exact Token-2022
+        mint, amount, treasury, order memo, and finality before issuing a license. Bank transfer and enterprise procurement
+        remain invoice-led through official PrivateDAO contacts.
       </p>
 
       <div className="mt-5 grid gap-3 lg:grid-cols-3">
         {[
-          ["Crypto transfer", "PDAO, USDC, or SOL on Solana. The order verifies the exact mint, amount, treasury, memo, and finality before licensing."],
+          ["PDAO transfer", "PDAO on Solana Mainnet. The order verifies the exact Token-2022 mint, amount, treasury, memo, and finality before licensing."],
           ["Bank transfer", "Request an invoice and bank instructions for monthly or fixed-scope pilot activation."],
           ["Enterprise procurement", "Use discovery for private deployment, SLA, support, and custom capacity."],
         ].map(([title, body]) => (

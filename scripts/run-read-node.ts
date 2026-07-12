@@ -3415,7 +3415,7 @@ async function verifyCommercialSolanaOrder(order: CommercialOrder, signature: st
   for (const instruction of instructions) {
     const parsed = (instruction as any)?.parsed;
     const info = parsed?.info || {};
-    if (String((instruction as any)?.program || "") !== "spl-token") continue;
+    if (!["spl-token", "spl-token-2022"].includes(String((instruction as any)?.program || ""))) continue;
     if (parsed?.type !== "transfer" && parsed?.type !== "transferChecked") continue;
     if (treasuryTokenAccounts.has(String(info.destination || ""))) transferredAtomic += BigInt(info.amount || info.tokenAmount?.amount || 0);
   }
@@ -3723,7 +3723,7 @@ function issueEnterpriseLicense(body: Record<string, unknown>, req: http.Incomin
 async function handleCommercialCheckoutPrepare(body: Record<string, unknown>) {
   const organizationName = stringField(body, "organizationName", "PrivateDAO organization").slice(0, 160);
   const plan = commercialPlanFor(stringField(body, "plan", "PROFESSIONAL"));
-  const asset = commercialAssetFor(stringField(body, "asset", "USDC_SOL"));
+  const asset = commercialAssetFor(stringField(body, "asset", "PDAO_SOL"));
   const organizationId =
     stringField(body, "organizationId").slice(0, 64) ||
     sha256Hex([organizationName, plan.licenseType, asset.asset].join(":")).slice(0, 24);
@@ -3755,7 +3755,7 @@ async function handleCommercialCheckoutVerify(body: Record<string, unknown>) {
   throw new Error("Legacy checkout verification is disabled. Use /api/v1/commercial/orders/verify with an orderId and Solana transaction signature.");
   const organizationId = stringField(body, "organizationId").slice(0, 64);
   const plan = commercialPlanFor(stringField(body, "plan", "PROFESSIONAL"));
-  const asset = commercialAssetFor(stringField(body, "asset", "USDC_SOL"));
+  const asset = commercialAssetFor(stringField(body, "asset", "PDAO_SOL"));
   const paymentHash = stringField(body, "paymentHash").slice(0, 180);
   if (!organizationId) throw new Error("organizationId is required.");
   if (!validateCommercialPaymentHash(asset.asset, paymentHash)) throw new Error("Payment hash does not match the selected asset format.");
@@ -3821,7 +3821,7 @@ async function handleCommercialOrderPrepare(body: Record<string, unknown>) {
   const organizationName = stringField(body, "organizationName", "PrivateDAO organization").slice(0, 160);
   const customerId = stringField(body, "customerId").slice(0, 120) || `cus_${randomUUID().replace(/-/g, "").slice(0, 24)}`;
   const plan = commercialPlanFor(stringField(body, "plan", "PROFESSIONAL"));
-  const asset = commercialAssetFor(stringField(body, "asset", "USDC_SOL"));
+  const asset = commercialAssetFor(stringField(body, "asset", "PDAO_SOL"));
   if (!plan.priceUsd || plan.priceUsd <= 0) throw new Error("A paid plan with a concrete price is required for an on-chain order.");
   if (asset.network !== "Solana") throw new Error("The on-chain commercial verifier currently accepts Solana assets only.");
   const amount = commercialSolanaAmount(asset.asset, plan.priceUsd, plan.licenseType);

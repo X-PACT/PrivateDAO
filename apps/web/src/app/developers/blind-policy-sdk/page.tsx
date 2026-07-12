@@ -13,6 +13,7 @@ export const metadata: Metadata = buildRouteMetadata({
     "PrivateDAO Blind Policy SDK surface for proving and verifying private policy decisions from application code.",
   path: "/developers/blind-policy-sdk",
   keywords: ["PrivateDAO SDK", "blind policy SDK", "proof workflow SDK"],
+  index: false,
 });
 
 const sdkFeatures = [

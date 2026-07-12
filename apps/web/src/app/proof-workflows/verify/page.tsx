@@ -13,6 +13,7 @@ export const metadata: Metadata = buildRouteMetadata({
   description: "Verify that a workflow process existed, completed, followed approvals, and respected sequence without revealing private data.",
   path: "/proof-workflows/verify",
   keywords: ["proof workflow verification", "verification portal", "audit trail", "private process proof"],
+  index: false,
 });
 
 const verificationClaims = [

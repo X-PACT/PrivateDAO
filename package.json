@@ -343,6 +343,7 @@
     "private-engine:backup": "bash scripts/backup-private-engine.sh",
     "private-engine:restore": "bash scripts/restore-private-engine.sh",
     "commercial:test:lifecycle": "node scripts/test-commercial-lifecycle.mjs",
+    "security:commercial:preflight": "node scripts/security-commercial-preflight.mjs",
     "release:verify": "node scripts/release-verify.mjs"
   },
   "dependencies": {

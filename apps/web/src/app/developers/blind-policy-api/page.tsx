@@ -14,6 +14,7 @@ export const metadata: Metadata = buildRouteMetadata({
     "Interactive API console and integration reference for PrivateDAO Blind Policy Verification.",
   path: "/developers/blind-policy-api",
   keywords: ["blind policy api", "proof workflow api", "groth16 verification api"],
+  index: false,
 });
 
 const endpoints = [

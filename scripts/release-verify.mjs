@@ -9,6 +9,7 @@ const suites = [
   ["solana", ["npm", "run", "test:core"]],
   ["commercial", ["node", "scripts/test-commercial-lifecycle.mjs"]],
   ["security-rbac", ["node", "scripts/test-private-engine-rbac.mjs"]],
+  ["security-commercial-preflight", ["node", "scripts/security-commercial-preflight.mjs"]],
   ["security-audit", ["npm", "audit", "--omit=dev", "--audit-level=high"]],
 ];
 

@@ -72,7 +72,7 @@ The installer creates `.env`, validates the ZK artifacts, builds both containers
 
 ## Commercial payment and licensing
 
-The production control plane follows `prepare order -> verify Solana transaction -> create organization -> issue Ed25519 license -> deliver package -> activate deployment`. An order has a unique id, exact atomic amount, treasury, expiry, and order memo. Verification requires a real Solana Mainnet transaction, the configured USDC mint or SOL transfer, the exact treasury destination, the required confirmation state, a successful transaction, and a matching memo. A payment signature cannot be reused for another order.
+The production control plane follows `prepare order -> verify Solana transaction -> create organization -> issue Ed25519 license -> deliver package -> activate deployment`. An order has a unique id, exact atomic amount, treasury, expiry, and order memo. The commercial path currently accepts PDAO on Solana Mainnet through the configured Token-2022 mint. Verification requires the exact mint, amount, treasury destination, matching memo, required confirmation state, and a successful transaction. A payment signature cannot be reused for another order.
 
 The legacy hash-only checkout verifier is disabled. Use `POST /api/v1/commercial/orders/prepare`, `POST /api/v1/commercial/orders/verify`, `POST /api/v1/commercial/orders/renew`, and `GET /api/v1/commercial/orders/{orderId}/package`. Configure `PD_SOLANA_TREASURY`, `PD_SOLANA_USDC_MINT`, and `PD_PAYMENT_MIN_CONFIRMATIONS` on the control plane before accepting funds.
 

@@ -19,7 +19,6 @@ const CIRCULATING_SUPPLY_RAW = "965554358.433758";
 const LOCKED_PERCENT = "3.44%";
 
 const TELEGRAM_URL = "https://t.me/PrivateDAOO";
-const TRADING_BOT_REPO_PATH = "/services/privatedao-trading-bot/";
 const X_URL = "https://x.com/privateDAOOS";
 const DISCORD_URL = "https://discord.gg/PRcD9nFeVf";
 const GITHUB_URL = "https://github.com/X-PACT/PrivateDAO";
@@ -253,7 +252,7 @@ const utilityRoadmap = [
 ] as const;
 
 const productUtility = [
-  ["Blind Policy Verification", "/proof-workflows/blind-policy", "Groth16 policy proofs that prove a private policy was satisfied without exposing policy inputs."],
+  ["Private Verification Engine", "/payment-gate", "Commercial self-hosted verification with local witness generation, Groth16 proofs, signed receipts, and PDAO activation."],
   ["Proof Workflows", "/proof-workflows", "Decision and verification workflows for organizations that need public proof without private data leakage."],
   ["Sealed Auctions", "/auctions", "Public or private-room auctions where bidding intent remains hidden until reveal."],
   ["Payment Gate", "/payment-gate", "Solana wallet payment verification for paid access and community utilities."],
@@ -315,8 +314,8 @@ export default function TokenPage() {
                   </Link>
                 </div>
                 <div className="mt-4 text-xs leading-6 text-white/42">
-                  Source package: {TRADING_BOT_REPO_PATH}. Mainnet trading remains disabled until the production wallet,
-                  Telegram process, Supabase, and RPC credentials are activated.
+                  Telegram access is the public entry point. Trading execution remains subject to the production wallet,
+                  Telegram process, Supabase, and RPC safety gates.
                 </div>
               </div>
             </div>
