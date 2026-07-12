@@ -3315,6 +3315,13 @@ function commercialPlanFor(raw: string): {
 
 function commercialAssetFor(raw: string) {
   const asset = raw.toUpperCase() as CommercialPaymentAsset;
+  const paymentMode = (process.env.PD_PAYMENT_MODE || "PDAO_ONLY").trim().toUpperCase();
+  if (paymentMode === "PDAO_ONLY" && asset !== "PDAO_SOL") {
+    throw new Error("Commercial checkout is configured for PDAO payments only.");
+  }
+  if (paymentMode === "PUMP_AGENT") {
+    throw new Error("Pump Agent payment mode is not enabled in this deployment.");
+  }
   const solanaTreasury = process.env.PD_SOLANA_TREASURY?.trim() || defaultSolanaTreasury;
   const ethereumTreasury = process.env.PD_ETHEREUM_TREASURY?.trim() || defaultEthereumTreasury;
   const bitcoinTreasury = process.env.PD_BITCOIN_TREASURY?.trim() || "";
@@ -3868,6 +3875,7 @@ async function handleCommercialOrderRenew(body: Record<string, unknown>) {
 }
 
 function commercialCheckoutStatus() {
+  const paymentMode = (process.env.PD_PAYMENT_MODE || "PDAO_ONLY").trim().toUpperCase();
   return {
     ok: true,
     source: "PrivateDAO commercial read-node",
@@ -3876,7 +3884,8 @@ function commercialCheckoutStatus() {
     trialDays: commercialTrialDays,
     paymentMethods: {
       bankTransfer: "Invoice-led through official PrivateDAO contacts.",
-      crypto: ["USDC_SOL", "PDAO_SOL", "USDC_ETH", "SOL", "ETH", "BTC", "WBTC", "ZEC", "USDT", "DAI"],
+      crypto: paymentMode === "PDAO_ONLY" ? ["PDAO_SOL"] : ["USDC_SOL", "PDAO_SOL", "USDC_ETH", "SOL", "ETH", "BTC", "WBTC", "ZEC", "USDT", "DAI"],
+      mode: paymentMode,
     },
     licenseProtection: {
       model: "signed organization-bound license",
