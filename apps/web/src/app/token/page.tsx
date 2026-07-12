@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { BarChart3, ExternalLink, LockKeyhole, ShieldCheck } from "lucide-react";
+import { BarChart3, Bot, ExternalLink, LockKeyhole, ShieldCheck } from "lucide-react";
 
 import { TokenBuyTerminal } from "@/components/token-buy-terminal";
 import { JupiterPdaoPlugin } from "@/components/jupiter-pdao-plugin";
@@ -19,6 +19,7 @@ const CIRCULATING_SUPPLY_RAW = "965554358.433758";
 const LOCKED_PERCENT = "3.44%";
 
 const TELEGRAM_URL = "https://t.me/PrivateDAOO";
+const TRADING_BOT_REPO_PATH = "/services/privatedao-trading-bot/";
 const X_URL = "https://x.com/privateDAOOS";
 const DISCORD_URL = "https://discord.gg/PRcD9nFeVf";
 const GITHUB_URL = "https://github.com/X-PACT/PrivateDAO";
@@ -277,6 +278,49 @@ export default function TokenPage() {
             PDAO is the PrivateDAO community token for the ecosystem around private decisions, proof workflows,
             treasury coordination, and verifiable organizational infrastructure.
           </p>
+
+          <section className="mt-8 rounded-[26px] border border-cyan-300/18 bg-cyan-300/[0.07] p-5 shadow-[0_18px_70px_rgba(10,180,220,0.08)]">
+            <div className="flex items-start gap-3">
+              <div className="rounded-2xl border border-cyan-200/20 bg-cyan-200/10 p-3">
+                <Bot className="h-5 w-5 text-cyan-100" />
+              </div>
+              <div>
+                <div className="text-[11px] font-semibold uppercase tracking-[0.2em] text-cyan-100/76">
+                  PrivateDAO Trading Bot
+                </div>
+                <h2 className="mt-2 text-2xl font-semibold tracking-[-0.025em] text-white">
+                  Trade PDAO through Telegram with local Groth16 proof receipts.
+                </h2>
+                <p className="mt-3 text-sm leading-7 text-white/64">
+                  The bot runs DCA, Grid, and Momentum workflows on Solana. Its proof path generates the witness and
+                  Groth16 receipt locally, while the public surface exposes only verification hashes and explorer-ready
+                  anchors.
+                </p>
+                <div className="mt-4 flex flex-wrap gap-3">
+                  <a
+                    href={TELEGRAM_URL}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-2 rounded-full bg-cyan-200 px-4 py-2 text-sm font-semibold text-slate-950 hover:bg-cyan-100"
+                  >
+                    Open Telegram bot
+                    <ExternalLink className="h-4 w-4" />
+                  </a>
+                  <Link
+                    href="/proof-workflows/verify"
+                    className="inline-flex items-center gap-2 rounded-full border border-white/14 bg-black/20 px-4 py-2 text-sm font-semibold text-white hover:border-cyan-200/35"
+                  >
+                    Verify a receipt
+                    <ShieldCheck className="h-4 w-4" />
+                  </Link>
+                </div>
+                <div className="mt-4 text-xs leading-6 text-white/42">
+                  Source package: {TRADING_BOT_REPO_PATH}. Mainnet trading remains disabled until the production wallet,
+                  Telegram process, Supabase, and RPC credentials are activated.
+                </div>
+              </div>
+            </div>
+          </section>
 
           <div className="mt-7 grid gap-3">
             {facts.map(([label, value]) => (

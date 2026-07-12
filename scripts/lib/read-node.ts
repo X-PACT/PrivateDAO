@@ -326,10 +326,11 @@ function redactRpcEndpoint(endpoint: string) {
   }
 }
 
-type RuntimeCluster = "devnet" | "testnet";
+type RuntimeCluster = "devnet" | "testnet" | "mainnet-beta";
 
 function resolveRuntimeCluster(): RuntimeCluster {
   const raw = trimValue(process.env.SOLANA_CLUSTER || process.env.NEXT_PUBLIC_SOLANA_NETWORK).toLowerCase();
+  if (raw === "mainnet" || raw === "mainnet-beta") return "mainnet-beta";
   return raw === "devnet" ? "devnet" : "testnet";
 }
 
@@ -351,13 +352,45 @@ function buildHeliusDevnetRpc(): string | null {
 }
 
 function collectExtraRpcs(cluster: RuntimeCluster) {
-  const source = cluster === "devnet" ? process.env.EXTRA_DEVNET_RPCS : process.env.EXTRA_TESTNET_RPCS;
+  const source =
+    cluster === "devnet"
+      ? process.env.EXTRA_DEVNET_RPCS
+      : cluster === "mainnet-beta"
+        ? process.env.EXTRA_MAINNET_RPCS
+        : process.env.EXTRA_TESTNET_RPCS;
   const raw = trimValue(source);
   if (!raw) return [];
   return raw
     .split(",")
     .map((item) => trimValue(item))
     .filter((item) => item.length > 0);
+}
+
+function legacyQuickNodeRpcEnabled(): boolean {
+  return trimValue(process.env.PRIVATE_DAO_ENABLE_LEGACY_QUICKNODE_RPC).toLowerCase() === "true";
+}
+
+function addProviderNeutralMainnetFallbacks(add: (rpc?: string | null) => void) {
+  add(process.env.SOLANA_TRACKER_RPC_URL || "https://rpc.solanatracker.io/public");
+  add(process.env.ANKR_SOLANA_RPC_URL);
+  add(clusterApiUrl("mainnet-beta"));
+  add("https://api.mainnet-beta.solana.com");
+}
+
+export function quickNodeX402Status() {
+  const enabled = trimValue(process.env.QUICKNODE_X402_ENABLED).toLowerCase() === "true";
+  const keypairPath = trimValue(process.env.QUICKNODE_X402_KEYPAIR_PATH || process.env.SOLANA_KEYPAIR_PATH);
+  const network = trimValue(process.env.QUICKNODE_X402_NETWORK || "mainnet");
+  const paymentModel = trimValue(process.env.QUICKNODE_X402_PAYMENT_MODEL || "pay-per-request");
+  return {
+    enabled,
+    configured: enabled && Boolean(keypairPath),
+    network,
+    paymentModel,
+    package: "@quicknode/x402-solana",
+    role:
+      "Optional wallet-paid QuickNode Solana RPC path. If not configured, PrivateDAO uses provider-neutral RPC fallbacks.",
+  };
 }
 
 export function resolveClusterRpcEndpoints(cluster: RuntimeCluster = resolveRuntimeCluster()): string[] {
@@ -369,11 +402,19 @@ export function resolveClusterRpcEndpoints(cluster: RuntimeCluster = resolveRunt
     if (!endpoints.includes(normalized)) endpoints.push(normalized);
   };
 
+  if (cluster === "mainnet-beta") {
+    add(process.env.SOLANA_MAINNET_RPC_URL);
+    if (legacyQuickNodeRpcEnabled()) add(process.env.QUICKNODE_MAINNET_RPC);
+    for (const rpc of collectExtraRpcs("mainnet-beta")) add(rpc);
+    addProviderNeutralMainnetFallbacks(add);
+    return endpoints;
+  }
+
   add(process.env.SOLANA_RPC_URL);
   if (cluster === "devnet") {
     add(buildAlchemyDevnetRpc());
     add(buildHeliusDevnetRpc());
-    add(process.env.QUICKNODE_DEVNET_RPC);
+    if (legacyQuickNodeRpcEnabled()) add(process.env.QUICKNODE_DEVNET_RPC);
     for (const rpc of collectExtraRpcs("devnet")) add(rpc);
     add(process.env.RPC_FAST_DEVNET_RPC);
     add(clusterApiUrl("devnet"));
@@ -381,7 +422,7 @@ export function resolveClusterRpcEndpoints(cluster: RuntimeCluster = resolveRunt
     return endpoints;
   }
 
-  add(process.env.QUICKNODE_TESTNET_RPC);
+  if (legacyQuickNodeRpcEnabled()) add(process.env.QUICKNODE_TESTNET_RPC);
   for (const rpc of collectExtraRpcs("testnet")) add(rpc);
   add(process.env.RPC_FAST_TESTNET_RPC);
   add(clusterApiUrl("testnet"));
@@ -395,6 +436,10 @@ export function resolveRuntimeRpcEndpoints(): string[] {
 
 export function resolveDevnetRpcEndpoints(): string[] {
   return resolveClusterRpcEndpoints("devnet");
+}
+
+export function resolveMainnetRpcEndpoints(): string[] {
+  return resolveClusterRpcEndpoints("mainnet-beta");
 }
 
 const IDL_CANDIDATE_PATHS = [

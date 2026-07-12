@@ -1,0 +1,6 @@
+PrivateDAO Hollywood Brand Film
+Length target: 3 minutes
+Mode: English cinematic
+Video: generated locally from scratch with ffmpeg-based motion design
+Voice: local fallback TTS because no professional API key was available at runtime
+Music: procedural ambient + casino-style effects mixed locally

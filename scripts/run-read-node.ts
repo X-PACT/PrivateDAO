@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 import * as http from "http";
 import { execFileSync } from "child_process";
-import { createHash, createHmac, timingSafeEqual } from "crypto";
+import { createHash, createHmac, createPrivateKey, randomUUID, sign as signEd25519, timingSafeEqual } from "crypto";
 import { createRequire } from "module";
 import { existsSync, mkdirSync, mkdtempSync, readFileSync, renameSync, writeFileSync } from "fs";
 import { readFile } from "fs/promises";
@@ -73,6 +73,36 @@ const serverStartedAt = new Date().toISOString();
 const visitorPingsMemory: VisitorPingRow[] = [];
 const executionEventsMemory: OperationExecutionEventRow[] = [];
 const pilotRequestsMemory: PilotRequestRow[] = [];
+type CommercialOrder = {
+  orderId: string;
+  customerId: string;
+  organizationId: string;
+  organizationName: string;
+  plan: string;
+  asset: string;
+  network: string;
+  treasuryAddress: string;
+  amountAtomic: string;
+  amountDisplay: number;
+  memo: string;
+  status: "pending" | "paid" | "expired" | "rejected";
+  createdAt: string;
+  expiresAt: string;
+  paymentSignature?: string;
+  licenseId?: string;
+  licenseEnvelope?: Record<string, unknown>;
+  renewalOf?: string;
+};
+const commercialOrdersPath = join(runtimeStateDir, "commercial-orders.json");
+let commercialOrders = new Map<string, CommercialOrder>();
+try {
+  if (existsSync(commercialOrdersPath)) {
+    const stored = JSON.parse(readFileSync(commercialOrdersPath, "utf8")) as CommercialOrder[];
+    commercialOrders = new Map(stored.map((order) => [order.orderId, order]));
+  }
+} catch {
+  commercialOrders = new Map();
+}
 const zerionPortfolioCache = new Map<string, { cachedAt: number; response: Record<string, unknown> }>();
 let lastFreshnessPingMemory: FreshnessPingRow | null = null;
 let lastVisitorTelegramAt = 0;
@@ -184,9 +214,9 @@ type PilotRequestRow = {
 };
 
 type CommercialLicenseType = "TRIAL" | "COMMUNITY" | "PROFESSIONAL" | "ORGANIZATION" | "ENTERPRISE";
-type CommercialPaymentAsset = "USDC_SOL" | "USDC_ETH" | "SOL" | "ETH" | "BTC" | "WBTC" | "ZEC" | "USDT" | "DAI";
+type CommercialPaymentAsset = "USDC_SOL" | "PDAO_SOL" | "USDC_ETH" | "SOL" | "ETH" | "BTC" | "WBTC" | "ZEC" | "USDT" | "DAI";
 
-const commercialTrialDays = 14;
+const commercialTrialDays = Math.max(1, Number(process.env.PD_TRIAL_DAYS || 7));
 const defaultSolanaTreasury = "4gEqyhhdmLpgye8ubJzzD4zcNsY7JQoiLBBqnBHoYeUt";
 const defaultEthereumTreasury = "0x52031e91085A0b3A8A1E89Db935E8E42b715CC86";
 
@@ -199,20 +229,20 @@ const commercialPlans = {
   },
   PROFESSIONAL: {
     label: "Starter",
-    priceUsd: 500,
+    priceUsd: Number(process.env.PD_PRICE_PROFESSIONAL_USD || 1000),
     cadence: "monthly",
     capacity: ["3 active workflows or rooms", "25 members", "100 proof events/month", "Basic verification pages"],
   },
   ORGANIZATION: {
     label: "Business",
-    priceUsd: 2500,
+    priceUsd: Number(process.env.PD_PRICE_ORGANIZATION_USD || 3500),
     cadence: "monthly",
     capacity: ["10 active workflows or rooms", "250 members", "2,500 proof events/month", "Priority onboarding"],
   },
   ENTERPRISE: {
     label: "Enterprise",
-    priceUsd: null,
-    cadence: "custom",
+    priceUsd: Number(process.env.PD_PRICE_ENTERPRISE_USD || 25000),
+    cadence: "annual",
     capacity: ["Private deployment", "Custom connectors", "Custom proof packages", "SLA and support"],
   },
 } satisfies Record<Exclude<CommercialLicenseType, "TRIAL">, { label: string; priceUsd: number | null; cadence: string; capacity: string[] }>;
@@ -3291,6 +3321,7 @@ function commercialAssetFor(raw: string) {
   const zcashTreasury = process.env.PD_ZCASH_TREASURY?.trim() || "";
   const assets: Record<CommercialPaymentAsset, { label: string; network: string; treasuryAddress: string; primary: boolean }> = {
     USDC_SOL: { label: "USDC on Solana", network: "Solana", treasuryAddress: solanaTreasury, primary: true },
+    PDAO_SOL: { label: "PDAO on Solana", network: "Solana", treasuryAddress: solanaTreasury, primary: true },
     USDC_ETH: { label: "USDC on Ethereum", network: "Ethereum", treasuryAddress: ethereumTreasury, primary: true },
     SOL: { label: "SOL", network: "Solana", treasuryAddress: solanaTreasury, primary: true },
     ETH: { label: "ETH", network: "Ethereum", treasuryAddress: ethereumTreasury, primary: true },
@@ -3304,6 +3335,84 @@ function commercialAssetFor(raw: string) {
   if (!config) throw new Error("Unknown payment asset.");
   if (!config.treasuryAddress) throw new Error(`${config.label} treasury address is not configured.`);
   return { asset, ...config };
+}
+
+function persistCommercialOrders() {
+  mkdirSync(runtimeStateDir, { recursive: true });
+  const tempPath = `${commercialOrdersPath}.tmp`;
+  writeFileSync(tempPath, JSON.stringify([...commercialOrders.values()], null, 2), { mode: 0o600 });
+  renameSync(tempPath, commercialOrdersPath);
+}
+
+function commercialSolanaAmount(asset: string, priceUsd: number | null, plan: string) {
+  if (asset === "USDC_SOL") return { amountAtomic: String(Math.round(Number(priceUsd || 0) * 1_000_000)), amountDisplay: Number(priceUsd || 0), decimals: 6, mint: process.env.PD_SOLANA_USDC_MINT?.trim() || "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v" };
+  if (asset === "PDAO_SOL") {
+    const decimals = Number(process.env.PD_ACCEPTED_TOKEN_DECIMALS || 0);
+    const configuredAmount = Number(process.env[`PD_PLAN_${plan}_PDAO`] || 0);
+    if (!Number.isInteger(decimals) || decimals < 0 || decimals > 18) throw new Error("PD_ACCEPTED_TOKEN_DECIMALS must be configured for PDAO payments.");
+    if (!Number.isFinite(configuredAmount) || configuredAmount <= 0) throw new Error(`PD_PLAN_${plan}_PDAO must be configured before accepting PDAO payments.`);
+    const amountAtomic = BigInt(Math.round(configuredAmount * 10 ** decimals));
+    return { amountAtomic: amountAtomic.toString(), amountDisplay: configuredAmount, decimals, mint: process.env.PD_ACCEPTED_TOKEN_MINT?.trim() || "" };
+  }
+  if (asset === "SOL") {
+    const solUsd = Number(process.env.PD_SOL_USD_PRICE || 0);
+    if (!Number.isFinite(solUsd) || solUsd <= 0) throw new Error("PD_SOL_USD_PRICE must be configured before accepting commercial SOL payments.");
+    const amountSol = Number(priceUsd || 0) / solUsd;
+    return { amountAtomic: String(Math.ceil(amountSol * LAMPORTS_PER_SOL)), amountDisplay: amountSol, decimals: 9, mint: null };
+  }
+  throw new Error("This payment control plane currently supports only USDC_SOL and SOL with on-chain verification.");
+}
+
+async function fetchCommercialTransaction(signature: string) {
+  const errors: string[] = [];
+  for (const endpoint of resolveMainnetRpcEndpoints()) {
+    try {
+      const connection = new Connection(endpoint, "confirmed");
+      const transaction = await connection.getParsedTransaction(signature, { commitment: "confirmed", maxSupportedTransactionVersion: 0 });
+      if (!transaction) { errors.push(`${endpoint}: not found`); continue; }
+      const statuses = await connection.getSignatureStatuses([signature]);
+      const currentSlot = await connection.getSlot("confirmed");
+      const status = statuses.value[0];
+      return { endpoint, transaction, confirmationStatus: status?.confirmationStatus || null, confirmations: Math.max(0, currentSlot - transaction.slot) };
+    } catch (error) { errors.push(`${endpoint}: ${error instanceof Error ? error.message : "failed"}`); }
+  }
+  return { endpoint: "", transaction: null, confirmationStatus: null, confirmations: 0, errors };
+}
+
+function commercialMemoMatches(transaction: any, memo: string) {
+  const instructions = transaction?.transaction?.message?.instructions || [];
+  return instructions.some((instruction: any) => /memo/i.test(String(instruction?.program || instruction?.programId || "")) && String(instruction?.parsed || instruction?.memo || "").includes(memo));
+}
+
+async function verifyCommercialSolanaOrder(order: CommercialOrder, signature: string) {
+  if (!solanaSignatureLooksValid(signature)) return { ok: false, reason: "Invalid Solana transaction signature format." };
+  const fetched = await fetchCommercialTransaction(signature);
+  if (!fetched.transaction) return { ok: false, reason: "Transaction was not found on Solana Mainnet.", rpcErrors: fetched.errors };
+  const minimumConfirmations = Math.max(1, Number(process.env.PD_REQUIRED_CONFIRMATIONS || process.env.PD_PAYMENT_MIN_CONFIRMATIONS || 32));
+  const requiredCommitment = (process.env.PD_REQUIRED_COMMITMENT || "finalized").trim().toLowerCase();
+  if (fetched.confirmations < minimumConfirmations || (requiredCommitment === "finalized" ? fetched.confirmationStatus !== "finalized" : (fetched.confirmationStatus !== "confirmed" && fetched.confirmationStatus !== "finalized"))) return { ok: false, reason: "Transaction does not have the required confirmations.", confirmations: fetched.confirmations, requiredConfirmations: minimumConfirmations, requiredCommitment };
+  if (fetched.transaction.meta?.err) return { ok: false, reason: "Transaction execution failed on Solana.", transactionError: fetched.transaction.meta.err };
+  if (!commercialMemoMatches(fetched.transaction, order.memo)) return { ok: false, reason: "Order memo is missing or does not match this order." };
+
+  if (order.asset === "SOL") {
+    const transfer = parsedTransactionTransfersLamports({ transaction: fetched.transaction, treasuryAddress: order.treasuryAddress, requiredLamports: Number(order.amountAtomic), invoiceMemo: order.memo });
+    return { ...transfer, ok: transfer.ok, providerEndpoint: fetched.endpoint, confirmations: fetched.confirmations, requiredConfirmations: minimumConfirmations };
+  }
+
+  const mint = order.asset === "PDAO_SOL" ? process.env.PD_ACCEPTED_TOKEN_MINT?.trim() || "" : process.env.PD_SOLANA_USDC_MINT?.trim() || "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v";
+  if (!mint) return { ok: false, reason: "Accepted token mint is not configured." };
+  const treasuryAccounts = await new Connection(fetched.endpoint, "confirmed").getParsedTokenAccountsByOwner(new PublicKey(order.treasuryAddress), { mint: new PublicKey(mint) });
+  const treasuryTokenAccounts = new Set(treasuryAccounts.value.map((account) => account.pubkey.toBase58()));
+  const instructions = fetched.transaction.transaction.message.instructions || [];
+  let transferredAtomic = 0n;
+  for (const instruction of instructions) {
+    const parsed = (instruction as any)?.parsed;
+    const info = parsed?.info || {};
+    if (String((instruction as any)?.program || "") !== "spl-token") continue;
+    if (parsed?.type !== "transfer" && parsed?.type !== "transferChecked") continue;
+    if (treasuryTokenAccounts.has(String(info.destination || ""))) transferredAtomic += BigInt(info.amount || info.tokenAmount?.amount || 0);
+  }
+  return { ok: transferredAtomic === BigInt(order.amountAtomic), transferredAtomic: transferredAtomic.toString(), requiredAtomic: order.amountAtomic, providerEndpoint: fetched.endpoint, confirmations: fetched.confirmations, requiredConfirmations: minimumConfirmations, requiredCommitment, mint };
 }
 
 function validateCommercialPaymentHash(asset: CommercialPaymentAsset, paymentHash: string) {
@@ -3547,6 +3656,63 @@ function signedCommercialLicense(input: {
   };
 }
 
+function signEnterpriseLicensePayload(payload: Record<string, unknown>) {
+  const provider = (process.env.PRIVADAO_LICENSE_SIGNER_PROVIDER || "env-ed25519").trim().toLowerCase();
+  const message = Buffer.from(stableStringify(payload));
+  if (provider === "aws-kms") {
+    const keyId = process.env.PRIVADAO_LICENSE_KMS_KEY_ID?.trim() || "";
+    if (!keyId) throw new Error("PRIVADAO_LICENSE_KMS_KEY_ID is required when PRIVADAO_LICENSE_SIGNER_PROVIDER=aws-kms.");
+    const output = execFileSync("aws", ["kms", "sign", "--key-id", keyId, "--signing-algorithm", "ED25519_SHA_512", "--message-type", "RAW", "--message", message.toString("base64"), "--output", "json"], { encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] });
+    const signature = JSON.parse(output).Signature;
+    if (typeof signature !== "string" || !signature) throw new Error("AWS KMS returned no license signature.");
+    return Buffer.from(signature, "base64").toString("base64");
+  }
+  if (provider !== "env-ed25519") throw new Error(`Unsupported license signer provider: ${provider}`);
+  const signingKey = process.env.PRIVADAO_ENTERPRISE_LICENSE_SIGNING_PRIVATE_KEY_PEM?.trim() || "";
+  if (!signingKey) throw new Error("Enterprise license signing is not configured on the control plane.");
+  return signEd25519(null, message, createPrivateKey(signingKey)).toString("base64");
+}
+
+function issueEnterpriseLicense(body: Record<string, unknown>, req: http.IncomingMessage) {
+  const organizationId = stringField(body, "organizationId").slice(0, 120);
+  const installationId = stringField(body, "installationId").slice(0, 120);
+  const plan = stringField(body, "plan", "ENTERPRISE").toUpperCase().slice(0, 40);
+  if (!organizationId) throw new Error("organizationId is required.");
+  const signingKey = process.env.PRIVATEDAO_ENTERPRISE_LICENSE_SIGNING_PRIVATE_KEY_PEM?.trim() || "";
+  if (!signingKey && (process.env.PRIVADAO_LICENSE_SIGNER_PROVIDER || "env-ed25519").trim().toLowerCase() !== "aws-kms") return { ok: false, status: "license-issuer-not-configured", error: "Enterprise license signing is not configured on the control plane." };
+  const issuerSecret = process.env.PRIVATEDAO_LICENSE_ISSUER_SECRET?.trim() || "";
+  if (issuerSecret && req.headers["x-privatedao-license-issuer"] !== issuerSecret) {
+    return { ok: false, status: "license-issuer-unauthorized", error: "License issuance requires the control-plane issuer credential." };
+  }
+  const issuedAt = new Date();
+  const requestedExpiry = stringField(body, "expiresAt");
+  const expiresAt = requestedExpiry && Number.isFinite(Date.parse(requestedExpiry)) ? new Date(requestedExpiry) : new Date(issuedAt.getTime() + 31 * 24 * 60 * 60 * 1000);
+  const offlineGraceUntil = new Date(expiresAt.getTime() + 14 * 24 * 60 * 60 * 1000);
+  const payload = {
+    licenseId: `lic_${sha256StableJsonHex({ organizationId, installationId, plan, issuedAt: issuedAt.toISOString() }).slice(0, 24)}`,
+    organizationId,
+    ...(installationId ? { installationId } : {}),
+    plan,
+    licenseType: plan,
+    customerId: stringField(body, "customerId").slice(0, 120) || organizationId,
+    status: "active",
+    issuedAt: issuedAt.toISOString(),
+    expiresAt: expiresAt.toISOString(),
+    offlineGraceUntil: offlineGraceUntil.toISOString(),
+    engineVersion: "0.1.0",
+    seatLimit: Math.max(1, Number(body.seatLimit || 50)),
+    organizationLimit: Math.max(1, Number(body.organizationLimit || 1)),
+    deploymentMode: stringField(body, "deploymentMode", "self-hosted").slice(0, 40),
+    enabledPlugins: Array.isArray(body.enabledPlugins) ? body.enabledPlugins.filter((feature): feature is string => typeof feature === "string").slice(0, 32) : ["blind-policy", "blind-kyc", "blind-aml", "blind-employment", "blind-payroll", "blind-underwriting", "blind-dao-voting"],
+    features: Array.isArray(body.features) ? body.features.filter((feature): feature is string => typeof feature === "string").slice(0, 32) : ["blind-policy-groth16", "local-witness", "local-verification", "local-receipts"],
+    keyId: process.env.PRIVADAO_LICENSE_SIGNING_KEY_ID || "ed25519-control-plane-primary",
+  };
+  let signature: string;
+  try { signature = signEnterpriseLicensePayload(payload); }
+  catch (error) { return { ok: false, status: "license-issuer-not-configured", error: error instanceof Error ? error.message : "License signing failed." }; }
+  return { ok: true, status: "license-issued", license: { schema: "privatedao.enterprise-license.v1", algorithm: "ed25519", keyId: payload.keyId, payload, signature } };
+}
+
 async function handleCommercialCheckoutPrepare(body: Record<string, unknown>) {
   const organizationName = stringField(body, "organizationName", "PrivateDAO organization").slice(0, 160);
   const plan = commercialPlanFor(stringField(body, "plan", "PROFESSIONAL"));
@@ -3579,6 +3745,7 @@ async function handleCommercialCheckoutPrepare(body: Record<string, unknown>) {
 }
 
 async function handleCommercialCheckoutVerify(body: Record<string, unknown>) {
+  throw new Error("Legacy checkout verification is disabled. Use /api/v1/commercial/orders/verify with an orderId and Solana transaction signature.");
   const organizationId = stringField(body, "organizationId").slice(0, 64);
   const plan = commercialPlanFor(stringField(body, "plan", "PROFESSIONAL"));
   const asset = commercialAssetFor(stringField(body, "asset", "USDC_SOL"));
@@ -3643,6 +3810,63 @@ async function handleCommercialCheckoutVerify(body: Record<string, unknown>) {
   };
 }
 
+async function handleCommercialOrderPrepare(body: Record<string, unknown>) {
+  const organizationName = stringField(body, "organizationName", "PrivateDAO organization").slice(0, 160);
+  const customerId = stringField(body, "customerId").slice(0, 120) || `cus_${randomUUID().replace(/-/g, "").slice(0, 24)}`;
+  const plan = commercialPlanFor(stringField(body, "plan", "PROFESSIONAL"));
+  const asset = commercialAssetFor(stringField(body, "asset", "USDC_SOL"));
+  if (!plan.priceUsd || plan.priceUsd <= 0) throw new Error("A paid plan with a concrete price is required for an on-chain order.");
+  if (asset.network !== "Solana") throw new Error("The on-chain commercial verifier currently accepts Solana assets only.");
+  const amount = commercialSolanaAmount(asset.asset, plan.priceUsd, plan.licenseType);
+  const organizationId = stringField(body, "organizationId").slice(0, 64) || `org_${sha256Hex([customerId, organizationName].join(":")).slice(0, 24)}`;
+  const orderId = `ord_${randomUUID().replace(/-/g, "")}`;
+  const createdAt = new Date();
+  const expiryMinutes = Math.max(5, Number(process.env.PD_PAYMENT_EXPIRY_MINUTES || 30));
+  const order: CommercialOrder = { orderId, customerId, organizationId, organizationName, plan: plan.licenseType, asset: asset.asset, network: asset.network, treasuryAddress: asset.treasuryAddress, amountAtomic: amount.amountAtomic, amountDisplay: amount.amountDisplay, memo: `PrivateDAO:order:${orderId}`, status: "pending", createdAt: createdAt.toISOString(), expiresAt: new Date(createdAt.getTime() + expiryMinutes * 60 * 1000).toISOString(), ...(stringField(body, "renewalOf") ? { renewalOf: stringField(body, "renewalOf").slice(0, 100) } : {}) };
+  commercialOrders.set(orderId, order);
+  persistCommercialOrders();
+  return { ok: true, order, payment: { tokenMint: amount.mint, decimals: amount.decimals, exactAtomicAmount: amount.amountAtomic }, nextStep: "Submit the transaction, then call the verify endpoint with orderId and the transaction signature." };
+}
+
+async function handleCommercialOrderVerify(body: Record<string, unknown>) {
+  const orderId = stringField(body, "orderId").slice(0, 100);
+  const signature = stringField(body, "signature").slice(0, 180);
+  const order = commercialOrders.get(orderId);
+  if (!order) throw new Error("orderId is invalid or expired.");
+  if (order.status !== "pending") throw new Error(`Order is already ${order.status}.`);
+  if (Date.now() > Date.parse(order.expiresAt)) { order.status = "expired"; persistCommercialOrders(); throw new Error("Order has expired. Create a new order."); }
+  if ([...commercialOrders.values()].some((item) => item.status === "paid" && item.paymentSignature === signature)) throw new Error("This transaction has already been used for another order.");
+  const verification = await verifyCommercialSolanaOrder(order, signature);
+  if (!verification.ok) return { ok: false, status: "payment-not-verified", orderId, verification };
+  const issuedAt = new Date();
+  const expiresAt = new Date(issuedAt.getTime() + (order.plan === "PROFESSIONAL" || order.plan === "ORGANIZATION" ? 30 : 365) * 24 * 60 * 60 * 1000);
+  const licenseResult = issueEnterpriseLicense({ organizationId: order.organizationId, customerId: order.customerId, plan: order.plan, expiresAt: expiresAt.toISOString(), seatLimit: order.plan === "PROFESSIONAL" ? 25 : 250, organizationLimit: 1, deploymentMode: "self-hosted", enabledPlugins: ["blind-policy", "blind-kyc", "blind-aml", "blind-employment", "blind-payroll", "blind-underwriting", "blind-dao-voting"], requestLicense: true }, { headers: { "x-privatedao-license-issuer": process.env.PRIVADAO_LICENSE_ISSUER_SECRET || "" } } as unknown as http.IncomingMessage);
+  if (!licenseResult.ok || !licenseResult.license) return { ok: false, status: "license-issuer-unavailable", orderId, verification, error: licenseResult.error || "License signing is not configured." };
+  order.status = "paid";
+  order.paymentSignature = signature;
+  order.licenseId = licenseResult.license.payload.licenseId;
+  order.licenseEnvelope = licenseResult.license;
+  commercialOrders.set(orderId, order);
+  persistCommercialOrders();
+  const activationCode = `ACT-${sha256Hex([order.orderId, order.licenseId, signature].join(":")).slice(0, 24).toUpperCase()}`;
+  return { ok: true, status: "payment-verified-license-issued", orderId, customerId: order.customerId, organization: { organizationId: order.organizationId, organizationName: order.organizationName, created: true }, license: licenseResult.license, activationCode, delivery: { licenseFile: licenseResult.license, downloadPackage: `/api/v1/commercial/orders/${order.orderId}/package`, deploymentGuide: "https://privatedao.org/developers/blind-policy-api/", activationEndpoint: "POST /v1/license/activate" }, subscription: { status: "active", expiresAt: licenseResult.license.payload.expiresAt, graceUntil: licenseResult.license.payload.offlineGraceUntil, readOnlyAfterExpiry: true }, verification };
+}
+
+async function handleCommercialOrderPackage(orderId: string) {
+  const order = commercialOrders.get(orderId);
+  if (!order) throw new Error("orderId is invalid or expired.");
+  if (order.status !== "paid" || !order.licenseEnvelope) throw new Error("The paid license package is not available yet.");
+  return { schema: "privatedao.customer-package.v1", generatedAt: new Date().toISOString(), orderId: order.orderId, customerId: order.customerId, organization: { organizationId: order.organizationId, name: order.organizationName }, license: order.licenseEnvelope, activation: { code: `ACT-${sha256Hex([order.orderId, order.licenseId || "", order.paymentSignature || ""].join(":")).slice(0, 24).toUpperCase()}` }, deployment: { mode: "self-hosted", command: "docker compose up -d", guide: "https://privatedao.org/developers/blind-policy-api/", licenseActivation: "POST /v1/license/activate" }, security: { privateInputsLeaveDeployment: false, signingPrivateKeyIncluded: false } };
+}
+
+async function handleCommercialOrderRenew(body: Record<string, unknown>) {
+  const renewalOf = stringField(body, "orderId").slice(0, 100);
+  if (!renewalOf) throw new Error("orderId is required for renewal.");
+  const previous = commercialOrders.get(renewalOf);
+  if (!previous || previous.status !== "paid") throw new Error("Only a paid order can be renewed.");
+  return handleCommercialOrderPrepare({ organizationName: previous.organizationName, organizationId: previous.organizationId, customerId: previous.customerId, plan: previous.plan === "ORGANIZATION" ? "ORGANIZATION" : "PROFESSIONAL", asset: previous.asset, renewalOf });
+}
+
 function commercialCheckoutStatus() {
   return {
     ok: true,
@@ -3652,7 +3876,7 @@ function commercialCheckoutStatus() {
     trialDays: commercialTrialDays,
     paymentMethods: {
       bankTransfer: "Invoice-led through official PrivateDAO contacts.",
-      crypto: ["USDC_SOL", "USDC_ETH", "SOL", "ETH", "BTC", "WBTC", "ZEC", "USDT", "DAI"],
+      crypto: ["USDC_SOL", "PDAO_SOL", "USDC_ETH", "SOL", "ETH", "BTC", "WBTC", "ZEC", "USDT", "DAI"],
     },
     licenseProtection: {
       model: "signed organization-bound license",
@@ -3668,6 +3892,15 @@ function commercialCheckoutStatus() {
       status: "/api/v1/payment-gate/random/status",
       prepare: "/api/v1/payment-gate/random/prepare",
       verify: "/api/v1/payment-gate/random/verify",
+    },
+    commercialOrders: {
+      prepare: "/api/v1/commercial/orders/prepare",
+      verify: "/api/v1/commercial/orders/verify",
+      renew: "/api/v1/commercial/orders/renew",
+      package: "/api/v1/commercial/orders/{orderId}/package",
+      legacyHashVerification: "disabled",
+      acceptedSolanaToken: { symbol: process.env.PD_ACCEPTED_TOKEN_SYMBOL || "PDAO", mint: process.env.PD_ACCEPTED_TOKEN_MINT || null, decimals: Number(process.env.PD_ACCEPTED_TOKEN_DECIMALS || 0) || null },
+      confirmationPolicy: { commitment: process.env.PD_REQUIRED_COMMITMENT || "finalized", confirmations: Number(process.env.PD_REQUIRED_CONFIRMATIONS || process.env.PD_PAYMENT_MIN_CONFIRMATIONS || 32) },
     },
   };
 }
@@ -6391,6 +6624,55 @@ async function handle(req: http.IncomingMessage, res: http.ServerResponse) {
       return;
     }
 
+    if (req.method === "POST" && pathname === "/api/v1/commercial/orders/prepare") {
+      const body = await readRequestJsonWithLimit(req, 32_000);
+      const result = await handleCommercialOrderPrepare(body as Record<string, unknown>);
+      writeJson(res, 200, result);
+      return;
+    }
+
+    if (req.method === "POST" && pathname === "/api/v1/commercial/orders/verify") {
+      const body = await readRequestJsonWithLimit(req, 32_000);
+      const result = await handleCommercialOrderVerify(body as Record<string, unknown>);
+      writeJson(res, result.ok ? 200 : 422, result);
+      return;
+    }
+
+    if (req.method === "POST" && pathname === "/api/v1/commercial/orders/renew") {
+      const body = await readRequestJsonWithLimit(req, 32_000);
+      writeJson(res, 200, await handleCommercialOrderRenew(body as Record<string, unknown>));
+      return;
+    }
+
+    const packageMatch = pathname.match(/^\/api\/v1\/commercial\/orders\/([^/]+)\/package$/);
+    if (req.method === "GET" && packageMatch) {
+      writeJson(res, 200, await handleCommercialOrderPackage(packageMatch[1]));
+      return;
+    }
+
+    if (req.method === "POST" && pathname === "/api/v1/licenses/entitlement") {
+      const body = (await readRequestJsonWithLimit(req, 32_000)) as Record<string, unknown>;
+      if (body.requestLicense === true) {
+        const result = issueEnterpriseLicense(body, req);
+        writeJson(res, result.ok ? 200 : 503, result);
+        return;
+      }
+      writeJson(res, 200, {
+        ok: true,
+        status: "license-metadata-received",
+        controlPlane: "PrivateDAO license control plane",
+        received: {
+          installationId: stringField(body, "installationId"),
+          licenseId: stringField(body, "licenseId"),
+          organizationId: stringField(body, "organizationId"),
+          plan: stringField(body, "plan"),
+          engineVersion: stringField(body, "engineVersion"),
+        },
+        privateInputsReceived: false,
+      });
+      return;
+    }
+
     if (req.method === "GET" && pathname === "/api/v1/payment-gate/random/status") {
       writeJson(res, 200, randomGateStatus());
       return;
@@ -6547,6 +6829,7 @@ async function handle(req: http.IncomingMessage, res: http.ServerResponse) {
           commercialCheckoutStatus: "/api/v1/commercial/checkout/status",
           commercialCheckoutPrepare: "/api/v1/commercial/checkout/prepare",
           commercialCheckoutVerify: "/api/v1/commercial/checkout/verify",
+          enterpriseLicenseEntitlement: "/api/v1/licenses/entitlement",
           randomPaymentGateStatus: "/api/v1/payment-gate/random/status",
           randomPaymentGatePrepare: "/api/v1/payment-gate/random/prepare",
           randomPaymentGateVerify: "/api/v1/payment-gate/random/verify",

@@ -330,7 +330,20 @@
     "deploy:devnet": "PATH=\"$HOME/.avm/bin:$PATH\" anchor deploy --provider.cluster devnet",
     "deploy:testnet": "PATH=\"$HOME/.avm/bin:$PATH\" anchor deploy --provider.cluster testnet",
     "setup:testnet": "bash scripts/setup-testnet.sh",
-    "verify:quicknode-stream-intake": "ts-node scripts/verify-quicknode-stream-intake.ts"
+    "verify:quicknode-stream-intake": "ts-node scripts/verify-quicknode-stream-intake.ts",
+    "private-engine:start": "npm --prefix services/private-engine start",
+    "private-engine:dev": "npm --prefix services/private-engine dev",
+    "private-engine:license": "node scripts/create-private-license.mjs",
+    "private-engine:manifest": "node scripts/build-private-engine-manifest.mjs",
+    "private-engine:test:plugins": "node scripts/test-private-engine-plugins.mjs",
+    "private-engine:test:adversarial": "node scripts/test-private-engine-adversarial.mjs",
+    "private-engine:preflight": "bash scripts/private-engine-preflight.sh",
+    "private-engine:install": "bash scripts/install-private-engine.sh",
+    "private-engine:upgrade": "bash scripts/upgrade-private-engine.sh",
+    "private-engine:backup": "bash scripts/backup-private-engine.sh",
+    "private-engine:restore": "bash scripts/restore-private-engine.sh",
+    "commercial:test:lifecycle": "node scripts/test-commercial-lifecycle.mjs",
+    "release:verify": "node scripts/release-verify.mjs"
   },
   "dependencies": {
     "@coral-xyz/anchor": "^0.32.1",
@@ -359,10 +372,8 @@
     "typescript": "^5.0.0"
   },
   "overrides": {
-    "esbuild": "^0.28.1",
-    "serialize-javascript": "^7.0.6",
-    "underscore": "^1.13.8",
     "uuid": "^11.1.1",
-    "ws": "^8.21.0"
+    "ws": "^8.21.0",
+    "bigint-buffer": "file:vendor/bigint-buffer"
   }
 }

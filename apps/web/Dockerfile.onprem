@@ -1,0 +1,22 @@
+FROM node:20-bookworm-slim AS dependencies
+WORKDIR /workspace
+COPY package.json package-lock.json ./
+RUN npm ci
+
+FROM dependencies AS builder
+WORKDIR /workspace
+COPY . .
+ENV PRIVATE_DAO_NEXT_OUTPUT_MODE=server
+ENV NEXT_PUBLIC_PROOF_EXECUTION_MODE=local
+RUN npm run web:build
+
+FROM node:20-bookworm-slim AS runner
+WORKDIR /workspace
+ENV NODE_ENV=production
+ENV PORT=3000
+COPY --from=builder /workspace/apps/web/.next ./.next
+COPY --from=builder /workspace/apps/web/public ./public
+COPY --from=builder /workspace/apps/web/package.json ./package.json
+COPY --from=dependencies /workspace/node_modules ./node_modules
+EXPOSE 3000
+CMD ["npx", "next", "start", "apps/web", "-p", "3000"]

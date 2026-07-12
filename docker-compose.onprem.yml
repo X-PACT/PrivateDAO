@@ -1,0 +1,35 @@
+services:
+  private-engine:
+    build:
+      context: .
+      dockerfile: services/private-engine/Dockerfile
+    ports:
+      - "8787:8787"
+    environment:
+      PORT: 8787
+      PRIVATEDAO_ARTIFACT_ROOT: /workspace
+      PRIVATEDAO_DATA_DIR: /data
+      PRIVATEDAO_LICENSE_FILE: /data/license.json
+      PRIVATEDAO_LICENSE_PUBLIC_KEY_PEM: ${PRIVATEDAO_LICENSE_PUBLIC_KEY_PEM:-}
+      PRIVATEDAO_LICENSE_CONTROL_URL: ${PRIVATEDAO_LICENSE_CONTROL_URL:-https://api.privatedao.org/api/v1/licenses/entitlement}
+      PRIVATEDAO_ALLOW_DEV_LICENSE: ${PRIVATEDAO_ALLOW_DEV_LICENSE:-false}
+    volumes:
+      - ./services/private-engine/data:/data
+    read_only: true
+    tmpfs:
+      - /tmp
+    restart: unless-stopped
+
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile.onprem
+    ports:
+      - "3000:3000"
+    environment:
+      PRIVATE_DAO_PRIVATE_ENGINE_URL: http://private-engine:8787
+      NEXT_PUBLIC_PROOF_EXECUTION_MODE: local
+      NEXT_PUBLIC_PRIVATE_ENGINE_URL: http://localhost:8787
+    depends_on:
+      - private-engine
+    restart: unless-stopped

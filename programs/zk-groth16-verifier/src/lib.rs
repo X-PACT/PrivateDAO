@@ -1,6 +1,6 @@
 use anchor_lang::prelude::*;
 
-declare_id!("5H7Afyqdh5yPekkZJ5UM2j3HNB2bRvU8aVv8XoqeAW1j");
+declare_id!("GGqZKsdEwH9YVAqWYqjMgCmZ5nNbvGc8RkiMee3S6SdK");
 
 const ALT_BN128_PAIRING: u64 = 3;
 const ALT_BN128_PAIRING_ELEMENT_LEN: usize = 192;
@@ -45,11 +45,104 @@ pub mod zk_groth16_verifier {
 
         Ok(())
     }
+
+    pub fn store_blind_policy_receipt(
+        ctx: Context<StoreBlindPolicyReceipt>,
+        receipt_id: [u8; 32],
+        proof_hash: [u8; 32],
+        policy_commitment_hash: [u8; 32],
+        input_commitment_hash: [u8; 32],
+        verification_key_hash: [u8; 32],
+        circuit_version_hash: [u8; 32],
+        policy_version_hash: [u8; 32],
+        issued_at: i64,
+        expires_at: i64,
+    ) -> Result<()> {
+        require!(proof_hash != [0u8; 32], ZkVerifierError::ZeroHash);
+        require!(
+            policy_commitment_hash != [0u8; 32],
+            ZkVerifierError::ZeroHash
+        );
+        require!(
+            input_commitment_hash != [0u8; 32],
+            ZkVerifierError::ZeroHash
+        );
+        require!(
+            verification_key_hash != [0u8; 32],
+            ZkVerifierError::ZeroHash
+        );
+        require!(expires_at > issued_at, ZkVerifierError::InvalidReceiptTime);
+
+        let receipt = &mut ctx.accounts.receipt;
+        receipt.authority = ctx.accounts.authority.key();
+        receipt.receipt_id = receipt_id;
+        receipt.proof_hash = proof_hash;
+        receipt.policy_commitment_hash = policy_commitment_hash;
+        receipt.input_commitment_hash = input_commitment_hash;
+        receipt.verification_key_hash = verification_key_hash;
+        receipt.circuit_version_hash = circuit_version_hash;
+        receipt.policy_version_hash = policy_version_hash;
+        receipt.issued_at = issued_at;
+        receipt.expires_at = expires_at;
+        receipt.bump = ctx.bumps.receipt;
+
+        emit!(BlindPolicyReceiptStored {
+            verifier: crate::ID,
+            authority: ctx.accounts.authority.key(),
+            receipt: ctx.accounts.receipt.key(),
+            receipt_id,
+            proof_hash,
+            policy_commitment_hash,
+            input_commitment_hash,
+            verification_key_hash,
+            circuit_version_hash,
+            policy_version_hash,
+            issued_at,
+            expires_at,
+        });
+
+        Ok(())
+    }
 }
 
 #[derive(Accounts)]
 pub struct VerifyGroth16Receipt<'info> {
     pub operator: Signer<'info>,
+}
+
+#[derive(Accounts)]
+#[instruction(receipt_id: [u8; 32])]
+pub struct StoreBlindPolicyReceipt<'info> {
+    #[account(
+        init,
+        payer = authority,
+        space = BlindPolicyReceipt::SPACE,
+        seeds = [b"blind_policy_receipt", authority.key().as_ref(), receipt_id.as_ref()],
+        bump
+    )]
+    pub receipt: Account<'info, BlindPolicyReceipt>,
+    #[account(mut)]
+    pub authority: Signer<'info>,
+    pub system_program: Program<'info, System>,
+}
+
+#[account]
+pub struct BlindPolicyReceipt {
+    pub authority: Pubkey,
+    pub receipt_id: [u8; 32],
+    pub proof_hash: [u8; 32],
+    pub policy_commitment_hash: [u8; 32],
+    pub input_commitment_hash: [u8; 32],
+    pub verification_key_hash: [u8; 32],
+    pub circuit_version_hash: [u8; 32],
+    pub policy_version_hash: [u8; 32],
+    pub issued_at: i64,
+    pub expires_at: i64,
+    pub bump: u8,
+}
+
+impl BlindPolicyReceipt {
+    pub const SPACE: usize = 8 + 32 + (32 * 7) + 8 + 8 + 1;
 }
 
 #[event]
@@ -59,6 +152,22 @@ pub struct Groth16ReceiptVerified {
     pub receipt_id: [u8; 32],
     pub public_inputs_hash: [u8; 32],
     pub pairing_input_len: u32,
+}
+
+#[event]
+pub struct BlindPolicyReceiptStored {
+    pub verifier: Pubkey,
+    pub authority: Pubkey,
+    pub receipt: Pubkey,
+    pub receipt_id: [u8; 32],
+    pub proof_hash: [u8; 32],
+    pub policy_commitment_hash: [u8; 32],
+    pub input_commitment_hash: [u8; 32],
+    pub verification_key_hash: [u8; 32],
+    pub circuit_version_hash: [u8; 32],
+    pub policy_version_hash: [u8; 32],
+    pub issued_at: i64,
+    pub expires_at: i64,
 }
 
 #[error_code]
@@ -71,6 +180,10 @@ pub enum ZkVerifierError {
     PairingSyscallFailed,
     #[msg("Pairing check returned false")]
     InvalidPairingProof,
+    #[msg("Receipt hash fields cannot be zero")]
+    ZeroHash,
+    #[msg("Receipt expiry must be after issuance")]
+    InvalidReceiptTime,
 }
 
 fn alt_bn128_pairing_check(input: &[u8]) -> Result<[u8; ALT_BN128_PAIRING_OUTPUT_LEN]> {

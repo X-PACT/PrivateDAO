@@ -1,0 +1,9 @@
+1. PrivateDAO Automation Trading turns serious Solana execution into a cinematic Telegram flow for fast traders and serious operators.
+2. The bot can discover and trade live Solana tokens, including early pump dot fun flow before the usual pool migration story is over.
+3. Fast buy, dollar cost averaging, and grid trading all run through the same protected execution core instead of separate fragile tools.
+4. Smart Shield checks slippage, price impact, and route conditions before the order goes out, so the risk is visible before funds move.
+5. Helius routes, Jito infrastructure, and protected submission paths help reduce the ugly parts of public mempool execution.
+6. Private execution splits larger orders into controlled parts, reducing footprint while keeping the trader inside one simple conversation flow.
+7. Every serious execution path can end with a verified receipt, cryptographic hashes, and explorer proof instead of a vague success message.
+8. PrivateDAO gives simple buttons to newer traders, but the stack underneath is built for bigger flow, better proofs, and long term serious use.
+9. Launch the bot, fund the wallet, and move from discovery to execution in one controlled product surface built around PrivateDAO.

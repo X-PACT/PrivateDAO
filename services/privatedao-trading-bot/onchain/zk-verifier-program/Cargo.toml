@@ -1,0 +1,24 @@
+[package]
+name = "privatedao-zk-verifier"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib", "lib"]
+
+[dependencies]
+ark-bn254 = { version = "0.5", optional = true }
+ark-ec = { version = "0.5", optional = true }
+ark-serialize = { version = "0.5", optional = true }
+groth16-solana = "0.2.0"
+num-bigint = { version = "0.4.6", optional = true }
+serde_json = { version = "1.0", optional = true }
+solana-program = "4.0.0"
+
+[features]
+tools = ["ark-bn254", "ark-ec", "ark-serialize", "num-bigint", "serde_json"]
+
+[[bin]]
+name = "generate_instruction_data"
+path = "src/bin/generate_instruction_data.rs"
+required-features = ["tools"]
