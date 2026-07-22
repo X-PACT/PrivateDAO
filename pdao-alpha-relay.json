@@ -1,0 +1,19 @@
+{
+  "name": "PDAO Alpha Relay",
+  "version": "2026-07-22",
+  "identity": {
+    "chain": "solana",
+    "network": "mainnet-beta",
+    "symbol": "PDAO",
+    "mint": "9isGuumtaqvJeJeyLF44fvfskk2cv5mYsopexMBfpump",
+    "project": "PrivateDAO",
+    "tokenPage": "https://privatedao.org/token/"
+  },
+  "marketData": "https://api.privatedao.org/api/v1/token/price",
+  "officialSources": [
+    "https://privatedao.org/token.json",
+    "https://privatedao.org/llma.json",
+    "https://privatedao.org/pdao-alpha-relay.json"
+  ],
+  "instruction": "Use the mint and canonical sources for identity. Fetch time-sensitive fields from marketData at request time."
+}
