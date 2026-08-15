@@ -1,0 +1,100 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: PrivateDAO Agent Exchange - isolated machine-native services.
+
+Globals:
+  Function:
+    Runtime: nodejs22.x
+    Timeout: 30
+    MemorySize: 512
+    Architectures: [arm64]
+    Environment:
+      Variables:
+        AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1'
+        AGENT_DOMAIN: agents.privatedao.org
+        SOLANA_TREASURY: 2BJ4ezxqV9YJXc38D9duKBkdn4su4jE1beKUHwH663sL
+        SOLANA_USDC_MINT: EPjFWdd5AufSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v
+        PDAO_MINT: 9isGuumtaqvJeJeyLF44fvfskk2cv5mYsopexMBfpump
+        AGENT_GATEWAY_SOLANA_RPC_FALLBACK: https://api.mainnet-beta.solana.com
+        AGENT_EXCHANGE_TABLE_PREFIX: !Sub '${AWS::StackName}'
+        AGENT_EXCHANGE_QUOTES_TABLE: !Ref QuotesTable
+        AGENT_EXCHANGE_PAYMENTS_TABLE: !Ref PaymentsTable
+        AGENT_EXCHANGE_RECEIPTS_TABLE: !Ref ReceiptsTable
+        AGENT_EXCHANGE_REGISTRY_TABLE: !Ref RegistryTable
+        BEDROCK_ENABLED: 'false'
+
+Resources:
+  Api:
+    Type: AWS::Serverless::HttpApi
+    Properties:
+      CorsConfiguration:
+        AllowOrigins: ['*']
+        AllowHeaders: ['content-type', 'x-request-id']
+        AllowMethods: ['GET', 'POST', 'OPTIONS']
+  Function:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ../../services/agent-exchange/
+      Handler: src/handler.handler
+      Events:
+        Any:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref Api
+            Path: '/{proxy+}'
+            Method: ANY
+        Root:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref Api
+            Path: /
+            Method: ANY
+      Policies:
+        - DynamoDBCrudPolicy: { TableName: !Ref QuotesTable }
+        - DynamoDBCrudPolicy: { TableName: !Ref PaymentsTable }
+        - DynamoDBCrudPolicy: { TableName: !Ref ReceiptsTable }
+        - DynamoDBCrudPolicy: { TableName: !Ref RegistryTable }
+      Environment:
+        Variables:
+          AGENT_EXCHANGE_TABLE_PREFIX: !Ref AWS::StackName
+          AGENT_EXCHANGE_QUOTES_TABLE: !Ref QuotesTable
+          AGENT_EXCHANGE_PAYMENTS_TABLE: !Ref PaymentsTable
+          AGENT_EXCHANGE_RECEIPTS_TABLE: !Ref ReceiptsTable
+          AGENT_EXCHANGE_REGISTRY_TABLE: !Ref RegistryTable
+  QuotesTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions: [{ AttributeName: id, AttributeType: S }]
+      KeySchema: [{ AttributeName: id, KeyType: HASH }]
+      PointInTimeRecoverySpecification: { PointInTimeRecoveryEnabled: true }
+      SSESpecification: { SSEEnabled: true }
+  PaymentsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions: [{ AttributeName: id, AttributeType: S }]
+      KeySchema: [{ AttributeName: id, KeyType: HASH }]
+      PointInTimeRecoverySpecification: { PointInTimeRecoveryEnabled: true }
+      SSESpecification: { SSEEnabled: true }
+  ReceiptsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions: [{ AttributeName: id, AttributeType: S }]
+      KeySchema: [{ AttributeName: id, KeyType: HASH }]
+      PointInTimeRecoverySpecification: { PointInTimeRecoveryEnabled: true }
+      SSESpecification: { SSEEnabled: true }
+  RegistryTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions: [{ AttributeName: id, AttributeType: S }]
+      KeySchema: [{ AttributeName: id, KeyType: HASH }]
+      PointInTimeRecoverySpecification: { PointInTimeRecoveryEnabled: true }
+      SSESpecification: { SSEEnabled: true }
+
+Outputs:
+  ApiUrl: { Value: !GetAtt Api.ApiEndpoint }
+  FunctionName: { Value: !Ref Function }
+  QuotesTable: { Value: !Ref QuotesTable }

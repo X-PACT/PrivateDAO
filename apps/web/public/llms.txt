@@ -1,0 +1,9 @@
+# PrivateDAO machine discovery
+
+The human-facing PrivateDAO site publishes product and trust information.
+For machine-native service discovery, use the isolated AWS Agent Exchange:
+
+https://agents.privatedao.org/.well-known/agent-card.json
+https://agents.privatedao.org/openapi.json
+https://agents.privatedao.org/mcp
+https://agents.privatedao.org/llms.txt
