@@ -1,0 +1,1757 @@
+{
+  "address": "4Z7AeFRZHBCok68hhbUgVLC3uFaEP2aDWozsYVksPuQd",
+  "metadata": {
+    "name": "privatedao_auction",
+    "version": "0.1.0",
+    "spec": "0.1.0"
+  },
+  "instructions": [
+    {
+      "name": "activate_auction",
+      "discriminator": [
+        212,
+        24,
+        210,
+        7,
+        183,
+        147,
+        66,
+        109
+      ],
+      "accounts": [
+        {
+          "name": "config",
+          "writable": true
+        },
+        {
+          "name": "session",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  115,
+                  101,
+                  115,
+                  115,
+                  105,
+                  111,
+                  110
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "config"
+              }
+            ]
+          }
+        },
+        {
+          "name": "authority",
+          "signer": true,
+          "relations": [
+            "config"
+          ]
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "authorize_bidder",
+      "discriminator": [
+        148,
+        206,
+        88,
+        215,
+        141,
+        185,
+        32,
+        217
+      ],
+      "accounts": [
+        {
+          "name": "config",
+          "writable": true
+        },
+        {
+          "name": "authorization",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  117,
+                  116,
+                  104,
+                  111,
+                  114,
+                  105,
+                  122,
+                  97,
+                  116,
+                  105,
+                  111,
+                  110
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "config"
+              },
+              {
+                "kind": "arg",
+                "path": "bidder_commitment"
+              }
+            ]
+          }
+        },
+        {
+          "name": "authority",
+          "writable": true,
+          "signer": true,
+          "relations": [
+            "config"
+          ]
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "bidder_commitment",
+          "type": {
+            "array": [
+              "u8",
+              32
+            ]
+          }
+        },
+        {
+          "name": "bidder_wallet",
+          "type": "pubkey"
+        }
+      ]
+    },
+    {
+      "name": "close_bidding",
+      "discriminator": [
+        219,
+        203,
+        190,
+        31,
+        25,
+        53,
+        75,
+        228
+      ],
+      "accounts": [
+        {
+          "name": "session",
+          "writable": true
+        },
+        {
+          "name": "authority",
+          "signer": true,
+          "relations": [
+            "session"
+          ]
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "close_permission",
+      "discriminator": [
+        17,
+        241,
+        212,
+        43,
+        238,
+        201,
+        203,
+        210
+      ],
+      "accounts": [
+        {
+          "name": "session",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  115,
+                  101,
+                  115,
+                  115,
+                  105,
+                  111,
+                  110
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "config"
+              }
+            ]
+          }
+        },
+        {
+          "name": "config"
+        },
+        {
+          "name": "permission",
+          "writable": true
+        },
+        {
+          "name": "ephemeral_vault",
+          "writable": true
+        },
+        {
+          "name": "magic_program"
+        },
+        {
+          "name": "permission_program"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "commit_and_undelegate_session",
+      "discriminator": [
+        228,
+        50,
+        251,
+        110,
+        152,
+        161,
+        138,
+        53
+      ],
+      "accounts": [
+        {
+          "name": "payer",
+          "signer": true
+        },
+        {
+          "name": "session",
+          "writable": true
+        },
+        {
+          "name": "magic_context",
+          "writable": true
+        },
+        {
+          "name": "magic_program"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "commit_final_result",
+      "discriminator": [
+        1,
+        21,
+        66,
+        52,
+        201,
+        235,
+        250,
+        215
+      ],
+      "accounts": [
+        {
+          "name": "payer",
+          "signer": true
+        },
+        {
+          "name": "session",
+          "writable": true
+        },
+        {
+          "name": "magic_context",
+          "writable": true
+        },
+        {
+          "name": "magic_program"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "delegate_auction_session",
+      "discriminator": [
+        133,
+        242,
+        212,
+        8,
+        90,
+        27,
+        178,
+        103
+      ],
+      "accounts": [
+        {
+          "name": "payer",
+          "signer": true
+        },
+        {
+          "name": "buffer_session",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  98,
+                  117,
+                  102,
+                  102,
+                  101,
+                  114
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "session"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                52,
+                204,
+                158,
+                109,
+                241,
+                11,
+                147,
+                114,
+                172,
+                185,
+                85,
+                93,
+                235,
+                14,
+                222,
+                151,
+                156,
+                137,
+                89,
+                252,
+                201,
+                240,
+                81,
+                18,
+                245,
+                248,
+                117,
+                121,
+                18,
+                65,
+                15,
+                154
+              ]
+            }
+          }
+        },
+        {
+          "name": "delegation_record_session",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  101,
+                  108,
+                  101,
+                  103,
+                  97,
+                  116,
+                  105,
+                  111,
+                  110
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "session"
+              }
+            ],
+            "program": {
+              "kind": "account",
+              "path": "delegation_program"
+            }
+          }
+        },
+        {
+          "name": "delegation_metadata_session",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  101,
+                  108,
+                  101,
+                  103,
+                  97,
+                  116,
+                  105,
+                  111,
+                  110,
+                  45,
+                  109,
+                  101,
+                  116,
+                  97,
+                  100,
+                  97,
+                  116,
+                  97
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "session"
+              }
+            ],
+            "program": {
+              "kind": "account",
+              "path": "delegation_program"
+            }
+          }
+        },
+        {
+          "name": "session",
+          "writable": true
+        },
+        {
+          "name": "config"
+        },
+        {
+          "name": "owner_program",
+          "address": "4Z7AeFRZHBCok68hhbUgVLC3uFaEP2aDWozsYVksPuQd"
+        },
+        {
+          "name": "delegation_program",
+          "address": "DELeGGvXpWV2fqJUhqcF5ZSYMS4JTLjteaAMARRSaeSh"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "finalize_private_result",
+      "discriminator": [
+        206,
+        147,
+        182,
+        56,
+        174,
+        46,
+        94,
+        254
+      ],
+      "accounts": [
+        {
+          "name": "session",
+          "writable": true
+        },
+        {
+          "name": "authority",
+          "signer": true,
+          "relations": [
+            "session"
+          ]
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "finalize_receipt",
+      "discriminator": [
+        41,
+        43,
+        175,
+        190,
+        232,
+        64,
+        155,
+        172
+      ],
+      "accounts": [
+        {
+          "name": "authority",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "config"
+        },
+        {
+          "name": "session"
+        },
+        {
+          "name": "receipt",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  114,
+                  101,
+                  99,
+                  101,
+                  105,
+                  112,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "config"
+              }
+            ]
+          }
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "receipt_id",
+          "type": {
+            "array": [
+              "u8",
+              32
+            ]
+          }
+        },
+        {
+          "name": "solana_signature",
+          "type": "string"
+        },
+        {
+          "name": "slot",
+          "type": "u64"
+        },
+        {
+          "name": "finality",
+          "type": "u8"
+        }
+      ]
+    },
+    {
+      "name": "init_permission",
+      "discriminator": [
+        66,
+        14,
+        153,
+        250,
+        187,
+        36,
+        179,
+        236
+      ],
+      "accounts": [
+        {
+          "name": "session",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  115,
+                  101,
+                  115,
+                  115,
+                  105,
+                  111,
+                  110
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "config"
+              }
+            ]
+          }
+        },
+        {
+          "name": "config"
+        },
+        {
+          "name": "permission",
+          "writable": true
+        },
+        {
+          "name": "ephemeral_vault",
+          "writable": true
+        },
+        {
+          "name": "magic_program"
+        },
+        {
+          "name": "permission_program"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "initialize_auction",
+      "discriminator": [
+        37,
+        10,
+        117,
+        197,
+        208,
+        88,
+        117,
+        62
+      ],
+      "accounts": [
+        {
+          "name": "authority",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "config",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  117,
+                  99,
+                  116,
+                  105,
+                  111,
+                  110
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "auction_id"
+              }
+            ]
+          }
+        },
+        {
+          "name": "session",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  115,
+                  101,
+                  115,
+                  115,
+                  105,
+                  111,
+                  110
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "config"
+              }
+            ]
+          }
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "auction_id",
+          "type": {
+            "array": [
+              "u8",
+              32
+            ]
+          }
+        },
+        {
+          "name": "bidding_start",
+          "type": "i64"
+        },
+        {
+          "name": "bidding_deadline",
+          "type": "i64"
+        },
+        {
+          "name": "rules_digest",
+          "type": {
+            "array": [
+              "u8",
+              32
+            ]
+          }
+        },
+        {
+          "name": "policy_digest",
+          "type": {
+            "array": [
+              "u8",
+              32
+            ]
+          }
+        },
+        {
+          "name": "disclose_winning_amount",
+          "type": "bool"
+        },
+        {
+          "name": "allow_bid_updates",
+          "type": "bool"
+        }
+      ]
+    },
+    {
+      "name": "process_undelegation",
+      "discriminator": [
+        196,
+        28,
+        41,
+        206,
+        48,
+        37,
+        51,
+        167
+      ],
+      "accounts": [
+        {
+          "name": "base_account",
+          "writable": true
+        },
+        {
+          "name": "buffer",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  117,
+                  110,
+                  100,
+                  101,
+                  108,
+                  101,
+                  103,
+                  97,
+                  116,
+                  101,
+                  45,
+                  98,
+                  117,
+                  102,
+                  102,
+                  101,
+                  114
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "base_account"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                181,
+                183,
+                0,
+                225,
+                242,
+                87,
+                58,
+                192,
+                204,
+                6,
+                34,
+                1,
+                52,
+                74,
+                207,
+                151,
+                184,
+                53,
+                6,
+                235,
+                140,
+                229,
+                25,
+                152,
+                204,
+                98,
+                126,
+                24,
+                147,
+                128,
+                167,
+                62
+              ]
+            }
+          }
+        },
+        {
+          "name": "payer",
+          "writable": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "account_seeds",
+          "type": {
+            "vec": "bytes"
+          }
+        }
+      ]
+    },
+    {
+      "name": "recover_stale_session",
+      "discriminator": [
+        68,
+        151,
+        11,
+        28,
+        195,
+        146,
+        64,
+        225
+      ],
+      "accounts": [
+        {
+          "name": "config",
+          "writable": true
+        },
+        {
+          "name": "session",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  115,
+                  101,
+                  115,
+                  115,
+                  105,
+                  111,
+                  110
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "config"
+              }
+            ]
+          }
+        },
+        {
+          "name": "authority",
+          "signer": true,
+          "relations": [
+            "config"
+          ]
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "revoke_bidder",
+      "discriminator": [
+        212,
+        191,
+        52,
+        211,
+        183,
+        20,
+        149,
+        55
+      ],
+      "accounts": [
+        {
+          "name": "config",
+          "writable": true
+        },
+        {
+          "name": "authorization",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  117,
+                  116,
+                  104,
+                  111,
+                  114,
+                  105,
+                  122,
+                  97,
+                  116,
+                  105,
+                  111,
+                  110
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "config"
+              },
+              {
+                "kind": "account",
+                "path": "authorization.bidder_commitment",
+                "account": "BidderAuthorization"
+              }
+            ]
+          }
+        },
+        {
+          "name": "authority",
+          "writable": true,
+          "signer": true,
+          "relations": [
+            "config"
+          ]
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "set_private",
+      "discriminator": [
+        84,
+        181,
+        3,
+        127,
+        237,
+        243,
+        251,
+        30
+      ],
+      "accounts": [
+        {
+          "name": "session",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  115,
+                  101,
+                  115,
+                  115,
+                  105,
+                  111,
+                  110
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "config"
+              }
+            ]
+          }
+        },
+        {
+          "name": "config"
+        },
+        {
+          "name": "permission",
+          "writable": true
+        },
+        {
+          "name": "ephemeral_vault",
+          "writable": true
+        },
+        {
+          "name": "magic_program"
+        },
+        {
+          "name": "permission_program"
+        }
+      ],
+      "args": [
+        {
+          "name": "is_private",
+          "type": "bool"
+        }
+      ]
+    },
+    {
+      "name": "submit_private_bid",
+      "discriminator": [
+        227,
+        49,
+        22,
+        131,
+        243,
+        208,
+        82,
+        23
+      ],
+      "accounts": [
+        {
+          "name": "bidder",
+          "signer": true
+        },
+        {
+          "name": "session",
+          "writable": true
+        },
+        {
+          "name": "authorization"
+        }
+      ],
+      "args": [
+        {
+          "name": "bidder_commitment",
+          "type": {
+            "array": [
+              "u8",
+              32
+            ]
+          }
+        },
+        {
+          "name": "amount",
+          "type": "u64"
+        },
+        {
+          "name": "salt",
+          "type": {
+            "array": [
+              "u8",
+              32
+            ]
+          }
+        },
+        {
+          "name": "revision",
+          "type": "u32"
+        }
+      ]
+    }
+  ],
+  "accounts": [
+    {
+      "name": "AuctionConfig",
+      "discriminator": [
+        195,
+        54,
+        8,
+        51,
+        28,
+        231,
+        33,
+        142
+      ]
+    },
+    {
+      "name": "AuctionSession",
+      "discriminator": [
+        58,
+        142,
+        41,
+        182,
+        63,
+        203,
+        63,
+        158
+      ]
+    },
+    {
+      "name": "BidderAuthorization",
+      "discriminator": [
+        136,
+        250,
+        239,
+        173,
+        184,
+        36,
+        61,
+        162
+      ]
+    },
+    {
+      "name": "SettlementReceipt",
+      "discriminator": [
+        52,
+        249,
+        252,
+        121,
+        4,
+        232,
+        187,
+        4
+      ]
+    }
+  ],
+  "events": [
+    {
+      "name": "AuctionInitialized",
+      "discriminator": [
+        18,
+        7,
+        64,
+        239,
+        134,
+        184,
+        173,
+        108
+      ]
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "StartInPast",
+      "msg": "Auction start is in the past"
+    },
+    {
+      "code": 6001,
+      "name": "InvalidDeadline",
+      "msg": "Auction deadline is invalid"
+    },
+    {
+      "code": 6002,
+      "name": "InvalidAuctionId",
+      "msg": "Auction id is invalid"
+    },
+    {
+      "code": 6003,
+      "name": "InvalidRulesDigest",
+      "msg": "Rules digest is invalid"
+    },
+    {
+      "code": 6004,
+      "name": "InvalidPolicyDigest",
+      "msg": "Policy digest is invalid"
+    },
+    {
+      "code": 6005,
+      "name": "InvalidStatus",
+      "msg": "Invalid auction status"
+    },
+    {
+      "code": 6006,
+      "name": "TooEarly",
+      "msg": "Auction has not started"
+    },
+    {
+      "code": 6007,
+      "name": "DeadlinePassed",
+      "msg": "Auction deadline has passed"
+    },
+    {
+      "code": 6008,
+      "name": "InvalidBidderCommitment",
+      "msg": "Bidder commitment is invalid"
+    },
+    {
+      "code": 6009,
+      "name": "BidderNotAuthorized",
+      "msg": "Bidder is not authorized"
+    },
+    {
+      "code": 6010,
+      "name": "BidderCommitmentMismatch",
+      "msg": "Bidder commitment does not match authorization"
+    },
+    {
+      "code": 6011,
+      "name": "BidderWalletMismatch",
+      "msg": "Bidder wallet does not match authorization"
+    },
+    {
+      "code": 6012,
+      "name": "AuthorizationMismatch",
+      "msg": "Bidder authorization belongs to another auction"
+    },
+    {
+      "code": 6013,
+      "name": "InvalidAmount",
+      "msg": "Bid amount is invalid"
+    },
+    {
+      "code": 6014,
+      "name": "BidUpdatesDisabled",
+      "msg": "Bid updates are disabled"
+    },
+    {
+      "code": 6015,
+      "name": "RevisionReplay",
+      "msg": "Bid revision is replayed"
+    },
+    {
+      "code": 6016,
+      "name": "InvalidRevision",
+      "msg": "Initial bid revision must be zero"
+    },
+    {
+      "code": 6017,
+      "name": "BidCapacityReached",
+      "msg": "Bid capacity reached"
+    },
+    {
+      "code": 6018,
+      "name": "ArithmeticOverflow",
+      "msg": "Arithmetic overflow"
+    },
+    {
+      "code": 6019,
+      "name": "NoValidBids",
+      "msg": "No valid bids exist"
+    },
+    {
+      "code": 6020,
+      "name": "PrivateStateNotCleared",
+      "msg": "Private state was not cleared"
+    },
+    {
+      "code": 6021,
+      "name": "InvalidReceiptId",
+      "msg": "Receipt id is invalid"
+    },
+    {
+      "code": 6022,
+      "name": "SignatureTooLong",
+      "msg": "Signature is too long"
+    },
+    {
+      "code": 6023,
+      "name": "ReceiptNotFinal",
+      "msg": "Receipt is not final"
+    },
+    {
+      "code": 6024,
+      "name": "DeadlineNotReached",
+      "msg": "Deadline has not been reached"
+    },
+    {
+      "code": 6025,
+      "name": "InvalidPermissionAccount",
+      "msg": "Invalid MagicBlock permission account"
+    },
+    {
+      "code": 6026,
+      "name": "InvalidMagicBlockAccount",
+      "msg": "Invalid MagicBlock account"
+    },
+    {
+      "code": 6027,
+      "name": "InvalidPermissionProgram",
+      "msg": "Invalid MagicBlock permission program"
+    },
+    {
+      "code": 6028,
+      "name": "SessionAuctionMismatch",
+      "msg": "Session belongs to another auction"
+    },
+    {
+      "code": 6029,
+      "name": "InvalidAuthorizationAccount",
+      "msg": "Invalid bidder authorization account"
+    },
+    {
+      "code": 6030,
+      "name": "DuplicatePermissionMember",
+      "msg": "Duplicate permission member"
+    },
+    {
+      "code": 6031,
+      "name": "PermissionMemberCapacityReached",
+      "msg": "Permission member capacity reached"
+    }
+  ],
+  "types": [
+    {
+      "name": "AuctionConfig",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "auction_id",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "authority",
+            "type": "pubkey"
+          },
+          {
+            "name": "room_reference",
+            "type": {
+              "option": "pubkey"
+            }
+          },
+          {
+            "name": "bidding_start",
+            "type": "i64"
+          },
+          {
+            "name": "bidding_deadline",
+            "type": "i64"
+          },
+          {
+            "name": "rules_digest",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "policy_digest",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "disclose_winning_amount",
+            "type": "bool"
+          },
+          {
+            "name": "allow_bid_updates",
+            "type": "bool"
+          },
+          {
+            "name": "status",
+            "type": {
+              "defined": {
+                "name": "AuctionStatus"
+              }
+            }
+          },
+          {
+            "name": "created_at",
+            "type": "i64"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "AuctionInitialized",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "auction",
+            "type": "pubkey"
+          },
+          {
+            "name": "auction_id",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "authority",
+            "type": "pubkey"
+          },
+          {
+            "name": "bidding_start",
+            "type": "i64"
+          },
+          {
+            "name": "bidding_deadline",
+            "type": "i64"
+          },
+          {
+            "name": "rules_digest",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "policy_digest",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "AuctionSession",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "auction",
+            "type": "pubkey"
+          },
+          {
+            "name": "auction_id",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "authority",
+            "type": "pubkey"
+          },
+          {
+            "name": "session_reference",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "rules_digest",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "policy_digest",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "bidding_start",
+            "type": "i64"
+          },
+          {
+            "name": "bidding_deadline",
+            "type": "i64"
+          },
+          {
+            "name": "allow_bid_updates",
+            "type": "bool"
+          },
+          {
+            "name": "disclose_winning_amount",
+            "type": "bool"
+          },
+          {
+            "name": "state_commitment",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "result_commitment",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "winner_commitment",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "public_winning_amount",
+            "type": {
+              "option": "u64"
+            }
+          },
+          {
+            "name": "bid_count",
+            "type": "u32"
+          },
+          {
+            "name": "revision",
+            "type": "u32"
+          },
+          {
+            "name": "status",
+            "type": {
+              "defined": {
+                "name": "AuctionStatus"
+              }
+            }
+          },
+          {
+            "name": "private_state_cleared",
+            "type": "bool"
+          },
+          {
+            "name": "bids",
+            "type": {
+              "vec": {
+                "defined": {
+                  "name": "PrivateBid"
+                }
+              }
+            }
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "AuctionStatus",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Scheduled"
+          },
+          {
+            "name": "Active"
+          },
+          {
+            "name": "Closed"
+          },
+          {
+            "name": "Finalized"
+          },
+          {
+            "name": "RecoveryPending"
+          },
+          {
+            "name": "Cancelled"
+          }
+        ]
+      }
+    },
+    {
+      "name": "BidderAuthorization",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "auction",
+            "type": "pubkey"
+          },
+          {
+            "name": "bidder_commitment",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "bidder_wallet",
+            "type": "pubkey"
+          },
+          {
+            "name": "authorized_by",
+            "type": "pubkey"
+          },
+          {
+            "name": "authorized_at",
+            "type": "i64"
+          },
+          {
+            "name": "active",
+            "type": "bool"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "PrivateBid",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "bidder_commitment",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "amount",
+            "type": "u64"
+          },
+          {
+            "name": "salt",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "revision",
+            "type": "u32"
+          },
+          {
+            "name": "submitted_at",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "SettlementReceipt",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "auction",
+            "type": "pubkey"
+          },
+          {
+            "name": "receipt_id",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "auction_id",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "rules_digest",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "policy_digest",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "result_commitment",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "session_reference",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "solana_signature",
+            "type": "string"
+          },
+          {
+            "name": "slot",
+            "type": "u64"
+          },
+          {
+            "name": "finality",
+            "type": "u8"
+          },
+          {
+            "name": "created_at",
+            "type": "i64"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    }
+  ]
+}
