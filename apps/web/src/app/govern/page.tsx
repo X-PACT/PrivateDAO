@@ -8,6 +8,7 @@ import { GuidedOperationRail } from "@/components/guided-operation-rail";
 import { LocalizedGovernIntroSurface } from "@/components/localized-govern-intro-surface";
 import { NormalUserOperationPath } from "@/components/normal-user-operation-path";
 import { OperationsShell } from "@/components/operations-shell";
+import { ProductVideo } from "@/components/product-video";
 import { buttonVariants } from "@/components/ui/button";
 import { buildRouteMetadata } from "@/lib/route-metadata";
 import { cn } from "@/lib/utils";
@@ -33,6 +34,11 @@ export default function GovernPage() {
         { label: "User-first flow", variant: "violet" },
       ]}
     >
+      <ProductVideo
+        slug="private-governance"
+        title="Private decisions with a clear result."
+        description="A short overview for councils, DAOs, and foundations: review together, vote without public pressure, and keep the final decision accountable."
+      />
       <GuidedOperationRail current="review" reviewHref="/intelligence" verifyHref="/proof" />
       <LocalizedGovernIntroSurface />
       <div className="rounded-[28px] border border-emerald-300/16 bg-emerald-300/[0.08] p-5">

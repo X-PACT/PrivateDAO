@@ -11,6 +11,7 @@ import { proposalCards } from "@/lib/site-data";
 import { buildRouteMetadata } from "@/lib/route-metadata";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { ProductVideo } from "@/components/product-video";
 
 export const metadata: Metadata = buildRouteMetadata({
   title: "Treasury",
@@ -34,6 +35,11 @@ export default function TreasuryPage() {
         { label: "Proof-linked", variant: "success" },
       ]}
     >
+      <ProductVideo
+        slug="treasury-coordination"
+        title="Treasury work people can review."
+        description="A concise product view of request review, policy approval, and evidence-backed execution for protocol and DAO finance teams."
+      />
       <div className="rounded-[28px] border border-white/10 bg-white/[0.04] p-5 text-sm leading-7 text-white/68">
         Start from treasury context, then continue to execution only after reviewing risk and route quality.
         <div className="mt-4 flex flex-wrap gap-3">
@@ -57,4 +63,3 @@ export default function TreasuryPage() {
     </OperationsShell>
   );
 }
-
