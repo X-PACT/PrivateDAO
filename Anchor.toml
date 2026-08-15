@@ -7,12 +7,15 @@ skip-lint = false
 
 [programs.devnet]
 private_dao = "EP9xE8MJZ6FfyEwLqns6HDdUZBknEa7WGYs1Jzsecuva"
+privatedao_auction = "4Z7AeFRZHBCok68hhbUgVLC3uFaEP2aDWozsYVksPuQd"
 
 [programs.localnet]
 private_dao = "EP9xE8MJZ6FfyEwLqns6HDdUZBknEa7WGYs1Jzsecuva"
+privatedao_auction = "4Z7AeFRZHBCok68hhbUgVLC3uFaEP2aDWozsYVksPuQd"
 
 [programs.testnet]
 private_dao = "EP9xE8MJZ6FfyEwLqns6HDdUZBknEa7WGYs1Jzsecuva"
+privatedao_auction = "4Z7AeFRZHBCok68hhbUgVLC3uFaEP2aDWozsYVksPuQd"
 
 [provider]
 cluster = "testnet"

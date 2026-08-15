@@ -11,8 +11,10 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@coral-xyz/anchor": "^0.32.1",
     "@bonfida/spl-name-service": "^3.0.21",
     "@cloak.dev/sdk-devnet": "^0.1.5-devnet.1",
+    "@magicblock-labs/ephemeral-rollups-sdk": "^0.16.2",
     "@qvac/sdk": "^0.10.0",
     "@solana/wallet-adapter-backpack": "^0.1.14",
     "@solana/wallet-adapter-base": "^0.9.27",

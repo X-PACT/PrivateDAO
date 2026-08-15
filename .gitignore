@@ -1,5 +1,7 @@
 node_modules/
 target/
+programs/privatedao-auction/target/
+programs/privatedao-auction/*-keypair.json
 .env
 .env.local
 .env.*
