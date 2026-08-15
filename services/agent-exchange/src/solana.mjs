@@ -20,11 +20,16 @@ export async function verifyPayment(config, payment, quote) {
   if (!tx) return { ok: false, reason: "transaction is not finalized or was not found" };
   const instructions = tx.transaction?.message?.instructions || [];
   const expected = Number(quote.amountAtomic);
+  let tokenAccounts = [];
+  if (quote.currency === "USDC") {
+    const accounts = await readRpc(config, "getTokenAccountsByOwner", [quote.recipient, { mint: quote.mint }, { encoding: "jsonParsed" }]);
+    tokenAccounts = (accounts.result?.value || []).map((account) => account.pubkey);
+  }
   const match = instructions.some((instruction) => {
     const info = instruction.parsed?.info;
     if (!info) return false;
     if (quote.currency === "SOL") return instruction.program === "system" && info.destination === quote.recipient && Number(info.lamports) === expected;
-    return instruction.program === "spl-token" && ["transfer", "transferChecked"].includes(instruction.parsed?.type) && info.destination === quote.recipientTokenAccount && Number(info.amount ?? info.tokenAmount?.amount) === expected && (!quote.mint || info.mint === quote.mint);
+    return instruction.program === "spl-token" && ["transfer", "transferChecked"].includes(instruction.parsed?.type) && tokenAccounts.includes(info.destination) && Number(info.amount ?? info.tokenAmount?.amount) === expected && (!quote.mint || info.mint === quote.mint);
   });
   return { ok: match && tx.meta?.err == null, slot: tx.slot, blockTime: tx.blockTime, reason: match ? (tx.meta?.err ? "transaction failed" : "confirmed") : "payment instruction does not match quote" };
 }
