@@ -3,7 +3,6 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
 import { OperationsShell } from "@/components/operations-shell";
-import { ProductVideo } from "@/components/product-video";
 import { ConfidentialAuctionWorkbench } from "@/components/confidential-auction-workbench";
 import { buttonVariants } from "@/components/ui/button";
 import { buildRouteMetadata } from "@/lib/route-metadata";
@@ -29,18 +28,6 @@ export default function AuctionsPage() {
         { label: "Shareable result", variant: "success" },
       ]}
     >
-      <ProductVideo
-        slug="sealed-auctions"
-        title="Private auctions, clear outcomes."
-        description="See how PrivateDAO keeps live offers private while giving procurement, grant, and marketplace teams a result they can share and verify."
-      />
-      <details className="rounded-[24px] border border-amber-300/15 bg-amber-300/[0.05] p-5">
-        <summary className="cursor-pointer list-none font-semibold text-white">How the private auction layer works</summary>
-        <div className="mt-3 grid gap-3 text-sm leading-7 text-white/62 md:grid-cols-2">
-          <p>During the active bidding window, the development product uses MagicBlock private execution so live offers and ranking are not presented as public market data.</p>
-          <p>After close, the result is committed to Solana and shown through a shareable receipt. Treasury or settlement actions remain a separate approval lane.</p>
-        </div>
-      </details>
       <section className="grid gap-4 lg:grid-cols-2">
         <article className="rounded-[28px] border border-red-300/16 bg-red-400/[0.06] p-5 sm:p-6">
           <div className="text-[11px] uppercase tracking-[0.25em] text-red-100/76">Problem</div>

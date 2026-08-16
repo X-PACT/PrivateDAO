@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import { OperationsShell } from "@/components/operations-shell";
-import { ProductVideo } from "@/components/product-video";
 import { buttonVariants } from "@/components/ui/button";
 import { buildRouteMetadata } from "@/lib/route-metadata";
 import { cn } from "@/lib/utils";
@@ -23,11 +22,6 @@ export default function BlindVerificationProductPage() {
       navigationMode="guided"
       badges={[{ label: "Privacy-first", variant: "cyan" }, { label: "Shareable result", variant: "success" }]}
     >
-      <ProductVideo
-        slug="blind-verification"
-        title="A private path to a trusted answer."
-        description="Choose the policy, verify the private input, and share the result when someone needs evidence."
-      />
       <section className="grid gap-4 md:grid-cols-3">
         {[
           ["Private inputs", "Sensitive source data stays behind the verification boundary."],

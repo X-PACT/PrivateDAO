@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import { OperationsShell } from "@/components/operations-shell";
-import { ProductVideo } from "@/components/product-video";
 import { buttonVariants } from "@/components/ui/button";
 import { buildRouteMetadata } from "@/lib/route-metadata";
 import { cn } from "@/lib/utils";
@@ -23,11 +22,6 @@ export default function RecordVerificationProductPage() {
       navigationMode="guided"
       badges={[{ label: "Evidence-ready", variant: "success" }, { label: "Walletless review", variant: "cyan" }]}
     >
-      <ProductVideo
-        slug="record-verification"
-        title="From record to receipt."
-        description="Submit a record, apply the agreed policy, and share a public verification page without asking the reviewer to understand the underlying machinery."
-      />
       <section className="grid gap-4 md:grid-cols-3">
         {[
           ["Structured", "Validate a record against an agreed schema before it becomes evidence."],

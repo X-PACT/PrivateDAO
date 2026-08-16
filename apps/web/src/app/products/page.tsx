@@ -15,7 +15,6 @@ import { PlatformCapabilityStack } from "@/components/platform-capability-stack"
 import { PrivacySdkApiStarter } from "@/components/privacy-sdk-api-starter";
 import { SolanaInfrastructureStack } from "@/components/solana-infrastructure-stack";
 import { TrustSurface } from "@/components/trust-surface";
-import { ProductVideo } from "@/components/product-video";
 import { getJudgeRuntimeLogsSnapshot } from "@/lib/judge-runtime-logs";
 import { buildRouteMetadata } from "@/lib/route-metadata";
 
@@ -51,18 +50,6 @@ export default function ProductsPage() {
       <LocalizedRouteSummary routeKey="products" />
       <LocalizedRouteBrief routeKey="products" />
       <LocalizedProductsPrimer />
-      <section className="grid gap-4 md:grid-cols-2">
-        <ProductVideo
-          slug="blind-verification"
-          title="Verify without exposing the input."
-          description="For teams that need to prove a rule was followed while sensitive source data stays private."
-        />
-        <ProductVideo
-          slug="record-verification"
-          title="Make every critical record checkable."
-          description="For data, audit, and reporting systems that need a durable receipt instead of a hard-to-trust screenshot."
-        />
-      </section>
       <ProductOfferCards />
       <PlatformCapabilityStack
         title="Every product corridor is backed by a real execution and proof lane"
