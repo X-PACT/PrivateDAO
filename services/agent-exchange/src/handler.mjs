@@ -125,11 +125,11 @@ function paymentPage(jobId) {
   const safeJobId = JSON.stringify(jobId);
   return `<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>PrivateDAO payment</title><style>body{font-family:system-ui;max-width:560px;margin:48px auto;padding:24px;background:#080b12;color:#f4f7fb}button{padding:14px 18px;border:0;border-radius:10px;background:#14f195;color:#061016;font-weight:700;cursor:pointer}pre{white-space:pre-wrap;color:#b8c4d4}</style></head><body><h1>PrivateDAO payment</h1><p>Connect Phantom to pay securely on Solana Mainnet.</p><button id="pay">Connect Phantom and pay</button><pre id="status">Ready</pre><script type="module">
 const jobId=${safeJobId},status=document.getElementById("status"),button=document.getElementById("pay");
-async function run(){try{const {PublicKey,Transaction,TransactionInstruction}=await import("https://esm.sh/@solana/web3.js@1.98.4"),spl=await import("https://esm.sh/@solana/spl-token@0.4.14");if(!window.solana?.isPhantom)throw new Error("Phantom wallet was not detected");const wallet=await window.solana.connect(),payer=new PublicKey(wallet.publicKey.toString()),built=await (await fetch("/api/jobs/"+encodeURIComponent(jobId)+"/payment-transaction",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({payer:payer.toString()})})).json();if(!built.recentBlockhash||!built.sourceTokenAccount)throw new Error(built.message||"A funded USDC token account is required");const mint=new PublicKey(built.mint),source=new PublicKey(built.sourceTokenAccount),destination=new PublicKey(built.treasuryTokenAccount),memoProgram=new PublicKey("MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr"),tx=new Transaction();tx.add(spl.createTransferCheckedInstruction(source,mint,destination,payer,BigInt(built.amountBaseUnits),6,[],spl.TOKEN_PROGRAM_ID),new TransactionInstruction({programId:memoProgram,keys:[{pubkey:payer,isSigner:true,isWritable:false}],data:new TextEncoder().encode(built.paymentReference)}));tx.feePayer=payer;tx.recentBlockhash=built.recentBlockhash;const sent=await window.solana.signAndSendTransaction(tx);status.textContent="Transaction sent. Waiting for finality...";let result;for(let i=0;i<20;i++){result=await (await fetch("/api/jobs/"+encodeURIComponent(jobId)+"/payment",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({signature:sent.signature})})).json();if(result.receipt||result.status==="completed")break;await new Promise(r=>setTimeout(r,3000));}status.textContent=JSON.stringify({...result,signature:sent.signature},null,2);}catch(error){status.textContent=error.message||String(error);}}button.onclick=run;
+async function run(){try{const {PublicKey,Transaction,TransactionInstruction}=await import("https://esm.sh/@solana/web3.js@1.98.4"),spl=await import("https://esm.sh/@solana/spl-token@0.4.14");if(!window.solana?.isPhantom)throw new Error("Phantom wallet was not detected");const wallet=await window.solana.connect(),payer=new PublicKey(wallet.publicKey.toString()),sourceHint=new URLSearchParams(location.search).get("sourceTokenAccount"),built=await (await fetch("/api/jobs/"+encodeURIComponent(jobId)+"/payment-transaction",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({payer:payer.toString(),sourceTokenAccount:sourceHint||undefined})})).json();if(!built.recentBlockhash||!built.sourceTokenAccount)throw new Error(built.message||"A funded USDC token account is required");const mint=new PublicKey(built.mint),source=new PublicKey(built.sourceTokenAccount),destination=new PublicKey(built.treasuryTokenAccount),memoProgram=new PublicKey("MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr"),tx=new Transaction();tx.add(spl.createTransferCheckedInstruction(source,mint,destination,payer,BigInt(built.amountBaseUnits),6,[],spl.TOKEN_PROGRAM_ID),new TransactionInstruction({programId:memoProgram,keys:[{pubkey:payer,isSigner:true,isWritable:false}],data:new TextEncoder().encode(built.paymentReference)}));tx.feePayer=payer;tx.recentBlockhash=built.recentBlockhash;const sent=await window.solana.signAndSendTransaction(tx);status.textContent="Transaction sent. Waiting for finality...";let result;for(let i=0;i<20;i++){result=await (await fetch("/api/jobs/"+encodeURIComponent(jobId)+"/payment",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({signature:sent.signature})})).json();if(result.receipt||result.status==="completed")break;await new Promise(r=>setTimeout(r,3000));}status.textContent=JSON.stringify({...result,signature:sent.signature},null,2);}catch(error){status.textContent=error.message||String(error);}}button.onclick=run;
 </script></body></html>`;
 }
 
-async function buildPaymentTransaction(jobId, payerText) {
+async function buildPaymentTransaction(jobId, payerText, sourceTokenAccountText = "") {
   if (!/^[1-9A-HJ-NP-Za-km-z]{32,44}$/.test(payerText || "")) throw new Error("valid payer wallet is required");
   const job = await (await store()).get("Jobs", jobId);
   const quote = (await (await store()).list("Quotes")).find((item) => item.job_id === jobId);
@@ -137,7 +137,16 @@ async function buildPaymentTransaction(jobId, payerText) {
   if (job.status !== "awaiting_payment") throw new Error("job is not awaiting payment");
   if (new Date(quote.expires_at) < new Date()) throw new Error("invoice expired");
   let source = null;
+  if (sourceTokenAccountText) {
+    if (!/^[1-9A-HJ-NP-Za-km-z]{32,44}$/.test(sourceTokenAccountText))
+      throw Object.assign(new Error("valid source token account is required"), { statusCode: 400 });
+    source = { pubkey: sourceTokenAccountText };
+  }
   try {
+    if (source) {
+      const latest = await readRpc(config, "getLatestBlockhash", [{ commitment: "finalized" }]);
+      return { payer: payerText, sourceTokenAccount: source.pubkey, mint: quote.mint, treasuryTokenAccount: quote.treasuryTokenAccount, amountBaseUnits: String(quote.amountAtomic), paymentReference: quote.paymentReference, recentBlockhash: latest.result.value.blockhash, lastValidBlockHeight: latest.result.value.lastValidBlockHeight, expiresAt: quote.expires_at };
+    }
     const accounts = await readRpc(config, "getTokenAccountsByOwner", [
       payerText,
       { mint: quote.mint },
@@ -935,7 +944,7 @@ async function handle(e) {
     return json(await submitPayment(payment[1], body));
   const paymentTransaction = path.match(/^\/api\/jobs\/([^/]+)\/payment-transaction$/);
   if (method === "POST" && paymentTransaction)
-    return json(await buildPaymentTransaction(paymentTransaction[1], body.payer));
+    return json(await buildPaymentTransaction(paymentTransaction[1], body.payer, body.sourceTokenAccount));
   if (method === "GET" && path === "/api/network/stats")
     return json(await networkStats(config));
   if (method === "GET" && path === "/api/discovery")
