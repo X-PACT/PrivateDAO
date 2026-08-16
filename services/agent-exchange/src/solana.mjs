@@ -117,8 +117,11 @@ export async function verifyPayment(config, payment, quote) {
   const expected = Number(quote.amountAtomic);
   let tokenAccounts = [];
   if (quote.currency === "USDC") {
+    const treasuryOwner = quote.treasuryOwner || quote.recipient;
+    if (!treasuryOwner)
+      return { ok: false, reason: "quote treasury owner is missing" };
     const accounts = await readRpc(config, "getTokenAccountsByOwner", [
-      quote.recipient,
+      treasuryOwner,
       { mint: quote.mint },
       { encoding: "jsonParsed" },
     ]);
