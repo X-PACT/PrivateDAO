@@ -121,6 +121,7 @@ export async function verifyPayment(config, payment, quote) {
   if (!tx)
     return {
       ok: false,
+      transient: true,
       reason: "transaction is not finalized or was not found",
     };
   const instructions = tx.transaction?.message?.instructions || [];

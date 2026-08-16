@@ -27,8 +27,8 @@ export async function createStore(config) {
         return value;
       },
       async get(collection, key) {
-        const result = await client.send(new GetCommand({ TableName: table(collection), Key: { id: key } }));
-        if (!result.Item) return null; const { id, ...value } = result.Item; return value;
+        const result = await client.send(new GetCommand({ TableName: table(collection), Key: { id: key }, ConsistentRead: true }));
+        if (!result.Item) return null; return result.Item;
       },
       async list(collection) {
         const result = await client.send(new ScanCommand({ TableName: table(collection), Limit: 100 }));
