@@ -325,15 +325,23 @@ async function acceptAgreement(id, body) {
 }
 async function revenueSummary() {
   const entries = await (await store()).list("Revenue");
-  return entries.reduce(
-    (summary, item) => ({
-      jobs: summary.jobs + 1,
-      grossAmount: summary.grossAmount + Number(item.grossAmount || 0),
-      protocolFee: summary.protocolFee + Number(item.protocolFee || 0),
-      asset: item.asset || summary.asset,
-    }),
-    { jobs: 0, grossAmount: 0, protocolFee: 0, asset: "USDC" },
+  const summary = entries.reduce(
+    (value, item) => {
+      const asset = item.asset || "UNKNOWN";
+      const bucket = value.byAsset[asset] || { grossAmount: 0, protocolFee: 0, jobs: 0 };
+      bucket.grossAmount += Number(item.grossAmount || 0);
+      bucket.protocolFee += Number(item.protocolFee || 0);
+      bucket.jobs += 1;
+      value.byAsset[asset] = bucket;
+      value.jobs += 1;
+      value.grossAmount += Number(item.grossAmount || 0);
+      value.protocolFee += Number(item.protocolFee || 0);
+      return value;
+    },
+    { jobs: 0, grossAmount: 0, protocolFee: 0, byAsset: {} },
   );
+  const assets = Object.keys(summary.byAsset);
+  return { ...summary, asset: assets.length === 1 ? assets[0] : "MULTI" };
 }
 async function treasuryStatus() {
   const ata = await treasuryTokenAccount(config);
