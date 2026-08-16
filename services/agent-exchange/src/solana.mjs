@@ -48,18 +48,7 @@ export function rpcUrls(config) {
 }
 
 export async function treasuryTokenAccount(config) {
-  try {
-    const { result } = await readRpc(config, "getTokenAccountsByOwner", [
-      config.treasury,
-      { mint: config.usdcMint },
-      { encoding: "jsonParsed" },
-    ]);
-    return (
-      result?.value?.[0]?.pubkey || (await derivedTreasuryTokenAccount(config))
-    );
-  } catch {
-    return derivedTreasuryTokenAccount(config);
-  }
+  return derivedTreasuryTokenAccount(config);
 }
 
 export async function derivedTreasuryTokenAccount(config) {
@@ -67,7 +56,7 @@ export async function derivedTreasuryTokenAccount(config) {
     config.treasury === "2BJ4ezxqV9YJXc38D9duKBkdn4su4jE1beKUHwH663sL" &&
     config.usdcMint === "EPjFWdd5AufSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"
   )
-    return "5RyKShQxSkbUJ9vA2MZ1Qf2TKgnwhhS3m7mj2ZZaVh6t";
+    return "L2iAzRuZZrubxcfkQXqBGpPHWej9vLMbm24cDT2jqbv";
   const { PublicKey } = await import("@solana/web3.js");
   const owner = new PublicKey(config.treasury);
   const mint = new PublicKey(config.usdcMint);
