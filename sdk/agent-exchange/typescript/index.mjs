@@ -14,4 +14,5 @@ export class PrivateDAOAgentExchange {
   requestLogistics(request) { return this.request("/api/logistics/request", { method: "POST", body: JSON.stringify(request) }); }
   verifyBasic(record) { return this.createJob("verify.basic", { record }); }
   task(service_id, input) { return this.createJob(service_id, input); }
+  static localExpiry(paymentIntent) { return new Date(paymentIntent.expiresAtEpochMs || paymentIntent.expiresAtUtc || paymentIntent.expiresAt); }
 }

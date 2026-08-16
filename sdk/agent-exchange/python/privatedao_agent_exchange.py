@@ -1,4 +1,5 @@
 import json
+from datetime import datetime, timezone
 from urllib.error import HTTPError
 from urllib.parse import quote, urlencode
 from urllib.request import Request, urlopen
@@ -57,3 +58,11 @@ class PrivateDAOAgentExchange:
 
     def verify_basic(self, record):
         return self.create_job("verify.basic", {"record": record})
+
+    @staticmethod
+    def local_expiry(payment_intent):
+        value = payment_intent.get("expiresAtEpochMs")
+        if value:
+            return datetime.fromtimestamp(value / 1000, tz=timezone.utc).astimezone()
+        iso = payment_intent.get("expiresAtUtc") or payment_intent["expiresAt"]
+        return datetime.fromisoformat(iso.replace("Z", "+00:00")).astimezone()

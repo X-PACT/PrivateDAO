@@ -357,6 +357,7 @@ async function makeQuote(serviceId, jobId, admin = false) {
     )
       ata = "5RyKShQxSkbUJ9vA2MZ1Qf2TKgnwhhS3m7mj2ZZaVh6t";
   }
+  const expiresAt = new Date(Date.now() + (admin ? 3600000 : 300000));
   const quote = {
     quote_id: `q_${randomUUID()}`,
     job_id: jobId,
@@ -369,7 +370,9 @@ async function makeQuote(serviceId, jobId, admin = false) {
     treasuryOwner: config.treasury,
     treasuryTokenAccount: ata,
     paymentReference: `PDAOJOB:${jobId}`,
-    expires_at: new Date(Date.now() + (admin ? 3600000 : 300000)).toISOString(),
+    expires_at: expiresAt.toISOString(),
+    expires_at_utc: expiresAt.toISOString(),
+    expires_at_epoch_ms: expiresAt.getTime(),
     payment_required: Boolean(service.price),
     ata_required: !ata,
   };
@@ -619,6 +622,8 @@ async function createJob(serviceId, input, admin = false) {
       treasuryTokenAccount: quote.treasuryTokenAccount,
       paymentReference: quote.paymentReference,
       expiresAt: quote.expires_at,
+      expiresAtUtc: quote.expires_at_utc,
+      expiresAtEpochMs: quote.expires_at_epoch_ms,
       submitSignatureUrl: `https://${config.domain}/api/jobs/${job.id}/payment`,
       statusUrl: `https://${config.domain}/api/jobs/${job.id}`,
       quoteId: quote.quote_id,
