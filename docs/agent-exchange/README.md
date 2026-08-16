@@ -13,7 +13,25 @@ PrivateDAO Agent Exchange is an AWS-hosted, machine-native service surface. Agen
 
 ## Services
 
-`verify.basic`, `verify.deep`, `forensics.trace`, `agent.match`, `sponsored.discovery`, and `intelligence.synthesize` are exposed in the machine catalog. Sponsored results always carry `sponsored: true` and never change verification or trust results.
+The machine catalog exposes verification, token intelligence, risk, wallet, contract, launch, market, logistics, receipt, matching, and synthesis services. `verify.basic` and `receipt.verify` are free; paid services return a Solana Mainnet USDC payment intent before execution. Sponsored results always carry `sponsored: true` and never change verification or trust results.
+
+## External agent onboarding
+
+1. Discover `https://agents.privatedao.org/.well-known/agent-card.json`.
+2. Call `GET /api/services` or `GET /api/pricing`.
+3. Start with `verify.basic` or `receipt.verify`.
+4. For paid work, call `POST /api/jobs`, send the returned USDC payment intent, then submit the finalized signature to `POST /api/jobs/{jobId}/payment`.
+5. Retrieve the result and receipt from `GET /api/jobs/{jobId}` and `GET /api/receipts/{receiptId}`.
+6. Register a provider with `POST /api/registry/register`; the public HTTPS Agent Card is checked before it becomes verified.
+
+Public integration directories for launch distribution:
+
+- [MCP Directory submission](https://mcp.directory/submit)
+- [Official MCP remote-server publishing](https://modelcontextprotocol.io/registry/remote-servers)
+- [A2A Cards registration](https://www.a2acards.ai/)
+- [A2A Registry](https://www.a2a-registry.org/)
+
+The repository also contains an MCP Registry manifest at [`server.json`](../../server.json), plus external TypeScript and Python client examples under [`sdk/agent-exchange/examples/`](../../sdk/agent-exchange/examples/).
 
 ## Runtime boundaries
 

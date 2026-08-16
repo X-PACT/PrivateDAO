@@ -21,6 +21,10 @@ Globals:
         AGENT_EXCHANGE_PAYMENTS_TABLE: !Ref PaymentsTable
         AGENT_EXCHANGE_RECEIPTS_TABLE: !Ref ReceiptsTable
         AGENT_EXCHANGE_REGISTRY_TABLE: !Ref RegistryTable
+        AGENT_EXCHANGE_JOBS_TABLE: !Ref JobsTable
+        AGENT_EXCHANGE_CAMPAIGNS_TABLE: !Ref CampaignsTable
+        AGENT_EXCHANGE_SOLANA_RPC_SECRET_ID: pdao/agent-exchange/solana-rpc
+        AGENT_EXCHANGE_ADMIN_SECRET_ID: pdao/agent-exchange/admin-smoke
         BEDROCK_ENABLED: 'false'
 
 Resources:
@@ -54,6 +58,19 @@ Resources:
         - DynamoDBCrudPolicy: { TableName: !Ref PaymentsTable }
         - DynamoDBCrudPolicy: { TableName: !Ref ReceiptsTable }
         - DynamoDBCrudPolicy: { TableName: !Ref RegistryTable }
+        - DynamoDBCrudPolicy: { TableName: !Ref JobsTable }
+        - DynamoDBCrudPolicy: { TableName: !Ref CampaignsTable }
+        - DynamoDBCrudPolicy: { TableName: !Ref ListingsTable }
+        - DynamoDBCrudPolicy: { TableName: !Ref AgreementsTable }
+        - DynamoDBCrudPolicy: { TableName: !Ref LogisticsTable }
+        - DynamoDBCrudPolicy: { TableName: !Ref RevenueTable }
+        - Statement:
+            - Effect: Allow
+              Action: secretsmanager:GetSecretValue
+              Resource: !Sub 'arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:pdao/agent-exchange/solana-rpc-*'
+            - Effect: Allow
+              Action: secretsmanager:GetSecretValue
+              Resource: !Sub 'arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:pdao/agent-exchange/admin-smoke-*'
       Environment:
         Variables:
           AGENT_EXCHANGE_TABLE_PREFIX: !Ref AWS::StackName
@@ -61,6 +78,15 @@ Resources:
           AGENT_EXCHANGE_PAYMENTS_TABLE: !Ref PaymentsTable
           AGENT_EXCHANGE_RECEIPTS_TABLE: !Ref ReceiptsTable
           AGENT_EXCHANGE_REGISTRY_TABLE: !Ref RegistryTable
+          AGENT_EXCHANGE_JOBS_TABLE: !Ref JobsTable
+          AGENT_EXCHANGE_CAMPAIGNS_TABLE: !Ref CampaignsTable
+          AGENT_EXCHANGE_LISTINGS_TABLE: !Ref ListingsTable
+          AGENT_EXCHANGE_AGREEMENTS_TABLE: !Ref AgreementsTable
+          AGENT_EXCHANGE_LOGISTICS_TABLE: !Ref LogisticsTable
+          AGENT_EXCHANGE_REVENUE_TABLE: !Ref RevenueTable
+          AGENT_EXCHANGE_SOLANA_RPC_SECRET_ID: pdao/agent-exchange/solana-rpc
+          AGENT_EXCHANGE_ADMIN_SECRET_ID: pdao/agent-exchange/admin-smoke
+          AGENT_EXCHANGE_MARKETPLACE_FEE_BPS: 500
   QuotesTable:
     Type: AWS::DynamoDB::Table
     Properties:
@@ -86,6 +112,54 @@ Resources:
       PointInTimeRecoverySpecification: { PointInTimeRecoveryEnabled: true }
       SSESpecification: { SSEEnabled: true }
   RegistryTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions: [{ AttributeName: id, AttributeType: S }]
+      KeySchema: [{ AttributeName: id, KeyType: HASH }]
+      PointInTimeRecoverySpecification: { PointInTimeRecoveryEnabled: true }
+      SSESpecification: { SSEEnabled: true }
+  JobsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions: [{ AttributeName: id, AttributeType: S }]
+      KeySchema: [{ AttributeName: id, KeyType: HASH }]
+      PointInTimeRecoverySpecification: { PointInTimeRecoveryEnabled: true }
+      SSESpecification: { SSEEnabled: true }
+  CampaignsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions: [{ AttributeName: id, AttributeType: S }]
+      KeySchema: [{ AttributeName: id, KeyType: HASH }]
+      PointInTimeRecoverySpecification: { PointInTimeRecoveryEnabled: true }
+      SSESpecification: { SSEEnabled: true }
+  ListingsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions: [{ AttributeName: id, AttributeType: S }]
+      KeySchema: [{ AttributeName: id, KeyType: HASH }]
+      PointInTimeRecoverySpecification: { PointInTimeRecoveryEnabled: true }
+      SSESpecification: { SSEEnabled: true }
+  AgreementsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions: [{ AttributeName: id, AttributeType: S }]
+      KeySchema: [{ AttributeName: id, KeyType: HASH }]
+      PointInTimeRecoverySpecification: { PointInTimeRecoveryEnabled: true }
+      SSESpecification: { SSEEnabled: true }
+  LogisticsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions: [{ AttributeName: id, AttributeType: S }]
+      KeySchema: [{ AttributeName: id, KeyType: HASH }]
+      PointInTimeRecoverySpecification: { PointInTimeRecoveryEnabled: true }
+      SSESpecification: { SSEEnabled: true }
+  RevenueTable:
     Type: AWS::DynamoDB::Table
     Properties:
       BillingMode: PAY_PER_REQUEST

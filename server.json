@@ -1,0 +1,17 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.X-PACT/privatedao-agent-exchange",
+  "title": "PrivateDAO Agent Exchange",
+  "description": "Machine-native Solana Mainnet verification, intelligence, agent discovery, and logistics services with USDC payment intents and verifiable receipts.",
+  "version": "1.2.0",
+  "repository": {
+    "url": "https://github.com/X-PACT/PrivateDAO",
+    "source": "github"
+  },
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://agents.privatedao.org/mcp"
+    }
+  ]
+}
