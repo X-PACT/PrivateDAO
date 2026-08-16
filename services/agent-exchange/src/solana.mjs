@@ -100,14 +100,24 @@ export async function readRpc(config, method, params = []) {
 export async function verifyPayment(config, payment, quote) {
   if (!payment?.signature || !quote)
     return { ok: false, reason: "signature and quote are required" };
-  const { result: tx } = await readRpc(config, "getTransaction", [
-    payment.signature,
-    {
-      commitment: "finalized",
-      maxSupportedTransactionVersion: 0,
-      encoding: "jsonParsed",
-    },
-  ]);
+  let tx;
+  try {
+    ({ result: tx } = await readRpc(config, "getTransaction", [
+      payment.signature,
+      {
+        commitment: "finalized",
+        maxSupportedTransactionVersion: 0,
+        encoding: "jsonParsed",
+      },
+    ]));
+  } catch (error) {
+    return {
+      ok: false,
+      transient: true,
+      reason: "payment is submitted; finality verification is temporarily retrying",
+      providerError: error?.message || "rpc unavailable",
+    };
+  }
   if (!tx)
     return {
       ok: false,
