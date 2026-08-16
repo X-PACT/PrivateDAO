@@ -121,6 +121,15 @@ function llms() {
   const paid = SERVICES.filter((service) => service.price).map((service) => service.id).join(", ");
   return `# PrivateDAO Agent Exchange\nFree: ${free}\nPaid: ${paid}\nPayment: finalized Solana mainnet USDC transaction, quote first.\nAgent Card: https://${config.domain}/.well-known/agent-card.json\nMCP: https://${config.domain}/mcp\nOpenAPI: https://${config.domain}/openapi.json\n`;
 }
+function paymentPage(jobId) {
+  const safeJobId = JSON.stringify(jobId);
+  return `<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>PrivateDAO payment</title><style>body{font-family:system-ui;max-width:560px;margin:48px auto;padding:24px;background:#080b12;color:#f4f7fb}button{padding:14px 18px;border:0;border-radius:10px;background:#14f195;color:#061016;font-weight:700;cursor:pointer}pre{white-space:pre-wrap;color:#b8c4d4}</style></head><body><h1>PrivateDAO payment</h1><p>Connect Phantom to pay securely on Solana Mainnet.</p><button id="pay">Connect Phantom and pay</button><pre id="status">Ready</pre><script type="module">
+import {Connection,PublicKey,Transaction,TransactionInstruction,SystemProgram} from "https://esm.sh/@solana/web3.js@1.98.4";
+const jobId=${safeJobId},status=document.getElementById("status"),button=document.getElementById("pay"),rpc="https://api.mainnet-beta.solana.com";
+const ataProgram=new PublicKey("ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL"),tokenProgram=new PublicKey("TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"),memoProgram=new PublicKey("MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr");
+async function run(){try{const intent=(await (await fetch("/api/jobs/"+encodeURIComponent(jobId)+"/payment-intent")).json()).paymentIntent;if(!intent)throw new Error("invoice unavailable");if(Date.now()>intent.expiresAtEpochMs)throw new Error("invoice expired");if(!window.solana?.isPhantom)throw new Error("Phantom wallet was not detected");const wallet=await window.solana.connect(),payer=new PublicKey(wallet.publicKey.toString()),connection=new Connection(rpc,"confirmed"),mint=new PublicKey(intent.mint),destination=new PublicKey(intent.treasuryTokenAccount),source=PublicKey.findProgramAddressSync([payer.toBuffer(),tokenProgram.toBuffer(),mint.toBuffer()],ataProgram)[0],tx=new Transaction();if(!(await connection.getAccountInfo(source)))tx.add(new TransactionInstruction({programId:ataProgram,keys:[{pubkey:payer,isSigner:true,isWritable:true},{pubkey:source,isSigner:false,isWritable:true},{pubkey:payer,isSigner:false,isWritable:false},{pubkey:mint,isSigner:false,isWritable:false},{pubkey:SystemProgram.programId,isSigner:false,isWritable:false},{pubkey:tokenProgram,isSigner:false,isWritable:false}],data:new Uint8Array([1])}));const data=new Uint8Array(10);data[0]=12;new DataView(data.buffer).setBigUint64(1,BigInt(intent.amountBaseUnits),true);data[9]=6;tx.add(new TransactionInstruction({programId:tokenProgram,keys:[{pubkey:source,isSigner:false,isWritable:true},{pubkey:mint,isSigner:false,isWritable:false},{pubkey:destination,isSigner:false,isWritable:true},{pubkey:payer,isSigner:true,isWritable:false}],data}),new TransactionInstruction({programId:memoProgram,keys:[{pubkey:payer,isSigner:true,isWritable:false}],data:new TextEncoder().encode(intent.paymentReference)}));tx.feePayer=payer;const latest=await connection.getLatestBlockhash("finalized");tx.recentBlockhash=latest.blockhash;status.textContent="Approve in Phantom...";const sent=await window.solana.signAndSendTransaction(tx);await connection.confirmTransaction({signature:sent.signature,blockhash:latest.blockhash,lastValidBlockHeight:latest.lastValidBlockHeight},"finalized");const result=await (await fetch("/api/jobs/"+encodeURIComponent(jobId)+"/payment",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({signature:sent.signature})})).json();status.textContent=JSON.stringify(result,null,2);}catch(error){status.textContent=error.message||String(error);}}button.onclick=run;
+</script></body></html>`;
+}
 const collectionFor = (name) =>
   ({
     listings: "Listings",
@@ -861,6 +870,13 @@ async function handle(e) {
     const item = await (await store()).get("Jobs", job[1]);
     return item ? json(item) : json({ error: "not_found" }, 404);
   }
+  const paymentIntent = path.match(/^\/api\/jobs\/([^/]+)\/payment-intent$/);
+  if (method === "GET" && paymentIntent) {
+    const item = await (await store()).get("Jobs", paymentIntent[1]);
+    const quote = (await (await store()).list("Quotes")).find((x) => x.job_id === paymentIntent[1]);
+    if (!item || !quote) return json({ error: "not_found" }, 404);
+    return json({ jobId: item.id, status: item.status, paymentIntent: { jobId: item.id, amount: quote.amount.toFixed(6), amountBaseUnits: String(quote.amountAtomic), mint: quote.mint, treasuryOwner: quote.treasuryOwner, treasuryTokenAccount: quote.treasuryTokenAccount, paymentReference: quote.paymentReference, expiresAtUtc: quote.expires_at_utc || quote.expires_at, expiresAtEpochMs: quote.expires_at_epoch_ms || Date.parse(quote.expires_at) } });
+  }
   const payment = path.match(/^\/api\/jobs\/([^/]+)\/payment$/);
   if (method === "POST" && payment)
     return json(await submitPayment(payment[1], body));
@@ -906,6 +922,8 @@ async function handle(e) {
     return json(await revenueSummary());
   if (method === "GET" && path === "/api/treasury/status")
     return json(await treasuryStatus());
+  const payPage = path.match(/^\/pay\/([^/]+)$/);
+  if (method === "GET" && payPage) return { statusCode: 200, headers: { "content-type": "text/html; charset=utf-8", "cache-control": "no-store" }, body: paymentPage(decodeURIComponent(payPage[1])) };
   if (method === "GET" && (path === "/mcp" || path === "/a2a"))
     return json(card());
   if (method === "POST" && path === "/api/admin/smoke-invoice") {
