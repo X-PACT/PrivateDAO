@@ -712,6 +712,18 @@ async function createJob(serviceId, input, admin = false, currency = "USDC") {
 }
 
 async function completeJob(job, result, payment) {
+  if (job.status === "completed" && job.receipt_id) {
+    const existingReceipt = await (await store()).get(
+      "Receipts",
+      job.receipt_id,
+    );
+    return {
+      job_id: job.id,
+      status: "completed",
+      result: job.result,
+      receipt: existingReceipt,
+    };
+  }
   const payload = {
     job_id: job.id,
     service: job.service_id,
@@ -742,14 +754,18 @@ async function completeJob(job, result, payment) {
 }
 
 async function submitPayment(jobId, body) {
-  const job = await (await store()).get("Jobs", jobId);
+  const storage = await store();
+  const job = await storage.get("Jobs", jobId);
   if (!job)
     throw Object.assign(new Error("job not found"), { statusCode: 404 });
+  if (job.status === "completed" && job.receipt_id) {
+    return completeJob(job, job.result, null);
+  }
   if (job.status !== "awaiting_payment")
     throw new Error("job is not awaiting payment");
-  const quotes = await (await store()).list("Quotes");
+  const quotes = await storage.list("Quotes");
   const quote = quotes.find((x) => x.job_id === jobId);
-  if (!quote || new Date(quote.expires_at) < new Date())
+  if (!quote)
     throw new Error("quote expired");
   const payment = await verifyPayment(
     config,
@@ -772,19 +788,46 @@ async function submitPayment(jobId, body) {
         status: "awaiting_payment",
       },
     });
-  await (
-    await store()
-  ).put(
-    "Payments",
-    `payment_${body.signature}`,
-    {
-      id: `payment_${body.signature}`,
-      signature: body.signature,
-      job_id: jobId,
-      consumed_at: now(),
-    },
-    true,
-  );
+  const expiresAt = Date.parse(quote.expires_at);
+  const paidAt = payment.blockTime ? payment.blockTime * 1000 : NaN;
+  if (!Number.isFinite(expiresAt) || !Number.isFinite(paidAt) || paidAt > expiresAt)
+    throw new Error("quote expired before the on-chain payment");
+
+  const paymentId = `payment_${body.signature}`;
+  const existingPayment = await storage.get("Payments", paymentId);
+  if (existingPayment && existingPayment.job_id !== jobId)
+    throw Object.assign(new Error("payment signature was already used"), {
+      statusCode: 402,
+    });
+  if (!existingPayment) {
+    await storage.put(
+      "Payments",
+      paymentId,
+      {
+        id: paymentId,
+        signature: body.signature,
+        job_id: jobId,
+        consumed_at: now(),
+      },
+      true,
+    );
+  }
+
+  const currentJob = await storage.get("Jobs", jobId);
+  if (currentJob?.status === "completed" && currentJob.receipt_id)
+    return completeJob(currentJob, currentJob.result, null);
+  if (existingPayment) {
+    const claimedAt = Date.parse(existingPayment.consumed_at || "");
+    if (Number.isFinite(claimedAt) && Date.now() - claimedAt < 30000)
+      return {
+        job_id: jobId,
+        status: "processing",
+        message: "payment accepted; job execution is already in progress",
+        retryAfterSeconds: 3,
+      };
+    // Recover a payment claim left behind by a crashed invocation. The
+    // signature remains bound to this job, so no second payment is accepted.
+  }
   const result = await executeService(job.service_id, body.input || {});
   return completeJob(job, result, {
     signature: body.signature,
