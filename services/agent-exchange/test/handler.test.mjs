@@ -27,12 +27,21 @@ test("acquisition manifest exposes real opt-in distribution channels", async () 
   const result = body(await handler(event("GET", "/api/acquisition")));
   assert.equal(result.network, "solana:mainnet-beta");
   assert.ok(result.integrations.some((item) => item.id === "mcp-official-registry"));
+  assert.ok(result.services.some((item) => item.id === "verify.basic" && item.expectedLatencyMs));
   assert.match(result.policy, /opt-in/);
 });
 
 test("free verification returns a deterministic receipt", async () => {
   const result = body(await handler(event("POST", "/api/tasks", { service_id: "verify.basic", input: { record: { b: 2, a: 1 } } })));
   assert.equal(result.result.verification_status, "VERIFIED"); assert.match(result.receipt.receipt_id, /^rvr_/);
+});
+
+test("free results expose only relevant structured upsell and referrals are attributable", async () => {
+  const result = body(await handler(event("POST", "/api/tasks", { service_id: "verify.basic", input: { record: { a: 1 } } })));
+  assert.equal(result.result.recommended_next_services[0].service, "risk.score");
+  const referral = body(await handler(event("POST", "/api/referrals", { agentId: "external-agent-example" })));
+  assert.match(referral.referralId, /^ref_/);
+  assert.match(referral.discoveryUrl, /ref=/);
 });
 
 test("paid service refuses execution without a real payment", async () => {

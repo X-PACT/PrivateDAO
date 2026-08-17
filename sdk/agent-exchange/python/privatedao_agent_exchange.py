@@ -87,6 +87,9 @@ class PrivateDAOAgentExchange:
     def verify_basic(self, record):
         return self.create_job("verify.basic", {"record": record})
 
+    def run(self, service_id, input_data=None):
+        return self.create_job(service_id, input_data or {})
+
     @staticmethod
     def local_expiry(payment_intent):
         value = payment_intent.get("expiresAtEpochMs")

@@ -18,6 +18,7 @@ const store = () => (storePromise ||= createStore(config));
 const runtimeConfig = () => (configPromise ||= hydrateConfig(config));
 const now = () => new Date().toISOString();
 function trackFunnel(event, details = {}) {
+  if (details.synthetic) return;
   const item = {
     id: `evt_${randomUUID()}`,
     event,
@@ -52,6 +53,14 @@ const text = (body, status = 200) => ({
 const pathOf = (e) =>
   e.rawPath || e.requestContext?.http?.path || e.path || "/";
 const methodOf = (e) => e.requestContext?.http?.method || e.httpMethod || "GET";
+function requestMetadata(e) {
+  const headers = e.headers || {};
+  return {
+    source: e.queryStringParameters?.source || headers["x-pdao-source"] || "direct",
+    agent: headers["x-pdao-agent-id"] || null,
+    synthetic: headers["x-pdao-synthetic"] === "true",
+  };
+}
 function parseBody(e) {
   const raw = e.body
     ? e.isBase64Encoded
@@ -117,6 +126,7 @@ function openapi() {
       "/api/registry/search": { get: { operationId: "searchAgents" } },
       "/api/discovery": { get: { operationId: "discovery" } },
       "/api/acquisition": { get: { operationId: "acquisition" } },
+      "/api/referrals": { post: { operationId: "createReferral" } },
       "/api/marketplace/listings": {
         get: { operationId: "searchListings" },
         post: { operationId: "publishListing" },
@@ -141,10 +151,23 @@ function llms() {
   return `# PrivateDAO Agent Exchange\nFree: ${free}\nPaid: ${paid}\nPayment: finalized Solana mainnet USDC transaction, quote first.\nAgent Card: https://${config.domain}/.well-known/agent-card.json\nMCP: https://${config.domain}/mcp\nOpenAPI: https://${config.domain}/openapi.json\n`;
 }
 function acquisition() {
+  const services = SERVICES.map((service) => ({
+    ...service,
+    expectedLatencyMs: service.price ? 15000 : 5000,
+    paymentAssets: service.price ? ["USDC"] : [],
+    receipt: `https://${config.domain}/api/receipts/{receiptId}`,
+  }));
   return {
     network: "solana:mainnet-beta",
     canonical: `https://${config.domain}`,
     freeEntry: "verify.basic",
+    services,
+    payment: {
+      assets: ["USDC"],
+      finalizedOnly: true,
+      quoteFirst: true,
+      custody: "receive-only treasury; agents sign their own transactions",
+    },
     discovery: {
       agentCard: `https://${config.domain}/.well-known/agent-card.json`,
       mcp: `https://${config.domain}/mcp`,
@@ -152,15 +175,58 @@ function acquisition() {
       openapi: `https://${config.domain}/openapi.json`,
       developerGuide: `https://${config.domain}/connect`,
     },
+    sdk: {
+      typescript: "https://github.com/X-PACT/PrivateDAO/tree/codex/agent-exchange-acquisition/sdk/agent-exchange/typescript",
+      python: "https://github.com/X-PACT/PrivateDAO/tree/codex/agent-exchange-acquisition/sdk/agent-exchange/python",
+      examples: `https://${config.domain}/connect`,
+    },
+    receipts: {
+      verification: `https://${config.domain}/api/receipts/{receiptId}`,
+      public: true,
+    },
+    referrals: {
+      supported: true,
+      attribution: "discovery-to-activation-to-paid-conversion",
+      rewards: "disabled-until-explicit-provider-policy",
+      endpoint: `https://${config.domain}/api/referrals`,
+    },
     integrations: [
-      { id: "mcp-official-registry", protocol: "MCP", status: "submission-ready", auth: "publisher permission required" },
-      { id: "a2a-registry", protocol: "A2A", status: "submission-ready", auth: "registry policy applies" },
+      { id: "mcp-official-registry", protocol: "MCP", status: "published-active", url: "https://registry.modelcontextprotocol.io/v0.1/servers?search=io.github.X-PACT%2Fpdao-agent-exchange" },
+      { id: "a2a-registry", protocol: "A2A", status: "registered-recheck-pending", url: "https://a2aregistry.org/api/agents/6ebd2b6c-2cef-4421-8f28-6896ca3bf307", note: "Registry cache must recheck the updated card; no duplicate entry is created." },
       { id: "solana-agent-registry", protocol: "A2A", status: "submission-ready", auth: "manual or registry-specific" },
       { id: "8004scan", protocol: "agent-discovery", status: "submission-ready", auth: "directory policy applies" },
       { id: "github-action", protocol: "GitHub Actions", status: "source-ready", url: "https://github.com/X-PACT/PrivateDAO/tree/codex/agent-exchange-acquisition/integrations/pdao-token-verification-action" },
     ],
     policy: "opt-in distribution; no fabricated activity or unsolicited messaging",
   };
+}
+function createReferral(body) {
+  const source = String(body.agentId || body.agent_id || body.source || "").trim();
+  if (!source || source.length > 200) throw new Error("agentId is required");
+  const code = `ref_${digest({ source }).slice(0, 24)}`;
+  trackFunnel("referral_created", { source: code, agent: source });
+  return {
+    referralId: code,
+    discoveryUrl: `https://${config.domain}/api/acquisition?ref=${encodeURIComponent(code)}`,
+    attribution: "discovery-to-activation-to-paid-conversion",
+    rewards: "disabled-until-explicit-provider-policy",
+  };
+}
+function recommendedNextServices(serviceId, result) {
+  if (serviceId === "verify.basic") {
+    const uncertain = result?.evidence_confidence === "not-found" || result?.valid === false;
+    return [{
+      service: uncertain ? "verify.deep" : "risk.score",
+      reason: uncertain ? "Basic evidence is incomplete; deep checks add bounded transaction and authority evidence." : "Authority and holder evidence can be converted into a machine-readable risk assessment.",
+      price: uncertain ? 0.25 : 0.02,
+      currency: "USDC",
+      expected_additional_value: uncertain ? "deeper evidence and recent activity" : "deterministic authority-risk factors",
+    }];
+  }
+  if (serviceId === "risk.score" && result?.factors?.mint_authority_present)
+    return [{ service: "verify.deep", reason: "The result contains an authority flag; deep verification can add recent activity evidence.", price: 0.25, currency: "USDC", expected_additional_value: "recent activity and expanded checks" }];
+  if (serviceId === "receipt.verify") return [];
+  return [];
 }
 function connectPage() {
   const lines = [
@@ -746,7 +812,7 @@ async function executeService(id, input) {
   throw new Error("service implementation unavailable");
 }
 
-async function createJob(serviceId, input, admin = false, currency = "USDC") {
+async function createJob(serviceId, input, admin = false, currency = "USDC", metadata = {}) {
   const service = serviceById(serviceId);
   if (!service) throw new Error("unknown service");
   const job = {
@@ -758,7 +824,7 @@ async function createJob(serviceId, input, admin = false, currency = "USDC") {
     expires_at: new Date(Date.now() + 900000).toISOString(),
   };
   await (await store()).put("Jobs", job.id, job, true);
-  trackFunnel("job_created", { service: serviceId });
+  trackFunnel("job_created", { service: serviceId, ...metadata });
   if (service.price) {
     const quote = await makeQuote(serviceId, job.id, admin, currency);
     const intent = {
@@ -805,18 +871,24 @@ async function completeJob(job, result, payment) {
       receipt: existingReceipt,
     };
   }
+  const recommendations = job.service_id === "verify.basic" || job.service_id === "risk.score"
+    ? recommendedNextServices(job.service_id, result)
+    : [];
+  const enrichedResult = recommendations.length
+    ? { ...result, recommended_next_services: recommendations }
+    : result;
   const payload = {
     job_id: job.id,
     service: job.service_id,
     input_hash: job.input_hash,
-    result_hash: digest(result),
+    result_hash: digest(enrichedResult),
     created_at: job.created_at,
     completed_at: now(),
   };
   const receipt = {
     receipt_id: receiptId(payload),
     ...payload,
-    evidence_hash: digest(result),
+    evidence_hash: digest(enrichedResult),
     payment_signature: payment?.signature || null,
     asset: payment?.currency || null,
     amount: payment?.amount || 0,
@@ -827,11 +899,11 @@ async function completeJob(job, result, payment) {
   await (await store()).put("Receipts", receipt.receipt_id, receipt, true);
   await recordRevenue(job, payment);
   job.status = "completed";
-  job.result = result;
+  job.result = enrichedResult;
   job.receipt_id = receipt.receipt_id;
   job.completed_at = receipt.completed_at;
   await (await store()).put("Jobs", job.id, job);
-  return { job_id: job.id, status: job.status, result, receipt };
+  return { job_id: job.id, status: job.status, result: enrichedResult, receipt };
 }
 
 async function submitPayment(jobId, body) {
@@ -1092,9 +1164,12 @@ async function handle(e) {
   if (method === "GET" && path === "/api/network/stats")
     return json(await networkStats(config));
   if (method === "GET" && path === "/api/acquisition") {
-    trackFunnel("acquisition_manifest_view");
+    const referral = e.queryStringParameters?.ref || null;
+    trackFunnel("acquisition_manifest_view", { source: referral || "direct" });
     return json(acquisition());
   }
+  if (method === "POST" && path === "/api/referrals")
+    return json(createReferral(body), 201);
   if (method === "GET" && path === "/api/admin/telemetry") {
     const token = e.headers?.["x-pdao-admin-smoke"] || e.headers?.["X-Pdao-Admin-Smoke"];
     if (!config.adminSmokeToken || token !== config.adminSmokeToken)
@@ -1160,9 +1235,9 @@ async function handle(e) {
     );
   }
   if (method === "POST" && path === "/api/jobs")
-    return json(await createJob(body.service_id, body.input || {}, false));
+    return json(await createJob(body.service_id, body.input || {}, false, "USDC", requestMetadata(e)));
   if (method === "POST" && path === "/api/tasks")
-    return json(await createJob(body.service_id, body.input || {}, false));
+    return json(await createJob(body.service_id, body.input || {}, false, "USDC", requestMetadata(e)));
   if (method === "POST" && path === "/api/payments/quote")
     return json(
       await makeQuote(body.service_id, body.job_id || `job_${randomUUID()}`),
