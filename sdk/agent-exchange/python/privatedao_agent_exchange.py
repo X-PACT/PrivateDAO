@@ -39,6 +39,22 @@ class PrivateDAOAgentExchange:
     def submit_payment(self, job_id, signature):
         return self.request("/api/jobs/" + quote(job_id) + "/payment", {"signature": signature})
 
+    def payment_intent(self, job_id):
+        return self.request("/api/jobs/" + quote(job_id) + "/payment-intent")
+
+    def payment_page(self, job_id):
+        return self.base_url + "/pay/" + quote(job_id)
+
+    def await_job(self, job_id, timeout_seconds=120, interval_seconds=3):
+        import time
+        deadline = time.time() + timeout_seconds
+        while time.time() < deadline:
+            job = self.job_status(job_id)
+            if job.get("status") in ("completed", "failed"):
+                return job
+            time.sleep(interval_seconds)
+        raise TimeoutError("job polling timed out")
+
     def receipt(self, receipt_id):
         return self.request("/api/receipts/" + quote(receipt_id))
 
@@ -55,6 +71,18 @@ class PrivateDAOAgentExchange:
 
     def request_logistics(self, request_data):
         return self.request("/api/logistics/request", request_data)
+
+    def logistics(self, request_data):
+        return self.request_logistics(request_data)
+
+    def agent_match(self, requirements):
+        return self.create_job("agent.match", requirements)
+
+    def discovery(self):
+        return self.request("/api/discovery")
+
+    def network_stats(self):
+        return self.request("/api/network/stats")
 
     def verify_basic(self, record):
         return self.create_job("verify.basic", {"record": record})

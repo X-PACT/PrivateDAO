@@ -17,6 +17,20 @@ let configPromise;
 const store = () => (storePromise ||= createStore(config));
 const runtimeConfig = () => (configPromise ||= hydrateConfig(config));
 const now = () => new Date().toISOString();
+function trackFunnel(event, details = {}) {
+  const item = {
+    id: `evt_${randomUUID()}`,
+    event,
+    service: details.service || null,
+    source: details.source || "direct",
+    agent: details.agent ? digest({ agent: details.agent }).slice(0, 20) : null,
+    network: "solana-mainnet-beta",
+    createdAt: now(),
+  };
+  void store()
+    .then((storage) => storage.put("Telemetry", item.id, item))
+    .catch(() => {});
+}
 const json = (body, status = 200, headers = {}) => ({
   statusCode: status,
   headers: {
@@ -120,6 +134,21 @@ function llms() {
   const free = SERVICES.filter((service) => !service.price).map((service) => service.id).join(", ");
   const paid = SERVICES.filter((service) => service.price).map((service) => service.id).join(", ");
   return `# PrivateDAO Agent Exchange\nFree: ${free}\nPaid: ${paid}\nPayment: finalized Solana mainnet USDC transaction, quote first.\nAgent Card: https://${config.domain}/.well-known/agent-card.json\nMCP: https://${config.domain}/mcp\nOpenAPI: https://${config.domain}/openapi.json\n`;
+}
+function connectPage() {
+  const lines = [
+    "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Connect an Agent | PrivateDAO</title>",
+    "<style>body{font-family:system-ui,sans-serif;max-width:920px;margin:0 auto;padding:32px 20px;background:#071018;color:#eef5f7;line-height:1.55}a{color:#7de2c0}h1{font-size:clamp(2rem,5vw,4rem);line-height:1.05}.lead{color:#b7c7cd;font-size:1.1rem;max-width:680px}.flow{display:flex;flex-wrap:wrap;gap:8px}.flow span,section{border:1px solid #29424b;border-radius:8px;padding:10px;background:#0c1a21}pre{overflow:auto;background:#02070a;border:1px solid #1b3037;border-radius:8px;padding:14px;color:#c7f7e7}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}.muted{color:#9ab0b8}</style></head><body>",
+    "<p class=\"muted\">PrivateDAO Agent Exchange</p><h1>Connect your agent</h1><p class=\"lead\">Discover Solana verification and logistics services, run a free check, pay only when a paid result is useful, and receive a verifiable receipt.</p>",
+    "<div class=\"flow\"><span>Discover</span><span>Create job</span><span>Pay</span><span>Get result</span><span>Verify receipt</span></div>",
+    "<h2>Fastest start: curl</h2><pre>curl https://agents.privatedao.org/.well-known/agent-card.json\ncurl https://agents.privatedao.org/api/services\ncurl -X POST https://agents.privatedao.org/api/jobs -H 'content-type: application/json' -d '{\"service_id\":\"verify.basic\",\"input\":{\"mint\":\"YOUR_SOLANA_MINT\"}}'</pre>",
+    "<h2>TypeScript</h2><pre>import { PrivateDAOAgentExchange } from \"@privatedao/agent-exchange\";\nconst pdao = new PrivateDAOAgentExchange();\nawait pdao.discover();\nconst job = await pdao.verifyBasic({ mint: \"YOUR_SOLANA_MINT\" });\nconsole.log(job);</pre>",
+    "<h2>Python</h2><pre>from privatedao_agent_exchange import PrivateDAOAgentExchange\npdao = PrivateDAOAgentExchange()\npdao.discover()\njob = pdao.verify_basic({\"mint\": \"YOUR_SOLANA_MINT\"})\nprint(job)</pre>",
+    "<h2>Paid flow</h2><p class=\"muted\">Create a paid job, read the payment intent, send the exact finalized Solana payment with its reference, submit the signature, poll the job, then retrieve the receipt. No account or dashboard is required.</p>",
+    "<div class=\"grid\"><section><b>Free entry</b><p>verify.basic<br>receipt.verify</p></section><section><b>Paid intelligence</b><p>verify.deep<br>token.intelligence<br>risk.score<br>wallet.intelligence</p></section><section><b>Agent logistics</b><p>agent.match<br>/api/logistics/request<br>/api/marketplace/listings</p></section></div>",
+    "<p class=\"muted\">Production network: Solana Mainnet. <a href=\"/.well-known/agent-card.json\">Agent Card</a> · <a href=\"/openapi.json\">OpenAPI</a> · <a href=\"/mcp\">MCP</a></p></body></html>",
+  ];
+  return lines.join("");
 }
 function paymentPage(jobId) {
   const safeJobId = JSON.stringify(jobId);
@@ -342,6 +371,22 @@ async function revenueSummary() {
   );
   const assets = Object.keys(summary.byAsset);
   return { ...summary, asset: assets.length === 1 ? assets[0] : "MULTI" };
+}
+async function telemetrySummary() {
+  const events = await (await store()).list("Telemetry");
+  const byEvent = {};
+  const byService = {};
+  for (const event of events) {
+    byEvent[event.event] = (byEvent[event.event] || 0) + 1;
+    if (event.service) byService[event.service] = (byService[event.service] || 0) + 1;
+  }
+  return {
+    network: "solana-mainnet-beta",
+    totalEvents: events.length,
+    byEvent,
+    byService,
+    lastEventAt: events.map((event) => event.createdAt).sort().at(-1) || null,
+  };
 }
 async function treasuryStatus() {
   const ata = await treasuryTokenAccount(config);
@@ -686,6 +731,7 @@ async function createJob(serviceId, input, admin = false, currency = "USDC") {
     expires_at: new Date(Date.now() + 900000).toISOString(),
   };
   await (await store()).put("Jobs", job.id, job, true);
+  trackFunnel("job_created", { service: serviceId });
   if (service.price) {
     const quote = await makeQuote(serviceId, job.id, admin, currency);
     const intent = {
@@ -907,6 +953,10 @@ async function handle(e) {
     path = pathOf(e),
     body = method === "GET" ? {} : parseBody(e);
   if (method === "OPTIONS") return json({}, 204);
+  if (method === "GET" && ["/connect", "/developers"].includes(path)) {
+    trackFunnel("developer_page_view");
+    return { statusCode: 200, headers: { "content-type": "text/html; charset=utf-8", "cache-control": "no-store" }, body: connectPage() };
+  }
   if (method === "GET" && ["/", "/api/health"].includes(path)) {
     const stats =
       process.env.NODE_ENV === "test" ? null : await networkStats(config);
@@ -939,9 +989,14 @@ async function handle(e) {
       "/.well-known/agent.json",
       "/agent.json",
     ].includes(path)
-  )
+  ) {
+    trackFunnel("agent_card_view");
     return json(card());
-  if (method === "GET" && path === "/openapi.json") return json(openapi());
+  }
+  if (method === "GET" && path === "/openapi.json") {
+    trackFunnel("openapi_view");
+    return json(openapi());
+  }
   if (method === "GET" && ["/llms.txt", "/llms-full.txt"].includes(path))
     return text(llms());
   if (method === "GET" && path === "/llms.json")
@@ -950,7 +1005,8 @@ async function handle(e) {
       services: SERVICES,
       discovery: `https://${config.domain}/.well-known/agent-card.json`,
     });
-  if (method === "GET" && path === "/api/services")
+  if (method === "GET" && path === "/api/services") {
+    trackFunnel("service_catalog_view");
     return json({
       services: SERVICES,
       payment: {
@@ -959,6 +1015,7 @@ async function handle(e) {
         usdc_mint: config.usdcMint,
       },
     });
+  }
   if (method === "GET" && path === "/api/pricing")
     return json({
       network: "solana:mainnet-beta",
@@ -1007,6 +1064,12 @@ async function handle(e) {
     return json(await buildPaymentTransaction(paymentTransaction[1], body.payer, body.sourceTokenAccount));
   if (method === "GET" && path === "/api/network/stats")
     return json(await networkStats(config));
+  if (method === "GET" && path === "/api/admin/telemetry") {
+    const token = e.headers?.["x-pdao-admin-smoke"] || e.headers?.["X-Pdao-Admin-Smoke"];
+    if (!config.adminSmokeToken || token !== config.adminSmokeToken)
+      return json({ error: "not_found" }, 404);
+    return json(await telemetrySummary());
+  }
   if (method === "GET" && path === "/api/discovery")
     return json({
       organic: await (await store()).list("Registry"),

@@ -7,6 +7,13 @@ export class PrivateDAOAgentExchange {
   async createJob(service_id, input = {}) { try { return await this.request("/api/jobs", { method: "POST", body: JSON.stringify({ service_id, input }) }); } catch (error) { if (error.status === 402) return error.data; throw error; } }
   jobStatus(jobId) { return this.request(`/api/jobs/${encodeURIComponent(jobId)}`); }
   submitPayment(jobId, signature) { return this.request(`/api/jobs/${encodeURIComponent(jobId)}/payment`, { method: "POST", body: JSON.stringify({ signature }) }); }
+  paymentIntent(jobId) { return this.request(`/api/jobs/${encodeURIComponent(jobId)}/payment-intent`); }
+  paymentPage(jobId) { return `${this.baseUrl}/pay/${encodeURIComponent(jobId)}`; }
+  async awaitJob(jobId, { timeoutMs = 120000, intervalMs = 3000 } = {}) { const end = Date.now() + timeoutMs; while (Date.now() < end) { const job = await this.jobStatus(jobId); if (["completed", "failed"].includes(job.status)) return job; await new Promise((resolve) => setTimeout(resolve, intervalMs)); } throw new Error("job polling timed out"); }
+  agentMatch(requirements) { return this.createJob("agent.match", requirements); }
+  discovery() { return this.request("/api/discovery"); }
+  networkStats() { return this.request("/api/network/stats"); }
+  logistics(request) { return this.requestLogistics(request); }
   receipt(receiptId) { return this.request(`/api/receipts/${encodeURIComponent(receiptId)}`); }
   registerAgent(agent) { return this.request("/api/registry/register", { method: "POST", body: JSON.stringify(agent) }); }
   searchAgents(q = "") { return this.request(`/api/registry/search${q ? `?q=${encodeURIComponent(q)}` : ""}`); }

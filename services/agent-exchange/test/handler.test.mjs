@@ -14,6 +14,15 @@ test("machine discovery exposes the catalog and agent card", async () => {
   assert.equal(services.services.find((s) => s.id === "verify.basic").price, 0);
 });
 
+test("developer onboarding page exposes the complete machine flow", async () => {
+  const response = await handler(event("GET", "/connect"));
+  assert.equal(response.statusCode, 200);
+  assert.match(response.body, /Discover/);
+  assert.match(response.body, /Create job/);
+  assert.match(response.body, /Verify receipt/);
+  assert.match(response.body, /verify\.basic/);
+});
+
 test("free verification returns a deterministic receipt", async () => {
   const result = body(await handler(event("POST", "/api/tasks", { service_id: "verify.basic", input: { record: { b: 2, a: 1 } } })));
   assert.equal(result.result.verification_status, "VERIFIED"); assert.match(result.receipt.receipt_id, /^rvr_/);
