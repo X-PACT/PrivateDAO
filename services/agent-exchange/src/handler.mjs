@@ -68,11 +68,14 @@ function card() {
     description: "Machine-native verification, evidence and agent services.",
     provider: { organization: "PrivateDAO", url: "https://privatedao.org" },
     version: "1.2.0",
-    url: `https://${config.domain}`,
+    protocolVersion: "0.3.0",
+    url: `https://${config.domain}/a2a`,
     documentationUrl: `https://${config.domain}/llms-full.txt`,
     capabilities: { streaming: false, pushNotifications: false },
     authentication: { schemes: ["none", "solana-payment"] },
     networks: ["solana:mainnet-beta"],
+    defaultInputModes: ["text/plain", "application/json"],
+    defaultOutputModes: ["application/json"],
     protocols: {
       a2a: `https://${config.domain}/a2a`,
       mcp: `https://${config.domain}/mcp`,
@@ -90,6 +93,7 @@ function card() {
       {
         id: "registry.search",
         name: "Search agents",
+        description: "Find verified agent capabilities and service providers.",
         inputModes: ["application/json"],
         outputModes: ["application/json"],
       },
@@ -1182,6 +1186,29 @@ async function handle(e) {
   if (method === "POST" && path === "/api/agents/invoke")
     return json(await invokeAgent(body));
   if (method === "POST" && path === "/a2a") {
+    if (body.method === "message/send" || body.method === "SendMessage") {
+      const params = body.params || {};
+      const message = params.message || {};
+      const textPart = (message.parts || []).find((part) => part.text)?.text || "";
+      const serviceId = message.metadata?.service_id || params.metadata?.service_id;
+      if (!serviceId) {
+        return json({
+          jsonrpc: "2.0",
+          id: body.id ?? null,
+          result: {
+            id: randomUUID(),
+            status: { state: "completed" },
+            artifacts: [{ parts: [{ type: "data", data: { service: "discovery", query: textPart, services: SERVICES } }] }],
+          },
+        });
+      }
+      try {
+        const result = await createJob(serviceId, message.metadata?.input || {}, false);
+        return json({ jsonrpc: "2.0", id: body.id ?? null, result: { id: result.job_id, status: { state: "completed" }, artifacts: [{ parts: [{ type: "data", data: result.result }] }], receipt: result.receipt } });
+      } catch (error) {
+        return json({ jsonrpc: "2.0", id: body.id ?? null, error: { code: -32000, message: error.message } }, error.statusCode || 500);
+      }
+    }
     const result = await createJob(
       body.service || body.service_id,
       body.input || body.payload || {},

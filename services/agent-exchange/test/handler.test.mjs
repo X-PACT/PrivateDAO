@@ -45,6 +45,17 @@ test("mcp exposes the same service catalog", async () => {
   assert.equal(response.result.tools.length, 11);
 });
 
+test("a2a message/send returns a real discovery task", async () => {
+  const response = body(await handler(event("POST", "/a2a", {
+    jsonrpc: "2.0",
+    id: 7,
+    method: "message/send",
+    params: { message: { role: "user", parts: [{ text: "discover services" }] } },
+  })));
+  assert.equal(response.result.status.state, "completed");
+  assert.equal(response.result.artifacts[0].parts[0].data.service, "discovery");
+});
+
 test("registry does not accept non-HTTPS cards", async () => {
   const response = await handler(event("POST", "/api/registry/register", { agent_card_url: "http://localhost/card" }));
   assert.equal(response.statusCode, 400); assert.match(body(response).message, /HTTPS/);
