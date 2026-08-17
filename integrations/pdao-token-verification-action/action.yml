@@ -1,0 +1,13 @@
+name: PrivateDAO Token Verification
+description: Run a free evidence-based Solana token verification in CI
+inputs:
+  mint:
+    description: Solana mint address to inspect
+    required: true
+  endpoint:
+    description: PrivateDAO Agent Exchange endpoint
+    required: false
+    default: https://agents.privatedao.org
+runs:
+  using: node20
+  main: index.mjs
