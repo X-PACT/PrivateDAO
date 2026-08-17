@@ -4,22 +4,27 @@
   "policy": "lawful-opt-in-distribution-only",
   "entries": [
     {
-      "directory": "A2A-compatible registries",
+      "directory": "A2A Registry (a2aregistry.org)",
       "protocol": "A2A",
-      "status": "submission-ready-not-confirmed",
-      "artifact": "agent-directory-entry.json"
+      "status": "published-card-task-recheck-pending",
+      "listing": "https://a2aregistry.org/api/agents/6ebd2b6c-2cef-4421-8f28-6896ca3bf307",
+      "artifact": "agent-directory-entry.json",
+      "evidence": "POST /api/agents/register returned HTTP 201; registry task probe is awaiting refresh after endpoint alignment."
     },
     {
-      "directory": "MCP-compatible registries",
+      "directory": "Official MCP Registry",
       "protocol": "MCP",
-      "status": "github-oidc-workflow-ready-not-confirmed",
-      "artifact": "agent-directory-entry.json"
+      "status": "published-active",
+      "listing": "https://registry.modelcontextprotocol.io/v0.1/servers?search=io.github.X-PACT%2Fpdao-agent-exchange",
+      "artifact": "mcp-server.json",
+      "evidence": "Registry returned active latest version 1.0.0 with streamable-http remote."
     },
     {
-      "directory": "Solana developer ecosystem",
+      "directory": "Solana Agent Registry",
       "protocol": "HTTP/OpenAPI",
       "status": "submission-ready-not-confirmed",
-      "artifact": "agent-directory-entry.json"
+      "artifact": "agent-directory-entry.json",
+      "evidence": "On-chain identity publication requires a separately authorized signing wallet; no private key is stored or used by this project."
     }
   ]
 }
