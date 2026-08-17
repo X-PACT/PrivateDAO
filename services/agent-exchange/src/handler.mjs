@@ -153,7 +153,6 @@ function llms() {
 function acquisition() {
   const services = SERVICES.map((service) => ({
     ...service,
-    expectedLatencyMs: service.price ? 15000 : 5000,
     paymentAssets: service.price ? ["USDC"] : [],
     receipt: `https://${config.domain}/api/receipts/{receiptId}`,
   }));

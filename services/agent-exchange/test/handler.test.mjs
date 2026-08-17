@@ -27,7 +27,7 @@ test("acquisition manifest exposes real opt-in distribution channels", async () 
   const result = body(await handler(event("GET", "/api/acquisition")));
   assert.equal(result.network, "solana:mainnet-beta");
   assert.ok(result.integrations.some((item) => item.id === "mcp-official-registry"));
-  assert.ok(result.services.some((item) => item.id === "verify.basic" && item.expectedLatencyMs));
+  assert.ok(result.services.some((item) => item.id === "verify.basic" && item.paymentAssets));
   assert.match(result.policy, /opt-in/);
 });
 
