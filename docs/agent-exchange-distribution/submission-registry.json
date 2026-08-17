@@ -1,0 +1,25 @@
+{
+  "canonical": "https://agents.privatedao.org",
+  "network": "solana:mainnet-beta",
+  "policy": "lawful-opt-in-distribution-only",
+  "entries": [
+    {
+      "directory": "A2A-compatible registries",
+      "protocol": "A2A",
+      "status": "submission-ready-not-confirmed",
+      "artifact": "agent-directory-entry.json"
+    },
+    {
+      "directory": "MCP-compatible registries",
+      "protocol": "MCP",
+      "status": "github-oidc-workflow-ready-not-confirmed",
+      "artifact": "agent-directory-entry.json"
+    },
+    {
+      "directory": "Solana developer ecosystem",
+      "protocol": "HTTP/OpenAPI",
+      "status": "submission-ready-not-confirmed",
+      "artifact": "agent-directory-entry.json"
+    }
+  ]
+}
