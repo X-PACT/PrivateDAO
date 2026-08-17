@@ -23,6 +23,13 @@ test("developer onboarding page exposes the complete machine flow", async () => 
   assert.match(response.body, /verify\.basic/);
 });
 
+test("acquisition manifest exposes real opt-in distribution channels", async () => {
+  const result = body(await handler(event("GET", "/api/acquisition")));
+  assert.equal(result.network, "solana:mainnet-beta");
+  assert.ok(result.integrations.some((item) => item.id === "mcp-official-registry"));
+  assert.match(result.policy, /opt-in/);
+});
+
 test("free verification returns a deterministic receipt", async () => {
   const result = body(await handler(event("POST", "/api/tasks", { service_id: "verify.basic", input: { record: { b: 2, a: 1 } } })));
   assert.equal(result.result.verification_status, "VERIFIED"); assert.match(result.receipt.receipt_id, /^rvr_/);

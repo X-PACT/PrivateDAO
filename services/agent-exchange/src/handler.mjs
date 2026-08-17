@@ -112,6 +112,7 @@ function openapi() {
       "/api/registry/register": { post: { operationId: "registerAgent" } },
       "/api/registry/search": { get: { operationId: "searchAgents" } },
       "/api/discovery": { get: { operationId: "discovery" } },
+      "/api/acquisition": { get: { operationId: "acquisition" } },
       "/api/marketplace/listings": {
         get: { operationId: "searchListings" },
         post: { operationId: "publishListing" },
@@ -134,6 +135,28 @@ function llms() {
   const free = SERVICES.filter((service) => !service.price).map((service) => service.id).join(", ");
   const paid = SERVICES.filter((service) => service.price).map((service) => service.id).join(", ");
   return `# PrivateDAO Agent Exchange\nFree: ${free}\nPaid: ${paid}\nPayment: finalized Solana mainnet USDC transaction, quote first.\nAgent Card: https://${config.domain}/.well-known/agent-card.json\nMCP: https://${config.domain}/mcp\nOpenAPI: https://${config.domain}/openapi.json\n`;
+}
+function acquisition() {
+  return {
+    network: "solana:mainnet-beta",
+    canonical: `https://${config.domain}`,
+    freeEntry: "verify.basic",
+    discovery: {
+      agentCard: `https://${config.domain}/.well-known/agent-card.json`,
+      mcp: `https://${config.domain}/mcp`,
+      a2a: `https://${config.domain}/a2a`,
+      openapi: `https://${config.domain}/openapi.json`,
+      developerGuide: `https://${config.domain}/connect`,
+    },
+    integrations: [
+      { id: "mcp-official-registry", protocol: "MCP", status: "submission-ready", auth: "publisher permission required" },
+      { id: "a2a-registry", protocol: "A2A", status: "submission-ready", auth: "registry policy applies" },
+      { id: "solana-agent-registry", protocol: "A2A", status: "submission-ready", auth: "manual or registry-specific" },
+      { id: "8004scan", protocol: "agent-discovery", status: "submission-ready", auth: "directory policy applies" },
+      { id: "github-action", protocol: "GitHub Actions", status: "source-ready", url: "https://github.com/X-PACT/PrivateDAO/tree/codex/agent-exchange-acquisition/integrations/pdao-token-verification-action" },
+    ],
+    policy: "opt-in distribution; no fabricated activity or unsolicited messaging",
+  };
 }
 function connectPage() {
   const lines = [
@@ -1064,6 +1087,10 @@ async function handle(e) {
     return json(await buildPaymentTransaction(paymentTransaction[1], body.payer, body.sourceTokenAccount));
   if (method === "GET" && path === "/api/network/stats")
     return json(await networkStats(config));
+  if (method === "GET" && path === "/api/acquisition") {
+    trackFunnel("acquisition_manifest_view");
+    return json(acquisition());
+  }
   if (method === "GET" && path === "/api/admin/telemetry") {
     const token = e.headers?.["x-pdao-admin-smoke"] || e.headers?.["X-Pdao-Admin-Smoke"];
     if (!config.adminSmokeToken || token !== config.adminSmokeToken)
