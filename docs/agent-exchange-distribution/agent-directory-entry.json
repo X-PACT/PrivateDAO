@@ -1,0 +1,14 @@
+{
+  "name": "PrivateDAO Agent Exchange",
+  "description": "Machine-native Solana verification, intelligence, receipts, and agent logistics services.",
+  "agentCard": "https://agents.privatedao.org/.well-known/agent-card.json",
+  "a2a": "https://agents.privatedao.org/a2a",
+  "mcp": "https://agents.privatedao.org/mcp",
+  "openapi": "https://agents.privatedao.org/openapi.json",
+  "developerGuide": "https://agents.privatedao.org/connect",
+  "network": "solana:mainnet-beta",
+  "freeEntry": "verify.basic",
+  "paymentAsset": "USDC",
+  "paymentCustody": "receive-only treasury; agents sign their own transactions",
+  "directoryStatus": "submission-ready-not-confirmed"
+}
