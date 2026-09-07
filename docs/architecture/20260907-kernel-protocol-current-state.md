@@ -16,6 +16,9 @@ The following facts were checked during this audit:
 - Selected parity checks differ: the GitHub and local `apps/web/src/app/layout.tsx` hashes differ, and the GitHub and local `apps/web/package.json` hashes differ.
 - The GitHub commit date is 2026-08-15, while the local web package was modified on 2026-08-26 and the live site reports `Last-Modified: 2026-08-27`. This is consistent with GitHub being older, but it is not by itself proof that the local source is the deployed source.
 - The dependency diff includes Umbra `^4.0.0` in GitHub versus `5.0.0-rc.6` locally, and GitHub omits local IKA/Mysten/MagicBlock-kit entries. This is a release-risk difference, not a safe cleanup candidate.
+- The local static `index.html` is 224,773 bytes with SHA-256 `14612e02d87f4623d18a1643b335f6053938fd7c35aaebb6f63fbe028abd4a6a`; the live root response is 143,590 bytes with SHA-256 `70911cabb36733d28f875cd55633ba94c7eb0cc1b69a66c76244528179849c5f`. They are byte-different.
+- A canonical local Git repository now exists at this source root with baseline commit `c494ea46402cd5d77646d24fc5bb4e6d7395987a`. It has been pushed to GitHub branch `codex/canonical-live-20260907`; GitHub `main` and Amazon remain unchanged.
+- AWS CLI is unavailable in the local environment, so no AWS deployment was attempted from this session.
 - The read-only clone's working-tree checkout was incomplete during the audit; tree/object inspection is authoritative for the counts above, while its partial working tree is not evidence of repository contents or deletion.
 - `https://privatedao.org/` and `/execute/` returned HTTP 200 through Caddy.
 - The live response reported `x-privatedao-primary-host: candidate` and `x-privatedao-backup-policy: github-pages-backup-only`. This proves reachability, not source parity.
