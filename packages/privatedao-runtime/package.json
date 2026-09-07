@@ -1,0 +1,12 @@
+{
+  "name": "@privatedao/runtime-contracts",
+  "version": "0.1.0",
+  "description": "Provider-neutral Kernel and Protocol contracts for PrivateDAO product workflows.",
+  "license": "AGPL-3.0-or-later",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": ["dist", "README.md"],
+  "scripts": {"build": "tsc -p tsconfig.json"},
+  "devDependencies": {"typescript": "^5.8.3"}
+}

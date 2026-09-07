@@ -26,6 +26,8 @@ wallets/
 !apps/web/tsconfig.json
 !apps/web/tsconfig.scripts.json
 !services/qvac-runtime/package.json
+!packages/privatedao-runtime/package.json
+!packages/privatedao-runtime/tsconfig.json
 !services/qvac-runtime/qvac-runtime-proof.generated.json
 !docs/proof-registry.json
 !docs/submission-registry.json
