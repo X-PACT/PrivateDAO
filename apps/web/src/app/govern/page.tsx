@@ -22,7 +22,7 @@ export default function GovernPage() {
     <OperationsShell
       eyebrow="Govern"
       title="Private organizational decisions with verifiable outcomes."
-      description="Use PrivateDAO for private rooms, committee decisions, DAO votes, grant committee voting, internal board decisions, and community governance. Sensitive intent stays private while the outcome and proof become verifiable."
+      description="Use PrivateDAO for private rooms, committee decisions, DAO votes, internal board decisions, and community governance. Sensitive intent stays private while the outcome and proof become verifiable."
       navigationMode="focused"
       badges={[
         { label: "Private rooms", variant: "cyan" },

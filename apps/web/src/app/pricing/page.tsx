@@ -49,7 +49,7 @@ const plans = [
 ] as const;
 
 const pilots = [
-  ["Proof Workflows Pilot", "$2,500 fixed scope", "Credit, underwriting, compliance, grants, vendor approval, or audit workflow."],
+  ["Proof Workflows Pilot", "$2,500 fixed scope", "Credit, underwriting, compliance, vendor approval, or audit workflow."],
   ["Blind Policy Verification Pilot", "$10,000 setup + $3,500/month", "Groth16 policy proofs that prove a private policy was satisfied without exposing policy inputs."],
   ["Private Governance Pilot", "$5,000 fixed scope", "Private rooms, committee voting, DAO decisions, or foundation governance."],
   ["Treasury Coordination Pilot", "$7,500 fixed scope", "Treasury requests, approval paths, spending controls, and audit trails."],

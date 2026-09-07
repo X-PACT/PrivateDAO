@@ -66,7 +66,7 @@ export default function AuctionsPage() {
         <h2 className="mt-3 text-2xl font-semibold text-white">Use sealed auctions for more than collectibles.</h2>
         <div className="mt-4 grid gap-3 md:grid-cols-3">
           {[
-            ["Grant allocation", "Let reviewers submit allocation bids without revealing momentum."],
+            ["Budget allocation", "Let decision-makers submit allocation bids without revealing momentum."],
             ["Vendor selection", "Run sealed commercial bidding with proof after selection."],
             ["GamingDAO", "Run tournaments, item auctions, and reward auctions without early leader pressure."],
           ].map(([title, copy]) => (

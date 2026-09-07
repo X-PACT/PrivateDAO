@@ -9,10 +9,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 const offers = [
   {
     key: "payroll",
-    title: "Confidential Payroll and Grants",
+    title: "Confidential Payroll",
     byline: "by REFHE + MagicBlock",
     summary:
-      "Run sensitive payroll, grant, and treasury payouts from a protected corridor first, then expose the right proof and settlement trail for operators and reviewers.",
+      "Run sensitive payroll and treasury payouts from a protected corridor first, then expose the right proof and settlement trail for operators and reviewers.",
     href: "/security",
     cta: "Open confidential payroll corridor",
     icon: LockKeyhole,

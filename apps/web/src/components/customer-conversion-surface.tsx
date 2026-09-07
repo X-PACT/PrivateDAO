@@ -8,9 +8,9 @@ import { commercialCompare, servicesJourney } from "@/lib/site-data";
 const offerIcons = [Rocket, KeyRound, ShieldCheck, BriefcaseBusiness];
 const productConversionLanes = [
   {
-    title: "Confidential payroll and grants",
-    byline: "Privacy-preserving treasury motion for contributor, payroll, and grant operations.",
-    firstPaidMotion: "Pilot a governed confidential payout corridor for one team, committee, or grant operator.",
+    title: "Confidential payroll",
+    byline: "Privacy-preserving treasury motion for payroll and recurring business payouts.",
+    firstPaidMotion: "Pilot a governed confidential payout corridor for one finance or operations team.",
     customerOffer: "A wallet-first payout system with proof, review surfaces, and a release-ready path toward institutional use.",
     routeHref: "/security",
     routeLabel: "Open confidential payout corridor",
