@@ -195,7 +195,7 @@ function main() {
     [executionCommandSurface, "https://api.privatedao.org/api/v1/ika/solana-prealpha/final-approval", "execution command surface is missing Ika final approval verification"],
     [executionCommandSurface, "https://api.privatedao.org/api/v1/qvac/runtime-proof", "execution command surface is missing QVAC runtime verification"],
     [executionCommandSurface, "/services/qvac-sovereign-ai", "execution command surface is missing the QVAC service route"],
-    [fs.readFileSync(path.resolve("apps/web/src/app/intelligence/page.tsx"), "utf8"), "ExecutionCommandSurface", "intelligence route is missing the executable command surface"],
+    [fs.readFileSync(path.resolve("apps/web/src/app/intelligence/page.tsx"), "utf8"), "Review a decision", "intelligence route is missing the commercial decision-review entry point"],
     [fs.readFileSync(path.resolve("apps/web/src/app/services/page.tsx"), "utf8"), "ExecutionCommandSurface", "services route is missing the executable command surface"],
     [apiStatusPage, "MagicBlock receipts", "API status route is missing MagicBlock receipt evidence"],
     [apiStatusPage, "Ika readiness", "API status route is missing Ika readiness evidence"],
