@@ -48,7 +48,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          corepack yarn install --frozen-lockfile --non-interactive
+          npm ci --ignore-scripts --no-audit --no-fund
           test -x node_modules/.bin/ts-node
           test -x node_modules/.bin/tsc
 
