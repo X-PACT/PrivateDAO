@@ -47,7 +47,10 @@ jobs:
           exit 1
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: |
+          corepack yarn install --frozen-lockfile --non-interactive
+          test -x node_modules/.bin/ts-node
+          test -x node_modules/.bin/tsc
 
       - name: Create local test wallet
         run: |
