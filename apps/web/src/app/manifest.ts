@@ -1,0 +1,45 @@
+import type { MetadataRoute } from "next";
+
+export const dynamic = "force-static";
+
+export default function manifest(): MetadataRoute.Manifest {
+  return {
+    name: "PrivateDAO",
+    short_name: "PrivateDAO",
+    description: "Your DAO votes, payroll, and treasury are public. They shouldn't be. Private governance, payroll, and treasury operations on Solana.",
+    start_url: "/",
+    display: "standalone",
+    background_color: "#030510",
+    theme_color: "#030510",
+    categories: ["business", "finance", "productivity"],
+    orientation: "any",
+    icons: [
+      {
+        src: "/assets/logo.png",
+        sizes: "512x512",
+        type: "image/png",
+      },
+      {
+        src: "/assets/logo.png",
+        sizes: "1024x1024",
+        type: "image/jpeg",
+      },
+    ],
+    screenshots: [
+      {
+        src: "/assets/privatedao-social-card.png",
+        sizes: "1200x630",
+        type: "image/png",
+        form_factor: "wide",
+        label: "PrivateDAO encrypted Solana operations overview",
+      },
+      {
+        src: "/assets/private-dao-product-overview-poster.png",
+        sizes: "1280x720",
+        type: "image/png",
+        form_factor: "wide",
+        label: "PrivateDAO product lanes and proof flow",
+      },
+    ],
+  };
+}

@@ -1,0 +1,95 @@
+{
+  "project": "PrivateDAO",
+  "generatedAt": "2026-05-26T03:03:52.973Z",
+  "network": "devnet",
+  "programId": "5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx",
+  "primaryRpc": {
+    "label": "primary",
+    "url": "https://api.devnet.solana.com",
+    "version": "4.0.0-rc.0",
+    "slot": 464952476,
+    "blockhash": "EbNQavaGFiiCgrHQebGxi9LF8xtSygcFxkdDKbMvSdVm",
+    "lastValidBlockHeight": 452808314,
+    "versionLatencyMs": 796,
+    "blockhashLatencyMs": 104
+  },
+  "fallbackRpc": {
+    "label": "fallback",
+    "url": "https://solana-rpc.rpcfast.com?api_key=REDACTED",
+    "version": "3.1.12",
+    "slot": 422199469,
+    "blockhash": "HH9HS8wEhoiETw8BfxVVTycRTexZHUNvfWMgmZTSGYcw",
+    "lastValidBlockHeight": 400287313,
+    "versionLatencyMs": 576,
+    "blockhashLatencyMs": 372
+  },
+  "anchors": [
+    {
+      "label": "program",
+      "address": "5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx",
+      "exists": true,
+      "lamports": 1141440,
+      "owner": "BPFLoaderUpgradeab1e11111111111111111111111",
+      "executable": true,
+      "dataLength": 36
+    },
+    {
+      "label": "verification-wallet",
+      "address": "4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD",
+      "exists": true,
+      "lamports": 27196764058,
+      "owner": "11111111111111111111111111111111",
+      "executable": false,
+      "dataLength": 0
+    },
+    {
+      "label": "dao",
+      "address": "FZV9KmpeY1B31XvszQypp5T6nQN5C44JDLM4QWBEDvhx",
+      "exists": true,
+      "lamports": 2352480,
+      "owner": "5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx",
+      "executable": false,
+      "dataLength": 210
+    },
+    {
+      "label": "treasury",
+      "address": "AZUroiNeGAjNdD84eEHnAKHHFwqAFmkjr2g1eoF7Ek5c",
+      "exists": true,
+      "lamports": 150000000,
+      "owner": "11111111111111111111111111111111",
+      "executable": false,
+      "dataLength": 0
+    },
+    {
+      "label": "proposal",
+      "address": "AegjmwkX1FknBJMDyH5yM6BMhyHsiUreNtz3d8iz3QrP",
+      "exists": true,
+      "lamports": 10565280,
+      "owner": "5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx",
+      "executable": false,
+      "dataLength": 1390
+    },
+    {
+      "label": "governance-mint",
+      "address": "AZUkprJDfJPgAp7L4z3TpCV3KHqLiA8RjHAVhK9HCvDt",
+      "exists": true,
+      "lamports": 3563520,
+      "owner": "TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb",
+      "executable": false,
+      "dataLength": 371
+    }
+  ],
+  "tokenSupply": {
+    "mint": "AZUkprJDfJPgAp7L4z3TpCV3KHqLiA8RjHAVhK9HCvDt",
+    "amount": "1000000000000000",
+    "decimals": 9,
+    "uiAmountString": "1000000",
+    "status": "captured"
+  },
+  "summary": {
+    "primaryHealthy": true,
+    "fallbackHealthy": true,
+    "anchorAccountsPresent": true,
+    "unexpectedFailures": 0
+  }
+}

@@ -1,0 +1,135 @@
+{
+	email {$ACME_EMAIL}
+}
+
+(privatedao_primary_host) {
+	root * /srv/privatedao/site
+	encode gzip zstd
+
+	# Keep historical entry points alive while sending visitors to the
+	# smallest commercial explanation of the product.
+	redir /judge /trust permanent
+	redir /judge/ /trust permanent
+	redir /judges /trust permanent
+	redir /judges/ /trust permanent
+	redir /judge-ai /trust permanent
+	redir /judge-ai/ /trust permanent
+	redir /review /trust permanent
+	redir /review/ /trust permanent
+	redir /reviewer /trust permanent
+	redir /reviewer/ /trust permanent
+	redir /tracks /products permanent
+	redir /tracks/ /products permanent
+	redir /submission /products permanent
+	redir /submission/ /products permanent
+	redir /frontier /products permanent
+	redir /frontier/ /products permanent
+	redir /awards /story permanent
+	redir /awards/ /story permanent
+	redir /colosseum /story permanent
+	redir /colosseum/ /story permanent
+	redir /rpc-services /developers permanent
+	redir /rpc-services/ /developers permanent
+	redir /api-status /trust permanent
+	redir /diagnostics /trust permanent
+	redir /command-center /treasury permanent
+	redir /network /developers permanent
+	redir /network/ /developers permanent
+	redir /android /products permanent
+	redir /android/ /products permanent
+	redir /benefit /pricing permanent
+	redir /versus /products permanent
+	redir /revenue /pricing permanent
+	redir /services /pricing permanent
+	redir /engage /pilots permanent
+	redir /analytics /govern permanent
+	redir /custody /trust permanent
+	redir /live /govern permanent
+	redir /execute /treasury permanent
+	redir /txline-settlement /treasury permanent
+	redir /txline-settlement/ /treasury permanent
+	redir /goldrush /developers permanent
+	redir /goldrush/ /developers permanent
+	redir /qvac /developers permanent
+	redir /qvac/ /developers permanent
+	redir /services/goldrush /developers permanent
+	redir /services/goldrush/ /developers permanent
+	redir /services/goldrush-decision-intelligence /developers permanent
+	redir /services/goldrush-decision-intelligence/ /developers permanent
+	redir /services/qvac /developers permanent
+	redir /services/qvac/ /developers permanent
+	redir /services/qvac-sovereign-ai /developers permanent
+	redir /services/qvac-sovereign-ai/ /developers permanent
+	redir /services/magicblock /developers permanent
+	redir /services/magicblock/ /developers permanent
+	redir /services/magicblock-private-payments /treasury permanent
+	redir /services/magicblock-private-payments/ /treasury permanent
+	redir /services/umbra-private-payments /treasury permanent
+	redir /services/umbra-private-payments/ /treasury permanent
+	redir /services/ika /developers permanent
+	redir /services/ika/ /developers permanent
+	redir /services/cloak /treasury permanent
+	redir /services/cloak/ /treasury permanent
+	redir /services/txline /treasury permanent
+	redir /services/txline/ /treasury permanent
+	redir /services/torque-mcp /developers permanent
+	redir /services/torque-mcp/ /developers permanent
+	redir /whiteprint /whitepaper permanent
+
+	header {
+		X-PrivateDAO-Primary-Host "candidate"
+		X-PrivateDAO-Backup-Policy "github-pages-backup-only"
+		Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+		X-Content-Type-Options "nosniff"
+		X-Frame-Options "DENY"
+		Referrer-Policy "strict-origin-when-cross-origin"
+		Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=()"
+		Cross-Origin-Opener-Policy "same-origin-allow-popups"
+	}
+
+	@health path /healthz /api/health
+	handle @health {
+		reverse_proxy read-node:8787
+	}
+
+	@record_api path /api/v1/records/* /api/v1/receipts/* /api/v1/record-schemas
+	handle @record_api {
+		uri strip_prefix /api
+		reverse_proxy record-engine:8787
+	}
+
+	@api path /api/v1 /api/v1/*
+	handle @api {
+		reverse_proxy read-node:8787
+	}
+
+	@quicknode_root {
+		method POST
+		path /
+	}
+	handle @quicknode_root {
+		rewrite * /api/v1/quicknode/stream
+		reverse_proxy read-node:8787
+	}
+
+	handle {
+		try_files {path} {path}/index.html /thesis/index.html /index.html
+		file_server
+	}
+}
+
+:8080 {
+	import privatedao_primary_host
+}
+
+api.privatedao.org {
+	import privatedao_primary_host
+}
+
+www.privatedao.org {
+	redir https://privatedao.org{uri} permanent
+}
+
+privatedao.org {
+	import privatedao_primary_host
+}

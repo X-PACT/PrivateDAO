@@ -1,0 +1,39 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const fs_1 = __importDefault(require("fs"));
+const path_1 = __importDefault(require("path"));
+function main() {
+    const sourcePath = path_1.default.resolve("docs/competitive/source.json");
+    const jsonPath = path_1.default.resolve("docs/competitive/analysis.generated.json");
+    const mdPath = path_1.default.resolve("docs/competitive/analysis.generated.md");
+    assert(fs_1.default.existsSync(sourcePath), "missing Colosseum competitive source snapshot");
+    assert(fs_1.default.existsSync(jsonPath), "missing generated Colosseum competitive analysis JSON");
+    assert(fs_1.default.existsSync(mdPath), "missing generated Colosseum competitive analysis markdown");
+    const json = JSON.parse(fs_1.default.readFileSync(jsonPath, "utf8"));
+    const markdown = fs_1.default.readFileSync(mdPath, "utf8");
+    assert(json.project === "PrivateDAO", "competitive analysis project mismatch");
+    assert(json.overview.generalResultCount >= 1, "competitive analysis general result count is too low");
+    assert(json.overview.archiveResultCount >= 1, "competitive analysis archive result count is too low");
+    assert(json.generalProjects.some((entry) => entry.slug === "privment"), "competitive analysis missing privment reference");
+    assert(json.generalProjects.some((entry) => entry.slug === "privatevote-dao"), "competitive analysis missing privatevote-dao reference");
+    assert(json.winnerProjects.some((entry) => entry.slug === "cloak-or-solana-privacy-layer"), "competitive analysis missing Cloak winner reference");
+    assert(json.recommendedTracks.some((entry) => entry.track === "RPC Fast"), "competitive analysis missing RPC Fast recommendation");
+    assert(json.recommendedTracks.some((entry) => entry.track === "MagicBlock Privacy"), "competitive analysis missing MagicBlock recommendation");
+    assert(json.differentiation.length >= 3, "competitive analysis differentiation is too thin");
+    assert(json.honestBoundary.length >= 3, "competitive analysis honest boundary is too thin");
+    assert(markdown.includes("# Colosseum Competitive Analysis"), "competitive analysis markdown missing title");
+    assert(markdown.includes("General Comparables"), "competitive analysis markdown missing comparables section");
+    assert(markdown.includes("Archive Framing"), "competitive analysis markdown missing archive section");
+    assert(markdown.includes("Recommended Tracks"), "competitive analysis markdown missing track section");
+    assert(markdown.includes("Differentiation"), "competitive analysis markdown missing differentiation section");
+    assert(markdown.includes("Honest Boundary"), "competitive analysis markdown missing honest boundary section");
+    console.log("Colosseum competitive analysis verification: PASS");
+}
+function assert(condition, message) {
+    if (!condition)
+        throw new Error(message);
+}
+main();

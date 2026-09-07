@@ -1,0 +1,40 @@
+{
+  "project": "PrivateDAO",
+  "path": "zk_enforced_external_closure",
+  "status": "pending-external-execution",
+  "stages": [
+    {
+      "id": "zk_enforced_runtime_captures",
+      "label": "ZK-Enforced Runtime Captures",
+      "status": "capture-required",
+      "owner": "operators",
+      "blocking": true,
+      "notes": [
+        "Record real wallet runs for enable-mode and finalize.",
+        "Do not mark complete until Devnet explorer signatures exist for successful captures."
+      ]
+    },
+    {
+      "id": "external_audit_handoff",
+      "label": "External Audit Handoff",
+      "status": "ready-for-external-review",
+      "owner": "core-team",
+      "blocking": true,
+      "notes": [
+        "The repository now includes an audit handoff package and explicit zk_enforced scope.",
+        "External findings and closure still need to happen outside the repository."
+      ]
+    },
+    {
+      "id": "canonical_verifier_boundary_freeze",
+      "label": "Canonical Verifier Boundary Freeze",
+      "status": "decision-pending",
+      "owner": "core-team",
+      "blocking": true,
+      "notes": [
+        "Freeze whether receipt boundary or verifier-program boundary becomes canonical.",
+        "Do not claim final dominance until the written decision is signed off."
+      ]
+    }
+  ]
+}

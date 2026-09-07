@@ -1,0 +1,75 @@
+name: CI
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '22.21.1'
+          cache: 'yarn'
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Install Solana CLI
+        run: |
+          sh -c "$(curl -sSfL https://release.anza.xyz/stable/install)"
+          echo "$HOME/.local/share/solana/install/active_release/bin" >> $GITHUB_PATH
+
+      - name: Install Anchor CLI
+        run: |
+          cargo install --git https://github.com/coral-xyz/anchor avm --locked --force
+          for attempt in 1 2 3; do
+            if avm install 1.0.1; then
+              avm use 1.0.1
+              anchor --version
+              exit 0
+            fi
+            echo "avm install 1.0.1 failed on attempt ${attempt}; retrying after backoff" >&2
+            sleep $((attempt * 10))
+          done
+          echo "Failed to install Anchor CLI 1.0.1 after retries" >&2
+          exit 1
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Create local test wallet
+        run: |
+          mkdir -p "$HOME/.config/solana"
+          if [ ! -f "$HOME/.config/solana/id.json" ]; then
+            solana-keygen new --outfile "$HOME/.config/solana/id.json" --no-bip39-passphrase --silent
+          fi
+
+      - name: Verify tools
+        run: bash scripts/verify.sh tools
+
+      - name: Anchor build
+        run: bash scripts/verify.sh build
+
+      - name: Anchor test
+        run: bash scripts/verify.sh test
+
+      - name: Non-real-code scan
+        run: bash scripts/verify.sh scan
+
+      - name: Unified review and ops verification
+        run: npm run verify:all
+
+      - name: Artifact freshness
+        run: npm run verify:artifact-freshness

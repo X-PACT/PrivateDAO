@@ -1,0 +1,19 @@
+1
+00:00:00,000 --> 00:00:08,000
+PrivateDAO is already live on Solana Devnet.
+
+2
+00:00:08,000 --> 00:00:18,500
+Week one shows a real product shell, not a mockup.
+
+3
+00:00:18,500 --> 00:00:28,500
+The command center and private voting flow are already visible.
+
+4
+00:00:28,500 --> 00:00:38,500
+Dashboard and runtime posture stay attached to the product itself.
+
+5
+00:00:38,500 --> 00:00:46,500
+Next we sharpen trust, buyer flow, and track packaging.

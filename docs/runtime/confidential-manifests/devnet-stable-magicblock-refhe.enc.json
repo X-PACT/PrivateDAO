@@ -1,0 +1,14 @@
+{
+  "project": "PrivateDAO",
+  "version": 1,
+  "algorithm": "aes-256-gcm",
+  "keyCommitmentHash": "fce7e4e5a3e7d73743c110058cd0941b665022e38d2ac516eabf355f5418cea3",
+  "plaintextHash": "fcc2d4dd1a6c157781f63025587e17f9fc02c4a021f265fffa0011219cf69088",
+  "ciphertextHash": "243859fb964a105d6bb581d5ef01543e558a6a85fa387d23417a1581f1faa186",
+  "aad": "privatedao-confidential-payout-manifest-v1",
+  "ivBase64": "a0b8avci8s+A80sX",
+  "authTagBase64": "I0YpBECkQwWsw4EEHhNp0w==",
+  "ciphertextBase64": "0M3trwSrpIr71pXzNpywkmV29hX9LV/h5L7Im4j1qzEUoh4c3fll+hX5IdGB6NzvhLl3O2uKjpagdBpa5zWJWblgR+rLnOQd8TMb+Nn3gigUwAf56JvzAQTHiJfMsr1aOKijZ4jRbFmisylXNmVRrARhPfZlJayskYEUX3U3fA08e8NfZtq6SPrlgYeV666nB2rsO93hcph70PEM9H+GZ2Hoe/Q6iNACU1IoQ1ru6mIK3PsA9BsU0DXzwIshpoOU9idwa5+vbyULYGlTfyUXMKeEyLJEAtO5jUqdOZ+/NCB20YDVVlUQpUHUo8VhY9TGMa6yIJuGPiVVfSfeXs+NTyLTf7Jo3nZ79ti5zk95sqrwsqTHhm9XrzAa+CN1rI+KgXgJkzLWfqMQWA/riMd7ihujAFMuT7iZNjjio9rWVBVihSJUF4wMp36n6A1pyXMDXhPe/5V1t3DNu3eQK+6FmZUKYbUXUOOk67bm2W05A5hw25k11aLMhl2fgVznkQOlBDgiz48R0obT1pxUuBgM0B0QEUgbTCYQlU/oIF2nrSF94zE93+MXyeRZwvBI974RjDhcF0tgt955EGET3gAEjXgEwz3r6MB98tw0kwXfopF0ZB2Id9AmUYHuKpFlrAIHUdSYigWUFOakFOLwfQr65U55rpk97VZPEdjA3KqTF5j67Tsc9lI7dW46Tx6WUAEUv6/PvVw9EPgLWCEVb99Z0cwCld+P/7OlO5c8x97pGh2cepytiUM=",
+  "createdAt": "2026-04-06T22:25:26.810Z",
+  "manifestHash": "8a86a995e53f11f70285f8339236cabd499a449558aaa4f40a068dfe96f12531"
+}

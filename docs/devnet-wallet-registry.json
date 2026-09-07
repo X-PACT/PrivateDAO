@@ -1,0 +1,866 @@
+{
+  "generatedAt": "2026-04-17T22:51:15.498Z",
+  "runLabel": "20260417125017",
+  "network": "devnet",
+  "profile": {
+    "name": "50",
+    "walletCount": 50,
+    "waveSize": 10,
+    "fundingWaveSize": 5,
+    "targetPdaoUi": 100
+  },
+  "coordinatorWallet": "4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD",
+  "governanceMint": "AZUkprJDfJPgAp7L4z3TpCV3KHqLiA8RjHAVhK9HCvDt",
+  "wallets": [
+    {
+      "wallet_index": 1,
+      "public_key": "2vgwzFTgsfDyLA2BSfzej5F5Zcnmq6j38uXXN9iuLGmW",
+      "role": "voter",
+      "funding": {
+        "sol_target_lamports": 80000000,
+        "sol_balance_lamports": 80000000,
+        "sol_transfer_tx": "4Z3R7K6KKEMjufvee7uo55y1cwtfkQgaz1xYjv2eqUCFuUspiCo5wA3EHXvpsFPN5H1EVf6h522qeucAXhJyYqnU",
+        "pdao_target_raw": "100000000000",
+        "pdao_balance_raw": "100000000000",
+        "pdao_transfer_tx": "27qNUvn11GFaHH6qa4xtBZoLRXPT36bCwpNsTWESQkY191S6qXeJzMwqBvqNdCJJ9wsukv8RRcC5Z4wuHRqK9zjZ",
+        "token_account": "A1Xdsv7hn6nTPyRa1nUjsP3PvczzU7YborwzSD1Yep9M",
+        "retries": 0,
+        "success": true,
+        "funded_at": "2026-04-17T12:50:26.471Z"
+      }
+    },
+    {
+      "wallet_index": 2,
+      "public_key": "5dEjWDgSaarajprRrnfePCJos4kZ9vHCn1kkiRoDAUD6",
+      "role": "voter",
+      "funding": {
+        "sol_target_lamports": 80000000,
+        "sol_balance_lamports": 80000000,
+        "sol_transfer_tx": "47rXgocdfCdZ2uPerPHp7NAx6jajruPFSejNbm6nfVUdU5rtU2NYJmuX1HJPGUmDRNt5psHZGgqrNsBcCFACoAnR",
+        "pdao_target_raw": "100000000000",
+        "pdao_balance_raw": "100000000000",
+        "pdao_transfer_tx": "5ZBk7ddset3SSzXZQ4ujJk9mVUbhXgK8RUn3ucgokuvcS5Lzv6PH1vAm4F4p51jiZDeihjVigrEUSFPHDMd6oiKp",
+        "token_account": "7G2eXz1TpE8ynRX9GsoXGn6bA99DCVC3pRVhbgjrhiww",
+        "retries": 0,
+        "success": true,
+        "funded_at": "2026-04-17T12:50:34.212Z"
+      }
+    },
+    {
+      "wallet_index": 3,
+      "public_key": "6MJexqQVZywkV9Edn5GoD4PkBAm4ZXD24YLgRcjDScy2",
+      "role": "voter",
+      "funding": {
+        "sol_target_lamports": 80000000,
+        "sol_balance_lamports": 80000000,
+        "sol_transfer_tx": "5xcdQyjaiJbXjJKMgxKqFN63hxABG5xEVrRY5JTy7grLUr8JTxqJiDkvmk1SUyFfStfXn7NKqj1RGxtAPMQQcYQm",
+        "pdao_target_raw": "100000000000",
+        "pdao_balance_raw": "100000000000",
+        "pdao_transfer_tx": "3iikn9bHYTVugUUgdoYi3NV4SFrk9p4HX5QTLxZuuurneVR186zxNJ2rzgEJBKbV52kkPuHaeJavNsNst1y3URu3",
+        "token_account": "B3vWQyoeA5S9Caz9J6pLacwJ8uYPwhyN3X3EBG33wwYG",
+        "retries": 0,
+        "success": true,
+        "funded_at": "2026-04-17T12:50:42.089Z"
+      }
+    },
+    {
+      "wallet_index": 4,
+      "public_key": "F3gLkcRaJRccwCxxM3YRUUH54kUCft2dGu8Rz74dQSrU",
+      "role": "voter",
+      "funding": {
+        "sol_target_lamports": 80000000,
+        "sol_balance_lamports": 80000000,
+        "sol_transfer_tx": "ei2F1T7i5RwbK8RCmxh8uowNsudXQMJsP6Vb5bydjXfcv7vycxbHiUZsm1xJumFh3GAW9cB8V5vLa97MnEXpz7B",
+        "pdao_target_raw": "100000000000",
+        "pdao_balance_raw": "100000000000",
+        "pdao_transfer_tx": "4q5292YeyQhHmjHwTURL84FDs6yFqwK4d5FiSQCPze5U4L14VnhKYYHtwDbUtmM5WvE36SYDgZDjCK6VNJi23fNr",
+        "token_account": "At1xtw6MBHqCviLes2sakoa7vVRcKcTxVaNg1e4uYH7b",
+        "retries": 0,
+        "success": true,
+        "funded_at": "2026-04-17T12:50:50.596Z"
+      }
+    },
+    {
+      "wallet_index": 5,
+      "public_key": "54vUJ5sTTd1WfcECrmqTNBXh4MXuJbyKohTHnbkaFgE3",
+      "role": "voter",
+      "funding": {
+        "sol_target_lamports": 80000000,
+        "sol_balance_lamports": 80000000,
+        "sol_transfer_tx": "5uuypSe1veYmjqB2PemCxo4cwkLZTQGC7zSxsbjEHKVyjpRztLPvJUfpak8V9ePTkjkdpvr8GLEs7Aj8uQDofaUx",
+        "pdao_target_raw": "100000000000",
+        "pdao_balance_raw": "100000000000",
+        "pdao_transfer_tx": "xooYMTgjCMfR4B6PKGhfbV8deokqfQtCt4VcQuRz4mw4kW4KvfyQQDUUiohkW2X2Y5Qb8GicNjJNymPabu8cM4i",
+        "token_account": "7hy4XGqee1dfD5tdswdaS6txTFCGdGL81NG1eMz67gK1",
+        "retries": 0,
+        "success": true,
+        "funded_at": "2026-04-17T12:50:59.924Z"
+      }
+    },
+    {
+      "wallet_index": 6,
+      "public_key": "6sBsBGDFFgGUy7TpQq49GMntZuXY3LZE2zzgT5JCsqPg",
+      "role": "voter",
+      "funding": {
+        "sol_target_lamports": 80000000,
+        "sol_balance_lamports": 80000000,
+        "sol_transfer_tx": "CSa7zxtvea2GupG3jo16EUVX5ponhkXrUXqD1K6WaYJACA6yAMKj52JT4w2Q8M5QmszZZNcjfkX5i2Eo4ajaWkM",
+        "pdao_target_raw": "100000000000",
+        "pdao_balance_raw": "100000000000",
+        "pdao_transfer_tx": "5fPDzgo14mTh7U38bDofuTyyMykgz7ugvn2ZEssmEP74p4A1onDFqqRsZDGPxUNmRBejbXgB9XS76Xaea79akY4q",
+        "token_account": "rhknHJeUdPrkPmgnTFtsxE4UzATuXq1BRSPRsawaTsD",
+        "retries": 0,
+        "success": true,
+        "funded_at": "2026-04-17T12:51:13.827Z"
+      }
+    },
+    {
+      "wallet_index": 7,
+      "public_key": "HXdBGXRQvRvF3Ci8zTvU6sXeUm1kLdttBXZq96uaygkZ",
+      "role": "voter",
+      "funding": {
+        "sol_target_lamports": 80000000,
+        "sol_balance_lamports": 80000000,
+        "sol_transfer_tx": "cTw58xSffCz1SWFK9eYMHKAkuHMSQpmQHT8MfxTXUc7mVkFeX6ANTFq2MGguGYkgW6XVWdBvQSiVMvaXhAY6TXy",
+        "pdao_target_raw": "100000000000",
+        "pdao_balance_raw": "100000000000",
+        "pdao_transfer_tx": "3zYNSbeh8SXWiNXrzmqLjRwA6s7qDoFeJoW5zexqffZ59shoGYp9UH9SU7ZMFsPYV4C7JAwUBNML6hc5BRhzi9gU",
+        "token_account": "AWqfGh2WudiU45QuQgUsi7Hpz1xjokSYVf63yn46qivq",
+        "retries": 0,
+        "success": true,
+        "funded_at": "2026-04-17T12:51:24.270Z"
+      }
+    },
+    {
+      "wallet_index": 8,
+      "public_key": "9xAZMUWVo2EBEeow7WzeyQHc2ygaEHmxpzE9Fcev4dUj",
+      "role": "adversarial",
+      "funding": {
+        "sol_target_lamports": 80000000,
+        "sol_balance_lamports": 80000000,
+        "sol_transfer_tx": "VFaRacbdBZ5xNF4hu5TcWHbtGoeHMqZc8oQECyKuJE1wMV3qWXsVWf2n13GqGLVHjHRhXv5CzP7J5qis8iA5NeX",
+        "pdao_target_raw": "100000000000",
+        "pdao_balance_raw": "100000000000",
+        "pdao_transfer_tx": "4MjwXm41cmbxWzQCYXUQjPb8CQXchQTaWY9YcmoZJ21wdUp1N3cgWukq9vsYGaLBSognYZXngAodNJ1Vgf8MaCpN",
+        "token_account": "FKLyvgaiCZZMDzuaqurherNo2gEJVy1TnYsy3FC15tN9",
+        "retries": 0,
+        "success": true,
+        "funded_at": "2026-04-17T12:51:32.542Z"
+      }
+    },
+    {
+      "wallet_index": 9,
+      "public_key": "zvFYmYfm2HRY7o67m7MSRphbdui85yzNJonQhwmpEF2",
+      "role": "adversarial",
+      "funding": {
+        "sol_target_lamports": 80000000,
+        "sol_balance_lamports": 80000000,
+        "sol_transfer_tx": "4FszUYqPFqivPfqiSBTre6hvvWbFsDXjgSYjSboH7ssdAuL4cXp6EPjJ4vC5W5HjtCt4Skfj1qFve4RzXzM9Gc3J",
+        "pdao_target_raw": "100000000000",
+        "pdao_balance_raw": "100000000000",
+        "pdao_transfer_tx": "peCx1dnXo8e5DhhvuZUtz6Q1K8RdhFABA4ACQEKMJHeLwhMMVQ6h1ZNduE4V2Hs2j2ZHcjWwMu7hsbFoK2MBftv",
+        "token_account": "Cu2gSX5a5TfWuJUxxB1PNHaz2dcpWFWKjft1X7HPGgV1",
+        "retries": 0,
+        "success": true,
+        "funded_at": "2026-04-17T12:51:40.952Z"
+      }
+    },
+    {
+      "wallet_index": 10,
+      "public_key": "63jYnctJymvUf94gKnrfhHSn2YCgrDRcErB5CFDF969s",
+      "role": "zk-tester",
+      "funding": {
+        "sol_target_lamports": 80000000,
+        "sol_balance_lamports": 80000000,
+        "sol_transfer_tx": "5e2wpE73ZTLPsWNF64w97LEqMwV8HypDJafziEZZf3dKi1VuigiWWCN9AFRsVdHo9QasMVg5tPQ9a41uViFMetNG",
+        "pdao_target_raw": "100000000000",
+        "pdao_balance_raw": "100000000000",
+        "pdao_transfer_tx": "4VYqT1psmhQ6NWFZTUr6GnKhANV9W2XrjiBjLESsfMAvuPa8ht6qeqXtScqK4x7TEMjy3kRb4VN4obZbHdPLD95o",
+        "token_account": "49Np2GU3u3pezQpoXD7u7m8Zx9gZxeVoTN92HDTXQiuh",
+        "retries": 0,
+        "success": true,
+        "funded_at": "2026-04-17T12:51:48.839Z"
+      }
+    },
+    {
+      "wallet_index": 11,
+      "public_key": "6RpEPpg6QqzTgKeNBeim5J5fnsNzUw8dJpRfWBUCqm4F",
+      "role": "voter",
+      "funding": {
+        "sol_target_lamports": 80000000,
+        "sol_balance_lamports": 80000000,
+        "sol_transfer_tx": "ufPRQrYUBEV4nFX3N1CDNq8oJSUk48FQtK6dVuhy3mpf6PtG1vemDwiEQZJe1ySKYzLnHF58hP7kKidJgmg7Qtd",
+        "pdao_target_raw": "100000000000",
+        "pdao_balance_raw": "100000000000",
+        "pdao_transfer_tx": "4RWYKwcavoA7zBNe9W1US3SFVF8gjpuncKAGbfk8SNieGCsgjK79MV31zCt16YnRLr7GSzV9mdCddCXryKx8PsUW",
+        "token_account": "B7YHBHzp6HcdFNMcLBvGFQWAw73Z4FYkkyPAkU9j68S9",
+        "retries": 0,
+        "success": true,
+        "funded_at": "2026-04-17T12:52:01.768Z"
+      }
+    },
+    {
+      "wallet_index": 12,
+      "public_key": "32zSuDkmY8PCdpFSboDp5CfAqgzmQvJvPCAxzZX4cmU7",
+      "role": "voter",
+      "funding": {
+        "sol_target_lamports": 80000000,
+        "sol_balance_lamports": 80000000,
+        "sol_transfer_tx": "43mvGY21cMhoYnHnxgcrhK7wEsWNT5TukNmMTJF9zfYuujBnSD1t5WcegJYYBBcaLV1jTVbTFXNfm3CRaETfj3SY",
+        "pdao_target_raw": "100000000000",
+        "pdao_balance_raw": "100000000000",
+        "pdao_transfer_tx": "42qf9B3xxD3MVAKDySaWv4AqEux41FvcEbGBVXSuvoqhFA1nCX5EXY1xMn5BxdrH8FzWfW6jbwTQJeXi7jGFaLVX",
+        "token_account": "9BSCVVsYkENAzkV7eTSfuEpyTL168C1p7AbjP9peBs7A",
+        "retries": 0,
+        "success": true,
+        "funded_at": "2026-04-17T12:52:10.118Z"
+      }
+    },
+    {
+      "wallet_index": 13,
+      "public_key": "FBkhonF9pfrFJArhxspyW5oMbW8E3o3rN7qnGCmBd8uN",
+      "role": "voter",
+      "funding": {
+        "sol_target_lamports": 80000000,
+        "sol_balance_lamports": 80000000,
+        "sol_transfer_tx": "UM1wS4d3ph6qgTcrqh1NaWxCHDcMdpoX6dgdXyfVqM6osaoxsV2Ae88KTqcwHKzcVfaSAWnbz4aEA3X4Wudz6JR",
+        "pdao_target_raw": "100000000000",
+        "pdao_balance_raw": "100000000000",
+        "pdao_transfer_tx": "5RcnwZGFnjLmR7kWJwmhNFa8tpkCx5pYxFgrvtwXgw2wabvVvHze6MVsSL2tTvdu85H12re5g4RRjrwbohNaRHXJ",
+        "token_account": "28abWRTYoETVxQSH4Hvfmr5EeLwcmhqFWF53yTw5UXgV",
+        "retries": 0,
+        "success": true,
+        "funded_at": "2026-04-17T12:52:18.112Z"
+      }
+    },
+    {
+      "wallet_index": 14,
+      "public_key": "5aZj3iRYW7GQcy3Q9xj28TjhWZp33gt3W38vQU5dFV8S",
+      "role": "voter",
+      "funding": {
+        "sol_target_lamports": 80000000,
+        "sol_balance_lamports": 80000000,
+        "sol_transfer_tx": "52DKauuSDSZUCW5AwWBXH6EawR7r4FL6Ji6AKxBUwWRL9dWDnAztPQ9ZbRQvKydZR4Z3RApYQn86VFcfd4tafZqC",
+        "pdao_target_raw": "100000000000",
+        "pdao_balance_raw": "100000000000",
+        "pdao_transfer_tx": "aPCP4DCzkrYwbjrTv6dbFa8LNqq9WZKKKTZX8KTpYoSV7F27pZpqReDs1E6Mo8RmCbmhZPankw8dLsVby9rPV7w",
+        "token_account": "6fAsEb1AmxWMxTNBdJdWChvDHefMgix4xASWCM9ABrR4",
+        "retries": 0,
+        "success": true,
+        "funded_at": "2026-04-17T12:52:26.012Z"
+      }
+    },
+    {
+      "wallet_index": 15,
+      "public_key": "CmyXoAowGfcqh8Y6RQgkd3s4MeRVJDzD6g2HHpEni5kW",
+      "role": "voter",
+      "funding": {
+        "sol_target_lamports": 80000000,
+        "sol_balance_lamports": 80000000,
+        "sol_transfer_tx": "2Vn3RuTiwUABd5aLEhHRMCM6BhfmJUsWhedavY25ZtMnAs7u4NQkheXgU9WhcLTRtJ6uBL84f8T1N6DtzARp3T2d",
+        "pdao_target_raw": "100000000000",
+        "pdao_balance_raw": "100000000000",
+        "pdao_transfer_tx": "4q4B9og8KeiiCxaaP9UrhZPbr7YXA8VgL8jPxqZg4VHckGf9MfBrDJbpK1GSE7c9vXmThrGBSdRUMkiTY6aGShrQ",
+        "token_account": "FGR3aiRyNhuJ3AKGHzLKcFzjFyF4TPMfZekKVWAYJ5qQ",
+        "retries": 0,
+        "success": true,
+        "funded_at": "2026-04-17T12:52:33.837Z"
+      }
+    },
+    {
+      "wallet_index": 16,
+      "public_key": "F3F3jmp2WG3V48dAcPswJpWfJnHM4rDJxFg5uuLa6Tku",
+      "role": "voter",
+      "funding": {
+        "sol_target_lamports": 80000000,
+        "sol_balance_lamports": 80000000,
+        "sol_transfer_tx": "311kvyQNyMeAWoV1ETrH3a4LaQPDitgkf727gQAEXUbzyAWg12XKp3RW8j6qnrNjptnRyJniTTnQLkXYF99WAQMD",
+        "pdao_target_raw": "100000000000",
+        "pdao_balance_raw": "100000000000",
+        "pdao_transfer_tx": "wEMsnTBnTon2Zc1jtnYHTbUWXQ3XGSUL3RyfmDfSPbBn5zRGfkeRTSXZcCaGJi45FzHhQZq9bPBiEHg6soL7yZ1",
+        "token_account": "FT5Cy2rduB3XbwsGpq2gjXQFBev6f72Z295BnH7UrtLp",
+        "retries": 0,
+        "success": true,
+        "funded_at": "2026-04-17T12:52:47.078Z"
+      }
+    },
+    {
+      "wallet_index": 17,
+      "public_key": "9K7msxC4czoBRE33fscCJDv55VyrADYcwM9dYkTTGrJc",
+      "role": "voter",
+      "funding": {
+        "sol_target_lamports": 80000000,
+        "sol_balance_lamports": 80000000,
+        "sol_transfer_tx": "418Kxh8sfdgn6vDdLy8CVFY9Vgs67EHEEZbnMguuGs8Vfjy1yRBBcnVhs1Q1sChDvosn9xbKM5cUm76VYT2fm25X",
+        "pdao_target_raw": "100000000000",
+        "pdao_balance_raw": "100000000000",
+        "pdao_transfer_tx": "inrYbnRZhtkwYJhBv6bb4TtvyDcg6FwufpTAb114rENXQuBP1zQ9Dmc1vmhyREE7aDcakKnkCXiTuAYhmQKWga9",
+        "token_account": "DudibQUF7Ry6K3i2hYnxxSvfVyeRLLyrSbzY8Pn95Wb7",
+        "retries": 0,
+        "success": true,
+        "funded_at": "2026-04-17T12:52:55.638Z"
+      }
+    },
+    {
+      "wallet_index": 18,
+      "public_key": "DNjPJzGsRCpwRYq5tNioveg5sGv77hxVaq7hH1SJ54M2",
+      "role": "adversarial",
+      "funding": {
+        "sol_target_lamports": 80000000,
+        "sol_balance_lamports": 80000000,
+        "sol_transfer_tx": "3Kejr4bNqT2cy9ML579PZCpyd9zyEbtV4cCg1hhHvBHjSeeC21QrAu2LkdQFDvLrsS64Ezhsg5VKMatx5m42qdiy",
+        "pdao_target_raw": "100000000000",
+        "pdao_balance_raw": "100000000000",
+        "pdao_transfer_tx": "2SrySnhSfsgZCVhS1M3LVFMKKtBAuxQAnXjLexPK2eMFMrsP4SVABMuFGt82amfSEMwzyfGtxGZbphx68bhGsDtD",
+        "token_account": "a717sVx6VBgQNpcuHPqhNkdgYanJu5xkUgXm7WtTNMT",
+        "retries": 0,
+        "success": true,
+        "funded_at": "2026-04-17T12:53:04.191Z"
+      }
+    },
+    {
+      "wallet_index": 19,
+      "public_key": "BuLjeh5CmrEGs9M5yP21oUow46o3UYPZ2uXEcnXmU5iZ",
+      "role": "adversarial",
+      "funding": {
+        "sol_target_lamports": 80000000,
+        "sol_balance_lamports": 80000000,
+        "sol_transfer_tx": "3VY4P6EyHhaunoZv6Aw79Q1XHqyhJ3Y5Ld1t9KrYQxf8tLqs5CTqERwwx7ipqAjG7Hj1DE6eF4Ds733Cum3xJ9od",
+        "pdao_target_raw": "100000000000",
+        "pdao_balance_raw": "100000000000",
+        "pdao_transfer_tx": "4fgycTVQQxF4BbcQP2d67YCR44HWJb9MhWsKopENBnc1gVZxpsnYqiTdeCUmokcCp4UkUEiDrctf9hYyE1N34rkn",
+        "token_account": "3ku3PiJQuVPVRSkRcvDV7noohWNaWGDcZL2VUjv97EG9",
+        "retries": 0,
+        "success": true,
+        "funded_at": "2026-04-17T12:53:12.134Z"
+      }
+    },
+    {
+      "wallet_index": 20,
+      "public_key": "5CW95HexyNcE3Pi9aLxsV1A8eiq5eXTVcE7LWQXAE5ik",
+      "role": "zk-tester",
+      "funding": {
+        "sol_target_lamports": 80000000,
+        "sol_balance_lamports": 80000000,
+        "sol_transfer_tx": "3NaXhuUTBUKK1xzHSBrXCnwmXmaubvBFgEkY3k4RhRPYU8gV5sfArMqnzzXvXHWeKBj4nNJhtYLtHUT8z9ap7sus",
+        "pdao_target_raw": "100000000000",
+        "pdao_balance_raw": "100000000000",
+        "pdao_transfer_tx": "5iBCBw4BGQ6WVUXBo7yiL8EvJojSxetmzv9AQqFe4obZJwAPsKmvFFkbUDzBC2YRX2HG5uBFbXDG7v33AYnbxRCP",
+        "token_account": "BkRubLbJz6aXvXRXn6LEhFC3Ahs8MqUtoEjGH7BtXvv3",
+        "retries": 0,
+        "success": true,
+        "funded_at": "2026-04-17T12:53:19.894Z"
+      }
+    },
+    {
+      "wallet_index": 21,
+      "public_key": "7nLLsCk6GtegSouu76wwc8LTAY38gC2DcwcJMJLst2Y6",
+      "role": "voter",
+      "funding": {
+        "sol_target_lamports": 80000000,
+        "sol_balance_lamports": 80000000,
+        "sol_transfer_tx": "5dt5b3XDHwr8z2do1zjjBZUfZ6Wf3buL7Z1B5k8Tndnbk99wABA1qcCSREX8zH7QrVmekZSPrzuRBL3wxwAaoo8P",
+        "pdao_target_raw": "100000000000",
+        "pdao_balance_raw": "100000000000",
+        "pdao_transfer_tx": "2GkbZMXHdeGhGvcRAoXMaSRgwRoYLcvz2Rz5rKWtpov7gxPRzHTPMiWq1khhwyG3cSrKVLNy9TXXgNEsSHU76auU",
+        "token_account": "9xG5rNC6mXCzsgvVQVQ2XkTUxFS7uNRsLcRhPm21R2a8",
+        "retries": 0,
+        "success": true,
+        "funded_at": "2026-04-17T12:53:33.848Z"
+      }
+    },
+    {
+      "wallet_index": 22,
+      "public_key": "FZkpGvudzkhRguUoUNhFy7W8k79SguBjigqShGsVE3x2",
+      "role": "voter",
+      "funding": {
+        "sol_target_lamports": 80000000,
+        "sol_balance_lamports": 80000000,
+        "sol_transfer_tx": "66aUQqyPwHYbpG3zH8jc2WqMYwzAnmgJme452c4tZYmPEzsPxToGAHTUMjn2VXej2oUyzXuN1FynZfTx3z8K7BqQ",
+        "pdao_target_raw": "100000000000",
+        "pdao_balance_raw": "100000000000",
+        "pdao_transfer_tx": "3VJaG8e2yR1PkKVM6pjTZK7V1JDwxB1t9YKGR3B7ScFJDQwEwL6w6Sab7mUPAV4kJcxJSLhzHri6QQQG1o7TNahq",
+        "token_account": "GmJVqQeUvZt8TCDAA6KPskGk9Zgr9rocA7348bczBx4K",
+        "retries": 0,
+        "success": true,
+        "funded_at": "2026-04-17T12:53:41.629Z"
+      }
+    },
+    {
+      "wallet_index": 23,
+      "public_key": "2MzztwnAZWzMvhKRuvedWpY1BxhX8ed4D8pbzHcBi8xw",
+      "role": "voter",
+      "funding": {
+        "sol_target_lamports": 80000000,
+        "sol_balance_lamports": 80000000,
+        "sol_transfer_tx": "2i1bE1RswbWBZwR4u7iEjzTFYHK8Sskd2VVGRVqGqgF6HfckWkQTC7oHru8Scz7P78VGM7Ar7gnas8DUjuteTet2",
+        "pdao_target_raw": "100000000000",
+        "pdao_balance_raw": "100000000000",
+        "pdao_transfer_tx": "5z1kwCaoxMLqNX96GgujpvazefzJ5nuKxqKZsP2qwqZPdSzoVDvdMfKMfhLrZRqbyXizNWwqPikc2GrXwgm6hxiw",
+        "token_account": "A9zMX8tqsBcvkpWXBKKeYsb8VAUMENBdYJ5mjGDrMr74",
+        "retries": 0,
+        "success": true,
+        "funded_at": "2026-04-17T12:53:49.103Z"
+      }
+    },
+    {
+      "wallet_index": 24,
+      "public_key": "GGEijWD4fbkknURHjJUSiozLe47z2gT5e8qvjWDsghMf",
+      "role": "voter",
+      "funding": {
+        "sol_target_lamports": 80000000,
+        "sol_balance_lamports": 80000000,
+        "sol_transfer_tx": "28aBD2ncHuGei7W76eNJK4vMWSb2HVqg98eBct4zY4e2F2bKiF2ocimM6wnqUeUGRWYbfQPgQeXDWrYAbn9Rk3ZA",
+        "pdao_target_raw": "100000000000",
+        "pdao_balance_raw": "100000000000",
+        "pdao_transfer_tx": "4DjT451r2RC42km92q5NNRigBpAEK8uyagf47HAXhKAiv3UdHoE9TNssAAsn7YH8iNb5u4koQGsYgFDLAzSRwJwY",
+        "token_account": "9fBtPXh81PyHDaTw3Y2ghr7Cagq15kiSe8LCNFHZaUf9",
+        "retries": 0,
+        "success": true,
+        "funded_at": "2026-04-17T12:53:57.058Z"
+      }
+    },
+    {
+      "wallet_index": 25,
+      "public_key": "eSGiErsKFNqYgV84hWnT7jgYCJA18kapZ2gbL9PT85F",
+      "role": "voter",
+      "funding": {
+        "sol_target_lamports": 80000000,
+        "sol_balance_lamports": 80000000,
+        "sol_transfer_tx": "2XvsBU5RyUjWY33YCNAbFEiYRPLYC8BcoAbixPbymjiNKupM4ZYNCoW83W4YDaCSMAPkTDuZZXeDxUkxHAr43B24",
+        "pdao_target_raw": "100000000000",
+        "pdao_balance_raw": "100000000000",
+        "pdao_transfer_tx": "2qfHgq7C36oTM8upw25WseazywhWTwb9rhEZG5ktHfHSctCYaFYhdxcgDbx4ape9KpKigt1K1fnFRdNyTdfso9kT",
+        "token_account": "FtPiFR7bupvrTtFvZyn2cYfLwwvJSpen2zRsFKGrWz9A",
+        "retries": 0,
+        "success": true,
+        "funded_at": "2026-04-17T12:54:04.738Z"
+      }
+    },
+    {
+      "wallet_index": 26,
+      "public_key": "DoH8s7fGmRXviw76B5YJtxWcjanB1FNYeGTsWBBTzM3A",
+      "role": "voter",
+      "funding": {
+        "sol_target_lamports": 80000000,
+        "sol_balance_lamports": 80000000,
+        "sol_transfer_tx": "2QL6C1zvexjVWHjjdZ5hmavG3cZW9433ugiizr5abtDcfN2wV7A6HNFaRfctkhqzJbJ2XuhQNPRoKeN2wts6U8xJ",
+        "pdao_target_raw": "100000000000",
+        "pdao_balance_raw": "100000000000",
+        "pdao_transfer_tx": "41BJK1zX4xzZmz7wXHHJ7TmXfxdDgM2aT8m1NqYJtL2vLnhjAhXUwQgPkrFErqFxt6qwDfaAiezZmZVvN7tzCzbm",
+        "token_account": "4pUwf7af3nMd8XUBT37GKfTsVQWHH7kfMFdrWjUXeD1Y",
+        "retries": 0,
+        "success": true,
+        "funded_at": "2026-04-17T12:54:18.278Z"
+      }
+    },
+    {
+      "wallet_index": 27,
+      "public_key": "56Cont8j33yjsGf3uRdYJoiaX6tXrw7vvPAPrXbqDtDs",
+      "role": "voter",
+      "funding": {
+        "sol_target_lamports": 80000000,
+        "sol_balance_lamports": 80000000,
+        "sol_transfer_tx": "V3hQJQTQdSWDz3udvhDSyWcAvnRVZnCpANRA4zWjdRV9LcfzyaYLQNEyzNXv8V3bahiyGr7KWuF4uzznk8o8A69",
+        "pdao_target_raw": "100000000000",
+        "pdao_balance_raw": "100000000000",
+        "pdao_transfer_tx": "4fK4xfxKaVStiLZjR1L1u1YLpuu6t11Zue2J9tHFybLidu5w5AEZobVF96SN1n3qrNAQEZmPs8b9cUAZovA7X9gc",
+        "token_account": "CaWpTrw4RmsofXA13o6GW8sqB4AvJxFo1KJdgeS8uZ98",
+        "retries": 0,
+        "success": true,
+        "funded_at": "2026-04-17T12:54:26.372Z"
+      }
+    },
+    {
+      "wallet_index": 28,
+      "public_key": "6Bg8E2Tv7kDhHRuwqcjUthwRjzSVA5JVsfywLBsgdBi7",
+      "role": "adversarial",
+      "funding": {
+        "sol_target_lamports": 80000000,
+        "sol_balance_lamports": 80000000,
+        "sol_transfer_tx": "3R6idQhWzFzaMskyed2YEhqv7CjhcRPNcHy3TyipCYJFtUkwnMGaidMiE5wPJaofLkTcZgvTDXqLsLfZqfS1Ea27",
+        "pdao_target_raw": "100000000000",
+        "pdao_balance_raw": "100000000000",
+        "pdao_transfer_tx": "QGuXGDFWobhQcZthooUeWof35K1feDBePFYtWeZtTZBrCy7EA1oALpB1DuvD6RQ7xvLtHwyvVJjSV7uWBFFSJzs",
+        "token_account": "F366DLGFeVLVUFmt4Lp2KsDqiqjFPFiWJzinHLmrppxN",
+        "retries": 0,
+        "success": true,
+        "funded_at": "2026-04-17T12:54:34.213Z"
+      }
+    },
+    {
+      "wallet_index": 29,
+      "public_key": "CqM8D7yethJp6jpzA1eTmZouA7LKgXXwyM9XbKvbiEdw",
+      "role": "adversarial",
+      "funding": {
+        "sol_target_lamports": 80000000,
+        "sol_balance_lamports": 80000000,
+        "sol_transfer_tx": "3y58WgyrXaW7RDWKAyAREp5LKb95CddTy4Y3Esy2sGUwVJw78y6AG2RQLxcrDU2BYJiBTLYnUE4ytk6rdh8yCmdK",
+        "pdao_target_raw": "100000000000",
+        "pdao_balance_raw": "100000000000",
+        "pdao_transfer_tx": "22J2JBZS57vsT1L6aZm9832fekkEzHc7pbpxS2ZRr46Uv1mwkCCUvpoLfxEZA2XcCK1d8Rd6pLiC67NM3RNXAZhM",
+        "token_account": "6XUJQKdfWFJ6F5GfLwdAnuRahetLNw47NW2h9PcAjf4b",
+        "retries": 0,
+        "success": true,
+        "funded_at": "2026-04-17T12:54:41.688Z"
+      }
+    },
+    {
+      "wallet_index": 30,
+      "public_key": "JE2in6depHEEY8pzyniMtPWJVZ1zQ3KVGH2jMgkRN8RW",
+      "role": "zk-tester",
+      "funding": {
+        "sol_target_lamports": 80000000,
+        "sol_balance_lamports": 80000000,
+        "sol_transfer_tx": "4fL5Ctk6xRUyYPTe7WHxHBnaxBZybza3f1CiVB6iksHaXezX3xAFnrg6PcGarfzzJsrYgHndQLBkUnPoyysCXJqe",
+        "pdao_target_raw": "100000000000",
+        "pdao_balance_raw": "100000000000",
+        "pdao_transfer_tx": "mdoaHrWJ3JtKuab4DTpRWwbFLdbwzd5AyrctKCrxoozbg2uZtF91bGdAN4vKfzqXtJqhXiNyoCCVC8GqKyZfpux",
+        "token_account": "FrXHdU1vbsTynjPuP8qBmBMMpEiqVL1QuZMzRMiPCorB",
+        "retries": 0,
+        "success": true,
+        "funded_at": "2026-04-17T12:54:49.137Z"
+      }
+    },
+    {
+      "wallet_index": 31,
+      "public_key": "4btuX1XqNymnDh64NYv96UVuWznRpKvNz8A4i8XxatXJ",
+      "role": "voter",
+      "funding": {
+        "sol_target_lamports": 80000000,
+        "sol_balance_lamports": 80000000,
+        "sol_transfer_tx": "5htFzNnPvRBYP5ChPfEEQ1mMzL9DrmC7YorZawmKN8oPtmXH9JrXKGt6KFiLwb5kUimehdsnoqtw6nexPBcVitBQ",
+        "pdao_target_raw": "100000000000",
+        "pdao_balance_raw": "100000000000",
+        "pdao_transfer_tx": "3YxSovCjnTReXaqDEnZbEs7biciKWzZDi4T6bRKWxQfKDvjkEaBNiof19zQbPakJ9sLCoGqHUmxZcvs1MbJ2UnwH",
+        "token_account": "9soc26Tybu6AREXMP1N7NA57PCKgzb2B72nmnWc2T3zF",
+        "retries": 0,
+        "success": true,
+        "funded_at": "2026-04-17T12:55:02.083Z"
+      }
+    },
+    {
+      "wallet_index": 32,
+      "public_key": "AcAWJMHzREv1X6WM6W8r46oLJprVwNedKfJ7dTmfcLm3",
+      "role": "voter",
+      "funding": {
+        "sol_target_lamports": 80000000,
+        "sol_balance_lamports": 80000000,
+        "sol_transfer_tx": "2nxA7yknaYptAewqXiqG8GY6LuyxMPYgbMoLhpzChfF1ATZXrmwRLKDATSLR1CQjNh6rQ2KcLuBArFaghj3McBAc",
+        "pdao_target_raw": "100000000000",
+        "pdao_balance_raw": "100000000000",
+        "pdao_transfer_tx": "xFWTjFJ6UvqTm2eAwH3ZtGzE1FLMKDejx6RvnPTS3iJid87nqmc7APDaj1i56n5HYTAZFmTs6T8DTBLAeSfFKVs",
+        "token_account": "ES59chfuD64R5pD27Kuew2Mz2DXwapwQE6ZEA95PRNNs",
+        "retries": 0,
+        "success": true,
+        "funded_at": "2026-04-17T12:55:10.132Z"
+      }
+    },
+    {
+      "wallet_index": 33,
+      "public_key": "4qwmau6hv9CS4b58dTvasDQ5XT2uE8F18qpP5WtkySaA",
+      "role": "voter",
+      "funding": {
+        "sol_target_lamports": 80000000,
+        "sol_balance_lamports": 80000000,
+        "sol_transfer_tx": "5E7U7MH8tb3gf3vjU2E8rRL8FNXY4pdJqgt4FetjjW62eoRApYLeQrw9wzcugE63iHJhpr55tQbbwATrveYS4icr",
+        "pdao_target_raw": "100000000000",
+        "pdao_balance_raw": "100000000000",
+        "pdao_transfer_tx": "2KvewPgvyihy6LFfQjsNgwFkyjAnDzvWtpegpwDWQ3cN46CUCYWhGEeWTEV9Xo2kdChyDXSNkL3QBjiZnEL5DjBQ",
+        "token_account": "D8SnLeAwry9GcumkE5m7WLZT1joyqb6X5Sb92HcB552X",
+        "retries": 0,
+        "success": true,
+        "funded_at": "2026-04-17T12:55:17.765Z"
+      }
+    },
+    {
+      "wallet_index": 34,
+      "public_key": "5w2kEyCuTz84UoELVsc6gQrKiwLSbdNute3Uxds1RCFQ",
+      "role": "voter",
+      "funding": {
+        "sol_target_lamports": 80000000,
+        "sol_balance_lamports": 80000000,
+        "sol_transfer_tx": "3bHmFshWkwE784hrbg3oikPLAp9AamDW1rBduEvq9dfwc5idnBXzDSDBp4PsGw9N7QFTvwk8bAJTSwkCjdzeG8N2",
+        "pdao_target_raw": "100000000000",
+        "pdao_balance_raw": "100000000000",
+        "pdao_transfer_tx": "4pBKGgEctanyVcYCR7j4BQbZRkDqL5chrb3R1w3RyKb169ycpoGTDnFrs1zymZJJTvR3M8bH4PXgXusEQzFSXtEb",
+        "token_account": "HaiA4nA7ckQCfh6Djpd1rwTQvt9ppkMgMnXYFVCK1WHE",
+        "retries": 0,
+        "success": true,
+        "funded_at": "2026-04-17T12:55:26.099Z"
+      }
+    },
+    {
+      "wallet_index": 35,
+      "public_key": "DXkPoFjLmB7bkRtzVNNMg77RbXKvw6gzU77Gov17wVkj",
+      "role": "voter",
+      "funding": {
+        "sol_target_lamports": 80000000,
+        "sol_balance_lamports": 80000000,
+        "sol_transfer_tx": "3MFJ1o1DpcRLdaex5RjRetPUoMVRjrfHMihvtEG6NmBbBJf4M7BxjWdqeHGT9v66AbEUtyorBhn9s5VvDXFLYowJ",
+        "pdao_target_raw": "100000000000",
+        "pdao_balance_raw": "100000000000",
+        "pdao_transfer_tx": "oM7vjxUiktTibDwT8AP9YuZLUC2BSktqY9ABQGJvnHhqsudGjt1QSPQfh16xuh6rf8dEvKb9SuXVYx2rsu52G5S",
+        "token_account": "FgMvAG9czuNUBM4cpQupk2uBJYrDzYzry8tX27HnCZpi",
+        "retries": 0,
+        "success": true,
+        "funded_at": "2026-04-17T12:55:33.661Z"
+      }
+    },
+    {
+      "wallet_index": 36,
+      "public_key": "DCK5WFJUhhhDbNAoEwzEorPaQRbMmubtNzicnhpeFqcd",
+      "role": "voter",
+      "funding": {
+        "sol_target_lamports": 80000000,
+        "sol_balance_lamports": 80000000,
+        "sol_transfer_tx": "3Ku7BHD253zwmGC8z9v7AP9NTpDkMXTGSrTAo9Q2J57xCyk4KxDqqi8b7UrnyRYn4pME3aLCzNGRxXhsARn5KNdz",
+        "pdao_target_raw": "100000000000",
+        "pdao_balance_raw": "100000000000",
+        "pdao_transfer_tx": "5BVnqiZ4avawKi8NA4Aka1DhbkwkeMsAuAXk2WV8hYzs7zd7QDYXHaYGJ7doN6LLcFV7XrtKMzfNVcAHyToM9F6m",
+        "token_account": "6aMHM5nNEqcLQrKKkDR5rS1GyvKGV9w9QQBxZKKNwkdw",
+        "retries": 0,
+        "success": true,
+        "funded_at": "2026-04-17T12:55:46.972Z"
+      }
+    },
+    {
+      "wallet_index": 37,
+      "public_key": "66meVj2p8CbeCcEsd3bFE5gHU3bZSXkVmUFjapvZsDP3",
+      "role": "voter",
+      "funding": {
+        "sol_target_lamports": 80000000,
+        "sol_balance_lamports": 80000000,
+        "sol_transfer_tx": "4xDu8vGcU4LHuB3ao8ppej74nswZ4N7NyHei3HmBrnVoMyW2qwcTxheicYfLiF5D9reMCW2eDTb5t7WBSZSBdoKc",
+        "pdao_target_raw": "100000000000",
+        "pdao_balance_raw": "100000000000",
+        "pdao_transfer_tx": "2Dxaqprc99he68n7C1SZEeNhA1D42U3sW7jWwHQZxPZfRPc4VRGCziJGHDWHYhHzqJ2E7SmLV9xcH5Q3jYjxEedq",
+        "token_account": "5VNAKrDX8wZRmqzjJoto1qyxPJHzyvAu2L8ytAhWQiCy",
+        "retries": 0,
+        "success": true,
+        "funded_at": "2026-04-17T12:55:54.989Z"
+      }
+    },
+    {
+      "wallet_index": 38,
+      "public_key": "EcS8DtXF8AwTqfcdokzk55zbTG7YA1zC8jxLE9aUPUYo",
+      "role": "adversarial",
+      "funding": {
+        "sol_target_lamports": 80000000,
+        "sol_balance_lamports": 80000000,
+        "sol_transfer_tx": "3YboPDPTrvazRn4vhpoLgNDstVksgo9qjzq5Vap6CoAZWi8ounHX9z4fPppD8FUbRvV12MGBFAuteYhRt7GE3gv3",
+        "pdao_target_raw": "100000000000",
+        "pdao_balance_raw": "100000000000",
+        "pdao_transfer_tx": "rxK8r5aLq1TCVNt6X2rBA76FspWmJk9SZg3uwtDdZo4Bfznt1La2esP2scNkMbeZpGUnYkFPdjyznXcSgqGjLf7",
+        "token_account": "CH4PhNHLYAdgxFEajtof3BBKaT8JyYZx6M7v4dyHqZrk",
+        "retries": 0,
+        "success": true,
+        "funded_at": "2026-04-17T12:56:02.711Z"
+      }
+    },
+    {
+      "wallet_index": 39,
+      "public_key": "6EBQZd7SMCBNwZM61SE1cBa2fBTJT8JmMYbLcRDpsXeh",
+      "role": "adversarial",
+      "funding": {
+        "sol_target_lamports": 80000000,
+        "sol_balance_lamports": 80000000,
+        "sol_transfer_tx": "5QUXVDSKafLFdd2zjnYUKFnatgaM5PnPstL6uPeNNhSTNTtqQxXtjuCJFqJJ2ZnNvG4Ww8hoBBMt1PQaZQXzVVHC",
+        "pdao_target_raw": "100000000000",
+        "pdao_balance_raw": "100000000000",
+        "pdao_transfer_tx": "2iFLDb8jrp9s3kQbDiHF6he91QD7fYJyRupN5B53tMkqKCdrEmEHPj8hSn5vy7hYYvwxYrbLVVstreUNqdAn86pc",
+        "token_account": "9jxbecCY9sLVpivJDQnMBThpL3VMaGo6j3qXapdjbi8s",
+        "retries": 0,
+        "success": true,
+        "funded_at": "2026-04-17T12:56:10.408Z"
+      }
+    },
+    {
+      "wallet_index": 40,
+      "public_key": "9s7hJ7bJQHgAA2mMxsc2LF2FhDKRWKLy8nqhyouBL2AC",
+      "role": "zk-tester",
+      "funding": {
+        "sol_target_lamports": 80000000,
+        "sol_balance_lamports": 80000000,
+        "sol_transfer_tx": "281rfzsRJmtAGoBzGvNS6ewQyjgFrampVyndziuBbruXFwfhnDF6Hv9uBQSjtKa2YjJvcU9qkHu67RMJTnXwya6g",
+        "pdao_target_raw": "100000000000",
+        "pdao_balance_raw": "100000000000",
+        "pdao_transfer_tx": "3pkRQmpr58dAhmjn6xajHjLeSgaA7y269cwLZk4X742CZ6DxbsAvHq6JjwYgPcb7vbDhh1YJRGVnW1wSLBZBfNLo",
+        "token_account": "8bG7mfPwcYQBTz6tM1eCcbuzCkcUV4udrru25yssu5bh",
+        "retries": 0,
+        "success": true,
+        "funded_at": "2026-04-17T12:56:18.496Z"
+      }
+    },
+    {
+      "wallet_index": 41,
+      "public_key": "C8WiczbA62a2wn48STjygejDKB6LBQfWb4dKUS7hPzqq",
+      "role": "voter",
+      "funding": {
+        "sol_target_lamports": 80000000,
+        "sol_balance_lamports": 80000000,
+        "sol_transfer_tx": "2AZg4YZE9utzRX4Wo1j2vPf6BT5JxkUrxnQHvgFQXEYEpeFWTaTy9AQ25JLn4KJAvjKifLpfoFQonUwApSx1qfYF",
+        "pdao_target_raw": "100000000000",
+        "pdao_balance_raw": "100000000000",
+        "pdao_transfer_tx": "3STMwRGqWKKGDeUT2gEiJyjAERsjn3UoqNg9SSWn39Tsr9S6dwCJDr6NWPhD5JBp2HS83ThSRW6cjMtqoLkor9b5",
+        "token_account": "3Qb6jp2w9e7njrUD42Kju6WEYfuojHrChWkB8WqMKwVj",
+        "retries": 0,
+        "success": true,
+        "funded_at": "2026-04-17T12:56:31.853Z"
+      }
+    },
+    {
+      "wallet_index": 42,
+      "public_key": "CTjC9LtjRBxXJvwtvbzyND6dysqzSTjXmw2pHwSKibve",
+      "role": "voter",
+      "funding": {
+        "sol_target_lamports": 80000000,
+        "sol_balance_lamports": 80000000,
+        "sol_transfer_tx": "4ACJmHzNvgy8PreaFeWyhE2ButrBnpGt89VHNUKYWzqMdF8djJZBRm4VmNPfJBy4Lwro47aR3uuNdNDYDipoW7YU",
+        "pdao_target_raw": "100000000000",
+        "pdao_balance_raw": "100000000000",
+        "pdao_transfer_tx": "4g1WakqhfmhWUoXMKo9E1KPx7Z5monqshJKxux9zJcayRP6RnhM6c5USZYWXVFVJ9QX2pAQpYNc3j11ZmHVhwtLc",
+        "token_account": "Ak6oS5etLFW2zyhPgXDk4MJoWwEMhrFtUTBx9q758Lh9",
+        "retries": 0,
+        "success": true,
+        "funded_at": "2026-04-17T12:56:39.564Z"
+      }
+    },
+    {
+      "wallet_index": 43,
+      "public_key": "AAwpkzuiXZegJLASycJ5nsv78rz6opiyAYCftby7wkqL",
+      "role": "voter",
+      "funding": {
+        "sol_target_lamports": 80000000,
+        "sol_balance_lamports": 80000000,
+        "sol_transfer_tx": "3CYsgWmtuohEPj5TkF9gn1oaSiW3bzDyw8PMqj5ZiHsDogWuT3wUdccD8BPJX64PxeGWymP1cpnoCF1gDS1eaye7",
+        "pdao_target_raw": "100000000000",
+        "pdao_balance_raw": "100000000000",
+        "pdao_transfer_tx": "4rgfjN1169RkxkesS1WmDaiMSawHHEpTtEGCHyKLYMbrVridzUDDE3mFvqAnRrzWV1HKYmrmy5xCEMWmNio5r2Vi",
+        "token_account": "6zUjW4qock6aXv1ezzMSXbTqJ2WaLsC44CAKJCzny44h",
+        "retries": 0,
+        "success": true,
+        "funded_at": "2026-04-17T12:56:47.227Z"
+      }
+    },
+    {
+      "wallet_index": 44,
+      "public_key": "AuNvRmdP8rFr4STAxqobmDXGWQGzGcXU2AQRy67fcxAo",
+      "role": "voter",
+      "funding": {
+        "sol_target_lamports": 80000000,
+        "sol_balance_lamports": 80000000,
+        "sol_transfer_tx": "2FQJ7xSyUQjEHpwVtskPmpe3566bpqbsmFL2AmRYCvYtuSPfWW9UQFFfVd3wZJvktsi3EiiMJfZ68p4wceCg7Fh7",
+        "pdao_target_raw": "100000000000",
+        "pdao_balance_raw": "100000000000",
+        "pdao_transfer_tx": "w6Z2JSvEH5xNZUyt78d8umwaxBihGwdLjrSPJa4Vjk7WkyETZWwCzhWvYBPa4gdGybf3SXECL7qc8tWoLNhvzQb",
+        "token_account": "FKtosxLYUAq7V88kSq1iJbMBY8shdA7vpe56gmhzcRtM",
+        "retries": 0,
+        "success": true,
+        "funded_at": "2026-04-17T12:56:55.382Z"
+      }
+    },
+    {
+      "wallet_index": 45,
+      "public_key": "3dyvAKZrR6aMvXPo9WaEWmsxfxaSJ4PowpB63qb7qmhZ",
+      "role": "voter",
+      "funding": {
+        "sol_target_lamports": 80000000,
+        "sol_balance_lamports": 80000000,
+        "sol_transfer_tx": "2s28sJ2qoGrpzDa9QY6Qb3w3VFQ1fQtuugJp2sLW1bKzqKLYk5SyYXuWL1TRp5tWmrgKxahAzcXqpJaWQpZBEMBC",
+        "pdao_target_raw": "100000000000",
+        "pdao_balance_raw": "100000000000",
+        "pdao_transfer_tx": "4YaS9emsRFomJW9EKa1KgUa31cGWNSr4TBH5yDpdpnoSaJzRrXVd6harR2xxbP2WqEfW8UFgX6XeApqG6XCVey8k",
+        "token_account": "HRyaHUCysPUVmbP7Rufd1KukPeKgDZvUNqSruSKETb7h",
+        "retries": 0,
+        "success": true,
+        "funded_at": "2026-04-17T12:57:02.889Z"
+      }
+    },
+    {
+      "wallet_index": 46,
+      "public_key": "2sX6Sb5KbR2qiMdKXkqB8BkD3mZG6zUjbxP1hejg4ij5",
+      "role": "voter",
+      "funding": {
+        "sol_target_lamports": 80000000,
+        "sol_balance_lamports": 80000000,
+        "sol_transfer_tx": "46f7nEee1GxJFTadArwGeBgD3KmSJw7jTDaRJeqJ38eJcuHinnndHjNMEjYUyQmhzAakzEVAeM3kMGr381x1mMxA",
+        "pdao_target_raw": "100000000000",
+        "pdao_balance_raw": "100000000000",
+        "pdao_transfer_tx": "4eLq5swA2p8eSHsyzPT8PCdbCqW7Vi1LYQY4tznCFbysRBkKABWfpE7Ya8Jx9SryGd6FRqp9YuEcxbr5HxSMKw9x",
+        "token_account": "HpCitehZrWKoMuc43YF9atePskVBY1UvjuaoBtoT5hea",
+        "retries": 0,
+        "success": true,
+        "funded_at": "2026-04-17T12:57:15.783Z"
+      }
+    },
+    {
+      "wallet_index": 47,
+      "public_key": "5Hwq7RSocQijCshwutkECtboF49FCBR3kJZnjY2yUidX",
+      "role": "voter",
+      "funding": {
+        "sol_target_lamports": 80000000,
+        "sol_balance_lamports": 80000000,
+        "sol_transfer_tx": "2YVxa6d4TsB2rMqUZSDaakfjJTHq7kdVZzeQ9nZy9aQ9kHMuGnofUU7mYX78QDHikGrrJ6B8WZwT4r2dZr5k3Pd2",
+        "pdao_target_raw": "100000000000",
+        "pdao_balance_raw": "100000000000",
+        "pdao_transfer_tx": "4EhX8fAQ6yyt4fecDXMhpmW1rLaU9cHTbRumiVAc7LCtBpwmXnwqrtU6X73W9nMKFpYh6qk3yXrU9frYEfeKkd9j",
+        "token_account": "8Ppcwqzh1y5oju2czzdS1ewJPCngbNyHVeGvKNmJz2KX",
+        "retries": 0,
+        "success": true,
+        "funded_at": "2026-04-17T12:57:23.940Z"
+      }
+    },
+    {
+      "wallet_index": 48,
+      "public_key": "3LicdMe4ooeV3F5X886BLGnjK3dghk1RjKD5oGLggA9b",
+      "role": "adversarial",
+      "funding": {
+        "sol_target_lamports": 80000000,
+        "sol_balance_lamports": 80000000,
+        "sol_transfer_tx": "5tM3urjbaSZET6i7HegmoEPuJVznGq1YnzCWEP9BWEeQg2s9gnnwJ3WYLGHeM6G57NoFnk2gSUmRGbJzaLbeGNTB",
+        "pdao_target_raw": "100000000000",
+        "pdao_balance_raw": "100000000000",
+        "pdao_transfer_tx": "4sDk2MrhDujXcceJj9hJQzZeSC5T8rufytXjszAorctEeQHArFCGo86ogEfNbaQ6hRC7DgpfM5njKnn2aymTaSWo",
+        "token_account": "C2xjrGLv6mHmqVQ1ery57KvxPA9fS15jt5sj322yGGTj",
+        "retries": 0,
+        "success": true,
+        "funded_at": "2026-04-17T12:57:32.087Z"
+      }
+    },
+    {
+      "wallet_index": 49,
+      "public_key": "9R1rnCmXzEu3amAT7jXuA9TnKg23aZ23RbHPTockyXQ8",
+      "role": "adversarial",
+      "funding": {
+        "sol_target_lamports": 80000000,
+        "sol_balance_lamports": 80000000,
+        "sol_transfer_tx": "5frYFsvGBKVP7RQ4GjqcQyNZgtHoa9QYRCHnKBv4Y8Zk6pocdJYA9qnSnXXUCeXWeGBvPBuUXz7et7iijD3YKRCi",
+        "pdao_target_raw": "100000000000",
+        "pdao_balance_raw": "100000000000",
+        "pdao_transfer_tx": "5Lh3UB82Xx2suWU8eJwg85nS2gTai4ewTRCUTmfCTRX2Doz6VM8hCumytHw16vYiZoPr1FPMc49EHo2DhwzwpzEt",
+        "token_account": "PD5Any9BE4rHiTWiYX9JE3pkztBk6qbo3usZjqJGE44",
+        "retries": 0,
+        "success": true,
+        "funded_at": "2026-04-17T12:57:39.718Z"
+      }
+    },
+    {
+      "wallet_index": 50,
+      "public_key": "89tMZ52oE88nvYKpPYCG73gxK8k32jGLwUo4chMjShFZ",
+      "role": "zk-tester",
+      "funding": {
+        "sol_target_lamports": 80000000,
+        "sol_balance_lamports": 80000000,
+        "sol_transfer_tx": "2Ea738gMNKw8uqSyYRateqNAruuLMz2gHk8JrQbfw1GTa3Dt4ca9zuP2WqNGwK8bHmPY9ycQuvXmsLCF6i7gNwFF",
+        "pdao_target_raw": "100000000000",
+        "pdao_balance_raw": "100000000000",
+        "pdao_transfer_tx": "5FBmXzkQQJR87Jf1jGN5ZXq5rLTbjXcirpmHBoho8rTa288WnKsGZVRzAUdx9PmuoJzkqdjzyG6au9GxNbYw3Fm6",
+        "token_account": "Com5qG4kayMCt5tiFZKhayq42fwaUp1g9vQPSwCN5Bc3",
+        "retries": 0,
+        "success": true,
+        "funded_at": "2026-04-17T12:57:47.887Z"
+      }
+    }
+  ]
+}

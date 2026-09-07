@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" fill="none">
+  <rect width="1280" height="720" fill="#06111A"/>
+  <rect x="64" y="64" width="1152" height="592" rx="32" fill="#0B1722" stroke="#173044"/>
+  <text x="96" y="128" fill="#A9F5FF" font-family="DejaVu Sans, Arial, sans-serif" font-size="24" font-weight="700">CONFIDENTIAL PAYMENTS FLOW</text>
+  <text x="96" y="188" fill="#FFFFFF" font-family="DejaVu Sans, Arial, sans-serif" font-size="54" font-weight="700">Encrypted payroll or bonus batches</text>
+  <text x="96" y="234" fill="#DCE8F6" font-family="DejaVu Sans, Arial, sans-serif" font-size="24">Proposal-bound approval on-chain. Recipient sheet stays encrypted off-chain.</text>
+  <rect x="96" y="292" width="248" height="232" rx="24" fill="#101C28" stroke="#214055"/>
+  <rect x="384" y="292" width="248" height="232" rx="24" fill="#101C28" stroke="#214055"/>
+  <rect x="672" y="292" width="248" height="232" rx="24" fill="#101C28" stroke="#214055"/>
+  <rect x="960" y="292" width="224" height="232" rx="24" fill="#101C28" stroke="#214055"/>
+  <text x="120" y="334" fill="#00E5FF" font-family="DejaVu Sans, Arial, sans-serif" font-size="18" font-weight="700">STEP 1</text>
+  <text x="120" y="374" fill="#FFFFFF" font-family="DejaVu Sans, Arial, sans-serif" font-size="34" font-weight="700">Encrypt</text>
+  <text x="120" y="416" fill="#DCE8F6" font-family="DejaVu Sans, Arial, sans-serif" font-size="20">Prepare payroll or bonus sheet,</text>
+  <text x="120" y="446" fill="#DCE8F6" font-family="DejaVu Sans, Arial, sans-serif" font-size="20">then derive manifest hash and</text>
+  <text x="120" y="476" fill="#DCE8F6" font-family="DejaVu Sans, Arial, sans-serif" font-size="20">ciphertext hash.</text>
+  <text x="408" y="334" fill="#00E5FF" font-family="DejaVu Sans, Arial, sans-serif" font-size="18" font-weight="700">STEP 2</text>
+  <text x="408" y="374" fill="#FFFFFF" font-family="DejaVu Sans, Arial, sans-serif" font-size="34" font-weight="700">Bind</text>
+  <text x="408" y="416" fill="#DCE8F6" font-family="DejaVu Sans, Arial, sans-serif" font-size="20">Attach the encrypted batch to</text>
+  <text x="408" y="446" fill="#DCE8F6" font-family="DejaVu Sans, Arial, sans-serif" font-size="20">the proposal-bound payout plan</text>
+  <text x="408" y="476" fill="#DCE8F6" font-family="DejaVu Sans, Arial, sans-serif" font-size="20">PDA.</text>
+  <text x="696" y="334" fill="#00E5FF" font-family="DejaVu Sans, Arial, sans-serif" font-size="18" font-weight="700">STEP 3</text>
+  <text x="696" y="374" fill="#FFFFFF" font-family="DejaVu Sans, Arial, sans-serif" font-size="34" font-weight="700">Approve</text>
+  <text x="696" y="416" fill="#DCE8F6" font-family="DejaVu Sans, Arial, sans-serif" font-size="20">Commit, reveal, finalize, and</text>
+  <text x="696" y="446" fill="#DCE8F6" font-family="DejaVu Sans, Arial, sans-serif" font-size="20">wait for timelock with the same</text>
+  <text x="696" y="476" fill="#DCE8F6" font-family="DejaVu Sans, Arial, sans-serif" font-size="20">governance controls.</text>
+  <text x="984" y="334" fill="#FFE28A" font-family="DejaVu Sans, Arial, sans-serif" font-size="18" font-weight="700">STEP 4</text>
+  <text x="984" y="374" fill="#FFFFFF" font-family="DejaVu Sans, Arial, sans-serif" font-size="34" font-weight="700">Settle</text>
+  <text x="984" y="416" fill="#DCE8F6" font-family="DejaVu Sans, Arial, sans-serif" font-size="20">Treasury releases the aggregate</text>
+  <text x="984" y="446" fill="#DCE8F6" font-family="DejaVu Sans, Arial, sans-serif" font-size="20">batch to the settlement wallet.</text>
+  <path d="M344 408h40" stroke="#00E5FF" stroke-width="4" stroke-linecap="round"/>
+  <path d="M632 408h40" stroke="#00E5FF" stroke-width="4" stroke-linecap="round"/>
+  <path d="M920 408h40" stroke="#FFE28A" stroke-width="4" stroke-linecap="round"/>
+  <path d="M374 392l18 16-18 16" stroke="#00E5FF" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M662 392l18 16-18 16" stroke="#00E5FF" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M950 392l18 16-18 16" stroke="#FFE28A" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="96" y="606" fill="#A9F5FF" font-family="DejaVu Sans, Arial, sans-serif" font-size="20" font-weight="700">Public on-chain</text>
+  <text x="250" y="606" fill="#DCE8F6" font-family="DejaVu Sans, Arial, sans-serif" font-size="20">aggregate amount · recipient count · settlement wallet · immutable hashes</text>
+  <text x="96" y="640" fill="#A9F5FF" font-family="DejaVu Sans, Arial, sans-serif" font-size="20" font-weight="700">Private off-chain</text>
+  <text x="250" y="640" fill="#DCE8F6" font-family="DejaVu Sans, Arial, sans-serif" font-size="20">employee or contributor-level manifest remains encrypted</text>
+</svg>

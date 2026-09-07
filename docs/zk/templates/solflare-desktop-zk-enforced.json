@@ -1,0 +1,24 @@
+{
+  "id": "solflare-desktop-zk-enforced",
+  "walletLabel": "Solflare",
+  "walletVersion": "FILL_ME",
+  "environmentType": "desktop-browser",
+  "os": "FILL_ME",
+  "browserOrClient": "FILL_ME",
+  "network": "devnet",
+  "proposalPublicKey": "FILL_ME",
+  "policyPda": "FILL_ME",
+  "receiptModes": {
+    "vote": "zk_enforced",
+    "delegation": "zk_enforced",
+    "tally": "zk_enforced"
+  },
+  "diagnosticsSnapshotCaptured": true,
+  "modeActivationResult": "success",
+  "finalizeResult": "success",
+  "enableModeTxSignature": "FILL_ME",
+  "finalizeTxSignature": "FILL_ME",
+  "errorMessage": null,
+  "evidenceRefs": [],
+  "capturedAt": "2026-04-06T00:00:00.000Z"
+}

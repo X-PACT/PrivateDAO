@@ -1,0 +1,132 @@
+# Launch And Growth Plan
+
+This document describes the most credible growth path for PrivateDAO as a real product, using only capabilities that already exist in the repository or naturally extend from them.
+
+## Product Thesis
+
+PrivateDAO grows when communities need treasury coordination without public tally pressure.
+
+The core adoption wedge is:
+
+- token-based participation
+- private voting flow
+- clear treasury safety
+- mobile-accessible governance
+
+## Phase 1: Early Community Launch
+
+Target users:
+
+- small creator collectives
+- gaming guild operators
+- community treasury managers
+- clubs and member-funded groups
+
+Launch surface:
+
+- web frontend on GitHub Pages
+- Android-native wallet-connected path
+- canonical governance token surface via `PDAO`
+- Devnet proof and diagnostics for reviewer trust
+
+Goal:
+
+- make the first governance loop feel simple enough to use in a real community setting
+
+## Phase 2: Community Activation
+
+Initial activation loops:
+
+- invite members who already hold the community token
+- launch a proposal that clearly affects community budget or work allocation
+- use token-gated proposal creation to reduce spam
+- use wallet-native participation instead of off-chain polling
+- emit product events for real actions: DAO created, proposal created, billing signed, and learning completed
+
+Why this is meaningful:
+
+- the product becomes useful when members see that votes actually control treasury outcomes
+- private voting becomes a practical quality improvement, not just a technical feature
+
+## Phase 3: Retention
+
+Retention comes from recurring governance needs:
+
+- recurring budget approvals
+- campaign and event funding
+- contributor grants
+- community work reimbursements
+- operator or council approvals
+
+The retention thesis is not “speculation first.”
+
+It is:
+
+- communities return because the product solves repeated decision friction
+- growth incentives attach to completed product actions instead of passive page visits
+
+## Torque Growth Loop
+
+PrivateDAO now has a Torque-facing growth loop surface:
+
+- route: `https://privatedao.org/services/torque-growth-loop/`
+- packet: `docs/torque-growth-loop.md`
+- events: `dao_created`, `proposal_created`, `billing_signed`, `learn_completed`
+- reward intent: onboarding rebates, builder activation points, operator rebates, and education completion raffles
+
+This keeps growth measurable and tied to product behavior.
+
+## Zerion Agent Policy
+
+PrivateDAO also has a Zerion-facing policy surface:
+
+- route: `https://privatedao.org/services/zerion-agent-policy/`
+- packet: `docs/zerion-autonomous-agent-policy.md`
+- policy controls: Solana chain lock, spend caps, expiry windows, allowed actions, blocked actions, and approve-before-execute treasury control
+
+This lets PrivateDAO pursue autonomous execution without presenting an unsafe, unrestricted agent.
+
+## Phase 4: Token Utility Growth
+
+`PDAO` can grow naturally through product use as:
+
+- the governance-access token
+- the proposal eligibility surface
+- the voting participation layer
+- the community identity anchor
+
+This keeps token utility tied to product behavior rather than detached marketing.
+
+## Phase 5: Public Credibility
+
+Adoption improves when communities can verify that the product is not just a prototype.
+
+PrivateDAO already supports that through:
+
+- preserved Devnet proof plus current Testnet proof
+- dedicated additive hardening proof
+- security review surface
+- wallet diagnostics
+- generated reviewer artifacts
+- runtime and resilience evidence
+
+These assets reduce trust friction for early adopters.
+
+The highest-signal proof set for early launch conversations is:
+
+- `docs/live-proof.md`
+- `docs/test-wallet-live-proof-v3.generated.md`
+- `docs/governance-hardening-v3.md`
+- `docs/settlement-hardening-v3.md`
+
+This lets PrivateDAO present both the canonical product loop and the stricter additive hardening path without overstating mainnet readiness.
+
+## Honest External Dependencies
+
+Some launch milestones do not come from repository code alone:
+
+- a public DeAura launch URL in the final distribution surface
+- real secondary-market trading volume
+- community traction metrics
+
+These should be treated as operational launch milestones, not fabricated repository claims.

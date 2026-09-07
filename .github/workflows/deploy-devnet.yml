@@ -1,0 +1,81 @@
+name: Deploy to Devnet
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      ANCHOR_WALLET: /home/runner/.config/solana/id.json
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '22.21.1'
+          cache: 'yarn'
+
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Install Solana CLI
+        run: |
+          sh -c "$(curl -sSfL https://release.anza.xyz/v2.1.14/install)"
+          echo "$HOME/.local/share/solana/install/active_release/bin" >> "$GITHUB_PATH"
+
+      - name: Install Anchor CLI
+        run: |
+          cargo install --git https://github.com/coral-xyz/anchor avm --locked --force
+          for attempt in 1 2 3; do
+            if avm install 1.0.1; then
+              avm use 1.0.1
+              anchor --version
+              exit 0
+            fi
+            echo "avm install 1.0.1 failed on attempt ${attempt}; retrying after backoff" >&2
+            sleep $((attempt * 10))
+          done
+          echo "Failed to install Anchor CLI 1.0.1 after retries" >&2
+          exit 1
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Restore deployer wallet from secret
+        env:
+          SOLANA_PRIVATE_KEY: ${{ secrets.SOLANA_PRIVATE_KEY }}
+        run: |
+          if [ -z "$SOLANA_PRIVATE_KEY" ]; then
+            echo "SOLANA_PRIVATE_KEY secret is missing" >&2
+            exit 1
+          fi
+          mkdir -p ~/.config/solana
+          printf '%s' "$SOLANA_PRIVATE_KEY" > "$ANCHOR_WALLET"
+          chmod 600 "$ANCHOR_WALLET"
+          solana-keygen pubkey "$ANCHOR_WALLET"
+
+      - name: Configure devnet RPC
+        env:
+          HELIUS_API_KEY: ${{ secrets.HELIUS_API_KEY }}
+        run: |
+          if [ -n "$HELIUS_API_KEY" ]; then
+            solana config set --keypair "$ANCHOR_WALLET" --url "https://devnet.helius-rpc.com/?api-key=${HELIUS_API_KEY}"
+          else
+            solana config set --keypair "$ANCHOR_WALLET" --url "https://api.devnet.solana.com"
+          fi
+          solana config get
+          solana balance "$ANCHOR_WALLET" || true
+
+      - name: Build and deploy
+        run: |
+          anchor build
+          anchor deploy --provider.cluster devnet
+
+      - name: Show deployed program status
+        run: |
+          PROGRAM_ID=$(awk -F '"' '/^private_dao = /{print $2; exit}' Anchor.toml)
+          echo "Program ID from Anchor.toml: $PROGRAM_ID"
+          solana program show "$PROGRAM_ID" --url "https://api.devnet.solana.com" || true

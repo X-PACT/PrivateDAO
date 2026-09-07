@@ -1,0 +1,101 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+  <title id="title">PrivateDAO sovereign infrastructure map</title>
+  <desc id="desc">PrivateDAO system map showing Solana governance, QVAC local intelligence, private settlement, proof, read node, Supabase receipts, and cross-chain roadmap.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#020617"/>
+      <stop offset="0.46" stop-color="#061826"/>
+      <stop offset="1" stop-color="#150a2b"/>
+    </linearGradient>
+    <linearGradient id="solana" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#14f195"/>
+      <stop offset="0.5" stop-color="#00c2ff"/>
+      <stop offset="1" stop-color="#9945ff"/>
+    </linearGradient>
+    <filter id="glow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="10" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <style>
+      .label{font-family:Inter,Arial,sans-serif;fill:#f8fafc}
+      .muted{font-family:Inter,Arial,sans-serif;fill:#a8b3c7}
+      .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;fill:#c4f1ff}
+      .card{fill:rgba(15,23,42,.72);stroke:rgba(148,163,184,.28);stroke-width:1.4}
+      .cyan{stroke:#22d3ee}
+      .green{stroke:#14f195}
+      .violet{stroke:#a855f7}
+      .amber{stroke:#f59e0b}
+    </style>
+  </defs>
+  <rect width="1280" height="720" rx="36" fill="url(#bg)"/>
+  <circle cx="112" cy="92" r="160" fill="#14f195" opacity=".10"/>
+  <circle cx="1130" cy="92" r="190" fill="#9945ff" opacity=".12"/>
+  <circle cx="1010" cy="620" r="210" fill="#00c2ff" opacity=".08"/>
+  <g transform="translate(64 54)">
+    <text class="label" x="0" y="0" font-size="24" font-weight="800">PrivateD</text>
+    <text x="92" y="1" font-family="Inter,Arial,sans-serif" font-size="28" font-weight="900" fill="url(#solana)">△</text>
+    <text class="label" x="118" y="0" font-size="24" font-weight="800">O</text>
+    <text class="muted" x="0" y="36" font-size="14" letter-spacing="2">SOVEREIGN PRIVACY INFRASTRUCTURE FOR SOLANA GOVERNANCE</text>
+  </g>
+  <g transform="translate(64 126)">
+    <text class="label" x="0" y="0" font-size="48" font-weight="800">Private. Verified. Informed.</text>
+    <text class="muted" x="0" y="36" font-size="18">Wallet-first encrypted governance, private settlement, local QVAC intelligence, proof continuity, and Mainnet review path.</text>
+  </g>
+  <g transform="translate(452 216)" filter="url(#glow)">
+    <circle cx="190" cy="126" r="108" fill="rgba(20,241,149,.10)" stroke="url(#solana)" stroke-width="3"/>
+    <path d="M143 118h94l-47-78z" fill="none" stroke="url(#solana)" stroke-width="8" stroke-linejoin="round"/>
+    <text class="label" x="190" y="137" font-size="28" font-weight="800" text-anchor="middle">Solana</text>
+    <text class="muted" x="190" y="164" font-size="13" text-anchor="middle">guardian chain · proof home</text>
+  </g>
+  <g transform="translate(64 242)">
+    <rect class="card green" x="0" y="0" width="286" height="104" rx="20"/>
+    <text class="label" x="22" y="34" font-size="18" font-weight="700">Anchor 1.0.1 Governance</text>
+    <text class="muted" x="22" y="62" font-size="13">DAO creation · proposals · commit/reveal</text>
+    <text class="mono" x="22" y="84" font-size="11">EP9xE8MJ...Jzsecuva</text>
+  </g>
+  <g transform="translate(64 382)">
+    <rect class="card cyan" x="0" y="0" width="286" height="104" rx="20"/>
+    <text class="label" x="22" y="34" font-size="18" font-weight="700">QVAC Local Intelligence</text>
+    <text class="muted" x="22" y="62" font-size="13">on-device brief · translate · OCR · speech</text>
+    <text class="mono" x="22" y="84" font-size="11">@qvac/sdk 0.10.0 · fabric-llm</text>
+  </g>
+  <g transform="translate(64 522)">
+    <rect class="card violet" x="0" y="0" width="286" height="104" rx="20"/>
+    <text class="label" x="22" y="34" font-size="18" font-weight="700">Private Settlement Rails</text>
+    <text class="muted" x="22" y="62" font-size="13">Cloak · Umbra · payroll · treasury</text>
+    <text class="mono" x="22" y="84" font-size="11">intent → receipt → proof</text>
+  </g>
+  <g transform="translate(930 242)">
+    <rect class="card amber" x="0" y="0" width="286" height="104" rx="20"/>
+    <text class="label" x="22" y="34" font-size="18" font-weight="700">Runtime Proof</text>
+    <text class="muted" x="22" y="62" font-size="13">read-node · AWS · API health · receipts</text>
+    <text class="mono" x="22" y="84" font-size="11">api.privatedao.org</text>
+  </g>
+  <g transform="translate(930 382)">
+    <rect class="card cyan" x="0" y="0" width="286" height="104" rx="20"/>
+    <text class="label" x="22" y="34" font-size="18" font-weight="700">Evidence Timeline</text>
+    <text class="muted" x="22" y="62" font-size="13">Supabase · visitors · operation receipts</text>
+    <text class="mono" x="22" y="84" font-size="11">freshness · chain watcher</text>
+  </g>
+  <g transform="translate(930 522)">
+    <rect class="card green" x="0" y="0" width="286" height="104" rx="20"/>
+    <text class="label" x="22" y="34" font-size="18" font-weight="700">Phase 2 → Phase 3</text>
+    <text class="muted" x="22" y="62" font-size="13">encrypted customer lanes · Mainnet review</text>
+    <text class="mono" x="22" y="84" font-size="11">cross-chain · Solana anchored</text>
+  </g>
+  <g stroke="url(#solana)" stroke-width="2.4" opacity=".72" fill="none">
+    <path d="M350 294 C420 280 455 284 518 314"/>
+    <path d="M350 434 C420 410 465 390 538 354"/>
+    <path d="M350 574 C432 520 480 462 552 392"/>
+    <path d="M832 314 C874 292 894 288 930 294"/>
+    <path d="M832 354 C876 382 894 408 930 434"/>
+    <path d="M804 410 C872 492 892 542 930 574"/>
+  </g>
+  <g transform="translate(450 612)">
+    <rect x="0" y="0" width="380" height="48" rx="24" fill="rgba(255,255,255,.06)" stroke="rgba(255,255,255,.16)"/>
+    <text class="muted" x="190" y="30" text-anchor="middle" font-size="14">Founder Whiteprint · open-source core · official use coordinated</text>
+  </g>
+</svg>

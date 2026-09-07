@@ -1,0 +1,45 @@
+=== RUN 1 2026-08-10T14:38:25+03:00 ===
+[auction-e2e] base connection http=https://api.devnet.solana.com ws=wss://api.devnet.solana.com
+[auction-e2e] er connection http=not-used ws=not-used
+[auction-e2e] tee origin http=https://devnet-tee.magicblock.app ws=wss://devnet-tee.magicblock.app
+[auction-e2e] initialize
+[auction-e2e] authorize bidders
+[auction-e2e] activate
+[auction-e2e] delegate session
+[auction-e2e] authenticate creator wallet
+[auction-e2e] init_permission/set_private/close/commit connection http=https://devnet-tee.magicblock.app?token=<redacted> ws=wss://devnet-tee.magicblock.app?token=<redacted>
+[auction-e2e] creator wallet authenticated
+[auction-e2e] create private permission
+[auction-e2e] init instruction 420e99fabb24b3ec tx 420e99fabb24b3ec
+[auction-e2e] permission state {"attempt":1,"elapsedMs":1030,"teePermission":{"owner":"ACLseoPoyC3cBqoUtkbjZ4aDrkurZW86v19pXz2XQnp1","dataLength":68},"teeSession":{"owner":"4Z7AeFRZHBCok68hhbUgVLC3uFaEP2aDWozsYVksPuQd","dataLength":2880},"basePermission":null,"baseSession":{"owner":"DELeGGvXpWV2fqJUhqcF5ZSYMS4JTLjteaAMARRSaeSh","dataLength":2880}}
+[auction-e2e] authenticate bidder wallets
+[auction-e2e] submit_private_bid bidder_a connection http=https://devnet-tee.magicblock.app?token=<redacted> ws=wss://devnet-tee.magicblock.app?token=<redacted>
+[auction-e2e] submit_private_bid bidder_b connection http=https://devnet-tee.magicblock.app?token=<redacted> ws=wss://devnet-tee.magicblock.app?token=<redacted>
+TEE transaction failed: 4SjEhG6LXnykwe2h6swmQLWD1LYFB7LspgSTYpB7QchhYybgMTX2cosNBdqZqgHd2gutGpCdXvneWF68t66pTwCJ; status="InvalidWritableAccount"; logs=Program 4Z7AeFRZHBCok68hhbUgVLC3uFaEP2aDWozsYVksPuQd invoke [1] | Program log: Instruction: SubmitPrivateBid | Program 4Z7AeFRZHBCok68hhbUgVLC3uFaEP2aDWozsYVksPuQd consumed 8026 of 200000 compute units | Program 4Z7AeFRZHBCok68hhbUgVLC3uFaEP2aDWozsYVksPuQd success | Program log: Account 2: 8sEmc3yms3G4BYHUjDwFXjHogtuk82Kxny39YAh9hZeV was illegally used as writable | Program Magic11111111111111111111111111111111111111 failed: InvalidWritableAccount
+=== RUN 1 RC:1 2026-08-10T14:39:26+03:00 ===
+=== RUN 2 2026-08-10T14:39:26+03:00 ===
+[auction-e2e] base connection http=https://api.devnet.solana.com ws=wss://api.devnet.solana.com
+[auction-e2e] er connection http=not-used ws=not-used
+[auction-e2e] tee origin http=https://devnet-tee.magicblock.app ws=wss://devnet-tee.magicblock.app
+[auction-e2e] initialize
+[auction-e2e] authorize bidders
+[auction-e2e] activate
+[auction-e2e] delegate session
+[auction-e2e] authenticate creator wallet
+[auction-e2e] init_permission/set_private/close/commit connection http=https://devnet-tee.magicblock.app?token=<redacted> ws=wss://devnet-tee.magicblock.app?token=<redacted>
+[auction-e2e] creator wallet authenticated
+[auction-e2e] create private permission
+[auction-e2e] init instruction 420e99fabb24b3ec tx 420e99fabb24b3ec
+[auction-e2e] permission state {"attempt":1,"elapsedMs":1703,"teePermission":{"owner":"ACLseoPoyC3cBqoUtkbjZ4aDrkurZW86v19pXz2XQnp1","dataLength":68},"teeSession":{"owner":"4Z7AeFRZHBCok68hhbUgVLC3uFaEP2aDWozsYVksPuQd","dataLength":2880},"basePermission":null,"baseSession":{"owner":"DELeGGvXpWV2fqJUhqcF5ZSYMS4JTLjteaAMARRSaeSh","dataLength":2880}}
+[auction-e2e] authenticate bidder wallets
+[auction-e2e] submit_private_bid bidder_a connection http=https://devnet-tee.magicblock.app?token=<redacted> ws=wss://devnet-tee.magicblock.app?token=<redacted>
+[auction-e2e] submit_private_bid bidder_b connection http=https://devnet-tee.magicblock.app?token=<redacted> ws=wss://devnet-tee.magicblock.app?token=<redacted>
+TEE transaction failed: 383Cy4CrXnB98iCxWmccSRior12o7NmWNUnWJLMU7cKuLPhmJYwgfKVRTPELdheGf29wkAbVDTmxJcNJxVSdiFQB; status="InvalidWritableAccount"; logs=Program 4Z7AeFRZHBCok68hhbUgVLC3uFaEP2aDWozsYVksPuQd invoke [1] | Program log: Instruction: SubmitPrivateBid | Program 4Z7AeFRZHBCok68hhbUgVLC3uFaEP2aDWozsYVksPuQd consumed 8026 of 200000 compute units | Program 4Z7AeFRZHBCok68hhbUgVLC3uFaEP2aDWozsYVksPuQd success | Program log: Account 2: EggiNSWUAUKAD3oDDEfCooCAj3UB1HQER4HSzF73pAof was illegally used as writable | Program Magic11111111111111111111111111111111111111 failed: InvalidWritableAccount
+=== RUN 2 RC:1 2026-08-10T14:40:18+03:00 ===
+=== RUN 3 2026-08-10T14:40:18+03:00 ===
+[auction-e2e] base connection http=https://api.devnet.solana.com ws=wss://api.devnet.solana.com
+[auction-e2e] er connection http=not-used ws=not-used
+[auction-e2e] tee origin http=https://devnet-tee.magicblock.app ws=wss://devnet-tee.magicblock.app
+[auction-e2e] initialize
+[auction-e2e] authorize bidders
+=== RUN 3 RC:124 2026-08-10T14:45:18+03:00 ===

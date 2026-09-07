@@ -1,0 +1,75 @@
+import type { Metadata } from "next";
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
+
+import { GovernWorkbenchClient } from "@/components/govern/govern-workbench-client";
+import { GuidedOperationRail } from "@/components/guided-operation-rail";
+import { OperationsShell } from "@/components/operations-shell";
+import { buttonVariants } from "@/components/ui/button";
+import { buildRouteMetadata } from "@/lib/route-metadata";
+import { cn } from "@/lib/utils";
+
+export const metadata: Metadata = buildRouteMetadata({
+  title: "Private Governance",
+  description:
+    "Private rooms, private voting, committee decisions, DAO coordination, and verifiable governance outcomes for organizations.",
+  path: "/govern",
+  keywords: ["private governance", "private rooms", "committee voting", "DAO coordination", "verifiable outcomes"],
+});
+
+export default function GovernPage() {
+  return (
+    <OperationsShell
+      eyebrow="Govern"
+      title="Private organizational decisions with verifiable outcomes."
+      description="Use PrivateDAO for private rooms, committee decisions, DAO votes, grant committee voting, internal board decisions, and community governance. Sensitive intent stays private while the outcome and proof become verifiable."
+      navigationMode="focused"
+      badges={[
+        { label: "Private rooms", variant: "cyan" },
+        { label: "Private voting", variant: "success" },
+        { label: "Verifiable results", variant: "violet" },
+      ]}
+    >
+      <section className="rounded-[28px] border border-cyan-300/18 bg-cyan-300/[0.06] p-5 sm:p-6">
+        <h2 className="text-2xl font-semibold text-white">Start with a private room.</h2>
+        <p className="mt-3 max-w-3xl text-sm leading-7 text-white/64">
+          Create one controlled space for a committee, DAO, foundation, community, or internal team to decide privately
+          and reveal the outcome when the process is ready.
+        </p>
+        <Link href="/rooms/new" className={cn(buttonVariants({ size: "lg" }), "mt-5")}>
+          Create Private Room
+          <ArrowRight className="h-4 w-4" />
+        </Link>
+      </section>
+      <section className="grid gap-4 lg:grid-cols-3">
+        {[
+          ["Private rooms", "Invite members, keep discussion and vote intent private, then reveal the outcome when the policy allows.", "/rooms/new"],
+          ["Private vote", "Experience the simple governance path: proposal, private vote, reveal, verify, and execute.", "/try"],
+          ["Governance pilot", "Map a committee, foundation, DAO, or community decision workflow into a repeatable private process.", "/pilots"],
+        ].map(([title, body, href]) => (
+          <article key={title} className="rounded-[24px] border border-cyan-300/16 bg-cyan-300/[0.055] p-5">
+            <h2 className="text-lg font-semibold text-white">{title}</h2>
+            <p className="mt-3 min-h-20 text-sm leading-7 text-white/64">{body}</p>
+            <Link href={href} className="mt-4 inline-flex text-sm font-semibold text-cyan-100 hover:text-white">Learn more</Link>
+          </article>
+        ))}
+      </section>
+      <GovernWorkbenchClient />
+      <GuidedOperationRail current="review" reviewHref="/intelligence" verifyHref="/proof" />
+      <div className="rounded-[28px] border border-emerald-300/16 bg-emerald-300/[0.08] p-5">
+        <div className="text-[11px] uppercase tracking-[0.28em] text-emerald-100/78">Need test funds?</div>
+        <div className="mt-2 max-w-3xl text-sm leading-7 text-white/70">
+          For the interactive demo, use a funded demo wallet before creating a room, voting, or executing a proposal.
+        </div>
+        <div className="mt-4 flex flex-wrap gap-3">
+          <a className={cn(buttonVariants({ size: "sm" }))} href="https://faucet.solana.com/" rel="noreferrer" target="_blank">
+            Prepare Demo Wallet
+          </a>
+          <Link className={cn(buttonVariants({ size: "sm", variant: "outline" }))} href="/learn">
+            Learn the flow
+          </Link>
+        </div>
+      </div>
+    </OperationsShell>
+  );
+}

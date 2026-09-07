@@ -1,0 +1,20 @@
+{
+  "policyId": "20260619",
+  "policyCommitment": "4227425116685600148308600398751201516642343030171967771848802133386595410664",
+  "inputCommitment": "4251015854769619970066732661855342825599621020041277924743199448358671370219",
+  "satisfiedClaim": "1",
+  "organizationKey": "700000000000000111",
+  "subjectKey": "800000000000000222",
+  "membershipVerified": "1",
+  "record0": "8800",
+  "record1": "9400",
+  "record2": "9200",
+  "liabilitiesUsd": "2400",
+  "riskScore": "84",
+  "minRecordCount": "3",
+  "minAverageAmountUsd": "7500",
+  "maxLiabilityBps": "3500",
+  "minRiskScore": "72",
+  "policySalt": "135791357913579",
+  "inputSalt": "246802468024680"
+}

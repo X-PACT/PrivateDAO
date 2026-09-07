@@ -1,0 +1,119 @@
+# Privacy Execution Matrix — 2026-05-26
+
+PrivateDAO now exposes a single backend-readable matrix for every privacy and intelligence rail:
+
+`https://api.privatedao.org/api/v1/privacy-execution-matrix`
+
+Provider health for GoldRush, Zerion, Torque, Jupiter, and QVAC is exposed separately:
+
+`https://api.privatedao.org/api/v1/provider-integrations/status`
+
+Engineering proof is now exposed in two human-readable and machine-readable surfaces:
+
+- Engineering proof ledger: `https://privatedao.org/documents/engineering-proof-ledger-2026-06-11/`
+- Engineering proof ledger JSON: `https://privatedao.org/engineering-proof-ledger.json`
+
+This endpoint exists so the product, reviewers, and operators can see how sensitive services move through:
+
+`Review -> Sign -> Verify`
+
+without exposing private payroll rows, private balances, strategy text, provider API keys, RPC tokens, PEM contents, wallet secret keys, or private manifests.
+
+## Public Testnet Anchors
+
+- PrivateDAO program: `EP9xE8MJZ6FfyEwLqns6HDdUZBknEa7WGYs1Jzsecuva`
+- ZK verifier program: `5H7Afyqdh5yPekkZJ5UM2j3HNB2bRvU8aVv8XoqeAW1j`
+- REFHE configure: `3fygnmHzFpRQEbHq9q6u3djBnkTEcYz9y1TSwxDmbnuemshrMwLmy9CqpjifjRb7SmW3DbmXrkyq35cnjU7mMSPi`
+- REFHE settle: `5TmS2AcpAmifcoG97U63Unzy7wt7B2NfyhBRs8Z6C4r1eqcWthEqf3GLcZXQ33sVYHf9YwfvBNhZD8ZZdt4HRwEY`
+- MagicBlock configure: `4UiUumtuGeDciojDA26PkQby7RFiTNb12UG4ACcvGMGfQj24PUPxK5Apeno7EY8mbCvq8nR6h6nfxDcBpjPvGvPj`
+- MagicBlock settle: `22XW8XVhWwQtChNQK2aEqXv5BVBbckxUmu4NsisoZQW21KA5ii87gVNUTcNoZ9e1vYKnHmm62qP1girpzVXWN1WY`
+- Evidence-gated payout execution: `2a8sHWgiVCZkstybMff2M9R6DVU4Y96Rfsg8mqYs7K3xcYSEG1zMcq2iSTNwLD6FgfXvxxxWpwEP9Tbyin47RXvE`
+
+## Service Coverage
+
+| Service | Privacy / intelligence rail | Execution proof class | Visitor repeatable | Backend proof |
+| --- | --- | --- | --- | --- |
+| Private governance | commit-reveal, ZK verifier companion, nullifier-ready primitive | `wallet-signed-onchain` | yes | `/api/v1/runtime`, `/api/v1/cryptographic-readiness` |
+| Confidential payroll | REFHE envelope, encrypted manifest hash, selective disclosure receipt | `onchain-signature` | yes | `/api/v1/refhe/payroll/proof` |
+| Private payments | MagicBlock private corridor and receipt proof | `onchain-signature` | yes | `/api/v1/magicblock/onchain-proof?refresh=1` |
+| Umbra payout | recipient-private claim intent and relayer health | `testnet-intent-receipt` | yes | `/api/v1/umbra/relayer/info`, `/api/v1/umbra/relayer/health`, `/api/v1/private-settlement/intent` |
+| Ika custody | Solana final approval for Ika dWallet / 2PC-MPC route plus custody preparation | `onchain-signature` | yes | `/api/v1/ika/solana-prealpha/final-approval`, `/api/v1/ika/solana-prealpha/readiness`, `/api/v1/ika/solana-prealpha/approval/prepare`, `/api/v1/ika/custody/prepare` |
+| Intelligence | GoldRush, Zerion, QVAC, QuickNode Stream telemetry | `provider-plus-rpc-receipt` | yes | `/api/v1/provider-integrations/status`, `/api/v1/goldrush/query`, `/api/v1/zerion/portfolio`, `/api/v1/qvac/runtime-proof`, `/api/v1/quicknode/stream/stats` |
+| Treasury / growth | Jupiter order preview, Torque custom event relay, execution event stats | `wallet-reviewed-route-plus-ingestion-receipt` | yes | `/api/v1/provider-integrations/status`, `/api/v1/jupiter/order`, `/api/v1/torque/custom-event`, `/api/v1/execution-events/stats` |
+
+## Specialist Review Routing
+
+Each technology can now be reviewed by the engineer responsible for that domain without forcing them through unrelated product pages.
+
+| Specialist | Services | Start route | Report | Proof endpoints |
+| --- | --- | --- | --- | --- |
+| Ika / 2PC-MPC engineer | Ika custody, Ika final approval, browser encrypted manifest | `/services/encrypt-ika-operations/` | `/documents/privacy-encryption-engineering-report-2026-06-11/` | `/api/v1/ika/solana-prealpha/final-approval`, `/api/v1/ika/solana-prealpha/readiness`, `/api/v1/ika/custody/prepare` |
+| REFHE engineer | Confidential payroll, REFHE payroll computation | `/services/refhe-payroll-proof/` | `/documents/privacy-encryption-engineering-report-2026-06-11/` | `/api/v1/refhe/payroll/proof`, `/api/v1/cryptographic-readiness` |
+| ZK / commit-reveal engineer | Private governance, ZK commit-reveal governance | `/try/` | `/documents/privacy-encryption-engineering-report-2026-06-11/` | `/api/v1/privacy-execution-claims/prepare?claim=zk-commit-reveal-governance`, `/api/v1/cryptographic-readiness` |
+| Governance / private-room engineer | Public-private-until-reveal voting, private rooms, reveal policy | `/rooms/` | `/documents/privacy-encryption-engineering-report-2026-06-11/` | `/api/v1/privacy-execution-matrix`, `/api/v1/privacy-execution-claims` |
+| MagicBlock engineer | Private payment corridor | `/documents/magicblock-engineering-report-2026-06-11/` | `/documents/magicblock-engineering-report-2026-06-11/` | `/api/v1/magicblock/onchain-proof`, `/api/v1/magicblock/health` |
+| Private settlement / payout engineer | Umbra-compatible payout, Cloak-style settlement, encrypted payout claims | `/services/umbra-confidential-payout/` | `/documents/privacy-encryption-engineering-report-2026-06-11/` | `/api/v1/private-settlement/intent`, `/api/v1/privacy-execution-claims` |
+| QVAC / intelligence engineer | Intelligence and risk | `/intelligence/` | `/documents/intelligence-provider-engineering-report-2026-06-11/` | `/api/v1/qvac/runtime-proof`, `/api/v1/provider-integrations/status`, `/api/v1/goldrush/query`, `/api/v1/zerion/portfolio` |
+| Treasury / stablecoin / oracle engineer | Treasury routing, stablecoin context, price context, payroll execution | `/treasury/` | `/documents/treasury-asset-oracle-engineering-report-2026-06-11/` | `/api/v1/provider-integrations/status`, `/api/v1/jupiter/order` |
+| Infrastructure / RPC engineer | QuickNode stream, AWS hosted API, Supabase-backed receipts | `/api-status/` | `/documents/infrastructure-telemetry-engineering-report-2026-06-11/` | `/api/v1/quicknode/stream/stats`, `/api/v1/provider-integrations/status`, `/healthz` |
+
+Every service row in the live API now carries `executionProofClass`, `nativeProofClass`, `visitorRepeatable`, `visitorClaimRepeatable`, `claimPrepareUrl`, `claimMemoTemplate`, `blockchainVerificationUrl`, and `currentOnchainStatus`. That is the enforcement layer: on-chain signature rails stay visibly on-chain, while intent/readiness rails stay visitor-repeatable but cannot be mislabeled as final chain settlement before the missing signature exists.
+
+## Visitor-Repeatable Claim Layer
+
+`/services` and `/judge` now expose an on-chain claim console. The console is intentionally simple and repeatable:
+
+1. The visitor connects a Solana Testnet wallet.
+2. The visitor selects any privacy or encryption rail.
+3. The browser creates a fresh AES-GCM encrypted claim packet locally.
+4. The browser hashes the ciphertext and builds a Memo Program transaction containing `PDAO_ENCRYPTED_CLAIM_V1`, the selected rail, `visitor-wallet-memo-attestation`, and the digest prefix. The native proof class remains visible separately so Umbra, Ika, REFHE, MagicBlock, Jupiter, and intelligence rails do not get mislabeled.
+5. The visitor signs from their own wallet.
+6. The page returns a new Testnet signature, Explorer link, and local encrypted packet for inspection.
+7. The visitor can verify the encrypted receipt locally, copy it, or download it as a selective-disclosure receipt without uploading private claim context.
+8. The visitor can export a public attestation that contains the digest, memo, memo program, signature, and Explorer URL without the AES key, then keep the private disclosure receipt separate for allowed reviewers only.
+
+The read-node also exposes `/api/v1/privacy-execution-claims/prepare?claim=<rail>` for every rail, and each claim row exposes `claimPrepareUrl` plus `claimMemoTemplate`, so any visitor, reviewer, or integration can inspect the exact Solana Testnet Memo schema before signing. The endpoint returns the Memo Program id, the `PDAO_ENCRYPTED_CLAIM_V1` payload format, signing model, Explorer URL template, and privacy boundary without requiring private keys or provider credentials.
+
+This gives every rail a live visitor-generated encrypted on-chain claim path today: every visitor can create a new transaction from their own Testnet wallet instead of replaying a project signature. The stronger native rails continue to carry their own evidence: REFHE signatures, MagicBlock signatures, ZK verifier receipts, Ika readiness receipts, Umbra claim-intent receipts, Jupiter route previews, Torque delivery receipts, and intelligence-provider proofs.
+
+## Provider Execution Gate
+
+`/api/v1/provider-integrations/status` is intentionally safe to call without secrets. It reports whether each server-side credential is configured, which public product route uses it, which proof endpoint exercises it, and which privacy boundary prevents provider data from becoming leaked strategy text.
+
+Torque has one extra boundary: MCP auth tokens are not automatically ingestion API keys. The status route therefore exposes whether a Torque credential is present separately from whether event ingestion has been verified by `ingest.torque.so`.
+
+2026-05-26 Torque activation evidence:
+
+- Project: `PrivateDAO` (`cmpm5lnzt00hujq1jd9imtp2o`)
+- Custom event: `private_treasury_execution` (`cmpm5lolt00iajq1jjluy5a3m`)
+- Accepted ingestion proof: `4e660492-af75-4a28-9cb2-a81f7779be38`
+- Live verification field: `/api/v1/provider-integrations/status -> providers.torque.deliveryVerified`
+
+2026-05-26 expanded live-service gate:
+
+- Umbra private settlement intent: `/api/v1/private-settlement/intent` returns a Testnet intent receipt with a recipient-private rail and live relayer context.
+- Ika dWallet custody preparation: `/api/v1/ika/custody/prepare` initializes `@ika.xyz/sdk`, reads the live Ika network encryption key, and returns an `ika-custody-*` route for funded dWallet execution.
+- GoldRush intelligence: `/api/v1/goldrush/query` checks Covalent GoldRush Warehouse and falls back to Zerion plus Solana RPC for wallet-level preview when the current GoldRush key cannot access the wallet-specific v1 endpoint.
+- Torque growth delivery: `/api/v1/torque/custom-event` posts a real `private_treasury_execution` event to Torque and requires an accepted ingestion response in `verify:live-service-execution`.
+
+## Boundary
+
+This matrix does not claim mainnet funds are live. It does not claim final funded Ika dWallet DKG, final Ika 2PC-MPC signatures, or full Umbra claim settlement unless those are separately recorded with execution evidence.
+
+It does prove the operating shape of the product: sensitive services are routed through private/intelligent preparation, wallet-controlled execution, and public-safe proof. The current engineering direction is stricter than the old copy: every privacy or encryption promise must move toward a repeatable Solana Testnet action with a visitor-openable verification URL.
+
+No private keys, provider API keys, RPC tokens, PEM contents, or wallet secret keys are included.
+
+## Frontier Protocol Spine
+
+Live endpoint: `https://api.privatedao.org/api/v1/frontier/privacy-protocol-spine`
+
+PrivateDAO now exposes REFHE, MagicBlock, and Ika as one Frontier protocol spine instead of scattered claims. The spine requires a native live proof endpoint, a Solana Testnet blockchain verification URL, and the visitor-repeatable `PDAO_ENCRYPTED_CLAIM_V1` Memo claim path for every protocol rail.
+
+- REFHE / Encrypt: finalized Solana Testnet configure, settle, and payout execution signatures remain the native proof for confidential payroll and encrypted capital-market flows.
+- MagicBlock: finalized Solana Testnet private corridor receipts remain the native proof for the Private Payments API lane, with challenge/login private reads kept behind wallet authentication.
+- Ika / 2PC-MPC: the hosted route now exposes a real Solana pre-alpha final approval signature, initializes `@ika.xyz/sdk`, reads live Ika network encryption key material, checks the Solana pre-alpha program/operator route, and keeps Ika-network dWallet DKG as the separate deeper receipt class.
+
+Ika Solana final approval signature: `3hvwNpfrUxdkt44VEEuXDXuhgcseVZxBhnZEBnWCCQYbsd9rv3eQe9JiCGZPc63Fa3CptQET5qkr7UKLQ1Ev4xki`
+
+Building and development continue without interruption: each protocol rail can be tested by a fresh visitor claim today, while native protocol evidence is deepened without publishing private keys, provider API keys, RPC tokens, PEM contents, wallet secret keys, or hidden custody material.

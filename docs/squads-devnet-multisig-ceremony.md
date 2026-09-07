@@ -1,0 +1,90 @@
+# Squads Mainnet Custody Ceremony Reference
+
+This file exists to define the exact `Squads Protocol` ceremony for the real production custody closure.
+
+It is not the same artifact as the existing Devnet rehearsal multisig. The product already works on Devnet. This ceremony adds institutional proof, not basic functionality.
+
+## Current Facts
+
+- legacy devnet program id: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
+- current Testnet program id: `EP9xE8MJZ6FfyEwLqns6HDdUZBknEa7WGYs1Jzsecuva`
+- currently observed devnet upgrade authority: `4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD`
+- selected multisig implementation: `Squads Protocol`
+- existing devnet rehearsal implementation: `spl-token-2022-multisig`
+- existing devnet rehearsal multisig: `EqbW1xQRABPNmPM4TMkdygp6j94i7A3DSbgFKTpqXvJE`
+- existing devnet rehearsal creation signature: `4KSyTYQTzeNpBDWou7GFLmvUpAhLgmNKkNdd4PZqndLpCWmUnArffYRQUwe6zrTmQD5uCbBfBR6pakf9Gz8dviRp`
+- Squads web and SDK flows currently target `mainnet-beta`, not Devnet rehearsal custody
+
+## Required Ceremony Shape
+
+- network: `mainnet-beta`
+- signers: `3`
+- threshold: `2-of-3`
+- timelock: `48+ hours`
+- client: `Squads Protocol`
+
+## Candidate Signer Roster
+
+| Slot | Role | Wallet | Candidate public key |
+| --- | --- | --- | --- |
+| 1 | founder-operator | Solflare | `73EzhBNNdM2ZV3LzMxyNZ5FwGiZCZJrbZTHyRxhTsdq9` |
+| 2 | independent-security-or-ops-signer | Phantom | `BBBPcpUnnBi3CWUhcv6vLTqaY9pugAGuhgw2Axjpvcr2` |
+| 3 | recovery-or-governance-signer | Backpack | `2KpA69UB55tfWUSkKj5j7Tvebd3eG22hEs9hjXUq7pf5` |
+
+These public keys may only be promoted if the signer posture is documented and the repository never stores seed phrases or private keys.
+
+## Devnet-Only Generated Roster
+
+The following public keys are generated for Devnet rehearsal and relayer work only. They do not close production custody, and private key files remain outside the repository.
+
+| Role | Public Key |
+| --- | --- |
+| squads-signer-1 | `BSvk7r9jbo4unrGm2d3qLztSRRAsTemDuEgHcHzxMRao` |
+| squads-signer-2 | `E8phwky7u4VZmp4AoPrgGf8ViX7SWMQkE66UEDSfkHLo` |
+| squads-signer-3 | `9tmBAJm4V6B6gbWeYckb7h3gZiyZp6hT2hVzAeFstZNo` |
+| devnet-operator | `Dve1eYmVxkJLv6Jtv27ry77r73ZoyawdNQ9YoXruh3hM` |
+| devnet-relayer | `35CNDGaYpZbFUDLeU46RjDCpdLJeQAwjrtc3dGwFKuoj` |
+
+## Exact Operator Sequence
+
+1. Open `https://app.squads.so/squads`
+2. Connect the current authority wallet or the designated signer wallet.
+3. Create a new Squads multisig.
+4. Enter the `3` signer public keys.
+5. Set threshold to `2`.
+6. Configure a timelock of at least `48` hours.
+7. Record:
+   - multisig address
+   - creation transaction signature
+   - timelock configuration transaction signature
+   - approval history screenshot if available
+8. Submit a low-risk rehearsal transaction inside Squads and record its signature.
+9. Transfer the program upgrade authority from `4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD` to the new multisig on the target production surface.
+10. Record:
+   - transfer transaction signature
+   - `solana program show EP9xE8MJZ6FfyEwLqns6HDdUZBknEa7WGYs1Jzsecuva --url testnet`
+   - explorer links
+11. If DAO and treasury authorities are also transferred, record those signatures and post-transfer readouts in the same intake.
+12. Save the captured fields into `docs/custody-evidence-intake.json`.
+13. Run:
+
+```bash
+npm run apply:custody-evidence-intake
+```
+
+## Minimum Evidence To Capture
+
+- Squads multisig address
+- creation signature
+- timelock configuration signature
+- rehearsal signature
+- signer public keys
+- program upgrade authority transfer signature
+- post-transfer `solana program show` readout
+- explorer links or repo-backed screenshots
+
+## Honest Boundary
+
+Creating the multisig is not the same as completing authority transfer.
+
+Authority transfer is not complete until the destination authority, transfer signature, and post-transfer readout are all recorded.

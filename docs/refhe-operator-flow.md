@@ -1,0 +1,78 @@
+<!-- SPDX-License-Identifier: AGPL-3.0-or-later -->
+# REFHE Operator Flow
+
+Use this when a confidential payroll, bonus, or grant proposal requires encrypted evaluation before settlement.
+
+## Flow
+
+1. Create the proposal.
+2. Configure the confidential payout plan.
+3. Configure the REFHE envelope.
+4. Complete voting and reveal.
+5. Finalize the proposal.
+6. Run the encrypted evaluation off-chain.
+7. Settle the REFHE envelope on-chain from the DAO authority wallet.
+8. Execute the confidential payout.
+
+## Frontend Flow
+
+In the web app:
+
+1. Open `Proposals`
+2. Create a confidential payroll or bonus proposal
+3. Fill:
+   - encrypted manifest URI
+   - manifest hash
+   - ciphertext hash
+   - REFHE model URI
+   - REFHE policy hash
+   - REFHE input ciphertext hash
+   - REFHE evaluation key hash
+4. Submit in wallet
+5. After finalization, inspect `REFHE READINESS` in the selected proposal panel
+6. Do not execute until the panel reports `Ready`
+
+## CLI Flow
+
+```bash
+npm run create-proposal -- ...
+PROPOSAL_PDA="$PROPOSAL_PDA" npm run inspect:confidential-payout -- --proposal "$PROPOSAL_PDA"
+PROPOSAL_PDA="$PROPOSAL_PDA" npm run inspect:refhe -- --proposal "$PROPOSAL_PDA"
+DAO_PDA="$DAO_PDA" PROPOSAL_PDA="$PROPOSAL_PDA" \
+REFHE_RESULT_CIPHERTEXT_HASH="$REFHE_RESULT_CIPHERTEXT_HASH" \
+REFHE_RESULT_COMMITMENT_HASH="$REFHE_RESULT_COMMITMENT_HASH" \
+REFHE_PROOF_BUNDLE_HASH="$REFHE_PROOF_BUNDLE_HASH" \
+REFHE_VERIFIER_PROGRAM="$REFHE_VERIFIER_PROGRAM" \
+npm run settle:refhe -- --dao "$DAO_PDA" --proposal "$PROPOSAL_PDA" --result-ciphertext-hash "$REFHE_RESULT_CIPHERTEXT_HASH" --result-commitment-hash "$REFHE_RESULT_COMMITMENT_HASH" --proof-bundle-hash "$REFHE_PROOF_BUNDLE_HASH" --verifier-program "$REFHE_VERIFIER_PROGRAM"
+PROPOSAL_PDA="$PROPOSAL_PDA" npm run execute -- --proposal "$PROPOSAL_PDA"
+```
+
+## Required Checks
+
+Before settlement:
+
+- `input_ciphertext_hash` matches the payout plan ciphertext hash
+- payout plan belongs to the same proposal
+- proposal is still the intended confidential payout proposal
+
+Before execution:
+
+- proposal status is `Passed`
+- timelock is cleared
+- payout plan status is still `Configured`
+- REFHE envelope status is `Settled`
+- REFHE envelope was settled by the DAO authority
+- verifier program is present
+
+This is an authority-settled execution gate. It does not claim that the PrivateDAO program re-executes or cryptographically verifies REFHE computation on-chain.
+
+## Failure States
+
+- `RefheSettlementRequired`
+  - configure/settle REFHE before execution
+- `RefheVerifierProgramRequired`
+  - settle again with a verifier program binding
+- `RefheEnvelopeMismatch`
+  - the wrong proposal or payout plan is being used
+- `RefheEnvelopeLocked`
+  - the proposal or payout plan moved past the allowed configuration window

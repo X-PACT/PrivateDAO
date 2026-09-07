@@ -1,0 +1,82 @@
+import fs from "fs";
+import path from "path";
+
+const root = process.cwd();
+const responsePath = path.join(root, "docs/security-response-capability-2026-05-22.md");
+const remediationPath = path.join(root, "docs/security-remediation-2026-05-22.md");
+const curatedPath = path.join(root, "apps/web/src/lib/curated-documents.ts");
+const securityPagePath = path.join(root, "apps/web/src/app/security/page.tsx");
+const multisigJsonPath = path.join(root, "docs/multisig-setup-intake.json");
+
+function main() {
+  const response = read(responsePath);
+  const remediation = read(remediationPath);
+  const curated = read(curatedPath);
+  const securityPage = read(securityPagePath);
+  const multisig = JSON.parse(read(multisigJsonPath)) as {
+    status: string;
+    testnetAuthorityPrecheck?: {
+      programId?: string;
+      observedAuthority?: string;
+      closureStatus?: string;
+    };
+    authorityTransfers?: Array<{ surface: string; programId: string; transferSignature: string | null }>;
+  };
+
+  assertIncludes(response, "27e979c072cacc5661e856fdba4310a387a93335", "response commit hash");
+  assertIncludes(response, "npm run verify:security-boundaries:2026-05-22", "response verification gate");
+  assertIncludes(response, "Browser-persisted governance state is redacted", "response remediation control");
+  assertIncludes(response, "What is not claimed by this packet", "response claim boundary");
+  assertIncludes(response, "Authority: CALHrBqx6jbzcPn2NVcinqSAHeod65v9LcDuTxsdPqBv", "response authority readout");
+  assertIncludes(response, "EzwLLrAchBpj3eLTUFuv1uo9rSLKgKNbQgp1DkCevJycT31Eou9TSJsJsEfMjLt4q87pKwXaZUTqCZ1NduNc1vy", "response transfer signature");
+  assertIncludes(response, "2wpJ27Mkb5CffngRx9U6upPjB8jbzWHoFrDLnxhB5NSCiiXCFGt5HVDYU8U7FtwYusynRCcWhy1T6av22VzCC7MY", "response second approval signature");
+  assertIncludes(response, "zwqNsA3kNP1mgcaS6zNdR92LLdssFULXfsRdkMK3UxraKLM6wYDoPaWCwV3J9PqApK5xJJH8TpxsGyCRcdEah67", "response zk verifier receipt signature");
+  assertIncludes(remediation, "# Security Remediation 2026-05-22", "remediation packet title");
+  assertIncludes(curated, "security-response-capability-2026-05-22", "curated document route");
+  assertIncludes(securityPage, "/documents/security-response-capability-2026-05-22", "security page link");
+
+  assert(
+    multisig.status === "ready-for-transfer",
+    "multisig status must reflect the recorded Testnet transfer evidence",
+  );
+  assert(
+    multisig.testnetAuthorityPrecheck?.programId === "EP9xE8MJZ6FfyEwLqns6HDdUZBknEa7WGYs1Jzsecuva",
+    "multisig precheck must target the current Testnet program",
+  );
+  assert(
+    multisig.testnetAuthorityPrecheck?.observedAuthority === "CALHrBqx6jbzcPn2NVcinqSAHeod65v9LcDuTxsdPqBv",
+    "multisig precheck must preserve the observed Squads vault authority",
+  );
+  assert(
+    multisig.testnetAuthorityPrecheck?.closureStatus === "program-upgrade-authority-transferred-to-squads-vault",
+    "multisig precheck must record the Testnet program-upgrade authority transfer",
+  );
+
+  const upgradeTransfer = multisig.authorityTransfers?.find((transfer) => transfer.surface === "program-upgrade-authority");
+  assert(
+    upgradeTransfer?.programId === "EP9xE8MJZ6FfyEwLqns6HDdUZBknEa7WGYs1Jzsecuva",
+    "upgrade transfer must target current Testnet program",
+  );
+  assert(
+    upgradeTransfer.transferSignature === "EzwLLrAchBpj3eLTUFuv1uo9rSLKgKNbQgp1DkCevJycT31Eou9TSJsJsEfMjLt4q87pKwXaZUTqCZ1NduNc1vy",
+    "upgrade transfer signature must match the real Testnet authority transfer",
+  );
+
+  console.log("Security response capability verification: PASS");
+}
+
+function read(filePath: string) {
+  return fs.readFileSync(filePath, "utf8");
+}
+
+function assertIncludes(content: string, needle: string, label: string) {
+  assert(content.includes(needle), `missing ${label}: ${needle}`);
+}
+
+function assert(condition: unknown, message: string): asserts condition {
+  if (!condition) {
+    throw new Error(message);
+  }
+}
+
+main();

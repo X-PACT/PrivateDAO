@@ -1,0 +1,19 @@
+{
+  "id": "solflare-desktop",
+  "walletLabel": "Solflare",
+  "walletVersion": "fill-with-real-version",
+  "environmentType": "desktop-browser",
+  "os": "fill-with-real-os",
+  "browserOrClient": "fill-with-real-browser",
+  "network": "testnet",
+  "connectResult": "success",
+  "signingResult": "success",
+  "submissionResult": "success",
+  "diagnosticsSnapshotCaptured": true,
+  "txSignature": "fill-with-real-runtime-signature",
+  "errorMessage": null,
+  "evidenceRefs": [
+    "docs/assets/runtime/browser-wallet/solflare-create-dao-success.png"
+  ],
+  "capturedAt": "2026-04-05T00:00:00.000Z"
+}

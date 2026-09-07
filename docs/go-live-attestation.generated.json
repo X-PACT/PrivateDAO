@@ -1,0 +1,92 @@
+{
+  "project": "PrivateDAO",
+  "programId": "5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx",
+  "verificationWallet": "4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD",
+  "deployTx": "2CMEujY1CKnC8rH8BuLy4GvwYk3zfqMfAKaUjybcAvRhS1dnzg3Zd3GeMttBp4vkUbu69GkQtr3TWgbmBqGY8cyC",
+  "decision": "blocked-pending-external-steps",
+  "verifiedInsideRepo": [
+    "governanceLifecycle",
+    "confidentialPayoutSurface",
+    "refheProtocolSurface",
+    "backendReadNodeSurface",
+    "securityReasoning",
+    "supplyChainSurface",
+    "releaseCeremonySurface",
+    "runtimeEvidenceSurface",
+    "realDeviceRuntimeIntake",
+    "operationalEvidenceSurface",
+    "magicblockRuntimeSurface",
+    "confidentialManifestEncryption",
+    "releaseDrillSurface",
+    "artifactFreshness",
+    "zkCompanionStack",
+    "governanceHardeningV3",
+    "settlementHardeningV3",
+    "liveProofV3",
+    "reviewerSurface",
+    "operationsSurface",
+    "competitivePositioningSurface"
+  ],
+  "blockers": [
+    {
+      "name": "strategyEngine",
+      "status": "not-in-repo"
+    },
+    {
+      "name": "livePerformance",
+      "status": "not-in-repo"
+    },
+    {
+      "name": "externalAudit",
+      "status": "pending"
+    },
+    {
+      "name": "mainnetRollout",
+      "status": "pending"
+    }
+  ],
+  "mandatoryGates": [
+    "npm run verify:all",
+    "npm run verify:mainnet-readiness-report",
+    "npm run verify:deployment-attestation",
+    "npm run verify:go-live-attestation",
+    "npm run verify:test-wallet-live-proof:v3"
+  ],
+  "criteriaDocs": [
+    "docs/go-live-criteria.md",
+    "docs/operational-drillbook.md",
+    "docs/mainnet-readiness.md",
+    "docs/mainnet-readiness.generated.md",
+    "docs/governance-hardening-v3.md",
+    "docs/settlement-hardening-v3.md",
+    "docs/test-wallet-live-proof-v3.generated.md",
+    "docs/deployment-attestation.generated.json",
+    "docs/zk/enforced-runtime-evidence.md",
+    "docs/zk/enforced-runtime.generated.md",
+    "docs/zk/enforced-operator-flow.md",
+    "docs/zk/external-closure.generated.md",
+    "docs/zk-external-audit-scope.md",
+    "docs/canonical-verifier-boundary-decision.md"
+  ],
+  "runtimeDocs": [
+    "docs/wallet-runtime.md",
+    "docs/fair-voting.md",
+    "docs/magicblock/private-payments.md",
+    "docs/magicblock/operator-flow.md",
+    "docs/magicblock/runtime-evidence.md",
+    "docs/magicblock/runtime.generated.md",
+    "docs/zk/enforced-runtime-evidence.md",
+    "docs/zk/enforced-runtime.generated.md",
+    "docs/zk/enforced-operator-flow.md",
+    "docs/mainnet-readiness.generated.md",
+    "docs/go-live-criteria.md",
+    "docs/operational-drillbook.md"
+  ],
+  "deploymentGateCount": 63,
+  "pdaoToken": {
+    "mint": "DFYvBdivHCe4bSErgCiKm2RhwGEcZYbBPFQzLNr37Bie",
+    "programId": "TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb",
+    "tokenAccount": "CeXqKvdjrVYsPZEX2ysBNs6jubofEXEk4emE2qdS4pVg",
+    "supplyUi": "1000000"
+  }
+}

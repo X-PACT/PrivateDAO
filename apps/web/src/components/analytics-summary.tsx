@@ -1,0 +1,159 @@
+"use client";
+
+import Link from "next/link";
+import { ShieldAlert, Sparkles, TrendingUp } from "lucide-react";
+
+import { Badge } from "@/components/ui/badge";
+import { buttonVariants } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useServiceHandoffSnapshot } from "@/lib/use-service-handoff-snapshot";
+import { analyticsReadiness, analyticsSnapshots } from "@/lib/site-data";
+import { cn } from "@/lib/utils";
+
+function buildFallbackTelemetrySelection(mode: "packet" | "snapshot" | "backend") {
+  if (mode === "backend") {
+    return {
+      title: "Backend path",
+      summary: "Hosted service mode keeps analytics aligned with backend cutover, health, metrics, and deployment proof.",
+      primaryHref: "/documents/read-node-same-domain-deploy",
+      proofHref: "/documents/reviewer-telemetry-packet",
+    };
+  }
+
+  if (mode === "snapshot") {
+    return {
+      title: "Read-node snapshot",
+      summary: "Indexed snapshot mode keeps analytics tied to proposal coverage, finalized state, and read-node proof.",
+      primaryHref: "/documents/read-node-snapshot",
+      proofHref: "/documents/reviewer-telemetry-packet",
+    };
+  }
+
+  return {
+    title: "Reviewer packet",
+    summary: "Reviewer packet mode keeps analytics export-safe until a stronger telemetry lane is selected.",
+    primaryHref: "/documents/reviewer-telemetry-packet",
+    proofHref: "/documents/reviewer-telemetry-packet",
+  };
+}
+
+export function AnalyticsSummary() {
+  const handoff = useServiceHandoffSnapshot("analytics");
+  const activeSelection = handoff?.telemetrySelection ?? buildFallbackTelemetrySelection(handoff?.telemetryMode ?? "packet");
+  const modeTitle = activeSelection.title;
+
+  return (
+    <div className="grid gap-6">
+      <Card className="border-white/10 bg-[linear-gradient(180deg,rgba(12,16,30,0.94),rgba(7,10,22,0.98))]">
+        <CardHeader className="pb-3">
+          <CardTitle className="text-xl">What these analytics mean</CardTitle>
+        </CardHeader>
+        <CardContent className="grid gap-4 md:grid-cols-3 text-sm leading-7 text-white/60">
+          <div className="rounded-2xl border border-white/8 bg-black/20 p-4">
+            Proposal analytics show whether the governance path is being used and completed, not just whether pages are being visited.
+          </div>
+          <div className="rounded-2xl border border-white/8 bg-black/20 p-4">
+            Treasury analytics show how payout and execution intent move through the product before a reviewer opens the proof packets.
+          </div>
+          <div className="rounded-2xl border border-white/8 bg-black/20 p-4">
+            Telemetry freshness helps a normal visitor understand whether the runtime view is recent and active before they inspect signatures and logs.
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card className="border-fuchsia-300/14 bg-[linear-gradient(180deg,rgba(19,12,34,0.95),rgba(11,9,24,0.98))]">
+        <CardHeader className="pb-3">
+          <div className="text-[11px] uppercase tracking-[0.28em] text-fuchsia-200/78">Telemetry continuity</div>
+          <CardTitle className="text-xl">Analytics is now following {modeTitle}</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="text-sm leading-7 text-white/58">
+            {activeSelection.summary}
+          </p>
+          {handoff?.payoutIntent ? (
+            <div className="mt-4 rounded-2xl border border-white/8 bg-black/20 p-4">
+              <div className="text-[11px] uppercase tracking-[0.2em] text-white/38">Execution continuity</div>
+              <div className="mt-2 text-sm font-medium text-white">
+                {handoff.requestPayload?.requestId ?? handoff.proposalId} · {handoff.payoutTitle}
+              </div>
+              <div className="mt-2 text-sm leading-7 text-white/58">
+                {handoff.requestPayload?.amountDisplay ?? handoff.payoutIntent.amountDisplay}
+                {" · "}
+                {handoff.requestPayload?.reference ?? handoff.payoutIntent.reference}
+              </div>
+              <div className="mt-2 text-sm leading-7 text-white/58">
+                {handoff.requestDelivery?.state === "delivered"
+                  ? "Request already delivered into command-center."
+                  : handoff.requestDelivery?.state === "staged"
+                    ? "Request is staged in services and ready for governed delivery."
+                    : "Request is still editable in services before delivery."}
+              </div>
+              {handoff.requestPayload ? (
+                <div className="mt-2 text-sm leading-7 text-white/58">
+                  {handoff.requestPayload.kind} · {handoff.requestPayload.executionTarget}
+                  <br />
+                  {handoff.requestPayload.requestRoute}
+                  <br />
+                  {handoff.requestPayload.telemetryRoute}
+                </div>
+              ) : null}
+            </div>
+          ) : null}
+          <div className="mt-4 flex flex-wrap gap-3">
+            <Link href={activeSelection.primaryHref} className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>
+              Open active telemetry lane
+            </Link>
+            <Link href={activeSelection.proofHref} className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
+              Open proof route
+            </Link>
+          </div>
+        </CardContent>
+      </Card>
+
+      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+        {analyticsSnapshots.map((snapshot) => (
+          <Card key={snapshot.label}>
+            <CardHeader className="pb-3">
+              <div className="text-[11px] uppercase tracking-[0.28em] text-white/40">{snapshot.label}</div>
+              <CardTitle className="text-2xl">{snapshot.value}</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm leading-7 text-white/58">{snapshot.detail}</p>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+
+      <div className="grid gap-6 xl:grid-cols-3">
+        {analyticsReadiness.map((item, index) => (
+          <Card key={item.title} className="h-full">
+            <CardHeader>
+              <div className="flex items-center gap-3">
+                <div
+                  className={`rounded-2xl border border-white/8 p-3 ${
+                    item.tone === "success"
+                      ? "bg-emerald-300/10 text-emerald-200"
+                      : item.tone === "cyan"
+                        ? "bg-cyan-300/10 text-cyan-200"
+                        : "bg-amber-300/10 text-amber-200"
+                  }`}
+                >
+                  {index === 0 ? <Sparkles className="h-4 w-4" /> : index === 1 ? <TrendingUp className="h-4 w-4" /> : <ShieldAlert className="h-4 w-4" />}
+                </div>
+                <div className="space-y-2">
+                  <CardTitle className="text-lg">{item.title}</CardTitle>
+                  <Badge variant={item.tone === "success" ? "success" : item.tone === "cyan" ? "cyan" : "warning"}>
+                    {item.tone === "success" ? "Live now" : item.tone === "cyan" ? "Operational" : "Boundary"}
+                  </Badge>
+                </div>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm leading-7 text-white/58">{item.body}</p>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    </div>
+  );
+}

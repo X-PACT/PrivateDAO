@@ -1,0 +1,55 @@
+<svg width="1200" height="720" viewBox="0 0 1200 720" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="720" rx="32" fill="#07111F"/>
+  <rect x="56" y="64" width="1088" height="592" rx="28" fill="#0D1728" stroke="#1E2E4A"/>
+  <rect x="92" y="128" width="252" height="156" rx="22" fill="#121F35" stroke="#2F4A74"/>
+  <text x="118" y="172" fill="#8EF0D0" font-family="Arial, sans-serif" font-size="18" font-weight="700">Frontend / Wallet Surface</text>
+  <text x="118" y="208" fill="#EAF2FF" font-family="Arial, sans-serif" font-size="28" font-weight="700">PrivateDAO UI</text>
+  <text x="118" y="244" fill="#AFC4E8" font-family="Arial, sans-serif" font-size="16">Commit / Reveal / Execute stay wallet-signed.</text>
+  <text x="118" y="270" fill="#AFC4E8" font-family="Arial, sans-serif" font-size="16">Reads prefer the backend indexer.</text>
+
+  <rect x="474" y="112" width="252" height="188" rx="22" fill="#13253A" stroke="#3A6BA2"/>
+  <text x="500" y="156" fill="#7FDBFF" font-family="Arial, sans-serif" font-size="18" font-weight="700">Backend Read Node</text>
+  <text x="500" y="194" fill="#EAF2FF" font-family="Arial, sans-serif" font-size="28" font-weight="700">Indexer + API</text>
+  <text x="500" y="230" fill="#AFC4E8" font-family="Arial, sans-serif" font-size="16">Proposal cache</text>
+  <text x="500" y="254" fill="#AFC4E8" font-family="Arial, sans-serif" font-size="16">DAO inspection</text>
+  <text x="500" y="278" fill="#AFC4E8" font-family="Arial, sans-serif" font-size="16">Runtime health</text>
+
+  <rect x="856" y="96" width="252" height="220" rx="22" fill="#15233A" stroke="#3B5E87"/>
+  <text x="882" y="140" fill="#FFD878" font-family="Arial, sans-serif" font-size="18" font-weight="700">RPC Pool</text>
+  <text x="882" y="178" fill="#EAF2FF" font-family="Arial, sans-serif" font-size="28" font-weight="700">Authenticated Endpoints</text>
+  <text x="882" y="216" fill="#AFC4E8" font-family="Arial, sans-serif" font-size="16">Alchemy</text>
+  <text x="882" y="240" fill="#AFC4E8" font-family="Arial, sans-serif" font-size="16">Helius</text>
+  <text x="882" y="264" fill="#AFC4E8" font-family="Arial, sans-serif" font-size="16">QuickNode / Extras</text>
+  <text x="882" y="288" fill="#AFC4E8" font-family="Arial, sans-serif" font-size="16">Public Devnet fallback</text>
+
+  <rect x="474" y="412" width="252" height="156" rx="22" fill="#16253E" stroke="#355D8A"/>
+  <text x="500" y="456" fill="#8EF0D0" font-family="Arial, sans-serif" font-size="18" font-weight="700">Solana Program</text>
+  <text x="500" y="492" fill="#EAF2FF" font-family="Arial, sans-serif" font-size="28" font-weight="700">PrivateDAO Anchor</text>
+  <text x="500" y="528" fill="#AFC4E8" font-family="Arial, sans-serif" font-size="16">Confidential payouts</text>
+  <text x="500" y="552" fill="#AFC4E8" font-family="Arial, sans-serif" font-size="16">ZK anchors and receipts</text>
+
+  <rect x="92" y="430" width="252" height="140" rx="22" fill="#121F35" stroke="#2F4A74"/>
+  <text x="118" y="474" fill="#F1A9FF" font-family="Arial, sans-serif" font-size="18" font-weight="700">Operational Output</text>
+  <text x="118" y="510" fill="#EAF2FF" font-family="Arial, sans-serif" font-size="28" font-weight="700">Diagnostics + Proof</text>
+  <text x="118" y="544" fill="#AFC4E8" font-family="Arial, sans-serif" font-size="16">Go-live snapshot and review surfaces</text>
+
+  <line x1="344" y1="205" x2="474" y2="205" stroke="#59E1C5" stroke-width="4"/>
+  <polygon points="474,205 456,194 456,216" fill="#59E1C5"/>
+  <text x="364" y="188" fill="#8EF0D0" font-family="Arial, sans-serif" font-size="14">Read API</text>
+
+  <line x1="726" y1="205" x2="856" y2="205" stroke="#7FDBFF" stroke-width="4"/>
+  <polygon points="856,205 838,194 838,216" fill="#7FDBFF"/>
+  <text x="750" y="188" fill="#7FDBFF" font-family="Arial, sans-serif" font-size="14">Pooled RPC reads</text>
+
+  <line x1="982" y1="316" x2="612" y2="412" stroke="#FFD878" stroke-width="4"/>
+  <polygon points="612,412 624,396 630,418" fill="#FFD878"/>
+  <text x="770" y="388" fill="#FFD878" font-family="Arial, sans-serif" font-size="14">Program accounts and health</text>
+
+  <line x1="474" y1="490" x2="344" y2="500" stroke="#F1A9FF" stroke-width="4"/>
+  <polygon points="344,500 363,489 365,511" fill="#F1A9FF"/>
+  <text x="348" y="480" fill="#F1A9FF" font-family="Arial, sans-serif" font-size="14">Evidence and runtime surface</text>
+
+  <line x1="612" y1="300" x2="612" y2="412" stroke="#59E1C5" stroke-width="4"/>
+  <polygon points="612,412 601,394 623,394" fill="#59E1C5"/>
+  <text x="630" y="362" fill="#59E1C5" font-family="Arial, sans-serif" font-size="14">Proposal snapshots</text>
+</svg>

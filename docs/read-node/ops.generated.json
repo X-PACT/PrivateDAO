@@ -1,0 +1,106 @@
+{
+  "generatedAt": "2026-05-26T03:04:52.930Z",
+  "readPath": "backend-indexer",
+  "runtime": {
+    "generatedAt": "2026-05-26T03:04:50.843Z",
+    "readPath": "backend-indexer",
+    "rpcEndpoint": "https://api.testnet.solana.com",
+    "rpcPoolSize": 1,
+    "commitment": "confirmed",
+    "programId": "EP9xE8MJZ6FfyEwLqns6HDdUZBknEa7WGYs1Jzsecuva",
+    "slot": 410937895,
+    "solanaCore": "4.0.0-rc.0",
+    "featureSet": 767961353,
+    "latestBlockhash": "33yNQL7w8CRfbshyMFfCPNcQWeMvbjyEjkKh83hdgybf",
+    "lastValidBlockHeight": 363452355,
+    "programExecutable": true,
+    "programOwner": "BPFLoaderUpgradeab1e11111111111111111111111",
+    "cacheTtlMs": 15000
+  },
+  "overview": {
+    "generatedAt": "2026-05-26T03:04:52.929Z",
+    "proposals": 17,
+    "uniqueDaos": 16,
+    "zkEnforced": 0,
+    "confidentialPayouts": 3,
+    "magicblockConfigured": 2,
+    "magicblockSettled": 1,
+    "refheConfigured": 3,
+    "refheSettled": 2,
+    "refheWithVerifier": 2,
+    "executableConfidential": 0
+  },
+  "profiles": [
+    {
+      "name": "50",
+      "walletCount": 50,
+      "waveSize": 10,
+      "fundingWaveSize": 5,
+      "targetPdaoUi": 100,
+      "waveCount": 5,
+      "negativeScenarios": [
+        "wrong-voter-record",
+        "wrong-delegation-marker",
+        "wrong-token-account"
+      ]
+    },
+    {
+      "name": "100",
+      "walletCount": 100,
+      "waveSize": 20,
+      "fundingWaveSize": 10,
+      "targetPdaoUi": 100,
+      "waveCount": 5,
+      "negativeScenarios": [
+        "wrong-voter-record",
+        "wrong-delegation-marker",
+        "wrong-token-account",
+        "late-reveal"
+      ]
+    },
+    {
+      "name": "350",
+      "walletCount": 350,
+      "waveSize": 50,
+      "fundingWaveSize": 25,
+      "targetPdaoUi": 100,
+      "waveCount": 7,
+      "negativeScenarios": [
+        "invalid-reveal",
+        "late-reveal",
+        "execute-replay",
+        "wrong-vault",
+        "wrong-authority",
+        "payout-replay"
+      ]
+    },
+    {
+      "name": "500",
+      "walletCount": 500,
+      "waveSize": 25,
+      "fundingWaveSize": 10,
+      "targetPdaoUi": 100,
+      "waveCount": 20,
+      "negativeScenarios": [
+        "invalid-reveal",
+        "late-reveal",
+        "execute-replay",
+        "wrong-authority",
+        "payout-replay"
+      ]
+    }
+  ],
+  "deployment": {
+    "sameDomainRecommended": true,
+    "guide": "docs/read-node/same-domain-deploy.md",
+    "readApiPath": "/api/v1"
+  },
+  "operatorChecks": [
+    "curl /healthz",
+    "curl /api/v1/runtime",
+    "curl /api/v1/ops/overview",
+    "curl /api/v1/ops/snapshot",
+    "curl /api/v1/devnet/profiles",
+    "curl /api/v1/metrics"
+  ]
+}
