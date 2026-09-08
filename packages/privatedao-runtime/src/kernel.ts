@@ -110,6 +110,7 @@ type ExecutionRecord<TUnsigned> = {
   provider: KernelProvider;
   prepared: PreparedExecution<TUnsigned>;
   state: ExecutionState;
+  submission?: { executionId: string; signatures: string[] };
   receipt?: ExecutionReceipt;
 };
 
@@ -173,12 +174,14 @@ export class PrivateDaoKernel {
 
   async submit<TUnsigned>(executionId: string, signedPayload: TUnsigned): Promise<{ executionId: string; signatures: string[] }> {
     const record = this.getRecord(executionId);
+    if (record.submission) return { ...record.submission, signatures: [...record.submission.signatures] };
     if (record.state !== "prepared" && record.state !== "awaiting_signature") {
       throw new KernelError("INVALID_STATE", `Execution cannot be submitted from state ${record.state}.`);
     }
     this.emit({ name: "execution.submit.started", executionId });
     try {
       const result = await record.provider.submit(record.prepared, signedPayload);
+      record.submission = { executionId: result.executionId, signatures: [...result.signatures] };
       record.state = "submitted";
       this.emit({
         name: "execution.submit.completed",
