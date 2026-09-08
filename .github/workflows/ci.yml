@@ -50,7 +50,7 @@ jobs:
         run: |
           for attempt in 1 2 3; do
             rm -rf node_modules
-            if npm ci --ignore-scripts --no-audit --no-fund; then
+            if npm ci --ignore-scripts --no-audit --no-fund --legacy-peer-deps; then
               break
             fi
             if [ "$attempt" -eq 3 ]; then
