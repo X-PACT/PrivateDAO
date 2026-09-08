@@ -90,8 +90,10 @@ npm run verify:pdao-surface >/dev/null
 echo "[verify-all] rebuilding reviewer artifacts"
 if [[ "${CI:-}" == "true" ]]; then
   echo "[verify-all] CI detected; using committed reviewer artifacts to avoid public RPC rate limits"
-  npm run build:cryptographic-manifest >/dev/null
   npm run build:deployment-attestation >/dev/null
+  # deployment-attestation.generated.json is covered by the cryptographic manifest;
+  # generate it first so the manifest binds the final artifact contents.
+  npm run build:cryptographic-manifest >/dev/null
   npm run build:runtime-attestation >/dev/null
   npm run build:go-live-attestation >/dev/null
   npm run build:review-attestation >/dev/null

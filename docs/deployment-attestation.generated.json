@@ -118,7 +118,7 @@
   },
   "zk": {
     "stackVersion": 1,
-    "entryCount": 3
+    "entryCount": 4
   },
   "runtimeDocs": [
     "docs/wallet-runtime.md",

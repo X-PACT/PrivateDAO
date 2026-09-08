@@ -1,9 +1,9 @@
 {
   "project": "PrivateDAO",
-  "generatedAt": "2026-09-08T10:39:56.290Z",
+  "generatedAt": "2026-09-08T10:52:27.395Z",
   "algorithm": "sha256",
   "entryCount": 143,
-  "aggregateSha256": "fe99002cf6203559a7d724db961d058d87f5bfbe6bf8af49fce8ac744452c4c0",
+  "aggregateSha256": "97d1390f9c3fcdd38b3771dc51f3f0f295a3954089b51d2f0a127fbcb67f3b3e",
   "files": [
     {
       "path": "zk/circuits/private_dao_vote_overlay.circom",
@@ -632,7 +632,7 @@
     },
     {
       "path": "docs/deployment-attestation.generated.json",
-      "sha256": "b53c6c1690d570af896ca8aa4aabf73b1e24c114b9ff3fe97e82a4d5c1cbaf3a",
+      "sha256": "c2e4ab93c7425f7896ca1abe53c486acb2aaa82bdb905aa7132f8432936c4031",
       "bytes": 5028
     },
     {
