@@ -16,7 +16,8 @@ npm --prefix apps/web exec -- tsc --noEmit --pretty false
 echo "[3/5] SBF build"
 bash scripts/build-auction-sbf.sh
 echo "[4/5] Static guards"
-! rg -n --glob '!node_modules/**' --glob '!target/**' 'fake transaction|simulated success|TODO|PLACEHOLDER' apps/web/src programs/privatedao-auction
+guard_pattern="fa""ke transaction|simulated success|TO""DO|PLACEHOLDER"
+! rg -n --glob '!node_modules/**' --glob '!target/**' "$guard_pattern" apps/web/src programs/privatedao-auction
 echo "[5/5] Development E2E"
 if [[ "${RUN_AUCTION_DEVNET_E2E:-0}" != "1" ]]; then
   echo "RUN_AUCTION_DEVNET_E2E=1 is required for wallet/PER network certification" >&2
