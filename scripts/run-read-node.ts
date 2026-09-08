@@ -39,7 +39,7 @@ import {
   type TxlineProviderMode,
   type TxlineSettlementProofPackage,
 } from "../apps/web/src/lib/txline-settlement";
-import { PayrollStore, type PayrollState, type SettlementState } from "./lib/payroll-domain.js";
+import { PayrollStore, type PayrollState, type SettlementState } from "./lib/payroll-domain.ts";
 
 const host = process.env.PRIVATE_DAO_READ_NODE_HOST || "127.0.0.1";
 const port = Number(process.env.PRIVATE_DAO_READ_NODE_PORT || 8787);
