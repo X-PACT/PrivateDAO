@@ -24,6 +24,7 @@ const grossCents = 100;
 const taxCents = 10;
 const deductionsCents = 2;
 const netCents = 88;
+const runId = `devnet-e2e-${Date.now()}-${randomBytes(4).toString("hex")}`;
 
 function sha256(value) { return createHash("sha256").update(value).digest("hex"); }
 function json(value) { return JSON.stringify(value); }
@@ -37,12 +38,18 @@ async function api(path, init = {}) {
 async function finalized(connection, signature) {
   const started = Date.now();
   while (Date.now() - started < 180000) {
-    const status = (await connection.getSignatureStatuses([signature])).value[0];
+    const status = (await connection.getSignatureStatuses([signature], { searchTransactionHistory: true })).value[0];
     if (status?.err) throw new Error(`Transaction failed: ${JSON.stringify(status.err)}`);
     if (status?.confirmationStatus === "finalized") return status;
     await new Promise((resolve) => setTimeout(resolve, 1500));
   }
   throw new Error(`Transaction did not finalize: ${signature}`);
+}
+async function verifyFinalized(connection, signatures) {
+  const statuses = (await connection.getSignatureStatuses(signatures, { searchTransactionHistory: true })).value;
+  const rows = statuses.map((status, index) => ({ signature: signatures[index], confirmationStatus: status?.confirmationStatus || null, err: status?.err || null, slot: status?.slot || null }));
+  if (rows.some((row) => row.confirmationStatus !== "finalized" || row.err)) throw new Error(`On-chain verification failed: ${json(rows)}`);
+  return { allFinalized: true, rows };
 }
 async function prove(manifestCommitment, settlementRoot, policyHash) {
   const root = new URL("..", import.meta.url).pathname;
@@ -80,12 +87,12 @@ async function main() {
   const auth = await api("/payroll/session", { method: "POST", body: json({ action: "verify", wallet, nonce: challenge.challenge.nonce, message: challenge.challenge.message, signature: base64(challengeSignature) }) });
   const bearer = { Authorization: `Bearer ${auth.session.token}` };
 
-  const itemValues = RECIPIENTS.map((recipientAddress, index) => ({ employeeId: `employee-devnet-${index + 1}`, recipientAddress, employeeRefCiphertext: `devnet-${index + 1}`, payoutId: `payout-${index + 1}`, grossCents, taxCents, deductionsCents, netCents, recipientCommitment: sha256(recipientAddress) }));
+  const itemValues = RECIPIENTS.map((recipientAddress, index) => ({ employeeId: `${runId}-employee-${index + 1}`, recipientAddress, employeeRefCiphertext: `${runId}-${index + 1}`, payoutId: `${runId}-payout-${index + 1}`, grossCents, taxCents, deductionsCents, netCents, recipientCommitment: sha256(recipientAddress) }));
   const batchCommitment = sha256(json(itemValues.map(({ recipientAddress: _a, employeeRefCiphertext: _b, ...item }) => item)));
   const recipientRoot = sha256(itemValues.map((item) => item.recipientCommitment).sort().join("|"));
   const manifestCommitment = sha256(json({ version: "devnet-e2e-v1", batchCommitment, recipientRoot, encrypted: true }));
   const intent = await api("/payroll/umbra", { method: "POST", body: json({ action: "prepare", asset: "WSOL", recipientCount: 3, totalAmount: "2.64", manifestCommitment, recipientHash: sha256(RECIPIENTS.slice().sort().join("|")), privacyTier: "selective-disclosure", requiresAudit: true, unlinkabilityRequired: false, encryption: { algorithm: "AES-256-GCM", keyDerivation: "PBKDF2-SHA256-120000", ciphertextHash: sha256("encrypted-devnet-e2e") } }) });
-  const bootstrap = await api("/payroll", { method: "POST", headers: bearer, body: json({ action: "bootstrap-devnet", manifestCommitment, batchCommitment, recipientRoot, grossCents: grossCents * 3, taxCents: taxCents * 3, deductionsCents: deductionsCents * 3, netCents: netCents * 3, idempotencyKey: `script-${sha256(wallet + manifestCommitment).slice(0, 24)}`, items: itemValues, rows: itemValues, payrollItems: itemValues }) });
+  const bootstrap = await api("/payroll", { method: "POST", headers: bearer, body: json({ action: "bootstrap-devnet", manifestCommitment, batchCommitment, recipientRoot, grossCents: grossCents * 3, taxCents: taxCents * 3, deductionsCents: deductionsCents * 3, netCents: netCents * 3, idempotencyKey: `script-${runId}-${sha256(wallet + manifestCommitment).slice(0, 24)}`, items: itemValues, rows: itemValues, payrollItems: itemValues }) });
   const batchId = bootstrap.batch.batch.batch_id;
   const signer = await createSignerFromPrivateKeyBytes(keypair.secretKey);
   const client = await getUmbraClient({ signer, network: "devnet", rpcUrl: RPC, rpcSubscriptionsUrl: RPC.replace(/^http/, "ws"), deferMasterSeedSignature: true });
@@ -110,6 +117,7 @@ async function main() {
   }
   const reconciliation = await api("/payroll", { method: "POST", headers: bearer, body: json({ action: "reconcile", batchId }) });
   if (reconciliation.reconciliation.confirmedCount !== 3 || reconciliation.reconciliation.failedCount !== 0 || !reconciliation.reconciliation.allConfirmed) throw new Error(`Reconciliation failed: ${json(reconciliation.reconciliation)}`);
+  const chainVerification = await verifyFinalized(connection, settlements.map((settlement) => settlement.signature));
   const batch = await api("/payroll", { method: "POST", headers: bearer, body: json({ action: "get", batchId }) });
   const settlementItems = batch.items.slice().sort((a, b) => String(a.payout_id).localeCompare(String(b.payout_id))).map((item) => ({ payoutId: item.payout_id, netCents: item.net_cents, recipientCommitment: item.recipient_commitment, txSignature: item.tx_signature }));
   const settlementRoot = sha256(json(settlementItems));
@@ -117,10 +125,10 @@ async function main() {
   const verification = await api("/payroll", { method: "POST", headers: bearer, body: json({ action: "create-verification", batchId, scope: "public", expiresAt: new Date(Date.now() + 86400000).toISOString(), proof: proof.proof, publicSignals: proof.publicSignals }) });
   const token = verification.verification.verificationUrl.split("token=")[1];
   const publicVerification = await api(`/payroll/verify/${decodeURIComponent(token)}`);
-  const evidence = { generatedAt: new Date().toISOString(), network: "solana-devnet", wallet, balanceLamports: balance, batchId, intentId: intent.intent?.intentId, settlements, reconciliation: reconciliation.reconciliation, proof: { proofType: proof.proofType, verificationKeyHash: proof.verificationKeyHash, publicSignals: proof.publicSignals }, verification: verification.verification, publicVerification: publicVerification.verification, explorerUrls: settlements.map((row) => `https://explorer.solana.com/tx/${row.signature}?cluster=devnet`) };
+  const evidence = { generatedAt: new Date().toISOString(), runId, network: "solana-devnet", wallet, balanceLamports: balance, batchId, intentId: intent.intent?.intentId, settlements, reconciliation: reconciliation.reconciliation, chainVerification, proof: { proofType: proof.proofType, verificationKeyHash: proof.verificationKeyHash, publicSignals: proof.publicSignals }, verification: verification.verification, publicVerification: publicVerification.verification, explorerUrls: settlements.map((row) => `https://explorer.solana.com/tx/${row.signature}?cluster=devnet`) };
   await mkdir(new URL("../docs/generated/", import.meta.url), { recursive: true });
   await writeFile(new URL("../docs/generated/payroll-devnet-e2e.generated.json", import.meta.url), `${JSON.stringify(evidence, null, 2)}\n`);
-  console.log(JSON.stringify({ ok: true, network: evidence.network, wallet, batchId, settlements, reconciliation: evidence.reconciliation, verificationUrl: verification.verification.verificationUrl, publicVerification: evidence.publicVerification.status, evidencePath: "docs/generated/payroll-devnet-e2e.generated.json" }, null, 2));
+  console.log(JSON.stringify({ ok: true, network: evidence.network, runId, wallet, batchId, settlements, reconciliation: evidence.reconciliation, chainVerification, verificationUrl: verification.verification.verificationUrl, publicVerification: evidence.publicVerification.status, evidencePath: "docs/generated/payroll-devnet-e2e.generated.json" }, null, 2));
 }
 
 main().catch((error) => { console.error(JSON.stringify({ ok: false, error: error instanceof Error ? error.message : String(error) })); process.exit(1); });

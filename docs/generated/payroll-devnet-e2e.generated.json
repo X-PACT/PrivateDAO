@@ -1,31 +1,29 @@
 {
-  "generatedAt": "2026-08-27T23:09:55.681Z",
+  "generatedAt": "2026-09-08T18:50:31.002Z",
+  "runId": "devnet-e2e-1788893343889-80fc6f5e",
   "network": "solana-devnet",
   "wallet": "4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD",
-  "balanceLamports": 2875914468,
-  "batchId": "batch_3e3ef5d4-0bfd-4ed8-b451-805a242a2b0d",
-  "intentId": "umbra-payroll-9b97d7a1-cceb-4b24-9344-ea9274534193",
+  "balanceLamports": 9014423218,
+  "batchId": "batch_3f024990-f5d6-4b3f-9a2c-5f824892aa87",
+  "intentId": "umbra-payroll-6a5d4ae5-1539-402e-9a37-a72ac89a3225",
   "settlements": [
     {
-      "payoutId": "payout-1",
+      "payoutId": "devnet-e2e-1788893343889-80fc6f5e-payout-1",
       "recipient": "B3STL1akxLGLvPpKd6Grz19jjVySkWrGgHFwGNK8yEZ",
-      "signature": "2hdjJicKnNZtRDe9Fyb4QcBzDFEa47aoQ3CPCN4wvU5WamYakKmXogvqzt6sWMGFpSt24C9aEJA5UEVuq3vzuKKU",
-      "state": "CONFIRMED",
-      "reused": true
+      "signature": "5tXeRfnvSQmnDDioM9fVz6hVbSVQaHem6tS3n9M6YJJz2QqLhouot99Nf4RuWpCAKUDL3p4mhSf7vrdGBa6YEUkY",
+      "state": "CONFIRMED"
     },
     {
-      "payoutId": "payout-2",
+      "payoutId": "devnet-e2e-1788893343889-80fc6f5e-payout-2",
       "recipient": "4pbnWy5XqdajtjeF6wFonPYj2WAJcU1zVYrDCcJN2HHv",
-      "signature": "2VvxRwh4aRHP3n6tJktayMHVeUKmmmCBKE6Pk7nSZVJBMdH7k9TPaBASkx7NsSct2PyRUJ9y8ScLSzGUb66sgeUa",
-      "state": "CONFIRMED",
-      "reused": true
+      "signature": "2uCMWiDFYREg24P5rFe4645TJGewC7oFHVVyxnVg3qRotSbsDZzjmYGshdiu4FTQSiTrb22DhH6RMgFSSPvH3LgW",
+      "state": "CONFIRMED"
     },
     {
-      "payoutId": "payout-3",
+      "payoutId": "devnet-e2e-1788893343889-80fc6f5e-payout-3",
       "recipient": "FjTWJeYtmZALuyq96y8L9Pzqgkfkb7XWbszkpamkYW8q",
-      "signature": "5CBQ5TGeEsoNsJdLop9zRq4GjJ2RbcJB9hoGR7siPaP7wzhYDDAKGNRXBDn4TERSSgDGmKE6zjYQyjW49FdzD1MJ",
-      "state": "CONFIRMED",
-      "reused": true
+      "signature": "4aNMJGUs2ANrwwP6kimeESGUY6GgmWV8VfBSmpXhySxC7QH8oLSjaiasNnRZ5gy8gWP6rQwaHrocgCCS7uKANRt8",
+      "state": "CONFIRMED"
     }
   ],
   "reconciliation": {
@@ -35,43 +33,66 @@
     "duplicateSignatures": 0,
     "allConfirmed": true
   },
+  "chainVerification": {
+    "allFinalized": true,
+    "rows": [
+      {
+        "signature": "5tXeRfnvSQmnDDioM9fVz6hVbSVQaHem6tS3n9M6YJJz2QqLhouot99Nf4RuWpCAKUDL3p4mhSf7vrdGBa6YEUkY",
+        "confirmationStatus": "finalized",
+        "err": null,
+        "slot": 495242244
+      },
+      {
+        "signature": "2uCMWiDFYREg24P5rFe4645TJGewC7oFHVVyxnVg3qRotSbsDZzjmYGshdiu4FTQSiTrb22DhH6RMgFSSPvH3LgW",
+        "confirmationStatus": "finalized",
+        "err": null,
+        "slot": 495242351
+      },
+      {
+        "signature": "4aNMJGUs2ANrwwP6kimeESGUY6GgmWV8VfBSmpXhySxC7QH8oLSjaiasNnRZ5gy8gWP6rQwaHrocgCCS7uKANRt8",
+        "confirmationStatus": "finalized",
+        "err": null,
+        "slot": 495242432
+      }
+    ]
+  },
   "proof": {
     "proofType": "groth16-private-dao-blind-payroll-v1",
     "verificationKeyHash": "bd5066444543c819a220ed3497aa628c57528fea3158e57254cac21050da48b7",
     "publicSignals": [
-      "20294355271151378248934541394292288271884730595587254104652169922663707404900",
-      "20548946384410692948151825158665442674720686223093639477708379296592381308464",
+      "5266102547035021023486369808510023072478239068742065399940556504062800586666",
+      "17276891720324516222000545408092998212417653731711173660072626225097014746473",
       "0",
       "1"
     ]
   },
   "verification": {
-    "verificationId": "verification_bbecffb7-10a3-4f32-93bd-08b121a6c1b3",
-    "token": "ZsbXra8PFeLMpabzJnsO5tGcoPvb0u9LHEfIAJA90gU",
+    "verificationId": "verification_61e38b0a-1324-4207-85ff-999ba0ab80fc",
+    "token": "BglZiRm5Wn8ZjJatkEn2qiGFCe9bV8xhKNUspMuMUSQ",
     "scope": "public",
-    "proofHash": "10152cd61376afe0f9cc68e424dfa7674cd76f38355491c00fb7f4cfe9e92794",
-    "settlementRoot": "fb6b439a6bd1d41797902e0c55d3f2ec17750e6ca57e800a57bfe130dc52b721",
+    "proofHash": "c0e635d2184cffdb238754aa973fff2217e9f2c389b4646669a9697362e9751b",
+    "settlementRoot": "3ca863482a9d2ee47889f90921e60ed389df9465be3edbb954895081887b6003",
     "proofType": "groth16-private-dao-blind-payroll-v1",
-    "expiresAt": "2026-08-28T23:09:52.762Z",
-    "createdAt": "2026-08-27T23:09:55.334Z",
-    "verificationUrl": "/verify/payroll?token=ZsbXra8PFeLMpabzJnsO5tGcoPvb0u9LHEfIAJA90gU"
+    "expiresAt": "2026-09-09T18:50:26.620Z",
+    "createdAt": "2026-09-08T18:50:28.365Z",
+    "verificationUrl": "/verify/payroll?token=BglZiRm5Wn8ZjJatkEn2qiGFCe9bV8xhKNUspMuMUSQ"
   },
   "publicVerification": {
-    "verification_id": "verification_bbecffb7-10a3-4f32-93bd-08b121a6c1b3",
-    "batch_id": "batch_3e3ef5d4-0bfd-4ed8-b451-805a242a2b0d",
+    "verification_id": "verification_61e38b0a-1324-4207-85ff-999ba0ab80fc",
+    "batch_id": "batch_3f024990-f5d6-4b3f-9a2c-5f824892aa87",
     "scope": "public",
-    "proof_hash": "10152cd61376afe0f9cc68e424dfa7674cd76f38355491c00fb7f4cfe9e92794",
-    "settlement_root": "fb6b439a6bd1d41797902e0c55d3f2ec17750e6ca57e800a57bfe130dc52b721",
+    "proof_hash": "c0e635d2184cffdb238754aa973fff2217e9f2c389b4646669a9697362e9751b",
+    "settlement_root": "3ca863482a9d2ee47889f90921e60ed389df9465be3edbb954895081887b6003",
     "status": "active",
-    "expires_at": "2026-08-28T23:09:52.762Z",
-    "created_at": "2026-08-27T23:09:55.334Z",
+    "expires_at": "2026-09-09T18:50:26.620Z",
+    "created_at": "2026-09-08T18:50:28.365Z",
     "revoked_at": null,
     "proofType": "groth16-private-dao-blind-payroll-v1",
-    "verificationUrl": "/verify/payroll?token=ZsbXra8PFeLMpabzJnsO5tGcoPvb0u9LHEfIAJA90gU"
+    "verificationUrl": "/verify/payroll?token=BglZiRm5Wn8ZjJatkEn2qiGFCe9bV8xhKNUspMuMUSQ"
   },
   "explorerUrls": [
-    "https://explorer.solana.com/tx/2hdjJicKnNZtRDe9Fyb4QcBzDFEa47aoQ3CPCN4wvU5WamYakKmXogvqzt6sWMGFpSt24C9aEJA5UEVuq3vzuKKU?cluster=devnet",
-    "https://explorer.solana.com/tx/2VvxRwh4aRHP3n6tJktayMHVeUKmmmCBKE6Pk7nSZVJBMdH7k9TPaBASkx7NsSct2PyRUJ9y8ScLSzGUb66sgeUa?cluster=devnet",
-    "https://explorer.solana.com/tx/5CBQ5TGeEsoNsJdLop9zRq4GjJ2RbcJB9hoGR7siPaP7wzhYDDAKGNRXBDn4TERSSgDGmKE6zjYQyjW49FdzD1MJ?cluster=devnet"
+    "https://explorer.solana.com/tx/5tXeRfnvSQmnDDioM9fVz6hVbSVQaHem6tS3n9M6YJJz2QqLhouot99Nf4RuWpCAKUDL3p4mhSf7vrdGBa6YEUkY?cluster=devnet",
+    "https://explorer.solana.com/tx/2uCMWiDFYREg24P5rFe4645TJGewC7oFHVVyxnVg3qRotSbsDZzjmYGshdiu4FTQSiTrb22DhH6RMgFSSPvH3LgW?cluster=devnet",
+    "https://explorer.solana.com/tx/4aNMJGUs2ANrwwP6kimeESGUY6GgmWV8VfBSmpXhySxC7QH8oLSjaiasNnRZ5gy8gWP6rQwaHrocgCCS7uKANRt8?cluster=devnet"
   ]
 }
