@@ -1,9 +1,9 @@
 {
   "project": "PrivateDAO",
-  "generatedAt": "2026-05-28T01:17:15.094Z",
+  "generatedAt": "2026-09-08T10:39:56.290Z",
   "algorithm": "sha256",
-  "entryCount": 145,
-  "aggregateSha256": "6da62807a5d22e499b8f22d2a34e1cb2f02ec828fe2256172105c7701babde98",
+  "entryCount": 143,
+  "aggregateSha256": "fe99002cf6203559a7d724db961d058d87f5bfbe6bf8af49fce8ac744452c4c0",
   "files": [
     {
       "path": "zk/circuits/private_dao_vote_overlay.circom",
@@ -179,16 +179,6 @@
       "path": "docs/read-node/snapshot.generated.json",
       "sha256": "da94a1e128cd47ff924148c5c18bd420e879263072805976ef5300e725ff72c9",
       "bytes": 63410
-    },
-    {
-      "path": "docs/backend-provider-readiness-2026-05-24.md",
-      "sha256": "ca88153eb1018b6cb0d2fa1dceea393a3cb706c82164da64a9356dd9f078357a",
-      "bytes": 3431
-    },
-    {
-      "path": "docs/backend-provider-readiness-2026-05-24.json",
-      "sha256": "13ca00fa308ea98b8f67d7a00d1151012219454a650bd757388ab99ead578f86",
-      "bytes": 3689
     },
     {
       "path": "docs/competitive/source.json",
@@ -517,13 +507,13 @@
     },
     {
       "path": "docs/supply-chain-attestation.generated.md",
-      "sha256": "7ec3ed0e253ca66414c17fb3a57342ca2791c727e98dbac8966b54857c7fc4d7",
-      "bytes": 1695
+      "sha256": "5881b2d2bb89f546a37f7383aeedd30e11de1019207e809f9a686be529bb087f",
+      "bytes": 1697
     },
     {
       "path": "docs/supply-chain-attestation.generated.json",
-      "sha256": "2b0b9f67587237ac3c5673421300617d2d723af0c152e6a7613e932bed966f15",
-      "bytes": 2021
+      "sha256": "e1253bb4eec898c7f8539f27e78d6131b67fe01b084b24d888a03b9ebe0a75e8",
+      "bytes": 2023
     },
     {
       "path": "docs/wallet-compatibility-matrix.generated.md",
@@ -712,8 +702,8 @@
     },
     {
       "path": "docs/zk-registry.generated.json",
-      "sha256": "4f613d791c2fedc6a2da1a21d7fdd9df6125a47e31084991dcaee59ef633fbf8",
-      "bytes": 8942
+      "sha256": "99172a0e15b3e4b58b219e5603cbbb610b8498bb61ee8e46e8ce6eb913f67c01",
+      "bytes": 11970
     },
     {
       "path": "docs/zk-transcript.generated.md",
