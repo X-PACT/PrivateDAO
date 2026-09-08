@@ -125,6 +125,7 @@ export function canApprove(
   approvals: readonly ApprovalRecord[],
 ): boolean {
   if (policy.preventSelfApproval && actorId === makerId) return false;
+  if (approvals.some((approval) => approval.actorId === actorId)) return false;
   const validApprovals = approvals.filter((approval) => policy.allowedRoles.includes(approval.role));
   return validApprovals.length < policy.requiredApprovals;
 }
