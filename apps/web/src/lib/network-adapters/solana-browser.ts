@@ -37,6 +37,10 @@ export function submitSignedTransaction(
   return connection.sendRawTransaction(signed.serialize(), options);
 }
 
+export function confirmTransaction(connection: SolanaBrowserConnection, signature: string, commitment: Commitment) {
+  return connection.confirmTransaction(signature, commitment);
+}
+
 export async function waitForFinalized(
   connection: SolanaBrowserConnection,
   signature: string,
