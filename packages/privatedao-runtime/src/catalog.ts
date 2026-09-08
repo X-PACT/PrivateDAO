@@ -88,7 +88,11 @@ export const PRODUCT_CATALOG: readonly ProductDescriptor[] = [
 
 export function validateProductCatalog(catalog: readonly ProductDescriptor[] = PRODUCT_CATALOG): string[] {
   const errors: string[] = [];
+  const productIds = new Set<ProductId>();
+  const capabilityIds = new Set<CapabilityId>();
   for (const product of catalog) {
+    if (productIds.has(product.id)) errors.push(`duplicate product ${product.id}`);
+    productIds.add(product.id);
     for (const network of product.networks) {
       try {
         getNetwork(network);
@@ -100,6 +104,8 @@ export function validateProductCatalog(catalog: readonly ProductDescriptor[] = P
       }
     }
     for (const capability of product.capabilities) {
+      if (capabilityIds.has(capability.id)) errors.push(`duplicate capability ${capability.id}`);
+      capabilityIds.add(capability.id);
       if (capability.product !== product.id) errors.push(`${product.id}: capability ${capability.id} has a mismatched product`);
       for (const network of capability.networks) {
         if (!product.networks.includes(network)) errors.push(`${product.id}: capability ${capability.id} uses undeclared network ${network}`);
@@ -131,5 +137,5 @@ export function findProduct(productId: ProductId): ProductDescriptor {
 
 export function supportsProductCapability(productId: ProductId, network: NetworkId, capabilityId: CapabilityId): boolean {
   const product = findProduct(productId);
-  return product.networks.includes(network) && product.capabilities.some((entry) => entry.id === capabilityId);
+  return product.networks.includes(network) && product.capabilities.some((entry) => entry.id === capabilityId && entry.networks.includes(network));
 }
