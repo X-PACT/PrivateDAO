@@ -14,5 +14,5 @@
       "@/*": ["apps/web/src/*"]
     }
   },
-  "include": ["scripts/**/*.ts", "migrations/**/*.ts", "sdk/src/**/*.ts"]
+  "include": ["scripts/**/*.ts", "migrations/**/*.ts", "sdk/src/**/*.ts", "types/**/*.d.ts"]
 }
