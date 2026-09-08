@@ -1,0 +1,46 @@
+{
+  "project": "PrivateDAO",
+  "generatedAt": "2026-04-19T16:54:03.069Z",
+  "status": "partial-source-receipt-closure",
+  "summary": {
+    "requirementCount": 4,
+    "closedRequirementCount": 2,
+    "supportingArtifactCount": 4
+  },
+  "closureRequirements": [
+    {
+      "id": "canonical-settlement-hash",
+      "label": "Canonical settlement hash",
+      "status": "pending",
+      "evidence": "published receipt or verifier-bound hash"
+    },
+    {
+      "id": "payout-object-linkage",
+      "label": "Payout object linkage",
+      "status": "pending",
+      "evidence": "receipt linked to governed payout object"
+    },
+    {
+      "id": "residual-trust-model",
+      "label": "Residual trust model",
+      "status": "closed",
+      "evidence": "explicit written boundary published in docs/canonical-verifier-boundary-decision.md"
+    },
+    {
+      "id": "reviewer-proof-route",
+      "label": "Reviewer proof route",
+      "status": "closed",
+      "evidence": "reviewer-visible route published through docs/settlement-receipt-closure-packet.md and /documents/settlement-receipt-closure-packet"
+    }
+  ],
+  "supportingArtifacts": [
+    "docs/confidential-payout-evidence-packet.md",
+    "docs/canonical-verifier-boundary-decision.md",
+    "docs/magicblock/runtime-evidence.md",
+    "docs/refhe-security-model.md"
+  ],
+  "commands": [
+    "npm run build:settlement-receipt-closure",
+    "npm run verify:settlement-receipt-closure"
+  ]
+}

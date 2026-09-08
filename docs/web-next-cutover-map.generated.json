@@ -1,0 +1,84 @@
+{
+  "project": "PrivateDAO",
+  "generatedAt": "2026-04-10T01:38:59.127Z",
+  "currentLiveSurface": "repo root Next.js export",
+  "nextSurfaceRoot": "apps/web",
+  "status": "live-cutover-map",
+  "mappings": [
+    {
+      "currentEntry": "/?page=proposals",
+      "currentPurpose": "current live home, packs, proposal lifecycle, and product narrative",
+      "nextRoute": "/",
+      "parityStatus": "ready-for-mirror",
+      "note": "Use `/command-center/` for the deeper operator workflow after landing."
+    },
+    {
+      "currentEntry": "/?page=proof",
+      "currentPurpose": "proof center and reviewer flow",
+      "nextRoute": "/proof/",
+      "parityStatus": "ready-for-mirror",
+      "note": "Judge links still need mirror-origin validation before canonical cutover."
+    },
+    {
+      "currentEntry": "/?page=proof&judge=1",
+      "currentPurpose": "judge-focused review surface",
+      "nextRoute": "/proof/?judge=1",
+      "parityStatus": "ready-for-mirror",
+      "note": "Judge-mode query is preserved inside the Next proof surface; mirror-origin validation still remains part of cutover execution."
+    },
+    {
+      "currentEntry": "/?page=security",
+      "currentPurpose": "security, V3 hardening, and launch boundary surface",
+      "nextRoute": "/security/",
+      "parityStatus": "ready-for-mirror",
+      "note": "Security narrative is present in apps/web and exportable today."
+    },
+    {
+      "currentEntry": "/?page=diagnostics",
+      "currentPurpose": "runtime, artifact, and launch-blocker diagnostics",
+      "nextRoute": "/diagnostics/",
+      "parityStatus": "ready-for-mirror",
+      "note": "Diagnostics parity is UI-level; keep docs surface as the reviewer anchor until cutover."
+    },
+    {
+      "currentEntry": "/?page=awards",
+      "currentPurpose": "awards and trust surface",
+      "nextRoute": "/awards/",
+      "parityStatus": "ready-for-mirror",
+      "note": "Awards, pitch, trust packet, and proof links exist in apps/web."
+    },
+    {
+      "currentEntry": "/?page=migrate",
+      "currentPurpose": "migration and Realms-adjacent transition surface inside the current docs app",
+      "nextRoute": "/services/",
+      "parityStatus": "ready-for-mirror",
+      "note": "Services is the canonical migration and commercial landing surface in apps/web."
+    },
+    {
+      "currentEntry": "/?page=protocol",
+      "currentPurpose": "protocol reference and system explanation",
+      "nextRoute": "/security/",
+      "parityStatus": "ready-for-mirror",
+      "note": "Security is now the canonical protocol and hardening surface in apps/web."
+    },
+    {
+      "currentEntry": "/?page=docs&doc=reviewer-fast-path.md",
+      "currentPurpose": "document viewer entrypoint for reviewer packets",
+      "nextRoute": "/documents/reviewer-fast-path/",
+      "parityStatus": "ready-for-mirror",
+      "note": "Curated reviewer packets route to /documents and broader markdown parity is preserved through /viewer/."
+    }
+  ],
+  "commands": [
+    "npm run build:web-next-cutover-map",
+    "npm run verify:web-next-cutover-map",
+    "npm run web:verify:bundle:github",
+    "npm run web:verify:live:github",
+    "npm run verify:web-next-handoff"
+  ],
+  "cutoverBoundary": [
+    "apps/web export at the repo root is the canonical live surface",
+    "preserve docs only as the archive and raw-reference surface under /docs/",
+    "use /documents for curated packets and /viewer for broader repository markdown parity"
+  ]
+}

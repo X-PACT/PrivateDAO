@@ -1,0 +1,106 @@
+{
+  "project": "PrivateDAO",
+  "generatedAt": "2026-05-26T03:06:55.617Z",
+  "network": "devnet",
+  "runLabels": {
+    "canonical": "20260417125017",
+    "multiProposal": "20260407211024",
+    "race": "20260407211024",
+    "resilience": "20260417225004"
+  },
+  "transactionSummary": {
+    "walletCount": 50,
+    "totalTxCount": 185,
+    "totalAttemptCount": 212,
+    "successCount": 180,
+    "failureCount": 32,
+    "retryCount": 0,
+    "averageTxLatencyMs": 1522.9081,
+    "totalExecutionTimeMs": 36058082,
+    "failureRate": 0.1509,
+    "retryRate": 0,
+    "phaseCounts": {
+      "bootstrap": 3,
+      "commit": 42,
+      "execute": 1,
+      "finalize": 1,
+      "fund": 100,
+      "reveal": 35,
+      "zk": 3
+    }
+  },
+  "voting": {
+    "fullLifecycleReport": "docs/load-test-report.md",
+    "bootstrapRegistry": "docs/devnet-bootstrap.json",
+    "txRegistry": "docs/devnet-tx-registry.json",
+    "proposalIsolation": {
+      "proposalCount": 3,
+      "executedCount": 3,
+      "crossProposalRejections": 3,
+      "unexpectedSuccesses": 0,
+      "reportMd": "docs/devnet-multi-proposal-report.md",
+      "reportJson": "docs/devnet-multi-proposal-report.json"
+    }
+  },
+  "zk": {
+    "verificationMode": "offchain-groth16",
+    "onchainVerifier": false,
+    "onchainAnchorCount": 3,
+    "onchainAnchorProposal": "7TKCbcUsrAaQhu3XuCLmXUPo2KCbjDtFF8sxtY6QmuVx",
+    "proofCount": 7,
+    "verifiedProofCount": 7,
+    "layerCounts": {
+      "delegation": 1,
+      "tally": 1,
+      "vote": 5
+    },
+    "registry": "docs/zk-proof-registry.json"
+  },
+  "adversarial": {
+    "totalScenarios": 33,
+    "rejected": 32,
+    "unexpectedSuccesses": 0,
+    "report": "docs/adversarial-report.json"
+  },
+  "resilience": {
+    "failoverRecovered": true,
+    "staleBlockhashRejected": true,
+    "staleBlockhashRecovered": true,
+    "reportMd": "docs/devnet-resilience-report.md",
+    "reportJson": "docs/devnet-resilience-report.json"
+  },
+  "collisions": {
+    "finalizeSuccessCount": 1,
+    "finalizeRejectedCount": 4,
+    "executeSuccessCount": 1,
+    "executeRejectedCount": 4,
+    "finalizeSingleWinner": true,
+    "executeSingleWinner": true,
+    "unexpectedSuccesses": 0,
+    "reportMd": "docs/devnet-race-report.md",
+    "reportJson": "docs/devnet-race-report.json"
+  },
+  "commands": [
+    "npm run test:devnet:all",
+    "npm run test:devnet:multi",
+    "npm run test:devnet:race",
+    "npm run test:devnet:resilience",
+    "npm run build:operational-evidence",
+    "npm run verify:operational-evidence",
+    "npm run verify:all"
+  ],
+  "docs": [
+    "docs/load-test-report.md",
+    "docs/devnet-bootstrap.json",
+    "docs/devnet-tx-registry.json",
+    "docs/performance-metrics.json",
+    "docs/adversarial-report.json",
+    "docs/zk-proof-registry.json",
+    "docs/devnet-multi-proposal-report.md",
+    "docs/devnet-multi-proposal-report.json",
+    "docs/devnet-race-report.md",
+    "docs/devnet-race-report.json",
+    "docs/devnet-resilience-report.md",
+    "docs/devnet-resilience-report.json"
+  ]
+}

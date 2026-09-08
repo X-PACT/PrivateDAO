@@ -1,0 +1,34 @@
+{
+  "project": "PrivateDAO",
+  "generatedAt": "2026-05-24T17:02:47.483Z",
+  "summary": {
+    "realDeviceStatus": "pending-real-device-capture",
+    "monitoringStatus": "testnet-probe-closure-alert-delivery-pending",
+    "settlementStatus": "partial-source-receipt-closure",
+    "realDeviceCompletion": "1/5",
+    "monitoringCompletion": "2/6",
+    "settlementCompletion": "2/4"
+  },
+  "routes": [
+    "/security#real-device-capture-readiness",
+    "/security#monitoring-delivery-readiness",
+    "/services#settlement-receipt-readiness",
+    "/tracks/startup-accelerator",
+    "/tracks/poland-grants"
+  ],
+  "documents": [
+    "docs/real-device-capture-closure-packet.md",
+    "docs/monitoring-delivery-closure-packet.md",
+    "docs/settlement-receipt-closure-packet.md",
+    "docs/monitoring-delivery.generated.md",
+    "docs/settlement-receipt-closure.generated.md",
+    "docs/runtime/real-device.generated.md"
+  ],
+  "commands": [
+    "npm run build:execution-unlock-bundle",
+    "npm run verify:execution-unlock-bundle",
+    "npm run build:real-device-runtime",
+    "npm run build:monitoring-delivery",
+    "npm run build:settlement-receipt-closure"
+  ]
+}

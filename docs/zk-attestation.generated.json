@@ -1,0 +1,89 @@
+{
+  "project": "PrivateDAO",
+  "zkStackVersion": 1,
+  "provingSystem": "groth16",
+  "ptau": {
+    "path": "zk/setup/pot12_final.ptau",
+    "sha256": "ed4298dfb57be7831b9def92e6caa5d584d2c7a1bcf984fb8a9ace6250ed94d8",
+    "bytes": 4720054
+  },
+  "registry": {
+    "path": "docs/zk-registry.generated.json",
+    "sha256": "4f613d791c2fedc6a2da1a21d7fdd9df6125a47e31084991dcaee59ef633fbf8",
+    "bytes": 8942
+  },
+  "transcript": {
+    "path": "docs/zk-transcript.generated.md",
+    "sha256": "557a41261e00a6eee8aa86b048bd8b026bc8db6bcd39312a2e88654452912746",
+    "bytes": 6122
+  },
+  "layerCount": 3,
+  "reviewDocs": [
+    "docs/zk-layer.md",
+    "docs/zk-stack.md",
+    "docs/zk-threat-extension.md",
+    "docs/zk-assumption-matrix.md",
+    "docs/zk-capability-matrix.md",
+    "docs/zk-provenance.md",
+    "docs/zk-verification-flow.md",
+    "docs/zk-transcript.generated.md"
+  ],
+  "verificationCommands": [
+    "npm run build:zk-registry",
+    "npm run build:zk-transcript",
+    "npm run build:zk-attestation",
+    "npm run verify:zk-registry",
+    "npm run verify:zk-transcript",
+    "npm run verify:zk-attestation",
+    "npm run verify:zk-docs",
+    "npm run verify:zk-consistency",
+    "npm run verify:zk-negative",
+    "npm run zk:all"
+  ],
+  "layers": [
+    {
+      "layer": "vote",
+      "circuit": "private_dao_vote_overlay",
+      "publicSignalCount": 6,
+      "commands": {
+        "build": "npm run zk:build:vote",
+        "prove": "npm run zk:prove:vote",
+        "verify": "npm run zk:verify:vote"
+      },
+      "proofSha256": "8b006e248fe3cc9532d6e351ff15e6a1c962668ff51e00112919ff01f1dc8410",
+      "publicSignalsSha256": "274280bc7d44e7dd52969cc806ba16236af08a18aefffc0b9000ac6648377a83",
+      "verificationKeySha256": "d4973d720f547cbebc64affc52ab678d0bc7135f03bb8f6b221df1ebd49d2469"
+    },
+    {
+      "layer": "delegation",
+      "circuit": "private_dao_delegation_overlay",
+      "publicSignalCount": 7,
+      "commands": {
+        "build": "npm run zk:build:delegation",
+        "prove": "npm run zk:prove:delegation",
+        "verify": "npm run zk:verify:delegation"
+      },
+      "proofSha256": "c94d61f9201271edf6e86f4970611d59bfea461afa97b605e007ad1a1bbf7294",
+      "publicSignalsSha256": "715fae38b0d06dd66b637e1c59f30cd38428bc75146b1ed1524a6565ea439c6f",
+      "verificationKeySha256": "bb1fa1187507cd88b428bc4d8120290999907560a3761253ff6a68c2985eaf9b"
+    },
+    {
+      "layer": "tally",
+      "circuit": "private_dao_tally_overlay",
+      "publicSignalCount": 7,
+      "commands": {
+        "build": "npm run zk:build:tally",
+        "prove": "npm run zk:prove:tally",
+        "verify": "npm run zk:verify:tally"
+      },
+      "proofSha256": "d60a9cb872c925ce142d78ffebee443471de12e3026cceb59a183b6e4717739d",
+      "publicSignalsSha256": "f4a395063aa902dc6c943b8941fec71310342cd246d151d9d994e3e85d5046ee",
+      "verificationKeySha256": "9e8aad21b0a5aa74cb169f8856643b9d90f5231016f14b648e03a3d87a649ce6"
+    }
+  ],
+  "boundaries": [
+    "off-chain additive Groth16 stack",
+    "no on-chain verifier integration",
+    "no contract interface changes"
+  ]
+}

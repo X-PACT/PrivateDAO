@@ -1,0 +1,39 @@
+{
+  "generatedAt": "2026-04-09T11:32:52.662Z",
+  "mode": "test-wallet-devnet-proof",
+  "operatorWallet": "4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD",
+  "recipientWallet": "CXqiqoAKTDJEXiz6VJKQiHVyNm6FBvPMxsDm743mRvzt",
+  "programId": "5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx",
+  "dao": "8c6NmAwvN2fQcVupmQJcyNKdGvk2xwBYqLobTEh8EvjG",
+  "governanceMint": "GHqb9aYeCeMTx9BvyRRjC8T1btrRpSddwqPEREe82VB4",
+  "treasury": "7aYwK1LwhGrVQnxvixpbVyLEKq9pBece2zdW6j3EpXXa",
+  "proposal": "6rSbKcQa3iYZe9i6RYmnZiBqiVFsAZJbzp6WGeoRKqpG",
+  "timings": {
+    "votingEnd": 1775734350,
+    "revealEnd": 1775734358,
+    "executionUnlocksAt": 1775734368
+  },
+  "transactions": {
+    "createDao": "2RDviLGPiM39CyDk4K3vzfzME7RS8iUvVmZ168GecEMcrXQjFjzctVK5FqpxwMKY14zqb7ZXbk99gTRGhR6uR2yR",
+    "mintVoting": "5TP8UHbZVmtBfUbNK34Ut9eJdvECFXGk16MU64Z59fJXUhDZRSA8dVBQF3ru69rgzgFBF8UmUXQJVTpLvE7y3N4L",
+    "deposit": "2jg3qv9h1Z2iX5ueYCok3TzMJqUzTEwSmrQMqCykthmijGoGUSmCRDe3qdCKbVjuggPgJdh5eJwcysi7ZB6X47hd",
+    "createProposal": "4A7CM7YCx53Nq5uuvv1fBckpDR3MFuUmR11vRknmEFqe8nVKpCM1XHbakdjHXSWXjTgoXAiukZJD1AGmZk7gUjTF",
+    "commit": "2ygogYvHEKeNpvcXRD5qd2CRjhEBLcWjSuHe9Cs16AS5owhn93B7oaAA2KTDTetS6AEE9qPuds8vLPo468fPgaXf",
+    "reveal": "4MH8PgzQgZ4WCy4A8Yy4sPrqz99fui7bxuJcE4cB7LbzqNmKcitkKZBb6W4NV8PK3R1Grn7xCFebvezYHb8qmHTe",
+    "finalize": "46wvMcbwvi53ixcZthMM7UDRPKKZzBXYQqAUXQ5ANWc8GGYYWCbn6a2sb7xk6NmAZCVRTWrgnVqfyb3Yz1zR6od7",
+    "execute": "3agrGvt6GHuSbDbikwLT4UudzMAayVKRs6dRBvTvcR7BP98rbxUDvmGvW7gr3JGoQhMY1WDENQAtpQNHxeG5nm7G"
+  },
+  "invariants": {
+    "status": "Passed",
+    "isExecuted": true,
+    "yesCapital": "1000000000",
+    "noCapital": "0",
+    "revealCount": "1",
+    "commitCount": "1",
+    "treasuryBeforeDepositLamports": 0,
+    "treasuryBeforeExecuteLamports": 200000000,
+    "treasuryAfterExecuteLamports": 150000000,
+    "recipientBeforeLamports": 50000000,
+    "recipientAfterLamports": 100000000
+  }
+}

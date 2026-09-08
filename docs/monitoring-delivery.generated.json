@@ -1,0 +1,97 @@
+{
+  "project": "PrivateDAO",
+  "generatedAt": "2026-05-24T16:59:31.503Z",
+  "environment": "solana-testnet-production-candidate",
+  "status": "testnet-probe-closure-alert-delivery-pending",
+  "summary": {
+    "ownerCount": 3,
+    "ownerAssignedCount": 3,
+    "deliveryRequirementCount": 6,
+    "closedRequirementCount": 2,
+    "partialRequirementCount": 4,
+    "transcriptRequirementCount": 5,
+    "criticalRuleCount": 2,
+    "highRuleCount": 5
+  },
+  "owners": [
+    {
+      "role": "operations-lead",
+      "scope": "alert destination ownership and response windows",
+      "status": "assigned"
+    },
+    {
+      "role": "rpc-operator",
+      "scope": "primary and fallback RPC probe routing",
+      "status": "assigned"
+    },
+    {
+      "role": "release-manager",
+      "scope": "incident acknowledgment transcript retention",
+      "status": "assigned"
+    }
+  ],
+  "deliveryRequirements": [
+    {
+      "id": "alert-destination-ownership",
+      "label": "Alert destination ownership",
+      "status": "partial",
+      "evidence": "operations owner assigned; external alert destination delivery transcript remains the closure item"
+    },
+    {
+      "id": "rpc-probe-routing",
+      "label": "Primary and fallback RPC probes",
+      "status": "closed",
+      "evidence": "same-domain /healthz and /api/v1/readiness pass on https://api.privatedao.org with QuickNode Testnet RPC redacted in public payloads"
+    },
+    {
+      "id": "proposal-lifecycle-monitor",
+      "label": "Proposal lifecycle monitor",
+      "status": "partial",
+      "evidence": "Solana Testnet chain watcher endpoint returns latest indexed transactions; routed alert transcript still required"
+    },
+    {
+      "id": "treasury-monitor",
+      "label": "Treasury balance monitor",
+      "status": "partial",
+      "evidence": "Token and treasury evidence remains indexed in reviewer packets; balance anomaly delivery transcript still required"
+    },
+    {
+      "id": "proof-and-settlement-monitor",
+      "label": "Proof and settlement monitor",
+      "status": "closed",
+      "evidence": "QuickNode stream stats, freshness endpoint, QVAC runtime proof, Umbra relayer health, and backend provider readiness packet all return HTTP 200"
+    },
+    {
+      "id": "authority-activity-monitor",
+      "label": "Authority activity monitor",
+      "status": "partial",
+      "evidence": "Squads custody evidence and timelock proof are recorded; external authority-activity alert transcript still required"
+    }
+  ],
+  "providerAssignments": {
+    "candidatePrimaryRpc": "QUICKNODE_SOLANA_TESTNET_RPC host secret",
+    "activePrimaryRpc": "https://cosmological-hidden-water.solana-testnet.quiknode.pro/[redacted]",
+    "fallbackRpc": "https://api.testnet.solana.com",
+    "readPath": "backend-indexer",
+    "status": "testnet-provider-probes-live-alert-transcripts-pending"
+  },
+  "transcriptRequirements": [
+    "trigger source and timestamp",
+    "alert destination and delivery result",
+    "acknowledging operator",
+    "response window",
+    "linked runbook and incident note"
+  ],
+  "claimBoundary": "Testnet backend probes are live and verified; external alert routing and incident transcripts remain pending delivery setup",
+  "supportingArtifacts": [
+    "docs/backend-provider-readiness-2026-05-24.md",
+    "docs/readiness-aggregate.md",
+    "docs/quicknode-stream-intelligence.md",
+    "docs/timelock-enforcement-proof-2026-05-23.md"
+  ],
+  "commands": [
+    "npm run record:monitoring-delivery -- /path/to/intake.json",
+    "npm run build:monitoring-delivery",
+    "npm run verify:monitoring-delivery"
+  ]
+}

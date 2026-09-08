@@ -1,0 +1,240 @@
+{
+  "generatedAt": "2026-05-14T08:30:46.803Z",
+  "package": {
+    "name": "@cloak.dev/sdk-devnet",
+    "version": "0.1.5-devnet.1",
+    "resolvedFrom": "./apps/web/node_modules/@cloak.dev/sdk-devnet/dist/index.cjs"
+  },
+  "network": {
+    "solana": "devnet",
+    "rpcUrl": "https://api.devnet.solana.com",
+    "relayUrl": "https://api.devnet.cloak.ag",
+    "programId": "Zc1kHfp4rajSMeASFDwFFgkHRjv7dFQuLheJoQus27h",
+    "mockUsdcMint": "61ro7AExqfk4dZYoCyRzTahahCC2TdUUZ4M5epMPunJf",
+    "nativeSolMint": "So11111111111111111111111111111111111111112",
+    "minimumDepositLamports": 10000000
+  },
+  "capabilityMatrix": [
+    {
+      "group": "Note API",
+      "status": "not used",
+      "reason": "The current integration uses the UTXO transaction surface as the primary SDK path. Legacy note helpers are not needed for this settlement lane."
+    },
+    {
+      "group": "UTXO API",
+      "status": "used",
+      "reason": "The probe imports transact, createUtxo, createZeroUtxo, generateUtxoKeypair, transfer, fullWithdraw, partialWithdraw, swapUtxo, and swapWithChange from @cloak.dev/sdk-devnet."
+    },
+    {
+      "group": "Scanner/compliance",
+      "status": "available",
+      "reason": "scanTransactions, scanAllTransactions, scanTransactionsByViewingKey, and formatComplianceCsv are present. Full history scan needs a funded wallet and persisted UTXOs."
+    },
+    {
+      "group": "Viewing keys + metadata encryption",
+      "status": "used for readiness",
+      "reason": "getNkFromUtxoPrivateKey and metadata encryption exports are present. The probe never prints viewing keys, UTXO private keys, seed material, or raw note payloads."
+    },
+    {
+      "group": "Relay/proof/Merkle helpers",
+      "status": "used for readiness",
+      "reason": "RelayService, buildMerkleTreeFromRelay, computeProofFromChain, and readMerkleTreeState are present; relay health is checked live."
+    },
+    {
+      "group": "Utility modules",
+      "status": "used",
+      "reason": "Fee constants, calculateFeeBigint, NATIVE_SOL_MINT, DEVNET_MOCK_USDC_MINT, and error helpers are imported and recorded for reviewer validation."
+    }
+  ],
+  "docsIndex": {
+    "ok": true,
+    "status": 200,
+    "url": "https://docs.cloak.ag/llms.txt",
+    "containsSdkIndex": true,
+    "containsDevnetGuide": false
+  },
+  "exportsChecked": [
+    {
+      "name": "CLOAK_PROGRAM_ID",
+      "present": true
+    },
+    {
+      "name": "DEVNET_MOCK_USDC_MINT",
+      "present": true
+    },
+    {
+      "name": "NATIVE_SOL_MINT",
+      "present": true
+    },
+    {
+      "name": "MIN_DEPOSIT_LAMPORTS",
+      "present": true
+    },
+    {
+      "name": "transact",
+      "present": true
+    },
+    {
+      "name": "transfer",
+      "present": true
+    },
+    {
+      "name": "partialWithdraw",
+      "present": true
+    },
+    {
+      "name": "fullWithdraw",
+      "present": true
+    },
+    {
+      "name": "swapUtxo",
+      "present": true
+    },
+    {
+      "name": "swapWithChange",
+      "present": true
+    },
+    {
+      "name": "createUtxo",
+      "present": true
+    },
+    {
+      "name": "createZeroUtxo",
+      "present": true
+    },
+    {
+      "name": "generateUtxoKeypair",
+      "present": true
+    },
+    {
+      "name": "getNkFromUtxoPrivateKey",
+      "present": true
+    },
+    {
+      "name": "RelayService",
+      "present": true
+    },
+    {
+      "name": "buildMerkleTreeFromRelay",
+      "present": true
+    },
+    {
+      "name": "computeProofFromChain",
+      "present": true
+    },
+    {
+      "name": "scanTransactions",
+      "present": true
+    },
+    {
+      "name": "formatComplianceCsv",
+      "present": true
+    },
+    {
+      "name": "calculateFeeBigint",
+      "present": true
+    }
+  ],
+  "live": {
+    "relayHealth": {
+      "ok": true,
+      "selected": "https://api.devnet.cloak.ag/health",
+      "attempts": [
+        {
+          "ok": false,
+          "status": 404,
+          "url": "https://api.devnet.cloak.ag/v1/health",
+          "elapsedMs": 801,
+          "bodyPreview": "{\"error\":true,\"message\":\"Route not found\"}",
+          "json": {
+            "error": true,
+            "message": "Route not found"
+          }
+        },
+        {
+          "ok": true,
+          "status": 200,
+          "url": "https://api.devnet.cloak.ag/health",
+          "elapsedMs": 501,
+          "bodyPreview": "{\"checks\":{\"circuit_breaker\":\"Closed\",\"database\":true,\"solana_rpc\":true},\"status\":\"ok\",\"swap_monitor\":{\"deferred_swaps_checked\":0,\"swap_refunds_failed\":0,\"swap_timeouts_closed\":0},\"timestamp\":\"2026-05-14T08:30:49.155394879+00:00\",\"tx_alt_addresses\":[\"C1nufQ1WHM2JQq9S1Sd2demcsd2Z6",
+          "json": {
+            "checks": {
+              "circuit_breaker": "Closed",
+              "database": true,
+              "solana_rpc": true
+            },
+            "status": "ok",
+            "swap_monitor": {
+              "deferred_swaps_checked": 0,
+              "swap_refunds_failed": 0,
+              "swap_timeouts_closed": 0
+            },
+            "timestamp": "2026-05-14T08:30:49.155394879+00:00",
+            "tx_alt_addresses": [
+              "C1nufQ1WHM2JQq9S1Sd2demcsd2Z6wLvznpELQuhnyju"
+            ]
+          }
+        }
+      ]
+    },
+    "solanaProgram": {
+      "ok": true,
+      "executable": true,
+      "owner": "BPFLoaderUpgradeab1e11111111111111111111111",
+      "lamports": 1141440,
+      "dataLength": 36,
+      "slot": 462266542,
+      "solanaCore": "4.0.0-rc.0"
+    },
+    "privateDaoIntentReceipt": {
+      "ok": true,
+      "status": 200,
+      "url": "https://api.privatedao.org/api/v1/private-settlement/intent",
+      "mode": "testnet-intent-receipt",
+      "source": "cloak-read-node-receipt",
+      "executionReference": "cloak-8ec50ad62805b94b82514786",
+      "receiptHash": "8ec50ad62805b94b82514786cf237875cb037d2301b7f5c3a9e076b48fb035d6",
+      "note": "Set CLOAK_RELAY_URL on the hosted read-node to promote this endpoint from signed testnet intent receipt to live rail relay forwarding."
+    },
+    "e2eDeposit": {
+      "enabled": true,
+      "status": "funding-unavailable",
+      "reason": "Solana devnet faucet rejected all temporary-wallet funding attempts during this run.",
+      "airdropAttempts": [
+        {
+          "lamports": 30000000,
+          "ok": false,
+          "error": "429 Too Many Requests:  {\"jsonrpc\":\"2.0\",\"error\":{\"code\": 429, \"message\":\"You've either reached your airdrop limit today or the airdrop faucet has run dry. Please visit https://faucet.solana.com for alternate sources of test SOL\"}, \"id\": \"9f40a17d-1f4b-4d75-bb36-709582c42e9c\" } \r\n"
+        },
+        {
+          "lamports": 17000000,
+          "ok": false,
+          "error": "429 Too Many Requests:  {\"jsonrpc\":\"2.0\",\"error\":{\"code\": 429, \"message\":\"You've either reached your airdrop limit today or the airdrop faucet has run dry. Please visit https://faucet.solana.com for alternate sources of test SOL\"}, \"id\": \"db7ad110-2e6b-471d-9a56-49506648b53e\" } \r\n"
+        },
+        {
+          "lamports": 13000000,
+          "ok": false,
+          "error": "429 Too Many Requests:  {\"jsonrpc\":\"2.0\",\"error\":{\"code\": 429, \"message\":\"You've either reached your airdrop limit today or the airdrop faucet has run dry. Please visit https://faucet.solana.com for alternate sources of test SOL\"}, \"id\": \"37181d41-ebe7-4e2f-9cb9-9913a8e1e28c\" } \r\n"
+        }
+      ],
+      "publicPayer": "6BYoAVp1cgajBgXHxd8zFsGsxQWazTcn7RfrHio8eoSv",
+      "secretsPrinted": false
+    }
+  },
+  "safety": {
+    "secretsPrinted": false,
+    "printedFields": [
+      "public program id",
+      "public relay URL",
+      "public transaction signatures when E2E is enabled",
+      "public read-node receipt reference"
+    ],
+    "omittedFields": [
+      "private keys",
+      "viewing keys",
+      "UTXO private keys",
+      "raw notes",
+      "seed material"
+    ]
+  }
+}

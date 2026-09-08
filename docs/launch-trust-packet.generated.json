@@ -1,0 +1,100 @@
+{
+  "project": "PrivateDAO",
+  "generatedAt": "2026-05-26T03:10:25.642Z",
+  "decision": "blocked-external-steps",
+  "productionMainnetClaimAllowed": false,
+  "custody": {
+    "status": "ready-for-transfer",
+    "implementation": "Squads Protocol",
+    "rehearsalImplementation": "spl-token-2022-multisig",
+    "rehearsalNetwork": "devnet",
+    "rehearsalMultisigAddress": "EqbW1xQRABPNmPM4TMkdygp6j94i7A3DSbgFKTpqXvJE",
+    "rehearsalCreationSignature": "4KSyTYQTzeNpBDWou7GFLmvUpAhLgmNKkNdd4PZqndLpCWmUnArffYRQUwe6zrTmQD5uCbBfBR6pakf9Gz8dviRp",
+    "threshold": "2-of-3",
+    "multisigAddress": "thHmF7VYNtxE1MaDzYXbfPCiq13RF6JwuWnjvDZuSmF",
+    "signerSlotsConfigured": 3,
+    "pendingAuthorityTransfers": [
+      "dao-authority",
+      "treasury-operator-authority"
+    ],
+    "minimumTimelockHours": 48,
+    "configuredTimelockHours": 48,
+    "observedTestnetAuthority": "CALHrBqx6jbzcPn2NVcinqSAHeod65v9LcDuTxsdPqBv",
+    "observedMainnetProgramStatus": "not-found"
+  },
+  "runtime": {
+    "status": "pending-real-device-capture",
+    "completedTargetCount": 1,
+    "targetCount": 5,
+    "pendingTargets": [
+      "Phantom",
+      "Solflare",
+      "Backpack",
+      "Glow"
+    ]
+  },
+  "audit": {
+    "status": "pending-external",
+    "pendingAction": "Complete an external program audit against the exact deployed mainnet candidate and record finding closure or accepted residual risk."
+  },
+  "pilot": {
+    "status": "repo-ready-pending-external-target",
+    "lifecycle": [
+      "Create DAO",
+      "Submit proposal",
+      "Private vote",
+      "Execute treasury"
+    ],
+    "packs": [
+      "Grant Committee Pack",
+      "Fund Governance Pack",
+      "Gaming DAO Pack",
+      "Enterprise DAO Pack"
+    ]
+  },
+  "v3Evidence": {
+    "governance": "docs/governance-hardening-v3.md",
+    "settlement": "docs/settlement-hardening-v3.md",
+    "liveProof": "docs/test-wallet-live-proof-v3.generated.md",
+    "status": "devnet-proven",
+    "boundary": "test-wallet-devnet-only"
+  },
+  "linkedDocs": [
+    "docs/multisig-setup-intake.md",
+    "docs/canonical-custody-proof.generated.md",
+    "docs/custody-proof-reviewer-packet.generated.md",
+    "docs/custody-observed-readouts.json",
+    "docs/production-custody-ceremony.md",
+    "docs/authority-transfer-runbook.md",
+    "docs/external-audit-engagement.md",
+    "docs/audit-handoff.md",
+    "docs/governance-hardening-v3.md",
+    "docs/settlement-hardening-v3.md",
+    "docs/test-wallet-live-proof-v3.generated.md",
+    "docs/runtime/real-device.md",
+    "docs/pilot-onboarding-playbook.md",
+    "docs/pilot-program.md",
+    "docs/trust-package.md",
+    "docs/mainnet-blockers.md"
+  ],
+  "requiredExternalInputs": [
+    "3 production signer public keys",
+    "chosen multisig implementation and address",
+    "48+ hour timelock configuration evidence",
+    "authority transfer signatures, explorer links, and readouts",
+    "real-device wallet captures",
+    "external audit report or signed memo",
+    "first pilot DAO target and operator contact"
+  ],
+  "commands": [
+    "npm run build:launch-trust-packet",
+    "npm run verify:launch-trust-packet",
+    "npm run build:custody-proof-reviewer-packet",
+    "npm run verify:custody-proof-reviewer-packet",
+    "npm run verify:multisig-intake",
+    "npm run verify:launch-ops",
+    "npm run verify:mainnet-blockers",
+    "npm run verify:real-device-runtime",
+    "npm run check:mainnet"
+  ]
+}

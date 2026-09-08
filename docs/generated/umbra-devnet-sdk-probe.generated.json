@@ -1,0 +1,163 @@
+{
+  "generatedAt": "2026-08-27T20:35:25.163Z",
+  "package": {
+    "name": "@umbra-privacy/sdk",
+    "version": "5.0.0-rc.6",
+    "resolvedFrom": "./apps/web/node_modules/@umbra-privacy/sdk/dist/index.cjs"
+  },
+  "network": {
+    "solana": "devnet",
+    "relayerUrl": "https://relayer.api-devnet.umbraprivacy.com",
+    "indexerEndpoint": "https://utxo-indexer.api-devnet.umbraprivacy.com"
+  },
+  "capabilityMatrix": [
+    {
+      "group": "Client setup",
+      "status": "used for readiness",
+      "reason": "getUmbraClient is checked as the browser/client entrypoint; live wallet prompts are intentionally not triggered by this probe."
+    },
+    {
+      "group": "Registration",
+      "status": "available",
+      "reason": "The rc.6 getUserRegistrationProver export is checked; wallet registration remains an explicit browser-signing step."
+    },
+    {
+      "group": "Encrypted balances",
+      "status": "available",
+      "reason": "The rc.6 client exposes encrypted-balance provers; wallet signing is not triggered by this read-only probe."
+    },
+    {
+      "group": "UTXO mixer",
+      "status": "available",
+      "reason": "The rc.6 client exposes claim provers, UTXO fetchers, and Groth16 helpers; real claims require ZK proof data and UTXO slot data."
+    },
+    {
+      "group": "Relayer",
+      "status": "used",
+      "reason": "The devnet relayer health, address, supported mints, and claim lifecycle are fetched live."
+    },
+    {
+      "group": "Compliance",
+      "status": "available",
+      "reason": "The rc.6 client exposes the compliance primitives available in this release without deriving or printing private key material."
+    }
+  ],
+  "docsIndex": {
+    "ok": true,
+    "status": 200,
+    "url": "https://sdk.umbraprivacy.com/llms.txt",
+    "containsRelayer": true,
+    "containsCompliance": true
+  },
+  "exportsChecked": [
+    {
+      "name": "getUmbraClient",
+      "present": true
+    },
+    {
+      "name": "getUmbraRelayer",
+      "present": true
+    },
+    {
+      "name": "getUserRegistrationProver",
+      "present": true
+    },
+    {
+      "name": "getCreateStealthPoolNoteFromNetworkBalanceWithEncryptedAddressProver",
+      "present": true
+    },
+    {
+      "name": "getETAIntoStealthPoolNoteCreatorProver",
+      "present": true
+    },
+    {
+      "name": "getATAIntoStealthPoolNoteCreatorProver",
+      "present": true
+    },
+    {
+      "name": "getClaimReceiverClaimableUtxoIntoEncryptedBalanceProver",
+      "present": true
+    },
+    {
+      "name": "getClaimSelfClaimableUtxoIntoEncryptedBalanceProver",
+      "present": true
+    },
+    {
+      "name": "getClaimSelfClaimableUtxoIntoPublicBalanceProver",
+      "present": true
+    },
+    {
+      "name": "getUtxoDataFetcher",
+      "present": true
+    },
+    {
+      "name": "proveGroth16",
+      "present": true
+    },
+    {
+      "name": "getUmbraRelayer",
+      "present": true
+    },
+    {
+      "name": "pollClaimUntilTerminal",
+      "present": true
+    }
+  ],
+  "live": {
+    "relayerHealth": {
+      "ok": true,
+      "status": 200,
+      "url": "https://relayer.api-devnet.umbraprivacy.com/v1/health",
+      "payload": {
+        "status": "ok"
+      }
+    },
+    "relayerInfo": {
+      "endpoint": "https://relayer.api-devnet.umbraprivacy.com",
+      "address": "3kbpT5EmRBjDZG5XcTYR4LmXb4EYf2AowfCVd55ePG5B",
+      "supportedMints": [
+        "So11111111111111111111111111111111111111112",
+        "DXQwBNGgyQ2BzGWxEriJPVmXYFQBsQbXvfvfSNTaJkL6",
+        "4oG4sjmopf5MzvTHLE8rpVJ2uyczxfsw2K84SUTpNDx7",
+        "Gssm3vfi8s65R31SBdmQRq6cKeYojGgup7whkw4VCiQj"
+      ],
+      "supportedMintCount": 4
+    },
+    "relayerError": null,
+    "privateDaoIntentReceipt": {
+      "ok": true,
+      "status": 200,
+      "url": "https://api.privatedao.org/api/v1/private-settlement/intent",
+      "mode": "testnet-intent-receipt",
+      "source": "umbra-read-node-receipt",
+      "executionReference": "umbra-22fd98be8bb36bc49a615b38",
+      "receiptHash": "22fd98be8bb36bc49a615b3852ee485837d2cf22699de442e453be3e499ff8f4",
+      "claimLifecycle": [
+        "received",
+        "validating",
+        "offsets_reserved",
+        "building_tx",
+        "tx_built",
+        "submitting",
+        "submitted",
+        "awaiting_callback",
+        "callback_received",
+        "finalizing",
+        "completed"
+      ],
+      "note": "Umbra relayer health is checked live. Claim submission still requires SDK-generated ZK proof_account_data and UTXO slot data; this endpoint intentionally does not fabricate cryptographic claim bodies."
+    }
+  },
+  "safety": {
+    "secretsPrinted": false,
+    "omittedFields": [
+      "private keys",
+      "master seed",
+      "viewing keys",
+      "UTXO secrets",
+      "raw proof account data",
+      "bearer tokens"
+    ],
+    "boundary": "This probe verifies SDK exports, relayer readiness, and PrivateDAO intent receipts. Full claim submission remains client-side because it requires wallet signatures, SDK-generated ZK proof account data, and UTXO slot data."
+  }
+}

@@ -1,0 +1,68 @@
+{
+  "project": "PrivateDAO",
+  "generatedAt": "2026-05-26T03:10:16.035Z",
+  "packageDecision": "repository-strong-but-external-blockers-remain",
+  "coreArtifacts": [
+    "docs/mainnet-readiness.generated.md",
+    "docs/mainnet-acceptance-matrix.generated.md",
+    "docs/test-wallet-live-proof-v3.generated.md",
+    "docs/governance-hardening-v3.md",
+    "docs/settlement-hardening-v3.md",
+    "docs/release-ceremony-attestation.generated.md",
+    "docs/release-drill.generated.md",
+    "docs/operational-evidence.generated.md",
+    "docs/runtime-evidence.generated.md",
+    "docs/runtime/real-device.generated.md",
+    "docs/deployment-attestation.generated.json",
+    "docs/go-live-attestation.generated.json",
+    "docs/external-readiness-intake.md"
+  ],
+  "summary": {
+    "acceptedInRepo": 9,
+    "pendingExternal": 3,
+    "notInRepo": 1,
+    "runtimeWalletCount": 5,
+    "declaredSubmissionStatuses": {
+      "governanceLifecycle": "verified",
+      "confidentialPayoutSurface": "verified",
+      "refheProtocolSurface": "verified",
+      "backendReadNodeSurface": "verified",
+      "securityReasoning": "verified",
+      "supplyChainSurface": "verified",
+      "releaseCeremonySurface": "verified",
+      "runtimeEvidenceSurface": "verified",
+      "realDeviceRuntimeIntake": "verified",
+      "operationalEvidenceSurface": "verified",
+      "magicblockRuntimeSurface": "verified",
+      "confidentialManifestEncryption": "verified",
+      "releaseDrillSurface": "verified",
+      "artifactFreshness": "verified",
+      "zkCompanionStack": "verified",
+      "governanceHardeningV3": "verified",
+      "settlementHardeningV3": "verified",
+      "liveProofV3": "verified",
+      "reviewerSurface": "verified",
+      "operationsSurface": "verified",
+      "competitivePositioningSurface": "verified",
+      "strategyEngine": "not-in-repo",
+      "livePerformance": "not-in-repo",
+      "externalAudit": "pending",
+      "mainnetRollout": "pending"
+    }
+  },
+  "readinessAnchor": {
+    "project": "PrivateDAO",
+    "programId": "EP9xE8MJZ6FfyEwLqns6HDdUZBknEa7WGYs1Jzsecuva",
+    "verificationWallet": "4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD"
+  },
+  "commands": [
+    "npm run build:mainnet-readiness-report",
+    "npm run build:mainnet-acceptance-matrix",
+    "npm run build:mainnet-proof-package",
+    "npm run verify:mainnet-readiness-report",
+    "npm run verify:mainnet-acceptance-matrix",
+    "npm run verify:mainnet-proof-package",
+    "npm run verify:all",
+    "bash scripts/check-mainnet-readiness.sh"
+  ]
+}

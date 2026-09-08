@@ -1,0 +1,105 @@
+{
+  "project": "PrivateDAO",
+  "generatedAt": "2026-05-26T03:07:20.014Z",
+  "network": "devnet",
+  "programId": "EP9xE8MJZ6FfyEwLqns6HDdUZBknEa7WGYs1Jzsecuva",
+  "liveWalletLaneCount": 6,
+  "repoScriptProofCount": 6,
+  "browserWalletProofCount": 6,
+  "realDeviceProofCount": 3,
+  "pendingBrowserWalletProofActions": [],
+  "pendingRealDeviceProofActions": [
+    "Reveal Vote",
+    "Finalize Proposal",
+    "Execute Proposal"
+  ],
+  "unsupportedExecutionBoundary": "CustomCPI treasury actions remain outside the executable release boundary.",
+  "actions": [
+    {
+      "action": "initialize_dao",
+      "displayName": "Create DAO",
+      "instructionName": "initialize_dao",
+      "liveWalletLane": true,
+      "repoScriptProofCaptured": true,
+      "browserWalletProofCaptured": true,
+      "realDeviceProofCaptured": true,
+      "supportNote": "DAO bootstrap is live in the web wallet lane. Repo-script proof exists, the full Solflare browser cycle is captured, and Android Solflare now proves the mobile path through DAO bootstrap on Testnet."
+    },
+    {
+      "action": "create_proposal",
+      "displayName": "Create Proposal",
+      "instructionName": "create_proposal",
+      "liveWalletLane": true,
+      "repoScriptProofCaptured": true,
+      "browserWalletProofCaptured": true,
+      "realDeviceProofCaptured": true,
+      "supportNote": "Proposal submit is live in the web wallet lane, including the current SendSol and SendToken treasury motions. The full Solflare browser cycle is captured, and Android Solflare now proves proposal creation on Testnet."
+    },
+    {
+      "action": "commit_vote",
+      "displayName": "Commit Vote",
+      "instructionName": "commit_vote",
+      "liveWalletLane": true,
+      "repoScriptProofCaptured": true,
+      "browserWalletProofCaptured": true,
+      "realDeviceProofCaptured": true,
+      "supportNote": "Commit vote is live in the web wallet lane once a real DAO and proposal already exist in session state. The full Solflare browser cycle is captured, and Android Solflare now proves commit-vote submission on Testnet."
+    },
+    {
+      "action": "reveal_vote",
+      "displayName": "Reveal Vote",
+      "instructionName": "reveal_vote",
+      "liveWalletLane": true,
+      "repoScriptProofCaptured": true,
+      "browserWalletProofCaptured": true,
+      "realDeviceProofCaptured": false,
+      "supportNote": "Reveal vote is live in the web wallet lane once a live commit already exists in the same session. The full Solflare browser cycle is captured; Android remains in capture expansion for this stage."
+    },
+    {
+      "action": "finalize_proposal",
+      "displayName": "Finalize Proposal",
+      "instructionName": "finalize_proposal",
+      "liveWalletLane": true,
+      "repoScriptProofCaptured": true,
+      "browserWalletProofCaptured": true,
+      "realDeviceProofCaptured": false,
+      "supportNote": "Finalize proposal is live in the web wallet lane. Repo-script proof exists and the full Solflare browser cycle is captured; Android remains in capture expansion for this stage."
+    },
+    {
+      "action": "execute_proposal",
+      "displayName": "Execute Proposal",
+      "instructionName": "execute_proposal",
+      "liveWalletLane": true,
+      "repoScriptProofCaptured": true,
+      "browserWalletProofCaptured": true,
+      "realDeviceProofCaptured": false,
+      "supportNote": "Execute proposal is live in the web wallet lane for standard, SendSol, and SendToken proposals. The full Solflare browser cycle is captured; Android capture expansion remains pending and CustomCPI stays outside the current executable release boundary."
+    }
+  ],
+  "linkedDocs": [
+    "docs/test-wallet-live-proof.generated.md",
+    "docs/test-wallet-live-proof-v3.generated.md",
+    "docs/runtime-evidence.generated.md",
+    "docs/runtime/browser-wallet.generated.md",
+    "docs/runtime/browser-wallet.md",
+    "docs/runtime/real-device.generated.md",
+    "docs/runtime/real-device.md",
+    "docs/launch-trust-packet.generated.md",
+    "docs/treasury-reviewer-packet.generated.md"
+  ],
+  "commands": [
+    "npm run live-proof",
+    "npm run live-proof:v3",
+    "npm run build:governance-runtime-proof",
+    "npm run verify:governance-runtime-proof",
+    "npm run build:browser-wallet-runtime",
+    "npm run verify:browser-wallet-runtime",
+    "npm run build:real-device-runtime",
+    "npm run verify:real-device-runtime"
+  ],
+  "notes": [
+    "This packet separates live web wallet capability from runtime proof capture so the product does not overclaim based on shipped code alone.",
+    "Repo-script proof exists for the governance core lifecycle, the full Solflare browser cycle is captured on the live web route, and Android Solflare now proves the mobile path through Create DAO, Create Proposal, and Commit Vote.",
+    "The web wallet lane currently covers Create DAO, Create Proposal, Commit Vote, Reveal Vote, Finalize Proposal, and Execute Proposal for standard, SendSol, and SendToken proposals."
+  ]
+}
