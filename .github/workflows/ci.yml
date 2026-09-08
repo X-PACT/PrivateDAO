@@ -48,9 +48,10 @@ jobs:
 
       - name: Install dependencies
         run: |
+          test -f "$GITHUB_WORKSPACE/package.json"
           for attempt in 1 2 3; do
-            rm -rf node_modules
-            if npm install --package-lock=false --include=dev --include=optional --ignore-scripts --no-audit --no-fund --legacy-peer-deps; then
+            rm -rf "$GITHUB_WORKSPACE/node_modules"
+            if npm install --prefix "$GITHUB_WORKSPACE" --package-lock=false --include=dev --include=optional --ignore-scripts --no-audit --no-fund --legacy-peer-deps; then
               break
             fi
             if [ "$attempt" -eq 3 ]; then
@@ -60,9 +61,9 @@ jobs:
             echo "npm install failed on attempt ${attempt}; retrying" >&2
             sleep $((attempt * 10))
           done
-          test -d node_modules
-          test -x node_modules/.bin/ts-node
-          test -x node_modules/.bin/tsc
+          test -d "$GITHUB_WORKSPACE/node_modules"
+          test -x "$GITHUB_WORKSPACE/node_modules/.bin/ts-node"
+          test -x "$GITHUB_WORKSPACE/node_modules/.bin/tsc"
 
       - name: Create local test wallet
         run: |
