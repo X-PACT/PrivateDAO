@@ -50,14 +50,14 @@ jobs:
         run: |
           for attempt in 1 2 3; do
             rm -rf node_modules
-            if npm ci --ignore-scripts --no-audit --no-fund --legacy-peer-deps; then
+            if npm install --package-lock=false --ignore-scripts --no-audit --no-fund --legacy-peer-deps; then
               break
             fi
             if [ "$attempt" -eq 3 ]; then
-              echo "npm ci failed after ${attempt} attempts" >&2
+              echo "npm install failed after ${attempt} attempts" >&2
               exit 1
             fi
-            echo "npm ci failed on attempt ${attempt}; retrying" >&2
+            echo "npm install failed on attempt ${attempt}; retrying" >&2
             sleep $((attempt * 10))
           done
           test -x node_modules/.bin/ts-node
