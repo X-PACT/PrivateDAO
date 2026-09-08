@@ -9,12 +9,14 @@ import type {
   CapabilityId,
   NetworkId,
 } from "./index.js";
+import { isNetworkAvailable } from "./networks.js";
 
 export type KernelErrorCode =
   | "INVALID_INTENT"
   | "DUPLICATE_IDEMPOTENCY_KEY"
   | "PROVIDER_NOT_FOUND"
   | "CAPABILITY_UNSUPPORTED"
+  | "UNSUPPORTED_NETWORK"
   | "EXECUTION_NOT_FOUND"
   | "INVALID_STATE"
   | "PROVIDER_FAILURE";
@@ -68,6 +70,13 @@ export class InMemoryProviderRegistry implements ProviderRegistry {
   register(provider: KernelProvider): void {
     if (this.providers.has(provider.id)) {
       throw new KernelError("PROVIDER_FAILURE", `Provider is already registered: ${provider.id}`);
+    }
+    const unavailableNetwork = provider.networks.find((network) => !isNetworkAvailable(network));
+    if (unavailableNetwork) {
+      throw new KernelError("UNSUPPORTED_NETWORK", "A provider cannot be registered for a network without an available adapter.", {
+        network: unavailableNetwork,
+        provider: provider.id,
+      });
     }
     this.providers.set(provider.id, provider);
   }
