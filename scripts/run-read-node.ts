@@ -1883,7 +1883,6 @@ async function fetchTxlineJson(pathname: string) {
         "X-Api-Token": txlineApiToken,
       },
       signal: controller.signal,
-      cache: "no-store",
     });
     if (!response.ok) throw new Error(`TxLINE ${pathname} returned HTTP ${response.status}`);
     return await response.json();
@@ -1900,10 +1899,11 @@ async function startTxlineGuestSession() {
       method: "POST",
       headers: { Accept: "application/json" },
       signal: controller.signal,
-      cache: "no-store",
     });
     const contentType = response.headers.get("content-type") ?? "";
-    const payload = contentType.includes("application/json") ? await response.json() : { token: await response.text() };
+    const payload = contentType.includes("application/json")
+      ? ((await response.json()) as Record<string, unknown>)
+      : { token: await response.text() };
     if (!response.ok) {
       throw new Error(`TxLINE guest auth returned HTTP ${response.status}`);
     }

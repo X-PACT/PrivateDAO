@@ -2,7 +2,7 @@
 import fs from "fs";
 import path from "path";
 import { createDecipheriv, createHash } from "crypto";
-import { parseArgs } from "./utils";
+import { parseArgs } from "./utils.js";
 
 type EncryptedManifest = {
   project: string;
