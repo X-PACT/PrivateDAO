@@ -159,3 +159,5 @@ export type {
 } from "./protocol.js";
 export { InMemoryAuditLog, InMemoryJobStore, isTerminalJobState, nextRetryState } from "./jobs.js";
 export type { AuditEvent, AuditLog, JobState, JobStore, ProtocolJob } from "./jobs.js";
+export { TransportBackedNetworkAdapter } from "./adapters.js";
+export type { AdapterTransport } from "./adapters.js";

@@ -14,6 +14,8 @@ Network-specific adapters belong outside this package and must implement `Kernel
 
 `ProtocolJob` and `AuditEvent` define the shared asynchronous-job and append-only audit shapes. The included in-memory stores are test/composition utilities only; production services must provide durable, tenant-isolated persistence and must not place employee plaintext, salaries, recipient data, secrets, or private keys in audit metadata.
 
+`TransportBackedNetworkAdapter` is the concrete boundary for a real network integration. It accepts an injected transport, validates that the network is currently available, filters capabilities by network, and delegates observed preparation, submission, status, receipts, and fee estimates. It has no mock success path and does not contain an RPC client or signing key.
+
 `PRODUCT_CATALOG` is the single capability surface for the current release. It intentionally lists only Solana Devnet as available until another network has a real provider, transaction lifecycle, receipt path, and independent test evidence.
 
 `NETWORK_MATRIX` records the requested network roadmap without making unsupported claims. Planned entries are metadata only and cannot be resolved by a provider registry until an adapter is implemented and tested.
