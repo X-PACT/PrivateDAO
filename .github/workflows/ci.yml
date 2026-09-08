@@ -84,6 +84,9 @@ jobs:
       - name: Non-real-code scan
         run: bash scripts/verify.sh scan
 
+      - name: Runtime kernel typecheck
+        run: npm run typecheck:runtime
+
       - name: Unified review and ops verification
         run: npm run verify:all
 

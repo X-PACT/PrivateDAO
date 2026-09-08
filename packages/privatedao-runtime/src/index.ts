@@ -124,3 +124,10 @@ export interface ProofReference {
 export interface ProtocolReceipt<TResult = unknown> extends ExecutionReceipt<TResult> {
   proof?: ProofReference;
 }
+
+export { InMemoryProviderRegistry, KernelError, PrivateDaoKernel, reconcileSettlements } from "./kernel.js";
+export type {
+  KernelErrorCode,
+  ReconciliationLine,
+  ReconciliationResult,
+} from "./kernel.js";

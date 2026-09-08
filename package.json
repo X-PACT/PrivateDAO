@@ -82,6 +82,7 @@
     "verify:supabase-receipts": "node scripts/verify-supabase-receipts.mjs",
     "test": "bash scripts/run-local-anchor-suite.sh all",
     "typecheck": "tsc --noEmit",
+    "typecheck:runtime": "tsc --noEmit -p packages/privatedao-runtime/tsconfig.json",
     "demo": "bash scripts/run-local-anchor-suite.sh demo tests/demo.ts",
     "test:core": "bash scripts/run-local-anchor-suite.sh core tests/private-dao.ts",
     "test:core:anchor": "bash scripts/run-local-anchor-suite.sh core tests/private-dao.ts",
