@@ -186,6 +186,9 @@ export class PrivateDaoKernel {
       this.emit({ name: "execution.submit.started", executionId });
       try {
         const result = await record.provider.submit(record.prepared, signedPayload);
+        if (result.executionId !== executionId || result.signatures.length === 0) {
+          throw new Error("Provider returned an invalid submission result.");
+        }
         record.submission = { executionId: result.executionId, signatures: [...result.signatures] };
         record.state = "submitted";
         this.emit({
@@ -213,6 +216,7 @@ export class PrivateDaoKernel {
     const record = this.getRecord(executionId);
     try {
       const status = await record.provider.status(executionId);
+      if (status.executionId !== executionId) throw new Error("Provider returned status for a different execution.");
       record.state = status.state;
       this.emit({
         name: "execution.status.updated",
@@ -232,6 +236,7 @@ export class PrivateDaoKernel {
     const record = this.getRecord(executionId);
     try {
       const receipt = await record.provider.receipt<TResult>(executionId);
+      if (receipt.executionId !== executionId) throw new Error("Provider returned a receipt for a different execution.");
       record.receipt = receipt;
       record.state = receipt.state;
       this.emit({
