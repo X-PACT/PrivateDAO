@@ -2,7 +2,7 @@ import crypto from "crypto";
 import fs from "fs";
 import path from "path";
 
-import { loadProofRegistry } from "./lib/proof-registry";
+import { loadProofRegistry } from "./lib/proof-registry.js";
 
 type PdaoMetadata = {
   name: string;

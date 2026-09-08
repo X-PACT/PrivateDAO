@@ -1,6 +1,6 @@
 import fs from "fs";
 import path from "path";
-import { loadProofRegistry } from "./lib/proof-registry";
+import { loadProofRegistry } from "./lib/proof-registry.js";
 
 const LIVE_PROOF = path.resolve("docs/live-proof.md");
 const DEVNET_CONFIG = path.resolve("docs/ranger-strategy-config.devnet.json");

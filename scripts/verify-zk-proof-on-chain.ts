@@ -2,7 +2,7 @@ import * as anchor from "@coral-xyz/anchor";
 import { clusterApiUrl, Connection, Keypair, PublicKey } from "@solana/web3.js";
 import fs from "fs";
 import path from "path";
-import { loadProofRegistry } from "./lib/proof-registry";
+import { loadProofRegistry } from "./lib/proof-registry.js";
 
 type LayerName = "vote" | "delegation" | "tally";
 
