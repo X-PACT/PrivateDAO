@@ -72,7 +72,7 @@
     "build:web-next-doc-viewer-plan": "ts-node scripts/build-web-next-doc-viewer-plan.ts",
     "verify:web-next-doc-viewer-plan": "ts-node scripts/verify-web-next-doc-viewer-plan.ts",
     "web:lint": "npm --prefix apps/web run lint",
-    "start:read-node": "TS_NODE_PREFER_TS_EXTS=true ts-node scripts/run-read-node.ts",
+    "start:read-node": "TS_NODE_FILES=true TS_NODE_PREFER_TS_EXTS=true ts-node scripts/run-read-node.ts",
     "start:chain-watcher": "TS_NODE_PREFER_TS_EXTS=true ts-node scripts/chain-watcher.ts",
     "probe:qvac-runtime": "node scripts/probe-qvac-sdk.mjs",
     "probe:cloak-devnet-sdk": "node scripts/probe-cloak-devnet-sdk.mjs",
