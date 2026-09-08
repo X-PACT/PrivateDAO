@@ -4,11 +4,12 @@ import { useMemo, useState } from "react";
 import { ArrowRight, CheckCircle2, Copy, ShieldCheck, Wallet } from "lucide-react";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { Buffer } from "buffer";
-import { Connection, PublicKey, SystemProgram, Transaction, TransactionInstruction } from "@solana/web3.js";
+import { PublicKey, SystemProgram, Transaction, TransactionInstruction } from "@solana/web3.js";
 import { createTransferCheckedInstruction, getAssociatedTokenAddress, TOKEN_PROGRAM_ID } from "@solana/spl-token";
 
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { confirmTransaction, createSolanaBrowserConnection } from "@/lib/network-adapters/solana-browser";
 
 type LicenseType = "COMMUNITY" | "PROFESSIONAL" | "ORGANIZATION" | "ENTERPRISE";
 type PaymentAsset = "USDC_SOL" | "PDAO_SOL" | "USDC_ETH" | "SOL" | "ETH" | "BTC" | "WBTC" | "ZEC" | "USDT" | "DAI";
@@ -78,7 +79,7 @@ const assetOptions: Array<{ value: PaymentAsset; label: string }> = [
 
 const commercialCheckoutApiBase = "https://api.privatedao.org/api/v1/commercial/orders";
 const commercialControlPlaneBase = "https://api.privatedao.org";
-const solanaConnection = new Connection("https://rpc.solanatracker.io/public", "confirmed");
+const solanaConnection = createSolanaBrowserConnection("https://rpc.solanatracker.io/public", "confirmed");
 
 const contactLinks = [
   { label: "Telegram", href: "https://t.me/privateDAOOS" },
@@ -163,7 +164,7 @@ export function CommercialCheckout() {
       }
       transaction.add(new TransactionInstruction({ keys: [], programId: new PublicKey("MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr"), data: Buffer.from(order.memo, "utf8") }));
       const signature = await sendTransaction(transaction, solanaConnection);
-      await solanaConnection.confirmTransaction(signature, "confirmed");
+      await confirmTransaction(solanaConnection, signature, "confirmed");
       setPaymentHash(signature);
       await verifyPayment(signature);
     } catch (paymentError) { setError(paymentError instanceof Error ? paymentError.message : "Wallet payment failed."); setLoading(null); }

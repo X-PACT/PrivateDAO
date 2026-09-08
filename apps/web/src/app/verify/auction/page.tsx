@@ -2,11 +2,12 @@
 
 import { useEffect, useState } from "react";
 import { AnchorProvider, Program, type Idl } from "@coral-xyz/anchor";
-import { Connection, PublicKey } from "@solana/web3.js";
+import { PublicKey } from "@solana/web3.js";
 import { CheckCircle2, Loader2, ShieldAlert } from "lucide-react";
 
 import { OperationsShell } from "@/components/operations-shell";
 import { AUCTION_PROGRAM_ID, AUCTION_SOLANA_NETWORK, AUCTION_SOLANA_RPC_URL } from "@/lib/privatedao-auction-client";
+import { createSolanaBrowserConnection, readSignatureStatuses } from "@/lib/network-adapters/solana-browser";
 
 type Receipt = {
   solanaSignature: string;
@@ -44,7 +45,7 @@ export default function AuctionReceiptPage() {
         const response = await fetch("/idl/privatedao_auction.json", { cache: "no-store" });
         if (!response.ok) throw new Error("The auction verifier is not available in this build.");
         const idl = (await response.json()) as Idl;
-        const connection = new Connection(AUCTION_SOLANA_RPC_URL, "confirmed");
+        const connection = createSolanaBrowserConnection(AUCTION_SOLANA_RPC_URL, "confirmed");
         const readOnlyWallet = {
           publicKey: receiptKey,
           signTransaction: async () => { throw new Error("Read-only verifier"); },
@@ -59,7 +60,7 @@ export default function AuctionReceiptPage() {
           setState("pending");
           return;
         }
-        const status = await connection.getSignatureStatuses([account.solanaSignature]);
+        const status = await readSignatureStatuses(connection, [account.solanaSignature]);
         const confirmed = Boolean(status.value[0]?.confirmationStatus === "confirmed" || status.value[0]?.confirmationStatus === "finalized");
         setSignatureConfirmed(confirmed);
         setState(confirmed ? "verified" : "pending");

@@ -1,10 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { Connection, clusterApiUrl } from "@solana/web3.js";
+import { clusterApiUrl } from "@solana/web3.js";
 
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { createSolanaBrowserConnection } from "@/lib/network-adapters/solana-browser";
 
 type WalletOrSnsInputProps = {
   label: string;
@@ -29,7 +30,7 @@ export async function resolveSnsName(domainInput: string) {
   if (!normalizedDomain) throw new Error("Enter a .sol domain first.");
 
   const [{ resolve }] = await Promise.all([import("@bonfida/spl-name-service")]);
-  const connection = new Connection(process.env.NEXT_PUBLIC_SOLANA_MAINNET_RPC_URL?.trim() || clusterApiUrl("mainnet-beta"), "confirmed");
+  const connection = createSolanaBrowserConnection(process.env.NEXT_PUBLIC_SOLANA_MAINNET_RPC_URL?.trim() || clusterApiUrl("mainnet-beta"), "confirmed");
   const publicKey = await resolve(connection, normalizedDomain);
   return {
     domain: normalizedDomain,
