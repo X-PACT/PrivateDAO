@@ -12,6 +12,8 @@ Network-specific adapters belong outside this package and must implement `Kernel
 
 `NetworkAdapter` and `WalletSigner` define the integration boundary for real providers. Wallet signing is delegated to an injected wallet session; this package never accepts or stores private keys. `ProtocolRegistry` and its authorization policy types keep product actions, versions, roles, and permissions consistent across REST, SDK, MCP, and agent surfaces. The registry is an in-memory contract implementation for tests and composition; production authentication and persistence remain the responsibility of the application backend.
 
+`ProtocolJob` and `AuditEvent` define the shared asynchronous-job and append-only audit shapes. The included in-memory stores are test/composition utilities only; production services must provide durable, tenant-isolated persistence and must not place employee plaintext, salaries, recipient data, secrets, or private keys in audit metadata.
+
 `PRODUCT_CATALOG` is the single capability surface for the current release. It intentionally lists only Solana Devnet as available until another network has a real provider, transaction lifecycle, receipt path, and independent test evidence.
 
 `NETWORK_MATRIX` records the requested network roadmap without making unsupported claims. Planned entries are metadata only and cannot be resolved by a provider registry until an adapter is implemented and tested.
