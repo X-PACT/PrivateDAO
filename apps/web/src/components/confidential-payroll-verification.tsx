@@ -11,7 +11,7 @@ const demoRows: PayrollRow[] = [
   { employeeRef: "employee-redacted-03", grossCents: 640000, taxBps: 1800, deductionsCents: 7000, payoutKey: "payout-03" },
 ];
 const policy = { policyId: "privatedao-payroll-demo-v1", budgetCents: 2500000, maxTaxBps: 2500, allowZeroDeductions: true };
-type Receipt = { receipt_id: string; canonical_record_digest: string; verification_status: string };
+type Receipt = { receipt_id: string; canonical_record_digest: string; verification_status: string; anchor_status?: string; anchor_error?: string };
 
 export function ConfidentialPayrollVerification() {
   const [rows] = useState<PayrollRow[]>(demoRows);
@@ -34,7 +34,10 @@ export function ConfidentialPayrollVerification() {
       const response = await fetch(publicRecordApiUrl("/records/verify"), { method: "POST", headers: { "Content-Type": "application/json", "Idempotency-Key": "payroll-" + crypto.randomUUID() }, body: JSON.stringify({ record, schema, public_fields: ["payroll_status", "policy_id", "employee_count", "budget_satisfied", "tax_policy_satisfied", "arithmetic_satisfied", "duplicate_payouts", "settlement_status", "privacy_notice"] }) });
       const body = await response.json();
       if (!response.ok || !body.ok) throw new Error(body.error || "Blind/Record Verification was unavailable.");
-      setCalculation(result); setReceipt(body.receipt); setStatus("The existing PrivateDAO Record Verification engine issued a portable payroll certificate.");
+      setCalculation(result); setReceipt(body.receipt);
+      setStatus(body.receipt.anchor_status === "failed"
+        ? "Payroll claims verified locally, but the Solana anchor failed. No on-chain payroll certificate was issued."
+        : "The existing PrivateDAO Record Verification engine issued a portable payroll certificate.");
     } catch (error) { setStatus(error instanceof Error ? error.message : "Payroll proof failed."); } finally { setBusy(false); }
   }
   async function copyLink() { if (!receipt) return; await navigator.clipboard.writeText(window.location.origin + "/verify/payroll?receiptId=" + encodeURIComponent(receipt.receipt_id)); setCopied(true); window.setTimeout(() => setCopied(false), 1600); }
@@ -46,6 +49,6 @@ export function ConfidentialPayrollVerification() {
     <div className="mt-5 rounded-2xl border border-white/10 bg-black/20 p-4 text-sm text-white/70"><div className="flex items-center gap-2 text-emerald-100"><CheckCircle2 className="h-4 w-4" /> {preview?.budgetSatisfied ? "Approved budget satisfied" : "Budget policy needs review"}</div><div className="mt-2">Employee-level values, names, wallets, and individual taxes remain local.</div></div>
     <div className="mt-5 flex flex-wrap gap-3"><button type="button" disabled={busy} onClick={() => void generateProof()} className="inline-flex items-center gap-2 rounded-xl bg-emerald-300 px-4 py-2 text-sm font-semibold text-slate-950 disabled:opacity-50">{busy ? "Issuing certificate..." : "Generate verified payroll link"} <FileCheck2 className="h-4 w-4" /></button>{receipt && <button type="button" onClick={() => void copyLink()} className="inline-flex items-center gap-2 rounded-xl border border-white/15 px-4 py-2 text-sm text-white"><Copy className="h-4 w-4" />{copied ? "Copied" : "Copy verification link"}</button>}</div>
     <div className="mt-4 rounded-xl border border-white/10 bg-black/20 p-3 text-xs leading-5 text-white/60">{status}</div>
-    {receipt && calculation && <div className="mt-4 rounded-2xl border border-emerald-300/20 bg-emerald-300/[0.06] p-4 text-sm text-white/75"><div className="text-emerald-100">VERIFIED by PrivateDAO Record Verification</div><div className="mt-2 break-all font-mono text-xs text-cyan-100">{window.location.origin + "/verify/payroll?receiptId=" + receipt.receipt_id}</div><div className="mt-2 text-xs">The certificate proves the policy and arithmetic claims; settlement remains explicitly marked not-yet-settled until the Umbra Devnet lane is executed.</div></div>}
+    {receipt && calculation && <div className={`mt-4 rounded-2xl border p-4 text-sm text-white/75 ${receipt.anchor_status === "failed" ? "border-amber-300/20 bg-amber-300/[0.06]" : "border-emerald-300/20 bg-emerald-300/[0.06]"}`}><div className={receipt.anchor_status === "failed" ? "text-amber-100" : "text-emerald-100"}>{receipt.anchor_status === "failed" ? "VERIFIED LOCALLY; ON-CHAIN ANCHOR FAILED" : "VERIFIED by PrivateDAO Record Verification"}</div><div className="mt-2 break-all font-mono text-xs text-cyan-100">{window.location.origin + "/verify/payroll?receiptId=" + receipt.receipt_id}</div><div className="mt-2 text-xs">{receipt.anchor_status === "failed" ? (receipt.anchor_error || "The Solana anchor did not complete.") : "The certificate proves the policy and arithmetic claims; settlement remains explicitly marked not-yet-settled until the Umbra Devnet lane is executed."}</div></div>}
   </section>;
 }
