@@ -6,6 +6,7 @@ import { PublicKey, Transaction, TransactionInstruction } from "@solana/web3.js"
 
 import { buttonVariants } from "@/components/ui/button";
 import { captureVisitorTransaction } from "@/lib/visitor-transaction-capture";
+import { confirmTransaction, latestBlockhash } from "@/lib/network-adapters/solana-browser";
 import { buildSolanaTxUrl, SOLANA_NETWORK_LABEL } from "@/lib/solana-network";
 import { cn } from "@/lib/utils";
 
@@ -540,7 +541,7 @@ export function PrivacyExecutionClaimConsole({ compact = false }: { compact?: bo
     setStatus(`Encrypting ${selectedClaim.label} claim locally before anchoring it on ${SOLANA_NETWORK_LABEL}...`);
 
     try {
-      const latestBlockhash = await connection.getLatestBlockhash("confirmed");
+      const recentBlockhash = await latestBlockhash(connection, "confirmed");
       const createdAt = new Date().toISOString();
       const packet = await buildEncryptedClaimPacket({
         claim: selectedClaim,
@@ -551,8 +552,8 @@ export function PrivacyExecutionClaimConsole({ compact = false }: { compact?: bo
 
       const transaction = new Transaction({
         feePayer: publicKey,
-        blockhash: latestBlockhash.blockhash,
-        lastValidBlockHeight: latestBlockhash.lastValidBlockHeight,
+        blockhash: recentBlockhash.blockhash,
+        lastValidBlockHeight: recentBlockhash.lastValidBlockHeight,
       }).add(
         new TransactionInstruction({
           keys: [],
@@ -578,11 +579,12 @@ export function PrivacyExecutionClaimConsole({ compact = false }: { compact?: bo
       setSignature(nextSignature);
       setStatus(`Signature received. Confirming ${selectedClaim.label} claim on ${SOLANA_NETWORK_LABEL}...`);
 
-      await connection.confirmTransaction(
+      await confirmTransaction(
+        connection,
         {
           signature: nextSignature,
-          blockhash: latestBlockhash.blockhash,
-          lastValidBlockHeight: latestBlockhash.lastValidBlockHeight,
+          blockhash: recentBlockhash.blockhash,
+          lastValidBlockHeight: recentBlockhash.lastValidBlockHeight,
         },
         "confirmed",
       );

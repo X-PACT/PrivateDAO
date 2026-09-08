@@ -8,6 +8,12 @@ import { Buffer } from "buffer";
 
 import { buttonVariants } from "@/components/ui/button";
 import { buildSolanaTxUrl, SOLANA_NETWORK_LABEL } from "@/lib/solana-network";
+import {
+  confirmTransaction,
+  latestBlockhash,
+  readTokenAccountBalance,
+  readTransaction,
+} from "@/lib/network-adapters/solana-browser";
 import { persistOperationReceipt } from "@/lib/supabase/operation-receipts";
 import { getTreasuryReceiveConfig } from "@/lib/treasury-receive-config";
 import { captureVisitorTransaction } from "@/lib/visitor-transaction-capture";
@@ -209,13 +215,13 @@ export function TestnetBillingRehearsal() {
     setLogs([]);
 
     try {
-      const latestBlockhash = await connection.getLatestBlockhash("confirmed");
+      const recentBlockhash = await latestBlockhash(connection, "confirmed");
       const memoMode = usesStablecoinRail ? "SPL" : "SOL";
       const memo = `PDAO:${selectedSku.memoLabel}:${memoMode}:${Date.now()}`;
       const transaction = new Transaction({
         feePayer: publicKey,
-        blockhash: latestBlockhash.blockhash,
-        lastValidBlockHeight: latestBlockhash.lastValidBlockHeight,
+        blockhash: recentBlockhash.blockhash,
+        lastValidBlockHeight: recentBlockhash.lastValidBlockHeight,
       });
 
       transaction.add(
@@ -237,7 +243,7 @@ export function TestnetBillingRehearsal() {
         const destinationAta = getAssociatedTokenAddress(destinationOwner, mint, tokenProgram);
         const decimals = selectedAsset.decimals ?? 6;
         const amountRaw = toTokenAmountRaw(selectedSku.amount, decimals);
-        const balance = await connection.getTokenAccountBalance(sourceAta).catch(() => null);
+        const balance = await readTokenAccountBalance(connection, sourceAta).catch(() => null);
         const currentAmount = BigInt(balance?.value.amount ?? "0");
         if (currentAmount < amountRaw) {
           setStatus(
@@ -290,16 +296,17 @@ export function TestnetBillingRehearsal() {
       setSignature(nextSignature);
       setStatus(`Signature received. Confirming the on-chain ${SOLANA_NETWORK_LABEL} billing rehearsal...`);
 
-      await connection.confirmTransaction(
+      await confirmTransaction(
+        connection,
         {
           signature: nextSignature,
-          blockhash: latestBlockhash.blockhash,
-          lastValidBlockHeight: latestBlockhash.lastValidBlockHeight,
+          blockhash: recentBlockhash.blockhash,
+          lastValidBlockHeight: recentBlockhash.lastValidBlockHeight,
         },
         "confirmed",
       );
 
-      const confirmedTransaction = await connection.getTransaction(nextSignature, {
+      const confirmedTransaction = await readTransaction(connection, nextSignature, {
         commitment: "confirmed",
         maxSupportedTransactionVersion: 0,
       });
