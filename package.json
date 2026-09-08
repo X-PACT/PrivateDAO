@@ -356,7 +356,8 @@
     "@solana/spl-token": "^0.4.14",
     "@solana/web3.js": "^1.98.4",
     "ajv": "^8.17.1",
-    "dotenv": "^16.4.5"
+    "dotenv": "^16.4.5",
+    "bigint-buffer": "file:vendor/bigint-buffer"
   },
   "devDependencies": {
     "@sqds/multisig": "^2.1.4",
@@ -377,7 +378,6 @@
   },
   "overrides": {
     "uuid": "^11.1.1",
-    "ws": "^8.21.0",
-    "bigint-buffer": "file:vendor/bigint-buffer"
+    "ws": "^8.21.0"
   }
 }

@@ -1,9 +1,8 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 import * as fs from "fs";
 import * as path from "path";
-import { fileURLToPath } from "url";
 
-const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+const ROOT = process.cwd();
 
 function read(rel: string): string {
   return fs.readFileSync(path.join(ROOT, rel), "utf8");

@@ -22,7 +22,7 @@ import {
 } from "@solana/web3.js";
 import { GetSecretValueCommand, SecretsManagerClient } from "@aws-sdk/client-secrets-manager";
 import { BedrockRuntimeClient, ConverseCommand } from "@aws-sdk/client-bedrock-runtime";
-import { PrivateDaoReadNode, quickNodeX402Status, resolveMainnetRpcEndpoints } from "./lib/read-node";
+import { PrivateDaoReadNode, quickNodeX402Status, resolveMainnetRpcEndpoints } from "./lib/read-node.js";
 import {
   buildSimulatedTxlineMatches,
   buildTxlineSettlementMemoFields,
@@ -39,7 +39,7 @@ import {
   type TxlineProviderMode,
   type TxlineSettlementProofPackage,
 } from "../apps/web/src/lib/txline-settlement";
-import { PayrollStore, type PayrollState, type SettlementState } from "./lib/payroll-domain";
+import { PayrollStore, type PayrollState, type SettlementState } from "./lib/payroll-domain.js";
 
 const host = process.env.PRIVATE_DAO_READ_NODE_HOST || "127.0.0.1";
 const port = Number(process.env.PRIVATE_DAO_READ_NODE_PORT || 8787);
