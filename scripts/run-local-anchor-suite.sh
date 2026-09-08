@@ -22,14 +22,14 @@ supports_avx2() {
 run_portable_core_checks() {
   echo "[local-anchor-suite] portable core checks (${suite_name})"
   cargo test -p private-dao --manifest-path "$ROOT_DIR/Cargo.toml" --lib -- --list
-  ./node_modules/.bin/ts-node scripts/verify-pdao-token-surface.ts
+  node --import tsx scripts/verify-pdao-token-surface.ts
 
   if [[ "$suite_name" == "core" || "$suite_name" == "all" ]]; then
-    ./node_modules/.bin/ts-node scripts/verify-frontend-surface.ts
+    node --import tsx scripts/verify-frontend-surface.ts
     if [[ "${PRIVATE_DAO_RUN_NETWORK_CHECKS:-0}" == "1" && -f "$ROOT_DIR/target/idl/private_dao.json" ]]; then
       MAGICBLOCK_HTTP_TIMEOUT_MS="${MAGICBLOCK_HTTP_TIMEOUT_MS:-2500}" \
         PRIVATE_DAO_RPC_TIMEOUT_MS="${PRIVATE_DAO_RPC_TIMEOUT_MS:-12000}" \
-        ./node_modules/.bin/ts-node scripts/verify-read-node.ts >/dev/null
+        node --import tsx scripts/verify-read-node.ts >/dev/null
     elif [[ "${PRIVATE_DAO_RUN_NETWORK_CHECKS:-0}" != "1" ]]; then
       echo "[local-anchor-suite] skipping read-node verification; set PRIVATE_DAO_RUN_NETWORK_CHECKS=1 for RPC-backed checks"
     else
