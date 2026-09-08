@@ -21,12 +21,16 @@ export function readTokenAccountBalance(connection: SolanaBrowserConnection, add
   return connection.getTokenAccountBalance(address, commitment);
 }
 
-export function estimateAccountRent(connection: SolanaBrowserConnection, dataLength: number) {
-  return connection.getMinimumBalanceForRentExemption(dataLength);
+export function estimateAccountRent(connection: SolanaBrowserConnection, dataLength: number, commitment?: Commitment) {
+  return connection.getMinimumBalanceForRentExemption(dataLength, commitment);
 }
 
 export function latestBlockhash(connection: SolanaBrowserConnection, commitment: Commitment) {
   return connection.getLatestBlockhash(commitment);
+}
+
+export function recentBlockhash(connection: SolanaBrowserConnection, commitment: Commitment) {
+  return connection.getRecentBlockhash(commitment);
 }
 
 export function submitSignedTransaction(
@@ -39,6 +43,22 @@ export function submitSignedTransaction(
 
 export function confirmTransaction(connection: SolanaBrowserConnection, signature: string, commitment: Commitment) {
   return connection.confirmTransaction(signature, commitment);
+}
+
+export function readSignatureStatuses(
+  connection: SolanaBrowserConnection,
+  signatures: string[],
+  options?: Parameters<Connection["getSignatureStatuses"]>[1],
+) {
+  return connection.getSignatureStatuses(signatures, options);
+}
+
+export function readTransaction(
+  connection: SolanaBrowserConnection,
+  signature: string,
+  options: Parameters<Connection["getTransaction"]>[1],
+) {
+  return connection.getTransaction(signature, options);
 }
 
 export async function waitForFinalized(

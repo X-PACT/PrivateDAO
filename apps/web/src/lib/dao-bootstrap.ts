@@ -11,6 +11,7 @@ import {
 } from "@solana/web3.js";
 
 import { SOLANA_NETWORK_LABEL } from "@/lib/solana-network";
+import { estimateAccountRent, latestBlockhash, readAccountInfo, readSignatureStatuses, readTokenAccountBalance, readTransaction, recentBlockhash } from "@/lib/network-adapters/solana-browser";
 
 export const PRIVATE_DAO_PROGRAM_ID = new PublicKey("EP9xE8MJZ6FfyEwLqns6HDdUZBknEa7WGYs1Jzsecuva");
 export const TOKEN_PROGRAM_ID = new PublicKey("TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA");
@@ -271,7 +272,7 @@ function deriveAssociatedTokenAddress(
 }
 
 async function resolveTokenProgramForMint(connection: Connection, mint: PublicKey) {
-  const info = await connection.getAccountInfo(mint, "confirmed");
+  const info = await readAccountInfo(connection, mint, "confirmed");
   if (!info) {
     throw new Error(`Mint account not found: ${mint.toBase58()}`);
   }
@@ -358,11 +359,11 @@ async function resolveLatestBlockhash(connection: Connection) {
 
   for (let attempt = 0; attempt < 5; attempt += 1) {
     try {
-      return await connection.getLatestBlockhash("confirmed");
+      return await latestBlockhash(connection, "confirmed");
     } catch (latestBlockhashError) {
       latestError = latestBlockhashError;
       try {
-        const recent = await connection.getRecentBlockhash("confirmed");
+        const recent = await recentBlockhash(connection, "confirmed");
         return { blockhash: recent.blockhash, lastValidBlockHeight: 0 };
       } catch (recentBlockhashError) {
         latestError = recentBlockhashError;
@@ -391,7 +392,7 @@ export async function awaitLiveSignatureOnCluster({
   const start = Date.now();
 
   while (Date.now() - start < timeoutMs) {
-    const statuses = await connection.getSignatureStatuses([signature], {
+    const statuses = await readSignatureStatuses(connection, [signature], {
       searchTransactionHistory: true,
     });
     const status = statuses.value[0];
@@ -409,7 +410,7 @@ export async function awaitLiveSignatureOnCluster({
     await new Promise((resolve) => setTimeout(resolve, pollIntervalMs));
   }
 
-  const transaction = await connection.getTransaction(signature, {
+  const transaction = await readTransaction(connection, signature, {
     commitment: "confirmed",
     maxSupportedTransactionVersion: 0,
   });
@@ -551,7 +552,7 @@ function decodeProposalAccount(data: Uint8Array): ProposalAccountDetails {
 }
 
 export async function fetchDaoAccountDetails(connection: Connection, daoAddress: PublicKey) {
-  const info = await connection.getAccountInfo(daoAddress, "confirmed");
+  const info = await readAccountInfo(connection, daoAddress, "confirmed");
   if (!info) {
     throw new Error(`DAO account was not found on ${SOLANA_NETWORK_LABEL}.`);
   }
@@ -560,7 +561,7 @@ export async function fetchDaoAccountDetails(connection: Connection, daoAddress:
 }
 
 export async function fetchProposalAccountDetails(connection: Connection, proposalAddress: PublicKey) {
-  const info = await connection.getAccountInfo(proposalAddress, "confirmed");
+  const info = await readAccountInfo(connection, proposalAddress, "confirmed");
   if (!info) {
     throw new Error(`Proposal account was not found on ${SOLANA_NETWORK_LABEL}.`);
   }
@@ -596,19 +597,20 @@ export async function buildCreateDaoBootstrapTransaction({
     [Buffer.from("dao"), authority.toBuffer(), Buffer.from(trimmedName)],
     PRIVATE_DAO_PROGRAM_ID,
   );
-  const existingDaoInfo = await connection.getAccountInfo(dao, "confirmed");
+  const existingDaoInfo = await readAccountInfo(connection, dao, "confirmed");
   if (existingDaoInfo) {
     throw new Error(
       `A DAO named "${trimmedName}" already exists for this wallet on ${SOLANA_NETWORK_LABEL} (${dao.toBase58()}). Change the DAO name or continue from the existing DAO.`,
     );
   }
 
-  const mintRent = await connection.getMinimumBalanceForRentExemption(
+  const mintRent = await estimateAccountRent(
+    connection,
     MINT_ACCOUNT_SPACE,
     "confirmed",
   );
   const authorityTokenAccount = deriveAssociatedTokenAddress(authority, mintSigner.publicKey, TOKEN_PROGRAM_ID);
-  const authorityTokenAccountInfo = await connection.getAccountInfo(authorityTokenAccount, "confirmed");
+  const authorityTokenAccountInfo = await readAccountInfo(connection, authorityTokenAccount, "confirmed");
 
   const createMintIx = SystemProgram.createAccount({
     fromPubkey: authority,
@@ -761,7 +763,7 @@ export async function fetchGovernanceHolderSnapshot({
   const governanceMint = new PublicKey(resolvedDaoDetails.governanceToken);
   const tokenProgram = await resolveTokenProgramForMint(connection, governanceMint);
   const tokenAccount = deriveAssociatedTokenAddress(holder, governanceMint, tokenProgram);
-  const tokenAccountInfo = await connection.getAccountInfo(tokenAccount, "confirmed");
+  const tokenAccountInfo = await readAccountInfo(connection, tokenAccount, "confirmed");
 
   if (!tokenAccountInfo) {
     return {
@@ -773,7 +775,7 @@ export async function fetchGovernanceHolderSnapshot({
     };
   }
 
-  const balance = await connection.getTokenAccountBalance(tokenAccount, "confirmed");
+  const balance = await readTokenAccountBalance(connection, tokenAccount, "confirmed");
 
   return {
     dao: daoAddress,
@@ -941,7 +943,7 @@ export async function buildExecuteProposalTransaction({
     treasuryTokenAccount = deriveAssociatedTokenAddress(treasury, treasuryTokenMint, tokenProgram);
     recipientTokenAccount = deriveAssociatedTokenAddress(treasuryRecipient, treasuryTokenMint, tokenProgram);
 
-    const recipientTokenInfo = await connection.getAccountInfo(recipientTokenAccount, "confirmed");
+    const recipientTokenInfo = await readAccountInfo(connection, recipientTokenAccount, "confirmed");
     if (!recipientTokenInfo) {
       preInstructions.push(
         buildCreateAssociatedTokenAccountInstruction(

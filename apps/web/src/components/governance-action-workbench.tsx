@@ -36,6 +36,7 @@ import { entryFlowCopy } from "@/lib/entry-flow-copy";
 import { PRIVATE_ROOM_SESSION_KEY } from "@/lib/room-invite";
 import { getProposalById, type ProposalCardModel } from "@/lib/site-data";
 import { buildSolanaTxUrl, SOLANA_NETWORK, SOLANA_NETWORK_LABEL } from "@/lib/solana-network";
+import { submitSignedTransaction } from "@/lib/network-adapters/solana-browser";
 import { persistOperationReceipt } from "@/lib/supabase/operation-receipts";
 import { getTreasuryReceiveConfig } from "@/lib/treasury-receive-config";
 import { useServiceHandoffSnapshot } from "@/lib/use-service-handoff-snapshot";
@@ -428,7 +429,7 @@ async function submitWalletTransactionWithFallback({
     const transactionForManualSend = transaction;
     transactionForManualSend.partialSign(...extraSigners);
     const signedTransaction = await signTransaction(transactionForManualSend);
-    signature = await connection.sendRawTransaction(signedTransaction.serialize(), {
+    signature = await submitSignedTransaction(connection, signedTransaction, {
       maxRetries: 3,
       preflightCommitment: "confirmed",
       skipPreflight: false,
@@ -453,7 +454,7 @@ async function submitWalletTransactionWithFallback({
         transactionForManualSend.partialSign(...extraSigners);
       }
       const signedTransaction = await signTransaction(transactionForManualSend);
-      signature = await connection.sendRawTransaction(signedTransaction.serialize(), {
+      signature = await submitSignedTransaction(connection, signedTransaction, {
         maxRetries: 3,
         preflightCommitment: "confirmed",
         skipPreflight: false,
