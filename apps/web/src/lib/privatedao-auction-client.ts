@@ -13,9 +13,9 @@ import {
   type ConfirmOptions,
   type TransactionSignature,
 } from "@solana/web3.js";
+import { createMagicBlockBrowserConnection, readMagicBlockSignatureStatuses, readMagicBlockSlot, type MagicBlockBrowserConnection } from "@/lib/network-adapters/magicblock-browser";
 import { createSolanaBrowserConnection, type SolanaBrowserConnection } from "@/lib/network-adapters/solana-browser";
 import {
-  ConnectionMagicRouter,
   DELEGATION_PROGRAM_ID,
   EPHEMERAL_VAULT_ID,
   MAGIC_CONTEXT_ID,
@@ -53,11 +53,10 @@ export type AuctionClient = {
   base: Program;
   tee: Program;
   baseConnection: SolanaBrowserConnection;
-  teeConnection: ConnectionMagicRouter;
   addressesFor: (auctionId: Uint8Array) => AuctionAddresses;
   getTeeToken: () => Promise<{ token: string; expiresAt: number }>;
-  getTeeSignatureStatuses: (signatures: string[]) => ReturnType<ConnectionMagicRouter["getSignatureStatuses"]>;
-  getTeeSlot: (commitment: "confirmed") => ReturnType<ConnectionMagicRouter["getSlot"]>;
+  getTeeSignatureStatuses: (signatures: string[]) => ReturnType<MagicBlockBrowserConnection["getSignatureStatuses"]>;
+  getTeeSlot: (commitment: "confirmed") => ReturnType<MagicBlockBrowserConnection["getSlot"]>;
   initialize: (args: {
     auctionId: Uint8Array;
     biddingStart: number;
@@ -105,7 +104,7 @@ export async function createAuctionClient(wallet: AnchorWallet, signMessage: Sig
   const initialToken = await getAuthToken(MAGICBLOCK_TEE_RPC_URL, wallet.publicKey, signMessage);
 
   const teeUrl = `${MAGICBLOCK_TEE_RPC_URL}?token=${encodeURIComponent(initialToken.token)}`;
-  const teeConnection = new ConnectionMagicRouter(teeUrl, { wsEndpoint: teeUrl.replace(/^https:/, "wss:") });
+  const teeConnection = createMagicBlockBrowserConnection(teeUrl, teeUrl.replace(/^https:/, "wss:"));
   const teeProvider = new AnchorProvider(teeConnection, wallet, CONFIRM_OPTIONS);
   const tee = new Program(idl, teeProvider);
 
@@ -121,13 +120,12 @@ export async function createAuctionClient(wallet: AnchorWallet, signMessage: Sig
     base,
     tee,
     baseConnection,
-    teeConnection,
     addressesFor,
     getTeeToken: () => {
       return getAuthToken(MAGICBLOCK_TEE_RPC_URL, wallet.publicKey, signMessage);
     },
-    getTeeSignatureStatuses: (signatures) => teeConnection.getSignatureStatuses(signatures),
-    getTeeSlot: (commitment) => teeConnection.getSlot(commitment),
+    getTeeSignatureStatuses: (signatures) => readMagicBlockSignatureStatuses(teeConnection, signatures),
+    getTeeSlot: (commitment) => readMagicBlockSlot(teeConnection, commitment),
     initialize: ({ auctionId, biddingStart, biddingDeadline, rulesDigest, policyDigest, discloseWinningAmount, allowBidUpdates }) =>
       send(base.methods.initializeAuction(auctionId, new BN(biddingStart), new BN(biddingDeadline), rulesDigest, policyDigest, discloseWinningAmount, allowBidUpdates).accounts({ authority: wallet.publicKey, config: addressesFor(auctionId).config, session: addressesFor(auctionId).session, systemProgram: SystemProgram.programId }), baseProvider),
     activate: (a) => send(base.methods.activateAuction().accounts({ config: a.config, session: a.session, authority: wallet.publicKey }).preInstructions([]), baseProvider),

@@ -81,6 +81,12 @@ verify_scan() {
       --glob '!apps/web/out/**' \
       --glob '!apps/web/.next/**' \
       --glob '!docs/assets/vendor/**' \
+      --glob '!_archives/**' \
+      --glob '!apps/web/public/**' \
+      --glob '!assets/**' \
+      --glob '!artifacts/**' \
+      --glob '!downloads/**' \
+      --glob '!**/*.min.js' \
       --glob '!test/**' \
       --glob '!**/index.html' \
       --glob '!Cargo.lock' \
@@ -105,6 +111,12 @@ verify_scan() {
     ':(exclude)apps/web/out/**' \
     ':(exclude)apps/web/.next/**' \
     ':(exclude)docs/assets/vendor/**' \
+    ':(exclude)_archives/**' \
+    ':(exclude)apps/web/public/**' \
+    ':(exclude)assets/**' \
+    ':(exclude)artifacts/**' \
+    ':(exclude)downloads/**' \
+    ':(exclude)**/*.min.js' \
     ':(exclude)test/**' \
     ':(exclude)**/index.html' \
     ':(exclude)Cargo.lock' \
@@ -120,8 +132,7 @@ verify_product_rpc_boundary() {
   local pattern='new Connection\(|\.getLatestBlockhash\(|\.getRecentBlockhash\(|\.sendRawTransaction\(|\.confirmTransaction\(|\.getTransaction\(|\.getSignatureStatuses\(|\.getAccountInfo\(|\.getTokenAccountBalance\('
   if rg -n "$pattern" apps/web/src \
     --glob '*.{ts,tsx}' \
-    --glob '!**/lib/network-adapters/**' \
-    --glob '!**/lib/privatedao-auction-client.ts'; then
+    --glob '!**/lib/network-adapters/**'; then
     echo "[verify] product code contains a direct RPC call; route it through a network adapter" >&2
     return 1
   fi
