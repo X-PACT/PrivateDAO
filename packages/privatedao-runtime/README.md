@@ -8,4 +8,6 @@ The exported `PrivateDaoKernel` is the shared orchestration boundary for product
 
 Network-specific adapters belong outside this package and must implement `KernelProvider`. A network is not considered supported merely because it appears in a product UI; it must have a real adapter and independent test evidence.
 
+`PRODUCT_CATALOG` is the single capability surface for the current release. It intentionally lists only Solana Devnet as available until another network has a real provider, transaction lifecycle, receipt path, and independent test evidence.
+
 The migration rule is strict: product code may depend on these contracts, but provider-specific transaction construction belongs behind `KernelProvider` implementations. REST, SDK, MCP, and agent adapters should expose the same `ProtocolCapability` and receipt semantics.

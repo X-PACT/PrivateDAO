@@ -131,3 +131,5 @@ export type {
   ReconciliationLine,
   ReconciliationResult,
 } from "./kernel.js";
+export { PRODUCT_CATALOG, findProduct, listProducts, supportsProductCapability } from "./catalog.js";
+export type { ProductAvailability, ProductDescriptor } from "./catalog.js";
