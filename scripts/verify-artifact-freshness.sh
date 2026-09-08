@@ -49,13 +49,17 @@ test -f "dist/reviewer-bundle.tar.gz" || {
 }
 
 echo "[artifact-freshness] checking working tree freshness"
-git diff --exit-code \
+if ! git diff --exit-code \
   -I '"generatedAt":' \
   -I '"releaseCommit":' \
   -I '"evidence": "[0-9a-f]+' \
   -I '^- Generated at:' \
   -I '^- Release commit:' \
   -I '^  evidence: `[0-9a-f]+`' \
-  -- "${tracked_paths[@]}" >/dev/null
+  -- "${tracked_paths[@]}" >/dev/null; then
+  echo "[artifact-freshness] generated artifact diff:" >&2
+  git diff --no-ext-diff -- "${tracked_paths[@]}" >&2 || true
+  exit 1
+fi
 
 echo "[artifact-freshness] PASS"
