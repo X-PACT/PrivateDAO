@@ -19,6 +19,37 @@ export type KernelErrorCode =
   | "INVALID_STATE"
   | "PROVIDER_FAILURE";
 
+export type KernelEventName =
+  | "execution.prepare.started"
+  | "execution.prepare.completed"
+  | "execution.submit.started"
+  | "execution.submit.completed"
+  | "execution.status.updated"
+  | "execution.receipt.loaded"
+  | "execution.failed";
+
+export interface KernelEvent {
+  name: KernelEventName;
+  executionId?: string;
+  requestId?: string;
+  product?: string;
+  capability?: string;
+  network?: string;
+  provider?: string;
+  state?: ExecutionState;
+  errorCode?: KernelErrorCode;
+  occurredAt: string;
+}
+
+export interface KernelTelemetry {
+  record(event: KernelEvent): void | Promise<void>;
+}
+
+export interface KernelOptions {
+  telemetry?: KernelTelemetry;
+  now?: () => string;
+}
+
 export class KernelError extends Error {
   readonly code: KernelErrorCode;
   readonly details?: Record<string, unknown>;
@@ -77,10 +108,24 @@ export class PrivateDaoKernel {
   private readonly executions = new Map<string, ExecutionRecord<unknown>>();
   private readonly idempotency = new Map<string, string>();
 
-  constructor(private readonly registry: ProviderRegistry) {}
+  private readonly telemetry?: KernelTelemetry;
+  private readonly now: () => string;
+
+  constructor(private readonly registry: ProviderRegistry, options: KernelOptions = {}) {
+    this.telemetry = options.telemetry;
+    this.now = options.now || (() => new Date().toISOString());
+  }
 
   async prepare<TPayload, TUnsigned>(intent: ExecutionIntent<TPayload>): Promise<PreparedExecution<TUnsigned>> {
     this.validateIntent(intent);
+    this.emit({
+      name: "execution.prepare.started",
+      requestId: intent.context.requestId,
+      product: intent.context.product,
+      capability: intent.context.capability,
+      network: intent.context.network,
+      provider: intent.context.provider,
+    });
     const existingId = this.idempotency.get(this.idempotencyKey(intent));
     if (existingId) {
       const existing = this.executions.get(existingId);
@@ -92,8 +137,27 @@ export class PrivateDaoKernel {
       const prepared = await provider.prepare<TPayload, TUnsigned>(intent);
       this.executions.set(prepared.executionId, { provider, prepared, state: prepared.state });
       this.idempotency.set(this.idempotencyKey(intent), prepared.executionId);
+      this.emit({
+        name: "execution.prepare.completed",
+        executionId: prepared.executionId,
+        requestId: intent.context.requestId,
+        product: intent.context.product,
+        capability: intent.context.capability,
+        network: intent.context.network,
+        provider: provider.id,
+        state: prepared.state,
+      });
       return prepared;
     } catch (error) {
+      this.emit({
+        name: "execution.failed",
+        requestId: intent.context.requestId,
+        product: intent.context.product,
+        capability: intent.context.capability,
+        network: intent.context.network,
+        provider: provider.id,
+        errorCode: "PROVIDER_FAILURE",
+      });
       throw this.providerError("Provider preparation failed.", error);
     }
   }
@@ -103,12 +167,20 @@ export class PrivateDaoKernel {
     if (record.state !== "prepared" && record.state !== "awaiting_signature") {
       throw new KernelError("INVALID_STATE", `Execution cannot be submitted from state ${record.state}.`);
     }
+    this.emit({ name: "execution.submit.started", executionId });
     try {
       const result = await record.provider.submit(record.prepared, signedPayload);
       record.state = "submitted";
+      this.emit({
+        name: "execution.submit.completed",
+        executionId,
+        provider: record.provider.id,
+        state: "submitted",
+      });
       return result;
     } catch (error) {
       record.state = "failed";
+      this.emit({ name: "execution.failed", executionId, provider: record.provider.id, errorCode: "PROVIDER_FAILURE" });
       throw this.providerError("Provider submission failed.", error);
     }
   }
@@ -118,8 +190,16 @@ export class PrivateDaoKernel {
     try {
       const status = await record.provider.status(executionId);
       record.state = status.state;
+      this.emit({
+        name: "execution.status.updated",
+        executionId,
+        provider: record.provider.id,
+        state: status.state,
+        errorCode: status.errorCode as KernelErrorCode | undefined,
+      });
       return status;
     } catch (error) {
+      this.emit({ name: "execution.failed", executionId, provider: record.provider.id, errorCode: "PROVIDER_FAILURE" });
       throw this.providerError("Provider status lookup failed.", error);
     }
   }
@@ -130,10 +210,22 @@ export class PrivateDaoKernel {
       const receipt = await record.provider.receipt<TResult>(executionId);
       record.receipt = receipt;
       record.state = receipt.state;
+      this.emit({
+        name: "execution.receipt.loaded",
+        executionId,
+        provider: record.provider.id,
+        state: receipt.state,
+      });
       return receipt;
     } catch (error) {
+      this.emit({ name: "execution.failed", executionId, provider: record.provider.id, errorCode: "PROVIDER_FAILURE" });
       throw this.providerError("Provider receipt lookup failed.", error);
     }
+  }
+
+  private emit(event: Omit<KernelEvent, "occurredAt">): void {
+    if (!this.telemetry) return;
+    void this.telemetry.record({ ...event, occurredAt: this.now() });
   }
 
   private validateIntent<TPayload>(intent: ExecutionIntent<TPayload>): void {

@@ -6,6 +6,8 @@ This package contains no RPC client, wallet signer, private key, treasury author
 
 The exported `PrivateDaoKernel` is the shared orchestration boundary for products. It enforces provider selection, idempotent preparation, lifecycle transitions, normalized provider errors, and receipt retrieval. `reconcileSettlements` validates payout counts, totals, duplicates, and incomplete lines without knowing how a network transaction was built.
 
+The kernel accepts an optional `KernelTelemetry` sink for lifecycle events without recording payloads, amounts, recipients, secrets, or other sensitive data. Submission is deliberately not retried automatically: a network adapter must provide its own idempotent submission semantics before an application retries a side-effecting transaction.
+
 Network-specific adapters belong outside this package and must implement `KernelProvider`. A network is not considered supported merely because it appears in a product UI; it must have a real adapter and independent test evidence.
 
 `NetworkAdapter` and `WalletSigner` define the integration boundary for real providers. Wallet signing is delegated to an injected wallet session; this package never accepts or stores private keys. `ProtocolRegistry` and its authorization policy types keep product actions, versions, roles, and permissions consistent across REST, SDK, MCP, and agent surfaces. The registry is an in-memory contract implementation for tests and composition; production authentication and persistence remain the responsibility of the application backend.

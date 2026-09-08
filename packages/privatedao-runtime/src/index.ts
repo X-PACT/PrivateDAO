@@ -128,6 +128,10 @@ export interface ProtocolReceipt<TResult = unknown> extends ExecutionReceipt<TRe
 export { InMemoryProviderRegistry, KernelError, PrivateDaoKernel, reconcileSettlements } from "./kernel.js";
 export type {
   KernelErrorCode,
+  KernelEvent,
+  KernelEventName,
+  KernelOptions,
+  KernelTelemetry,
   ReconciliationLine,
   ReconciliationResult,
 } from "./kernel.js";
