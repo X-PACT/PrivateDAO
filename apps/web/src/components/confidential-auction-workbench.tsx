@@ -161,12 +161,12 @@ export function ConfidentialAuctionWorkbench() {
       await auctionClient.finalizePrivateResult(addresses);
       setStep("finalized");
       const signature = await auctionClient.commitAndUndelegate(addresses);
-      const signatureStatus = await auctionClient.teeConnection.getSignatureStatuses([signature]);
+      const signatureStatus = await auctionClient.getTeeSignatureStatuses([signature]);
       const confirmation = signatureStatus.value[0]?.confirmationStatus;
       if (confirmation !== "confirmed" && confirmation !== "finalized") {
         throw new Error("The final Solana commitment was submitted but is not confirmed yet.");
       }
-      const slot = await auctionClient.teeConnection.getSlot("confirmed");
+      const slot = await auctionClient.getTeeSlot("confirmed");
       const receiptId = await digestBytes(`${addresses.config.toBase58()}:${signature}`);
       await auctionClient.finalizeReceipt(addresses, receiptId, signature, slot);
       setCommitSignature(signature);

@@ -115,6 +115,19 @@ verify_scan() {
   echo "[verify] non-real-code scan clean"
 }
 
+verify_product_rpc_boundary() {
+  echo "[verify] product RPC boundary"
+  local pattern='new Connection\(|\.getLatestBlockhash\(|\.getRecentBlockhash\(|\.sendRawTransaction\(|\.confirmTransaction\(|\.getTransaction\(|\.getSignatureStatuses\(|\.getAccountInfo\(|\.getTokenAccountBalance\('
+  if rg -n "$pattern" apps/web/src \
+    --glob '*.{ts,tsx}' \
+    --glob '!**/lib/network-adapters/**' \
+    --glob '!**/lib/privatedao-auction-client.ts'; then
+    echo "[verify] product code contains a direct RPC call; route it through a network adapter" >&2
+    return 1
+  fi
+  echo "[verify] product RPC boundary clean"
+}
+
 
 verify_rpc() {
   echo "[verify] rpc selection tests"
@@ -159,6 +172,7 @@ case "$mode" in
     ;;
   scan)
     verify_scan
+    verify_product_rpc_boundary
     ;;
   typecheck)
     verify_typecheck

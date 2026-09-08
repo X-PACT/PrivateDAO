@@ -56,6 +56,8 @@ export type AuctionClient = {
   teeConnection: ConnectionMagicRouter;
   addressesFor: (auctionId: Uint8Array) => AuctionAddresses;
   getTeeToken: () => Promise<{ token: string; expiresAt: number }>;
+  getTeeSignatureStatuses: (signatures: string[]) => ReturnType<ConnectionMagicRouter["getSignatureStatuses"]>;
+  getTeeSlot: (commitment: "confirmed") => ReturnType<ConnectionMagicRouter["getSlot"]>;
   initialize: (args: {
     auctionId: Uint8Array;
     biddingStart: number;
@@ -124,6 +126,8 @@ export async function createAuctionClient(wallet: AnchorWallet, signMessage: Sig
     getTeeToken: () => {
       return getAuthToken(MAGICBLOCK_TEE_RPC_URL, wallet.publicKey, signMessage);
     },
+    getTeeSignatureStatuses: (signatures) => teeConnection.getSignatureStatuses(signatures),
+    getTeeSlot: (commitment) => teeConnection.getSlot(commitment),
     initialize: ({ auctionId, biddingStart, biddingDeadline, rulesDigest, policyDigest, discloseWinningAmount, allowBidUpdates }) =>
       send(base.methods.initializeAuction(auctionId, new BN(biddingStart), new BN(biddingDeadline), rulesDigest, policyDigest, discloseWinningAmount, allowBidUpdates).accounts({ authority: wallet.publicKey, config: addressesFor(auctionId).config, session: addressesFor(auctionId).session, systemProgram: SystemProgram.programId }), baseProvider),
     activate: (a) => send(base.methods.activateAuction().accounts({ config: a.config, session: a.session, authority: wallet.publicKey }).preInstructions([]), baseProvider),
