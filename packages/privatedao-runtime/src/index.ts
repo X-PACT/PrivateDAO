@@ -135,7 +135,7 @@ export type {
   ReconciliationLine,
   ReconciliationResult,
 } from "./kernel.js";
-export { PRODUCT_CATALOG, findProduct, listProducts, supportsProductCapability } from "./catalog.js";
+export { PRODUCT_CATALOG, assertProductCatalogValid, findProduct, listProducts, supportsProductCapability, validateProductCatalog } from "./catalog.js";
 export type { ProductAvailability, ProductDescriptor } from "./catalog.js";
 export { NETWORK_MATRIX, getNetwork, isNetworkAvailable } from "./networks.js";
 export type { NetworkDescriptor, NetworkFamily, NetworkStage } from "./networks.js";

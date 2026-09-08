@@ -1,4 +1,5 @@
 import type { CapabilityId, NetworkId, ProductId, ProtocolCapability } from "./index.js";
+import { getNetwork, isNetworkAvailable } from "./networks.js";
 
 export type ProductAvailability = "available" | "planned";
 
@@ -84,6 +85,39 @@ export const PRODUCT_CATALOG: readonly ProductDescriptor[] = [
     capabilities: [capability("agent.discover", "agent", false), capability("agent.invoke", "agent", true)],
   },
 ];
+
+export function validateProductCatalog(catalog: readonly ProductDescriptor[] = PRODUCT_CATALOG): string[] {
+  const errors: string[] = [];
+  for (const product of catalog) {
+    for (const network of product.networks) {
+      try {
+        getNetwork(network);
+      } catch {
+        errors.push(`${product.id}: unknown network ${network}`);
+      }
+      if (product.availability === "available" && !isNetworkAvailable(network)) {
+        errors.push(`${product.id}: available product uses unavailable network ${network}`);
+      }
+    }
+    for (const capability of product.capabilities) {
+      if (capability.product !== product.id) errors.push(`${product.id}: capability ${capability.id} has a mismatched product`);
+      for (const network of capability.networks) {
+        if (!product.networks.includes(network)) errors.push(`${product.id}: capability ${capability.id} uses undeclared network ${network}`);
+        if (product.availability === "available" && !isNetworkAvailable(network)) {
+          errors.push(`${product.id}: capability ${capability.id} uses unavailable network ${network}`);
+        }
+      }
+    }
+  }
+  return errors;
+}
+
+export function assertProductCatalogValid(catalog: readonly ProductDescriptor[] = PRODUCT_CATALOG): void {
+  const errors = validateProductCatalog(catalog);
+  if (errors.length > 0) throw new Error(`Invalid PrivateDAO product catalog:\n${errors.join("\n")}`);
+}
+
+assertProductCatalogValid();
 
 export function listProducts(): readonly ProductDescriptor[] {
   return PRODUCT_CATALOG;
