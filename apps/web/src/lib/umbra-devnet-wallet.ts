@@ -1,12 +1,12 @@
 "use client";
 
 import { getAssociatedTokenAddressSync, createAssociatedTokenAccountInstruction, createSyncNativeInstruction, NATIVE_MINT, TOKEN_PROGRAM_ID, ASSOCIATED_TOKEN_PROGRAM_ID } from "@solana/spl-token";
-import { Connection, PublicKey, SystemProgram, Transaction, VersionedTransaction } from "@solana/web3.js";
+import { PublicKey, SystemProgram, Transaction, VersionedTransaction } from "@solana/web3.js";
+import { createSolanaBrowserConnection, estimateAccountRent, latestBlockhash, readAccountInfo, readTokenAccountBalance, submitSignedTransaction, waitForFinalized, type SolanaBrowserConnection } from "@/lib/network-adapters/solana-browser";
 
 const DEVNET_RPC = process.env.NEXT_PUBLIC_SOLANA_DEVNET_RPC || "https://api.devnet.solana.com";
 const DEVNET_WSS = DEVNET_RPC.replace(/^http/, "ws");
 export const UMBRA_DEVNET_WSOL_MINT = "So11111111111111111111111111111111111111112";
-const FINALITY_TIMEOUT_MS = 120_000;
 
 type PhantomProvider = {
   publicKey?: PublicKey;
@@ -28,17 +28,6 @@ function toBaseUnits(amount: string, decimals = 9) {
   const value = BigInt(whole) * (BigInt(10) ** BigInt(decimals)) + BigInt((fraction + "0".repeat(decimals)).slice(0, decimals));
   if (value <= BigInt(0)) throw new Error("Payroll amount must be positive.");
   return value.toString();
-}
-
-async function waitForFinalized(connection: Connection, signature: string) {
-  const deadline = Date.now() + FINALITY_TIMEOUT_MS;
-  while (Date.now() < deadline) {
-    const status = (await connection.getSignatureStatuses([signature])).value[0];
-    if (status?.err) throw new Error(`Umbra Devnet transaction failed: ${JSON.stringify(status.err)}`);
-    if (status?.confirmationStatus === "finalized") return status;
-    await new Promise((resolve) => window.setTimeout(resolve, 1500));
-  }
-  throw new Error("Umbra Devnet transaction did not reach Finalized within 120 seconds.");
 }
 
 function walletStandardAdapter(provider: PhantomProvider, address: string) {
@@ -76,7 +65,7 @@ export async function createUmbraDevnetWalletSession() {
   const depositOps = await import("@umbra-privacy/sdk/deposit");
   const signer = sdk.createSignerFromWalletAccount({ wallet: wallet as never, account: account as never });
   const client = await sdk.getUmbraClient({ signer, network: "devnet", rpcUrl: DEVNET_RPC, rpcSubscriptionsUrl: DEVNET_WSS, deferMasterSeedSignature: true });
-  const connection = new Connection(DEVNET_RPC, "finalized");
+  const connection: SolanaBrowserConnection = createSolanaBrowserConnection(DEVNET_RPC, "finalized");
   return {
     address,
     client,
@@ -100,25 +89,25 @@ export async function createUmbraDevnetWalletSession() {
       if (requiredBaseUnits <= BigInt(0)) throw new Error("WSOL payroll amount must be positive.");
       const owner = new PublicKey(address);
       const ata = getAssociatedTokenAddressSync(NATIVE_MINT, owner, false, TOKEN_PROGRAM_ID, ASSOCIATED_TOKEN_PROGRAM_ID);
-      const accountInfo = await connection.getAccountInfo(ata, "finalized");
+      const accountInfo = await readAccountInfo(connection, ata, "finalized");
       let currentBaseUnits = BigInt(0);
       if (accountInfo) {
-        const balance = await connection.getTokenAccountBalance(ata, "finalized");
+        const balance = await readTokenAccountBalance(connection, ata, "finalized");
         currentBaseUnits = BigInt(balance.value.amount);
       }
       const missingBaseUnits = requiredBaseUnits > currentBaseUnits ? requiredBaseUnits - currentBaseUnits : BigInt(0);
       if (!accountInfo && missingBaseUnits === BigInt(0)) throw new Error("Unable to initialize the Devnet WSOL account.");
       if (!accountInfo || missingBaseUnits > BigInt(0)) {
-        const rent = accountInfo ? 0 : await connection.getMinimumBalanceForRentExemption(165);
+        const rent = accountInfo ? 0 : await estimateAccountRent(connection, 165);
         const transaction = new Transaction().add(
           ...(accountInfo ? [] : [createAssociatedTokenAccountInstruction(owner, ata, owner, NATIVE_MINT, TOKEN_PROGRAM_ID, ASSOCIATED_TOKEN_PROGRAM_ID)]),
           SystemProgram.transfer({ fromPubkey: owner, toPubkey: ata, lamports: rent + Number(missingBaseUnits) }),
           createSyncNativeInstruction(ata, TOKEN_PROGRAM_ID),
         );
         transaction.feePayer = owner;
-        transaction.recentBlockhash = (await connection.getLatestBlockhash("finalized")).blockhash;
+        transaction.recentBlockhash = (await latestBlockhash(connection, "finalized")).blockhash;
         const signed = await provider.signTransaction(transaction);
-        const signature = await connection.sendRawTransaction(signed.serialize(), { skipPreflight: false, maxRetries: 3 });
+        const signature = await submitSignedTransaction(connection, signed, { skipPreflight: false, maxRetries: 3 });
         await waitForFinalized(connection, signature);
       }
       return { ata: ata.toBase58(), balanceBaseUnits: requiredBaseUnits.toString() };

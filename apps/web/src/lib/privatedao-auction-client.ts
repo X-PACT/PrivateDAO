@@ -8,12 +8,12 @@ import {
 } from "@coral-xyz/anchor";
 import type { AnchorWallet } from "@solana/wallet-adapter-react";
 import {
-  Connection,
   PublicKey,
   SystemProgram,
   type ConfirmOptions,
   type TransactionSignature,
 } from "@solana/web3.js";
+import { createSolanaBrowserConnection, type SolanaBrowserConnection } from "@/lib/network-adapters/solana-browser";
 import {
   ConnectionMagicRouter,
   DELEGATION_PROGRAM_ID,
@@ -52,7 +52,7 @@ export type AuctionAddresses = {
 export type AuctionClient = {
   base: Program;
   tee: Program;
-  baseConnection: Connection;
+  baseConnection: SolanaBrowserConnection;
   teeConnection: ConnectionMagicRouter;
   addressesFor: (auctionId: Uint8Array) => AuctionAddresses;
   getTeeToken: () => Promise<{ token: string; expiresAt: number }>;
@@ -95,7 +95,7 @@ export async function createAuctionClient(wallet: AnchorWallet, signMessage: Sig
     throw new Error("Confidential Auctions is restricted to a development Solana network until certification.");
   }
   const idl = await loadIdl();
-  const baseConnection = new Connection(AUCTION_SOLANA_RPC_URL, CONFIRM_OPTIONS.commitment);
+  const baseConnection = createSolanaBrowserConnection(AUCTION_SOLANA_RPC_URL, CONFIRM_OPTIONS.commitment);
   const baseProvider = new AnchorProvider(baseConnection, wallet, CONFIRM_OPTIONS);
   const base = new Program(idl, baseProvider);
 
