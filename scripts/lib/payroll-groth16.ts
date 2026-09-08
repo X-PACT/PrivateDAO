@@ -4,9 +4,9 @@ import { readFile } from "node:fs/promises";
 import { createRequire } from "node:module";
 import { resolve } from "node:path";
 
-const require = createRequire(resolve(process.cwd(), "package.json"));
+const loadRequire = createRequire(resolve(process.cwd(), "package.json"));
 function loadDependency(name: string) {
-  try { return require(name); } catch { return require(`${process.cwd()}/apps/web/node_modules/${name}`); }
+  try { return loadRequire(name); } catch { return loadRequire(`${process.cwd()}/apps/web/node_modules/${name}`); }
 }
 
 const FIELD = 21888242871839275222246405745257275088548364400416034343698204186575808495617n;
