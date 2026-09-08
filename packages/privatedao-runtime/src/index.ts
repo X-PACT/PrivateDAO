@@ -135,3 +135,21 @@ export { PRODUCT_CATALOG, findProduct, listProducts, supportsProductCapability }
 export type { ProductAvailability, ProductDescriptor } from "./catalog.js";
 export { NETWORK_MATRIX, getNetwork, isNetworkAvailable } from "./networks.js";
 export type { NetworkDescriptor, NetworkFamily, NetworkStage } from "./networks.js";
+export {
+  InMemoryProtocolRegistry,
+  canApprove,
+  isPreparedExecution,
+} from "./protocol.js";
+export type {
+  ApprovalPolicy,
+  ApprovalRecord,
+  AuthorizationPolicy,
+  FeeEstimate,
+  NetworkAdapter,
+  ProtocolPermission,
+  ProtocolRegistration,
+  ProtocolRegistry,
+  ProtocolRole,
+  WalletSession,
+  WalletSigner,
+} from "./protocol.js";
