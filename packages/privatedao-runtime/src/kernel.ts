@@ -117,6 +117,7 @@ type ExecutionRecord<TUnsigned> = {
 export class PrivateDaoKernel {
   private readonly executions = new Map<string, ExecutionRecord<unknown>>();
   private readonly idempotency = new Map<string, string>();
+  private readonly inFlightSubmissions = new Map<string, Promise<{ executionId: string; signatures: string[] }>>();
 
   private readonly telemetry?: KernelTelemetry;
   private readonly now: () => string;
@@ -178,22 +179,33 @@ export class PrivateDaoKernel {
     if (record.state !== "prepared" && record.state !== "awaiting_signature") {
       throw new KernelError("INVALID_STATE", `Execution cannot be submitted from state ${record.state}.`);
     }
-    this.emit({ name: "execution.submit.started", executionId });
+    const inFlight = this.inFlightSubmissions.get(executionId);
+    if (inFlight) return inFlight;
+
+    const submission = (async () => {
+      this.emit({ name: "execution.submit.started", executionId });
+      try {
+        const result = await record.provider.submit(record.prepared, signedPayload);
+        record.submission = { executionId: result.executionId, signatures: [...result.signatures] };
+        record.state = "submitted";
+        this.emit({
+          name: "execution.submit.completed",
+          executionId,
+          provider: record.provider.id,
+          state: "submitted",
+        });
+        return result;
+      } catch (error) {
+        record.state = "failed";
+        this.emit({ name: "execution.failed", executionId, provider: record.provider.id, errorCode: "PROVIDER_FAILURE" });
+        throw this.providerError("Provider submission failed.", error);
+      }
+    })();
+    this.inFlightSubmissions.set(executionId, submission);
     try {
-      const result = await record.provider.submit(record.prepared, signedPayload);
-      record.submission = { executionId: result.executionId, signatures: [...result.signatures] };
-      record.state = "submitted";
-      this.emit({
-        name: "execution.submit.completed",
-        executionId,
-        provider: record.provider.id,
-        state: "submitted",
-      });
-      return result;
-    } catch (error) {
-      record.state = "failed";
-      this.emit({ name: "execution.failed", executionId, provider: record.provider.id, errorCode: "PROVIDER_FAILURE" });
-      throw this.providerError("Provider submission failed.", error);
+      return await submission;
+    } finally {
+      if (this.inFlightSubmissions.get(executionId) === submission) this.inFlightSubmissions.delete(executionId);
     }
   }
 
