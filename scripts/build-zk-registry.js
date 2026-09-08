@@ -10,6 +10,7 @@ const ENTRIES = [
     { circuit: "private_dao_vote_overlay", layer: "vote" },
     { circuit: "private_dao_delegation_overlay", layer: "delegation" },
     { circuit: "private_dao_tally_overlay", layer: "tally" },
+    { circuit: "private_dao_blind_policy_overlay", layer: "blind-policy" },
 ];
 function main() {
     const registry = {

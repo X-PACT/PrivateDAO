@@ -108,6 +108,34 @@ Artifact hashes:
 - wasm sha256: `eb6dc0cf3078fa6514a3303aa21714f8c5848d8013ea140b0eec3ba72f22cdd0`
 - witness sha256: `fe876091a42cff1a172cff96e3cec5546cea6ada02e4ea2e4d50d5b2260948d2`
 
+### BLIND-POLICY — `private_dao_blind_policy_overlay`
+
+- Source: `zk/circuits/private_dao_blind_policy_overlay.circom`
+- Sample input: `zk/inputs/private_dao_blind_policy_overlay.sample.json`
+- Proof: `zk/proofs/private_dao_blind_policy_overlay.proof.json`
+- Public signals: `zk/proofs/private_dao_blind_policy_overlay.public.json`
+- Verification key: `zk/setup/private_dao_blind_policy_overlay_vkey.json`
+- Proving key: `zk/setup/private_dao_blind_policy_overlay_final.zkey`
+- R1CS: `zk/build/private_dao_blind_policy_overlay.r1cs`
+- WASM: `zk/build/private_dao_blind_policy_overlay_js/private_dao_blind_policy_overlay.wasm`
+- Witness: `zk/proofs/private_dao_blind_policy_overlay.wtns`
+- Public signal count: `4`
+- Build command: `npm run zk:build:blind-policy`
+- Prove command: `npm run zk:prove:blind-policy`
+- Verify command: `npm run zk:verify:blind-policy`
+
+Artifact hashes:
+
+- source sha256: `133bfb5ab34552f1f4a2e29e461b545badd69dc849235ae05e2f2fe64b62e75a`
+- sample input sha256: `e70249a9de5f01b8d32565e6ca6d3056495ff975a091017fcc2f0a077a204e9c`
+- proof sha256: `4cac6a6d3095939ed7ac3b4ac6ee2631ddf3e9ebb33251df827786897d84d202`
+- public signals sha256: `da7375c67b9b0f1d5341ed00871b6529baaa649bf952a67bc549ccfaf92651ed`
+- verification key sha256: `05aeb7e27479d7f1551b0c2e18134c58f760de43f2ff085a8ea2e82f212209eb`
+- proving key sha256: `6caea255193a016c44888ce02dace1521de9102396ae132c906a7226f788eb84`
+- r1cs sha256: `58f6f2203c01cc4ba223d7be04426fc13d30bd6a324d77ceea5b20d9dab11928`
+- wasm sha256: `38166cd77769f4f4fe64c80d9daf4aacf6460d99ea5a4b6b29e8c93810a480ff`
+- witness sha256: `cd6cbce49a4e9343ab750c6fb268cab241353cd3a758ccbfae4054a48535d789`
+
 ## Canonical Replay Commands
 
 ```bash

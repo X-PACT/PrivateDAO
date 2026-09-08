@@ -9,15 +9,15 @@
   },
   "registry": {
     "path": "docs/zk-registry.generated.json",
-    "sha256": "4f613d791c2fedc6a2da1a21d7fdd9df6125a47e31084991dcaee59ef633fbf8",
-    "bytes": 8942
+    "sha256": "99172a0e15b3e4b58b219e5603cbbb610b8498bb61ee8e46e8ce6eb913f67c01",
+    "bytes": 11970
   },
   "transcript": {
     "path": "docs/zk-transcript.generated.md",
-    "sha256": "557a41261e00a6eee8aa86b048bd8b026bc8db6bcd39312a2e88654452912746",
-    "bytes": 6122
+    "sha256": "b04fd7c9096090a0ed7e5be836e7f34507eb445ff3f9bc389b9f5a9391864036",
+    "bytes": 7788
   },
-  "layerCount": 3,
+  "layerCount": 4,
   "reviewDocs": [
     "docs/zk-layer.md",
     "docs/zk-stack.md",
@@ -79,6 +79,19 @@
       "proofSha256": "d60a9cb872c925ce142d78ffebee443471de12e3026cceb59a183b6e4717739d",
       "publicSignalsSha256": "f4a395063aa902dc6c943b8941fec71310342cd246d151d9d994e3e85d5046ee",
       "verificationKeySha256": "9e8aad21b0a5aa74cb169f8856643b9d90f5231016f14b648e03a3d87a649ce6"
+    },
+    {
+      "layer": "blind-policy",
+      "circuit": "private_dao_blind_policy_overlay",
+      "publicSignalCount": 4,
+      "commands": {
+        "build": "npm run zk:build:blind-policy",
+        "prove": "npm run zk:prove:blind-policy",
+        "verify": "npm run zk:verify:blind-policy"
+      },
+      "proofSha256": "4cac6a6d3095939ed7ac3b4ac6ee2631ddf3e9ebb33251df827786897d84d202",
+      "publicSignalsSha256": "da7375c67b9b0f1d5341ed00871b6529baaa649bf952a67bc549ccfaf92651ed",
+      "verificationKeySha256": "05aeb7e27479d7f1551b0c2e18134c58f760de43f2ff085a8ea2e82f212209eb"
     }
   ],
   "boundaries": [

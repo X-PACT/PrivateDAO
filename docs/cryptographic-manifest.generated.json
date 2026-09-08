@@ -1,9 +1,9 @@
 {
   "project": "PrivateDAO",
-  "generatedAt": "2026-09-08T13:02:49.297Z",
+  "generatedAt": "2026-09-08T13:59:43.730Z",
   "algorithm": "sha256",
   "entryCount": 143,
-  "aggregateSha256": "1cf04f1564b67e63a2d066517a07da9879d0c4908fd48ccf69dbcc635a1fa344",
+  "aggregateSha256": "907c6ecb8a0b2709b65938823c030674893e0df3e7e88183cb2dc48ac4777c01",
   "files": [
     {
       "path": "zk/circuits/private_dao_vote_overlay.circom",
@@ -707,13 +707,13 @@
     },
     {
       "path": "docs/zk-transcript.generated.md",
-      "sha256": "557a41261e00a6eee8aa86b048bd8b026bc8db6bcd39312a2e88654452912746",
-      "bytes": 6122
+      "sha256": "b04fd7c9096090a0ed7e5be836e7f34507eb445ff3f9bc389b9f5a9391864036",
+      "bytes": 7788
     },
     {
       "path": "docs/zk-attestation.generated.json",
-      "sha256": "d16db0209e71deb03d2a2be40b23775f375bd1b1b820686ea317476e6ec7e9dc",
-      "bytes": 3093
+      "sha256": "cc3aa6ce1df828ac5794adb7d8c22345b7745de22d9106693de5e4e5bae3b92e",
+      "bytes": 3685
     },
     {
       "path": "docs/verification-gates.md",
