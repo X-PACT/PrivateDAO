@@ -22,7 +22,7 @@ import {
 } from "@solana/web3.js";
 import { GetSecretValueCommand, SecretsManagerClient } from "@aws-sdk/client-secrets-manager";
 import { BedrockRuntimeClient, ConverseCommand } from "@aws-sdk/client-bedrock-runtime";
-import { PrivateDaoReadNode, quickNodeX402Status, resolveMainnetRpcEndpoints } from "./lib/read-node.js";
+import { PrivateDaoReadNode, quickNodeX402Status, resolveMainnetRpcEndpoints } from "./lib/read-node.ts";
 import {
   buildSimulatedTxlineMatches,
   buildTxlineSettlementMemoFields,

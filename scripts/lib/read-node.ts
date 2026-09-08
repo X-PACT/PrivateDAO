@@ -11,7 +11,7 @@ import {
   getMagicBlockPrivateBalance,
   magicBlockApiBase,
   magicBlockCluster,
-} from "./magicblock-payments";
+} from "./magicblock-payments.ts";
 
 type CachedValue<T> = {
   expiresAt: number;
