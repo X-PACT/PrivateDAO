@@ -4,31 +4,12 @@ import { mkdirSync, readFileSync } from "node:fs";
 import { DatabaseSync } from "node:sqlite";
 import { dirname, resolve } from "node:path";
 import { verifyPayrollGroth16 } from "./payroll-groth16.ts";
+import { assertPayrollTransition } from "../../packages/privatedao-runtime/src/payroll.ts";
+import type { PayrollState } from "../../packages/privatedao-runtime/src/payroll.ts";
 
-export type PayrollState =
-  | "DRAFT" | "CALCULATED" | "POLICY_CHECKED" | "PENDING_APPROVAL" | "APPROVED"
-  | "SIGNING" | "SETTLING" | "PARTIALLY_SETTLED" | "SETTLED" | "RECONCILED"
-  | "VERIFIED" | "FAILED" | "CANCELLED" | "EXPIRED";
 export type SettlementState = "PENDING" | "SIGNED" | "SUBMITTED" | "CONFIRMED" | "CLAIMABLE" | "CLAIMED" | "FAILED";
 
-const transitions: Record<PayrollState, readonly PayrollState[]> = {
-  DRAFT: ["CALCULATED", "CANCELLED", "EXPIRED"],
-  CALCULATED: ["POLICY_CHECKED", "FAILED", "CANCELLED"],
-  POLICY_CHECKED: ["PENDING_APPROVAL", "FAILED", "CANCELLED"],
-  PENDING_APPROVAL: ["APPROVED", "FAILED", "CANCELLED", "EXPIRED"],
-  APPROVED: ["SIGNING", "CANCELLED", "EXPIRED"],
-  SIGNING: ["SETTLING", "FAILED", "CANCELLED", "EXPIRED"],
-  SETTLING: ["PARTIALLY_SETTLED", "SETTLED", "FAILED", "EXPIRED"],
-  PARTIALLY_SETTLED: ["SETTLING", "SETTLED", "FAILED", "EXPIRED"],
-  SETTLED: ["RECONCILED", "FAILED"],
-  RECONCILED: ["VERIFIED", "FAILED"],
-  VERIFIED: [], FAILED: [], CANCELLED: [], EXPIRED: [],
-};
-
-export function canTransition(from: PayrollState, to: PayrollState) { return transitions[from].includes(to); }
-export function assertTransition(from: PayrollState, to: PayrollState) {
-  if (!canTransition(from, to)) throw new Error(`Invalid payroll transition: ${from} -> ${to}`);
-}
+export { assertPayrollTransition as assertTransition };
 export function sha256(value: string) { return createHash("sha256").update(value).digest("hex"); }
 function isSha256Hex(value: unknown): value is string { return typeof value === "string" && /^[a-f0-9]{64}$/i.test(value); }
 
@@ -178,7 +159,7 @@ export class PayrollStore {
   transition(batchId: string, to: PayrollState, actorRef: string) {
     const row = this.db.prepare("SELECT tenant_id,state FROM payroll_batches WHERE batch_id=?").get(batchId) as { tenant_id: string; state: PayrollState } | undefined;
     if (!row) throw new Error("Payroll batch not found.");
-    assertTransition(row.state, to);
+    assertPayrollTransition(row.state, to);
     const now = new Date().toISOString();
     this.db.prepare("UPDATE payroll_batches SET state=?,updated_at=? WHERE batch_id=? AND state=?").run(to, now, batchId, row.state);
     this.addAudit(row.tenant_id, batchId, null, actorRef, "batch.state_changed", batchId, { from: row.state, to });

@@ -9,8 +9,9 @@ import { createRequire } from "node:module";
 const require = createRequire(import.meta.url);
 
 const workdir = mkdtempSync(join(tmpdir(), "privatedao-payroll-"));
+let store;
 try {
-  const store = new PayrollStore({
+  store = new PayrollStore({
     databasePath: join(workdir, "payroll.sqlite"),
     schemaPath: new URL("../migrations/20260826_confidential_payroll_devnet.sql", import.meta.url).pathname,
   });
@@ -56,14 +57,14 @@ try {
   assert.deepEqual(store.reconcile(batch.batchId, checker), { expectedCount: 3, confirmedCount: 3, failedCount: 0, duplicateSignatures: 0, allConfirmed: true });
   const settlementRoot = sha256(JSON.stringify(storedItems.map((item, index) => ({ payoutId: item.payout_id, netCents: item.net_cents, recipientCommitment: item.recipient_commitment, txSignature: signatures[index] }))));
   const field = (value) => (BigInt(`0x${value.slice(0, 62)}`) % 21888242871839275222246405745257275088548364400416034343698204186575808495617n).toString();
-  const { buildPoseidon } = await import("../apps/web/node_modules/circomlibjs/build/main.cjs");
+  const { buildPoseidon } = await import("../node_modules/circomlibjs/build/main.cjs");
   const poseidon = await buildPoseidon();
   const hash = (...values) => poseidon.F.toString(poseidon(values.map(BigInt)));
   const payrollKey = field(digest);
   const batchKey = field(settlementRoot);
   const salt = field(policy.policyHash);
   const publicSignals = [hash(payrollKey, "1", salt), hash(batchKey, "0", payrollKey), "0", "1"];
-  const { proof } = await require("../apps/web/node_modules/snarkjs").groth16.fullProve({ payrollCommitment: publicSignals[0], batchCommitment: publicSignals[1], maxVariance: "0", approvedClaim: "1", payrollKey, batchKey, variance: "0", approved: "1", salt }, "zk/build/private_dao_blind_payroll_js/private_dao_blind_payroll.wasm", "zk/setup/private_dao_blind_payroll_final.zkey");
+  const { proof } = await require("../node_modules/snarkjs").groth16.fullProve({ payrollCommitment: publicSignals[0], batchCommitment: publicSignals[1], maxVariance: "0", approvedClaim: "1", payrollKey, batchKey, variance: "0", approved: "1", salt }, "zk/build/private_dao_blind_payroll_js/private_dao_blind_payroll.wasm", "zk/setup/private_dao_blind_payroll_final.zkey");
   const verification = await store.createVerification({ batchId: batch.batchId, scope: "public", expiresAt: new Date(Date.now() + 3600000).toISOString(), actorRef: checker, proof, publicSignals });
   const publicVerification = store.getVerification(verification.token);
   assert.equal(publicVerification.status, "active");
@@ -73,6 +74,8 @@ try {
   assert.notEqual(verification.proofHash, "d".repeat(64));
   assert.notEqual(verification.settlementRoot, "c".repeat(64));
   console.log("PAYROLL_DOMAIN=PASS");
+  process.exit(0);
 } finally {
+  store?.db.close();
   rmSync(workdir, { recursive: true, force: true });
 }
