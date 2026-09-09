@@ -32,6 +32,7 @@ async function main() {
             network,
             mode: binding.mode,
             entrypoint: binding.entrypoint ?? null,
+            method: binding.method ?? null,
             note: binding.note,
           };
         }),

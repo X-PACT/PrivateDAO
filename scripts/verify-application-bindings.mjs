@@ -24,8 +24,17 @@ for (const product of catalog.products) {
         errors.push(`${key}: executable binding has no API entrypoint`);
         continue;
       }
+      if (typeof binding.method !== "string") {
+        errors.push(`${key}: executable binding has no HTTP method`);
+        continue;
+      }
       const routePath = path.join(root, "apps/web/src/app", `${binding.entrypoint.slice(1)}/route.ts`);
       if (!fs.existsSync(routePath)) errors.push(`${key}: missing route ${binding.entrypoint}`);
+      else {
+        const routeSource = fs.readFileSync(routePath, "utf8");
+        const methodPattern = new RegExp(`export\\s+async\\s+function\\s+${binding.method}\\b`);
+        if (!methodPattern.test(routeSource)) errors.push(`${key}: route ${binding.entrypoint} does not export ${binding.method}`);
+      }
     }
   }
 }

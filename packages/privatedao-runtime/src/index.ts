@@ -177,4 +177,4 @@ export {
   listApplicationBindings,
   validateApplicationBindings,
 } from "./application-bindings.js";
-export type { ApplicationBindingMode, ApplicationCapabilityBinding } from "./application-bindings.js";
+export type { ApplicationBindingMode, ApplicationCapabilityBinding, ApplicationHttpMethod } from "./application-bindings.js";

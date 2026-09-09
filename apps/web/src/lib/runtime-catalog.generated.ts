@@ -3,22 +3,328 @@
 export const runtimeCatalog = {
   "generatedFrom": "packages/privatedao-runtime/src/catalog.ts and networks.ts",
   "products": [
-    { "id": "blind-verification", "name": "Blind Verification", "availability": "available", "networks": ["solana-devnet"], "capabilities": [{ "id": "verification.blind.prove", "version": "1.0", "requiresSignature": false, "supportsAsync": true, "receiptSchema": "privatedao.execution-receipt.v1", "applicationBindings": [{ "network": "solana-devnet", "mode": "legacy-provider", "entrypoint": "/api/proof-workflows/blind-policy/prove", "note": "Existing proof-workflow provider route; not yet routed through ProductExecutionGateway." }] }] },
-    { "id": "record-verification", "name": "Record Verification", "availability": "available", "networks": ["solana-devnet"], "capabilities": [{ "id": "verification.record.create", "version": "1.0", "requiresSignature": false, "supportsAsync": true, "receiptSchema": "privatedao.execution-receipt.v1", "applicationBindings": [{ "network": "solana-devnet", "mode": "unbound", "entrypoint": null, "note": "No exact record-creation application binding is exposed by the web app." }] }, { "id": "verification.record.verify", "version": "1.0", "requiresSignature": false, "supportsAsync": true, "receiptSchema": "privatedao.execution-receipt.v1", "applicationBindings": [{ "network": "solana-devnet", "mode": "legacy-provider", "entrypoint": "/api/records/verify", "note": "Existing record verification proxy; not yet routed through ProductExecutionGateway." }] }] },
-    { "id": "payroll", "name": "Confidential Payroll", "availability": "available", "networks": ["solana-devnet"], "capabilities": [{ "id": "payroll.calculate", "version": "1.0", "requiresSignature": false, "supportsAsync": true, "receiptSchema": "privatedao.execution-receipt.v1", "applicationBindings": [{ "network": "solana-devnet", "mode": "unbound", "entrypoint": null, "note": "Payroll calculation is not yet exposed as a Kernel-backed application action." }] }, { "id": "payroll.approve", "version": "1.0", "requiresSignature": true, "supportsAsync": true, "receiptSchema": "privatedao.execution-receipt.v1", "applicationBindings": [{ "network": "solana-devnet", "mode": "unbound", "entrypoint": null, "note": "Payroll approval state machine is not yet exposed as a Kernel-backed application action." }] }, { "id": "payroll.settle", "version": "1.0", "requiresSignature": true, "supportsAsync": true, "receiptSchema": "privatedao.execution-receipt.v1", "applicationBindings": [{ "network": "solana-devnet", "mode": "legacy-provider", "entrypoint": "/api/private-payout/prepare", "note": "Existing private-payout provider route; it is not evidence of an end-to-end payroll settlement." }] }] },
-    { "id": "treasury", "name": "Private Treasury", "availability": "available", "networks": ["solana-devnet"], "capabilities": [{ "id": "treasury.policy.check", "version": "1.0", "requiresSignature": false, "supportsAsync": true, "receiptSchema": "privatedao.execution-receipt.v1", "applicationBindings": [{ "network": "solana-devnet", "mode": "unbound", "entrypoint": null, "note": "No exact Kernel-backed treasury policy action is exposed by the web app." }] }] },
-    { "id": "governance", "name": "Private Governance", "availability": "available", "networks": ["solana-devnet"], "capabilities": [{ "id": "governance.proposal.execute", "version": "1.0", "requiresSignature": true, "supportsAsync": true, "receiptSchema": "privatedao.execution-receipt.v1", "applicationBindings": [{ "network": "solana-devnet", "mode": "unbound", "entrypoint": null, "note": "No exact Kernel-backed governance execution action is exposed by the web app." }] }] },
-    { "id": "auction", "name": "Private Auctions", "availability": "available", "networks": ["solana-devnet"], "capabilities": [{ "id": "auction.bid.commit", "version": "1.0", "requiresSignature": true, "supportsAsync": true, "receiptSchema": "privatedao.execution-receipt.v1", "applicationBindings": [{ "network": "solana-devnet", "mode": "legacy-provider", "entrypoint": "/api/auctions/sealed/run", "note": "Existing sealed-auction route; not yet routed through ProductExecutionGateway." }] }, { "id": "auction.settle", "version": "1.0", "requiresSignature": true, "supportsAsync": true, "receiptSchema": "privatedao.execution-receipt.v1", "applicationBindings": [{ "network": "solana-devnet", "mode": "legacy-provider", "entrypoint": "/api/auctions/sealed/outcome-proof", "note": "Existing sealed-auction proof route; settlement evidence remains provider-specific." }] }] },
-    { "id": "agent", "name": "Agent Marketplace", "availability": "available", "networks": ["solana-devnet"], "capabilities": [{ "id": "agent.discover", "version": "1.0", "requiresSignature": false, "supportsAsync": true, "receiptSchema": "privatedao.execution-receipt.v1", "applicationBindings": [{ "network": "solana-devnet", "mode": "unbound", "entrypoint": null, "note": "Agent discovery is hosted outside this web application boundary." }] }, { "id": "agent.invoke", "version": "1.0", "requiresSignature": true, "supportsAsync": true, "receiptSchema": "privatedao.execution-receipt.v1", "applicationBindings": [{ "network": "solana-devnet", "mode": "unbound", "entrypoint": null, "note": "No Kernel-backed Agent Marketplace invocation action is exposed by the web app." }] }] }
+    {
+      "id": "blind-verification",
+      "name": "Blind Verification",
+      "availability": "available",
+      "networks": [
+        "solana-devnet"
+      ],
+      "capabilities": [
+        {
+          "id": "verification.blind.prove",
+          "version": "1.0",
+          "requiresSignature": false,
+          "supportsAsync": true,
+          "receiptSchema": "privatedao.execution-receipt.v1",
+          "applicationBindings": [
+            {
+              "network": "solana-devnet",
+              "mode": "legacy-provider",
+              "entrypoint": "/api/proof-workflows/blind-policy/prove",
+              "method": "POST",
+              "note": "Existing proof-workflow provider route; not yet routed through ProductExecutionGateway."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "record-verification",
+      "name": "Record Verification",
+      "availability": "available",
+      "networks": [
+        "solana-devnet"
+      ],
+      "capabilities": [
+        {
+          "id": "verification.record.create",
+          "version": "1.0",
+          "requiresSignature": false,
+          "supportsAsync": true,
+          "receiptSchema": "privatedao.execution-receipt.v1",
+          "applicationBindings": [
+            {
+              "network": "solana-devnet",
+              "mode": "unbound",
+              "entrypoint": null,
+              "method": null,
+              "note": "No exact record-creation application binding is exposed by the web app."
+            }
+          ]
+        },
+        {
+          "id": "verification.record.verify",
+          "version": "1.0",
+          "requiresSignature": false,
+          "supportsAsync": true,
+          "receiptSchema": "privatedao.execution-receipt.v1",
+          "applicationBindings": [
+            {
+              "network": "solana-devnet",
+              "mode": "legacy-provider",
+              "entrypoint": "/api/records/verify",
+              "method": "POST",
+              "note": "Existing record verification proxy; not yet routed through ProductExecutionGateway."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "payroll",
+      "name": "Confidential Payroll",
+      "availability": "available",
+      "networks": [
+        "solana-devnet"
+      ],
+      "capabilities": [
+        {
+          "id": "payroll.calculate",
+          "version": "1.0",
+          "requiresSignature": false,
+          "supportsAsync": true,
+          "receiptSchema": "privatedao.execution-receipt.v1",
+          "applicationBindings": [
+            {
+              "network": "solana-devnet",
+              "mode": "unbound",
+              "entrypoint": null,
+              "method": null,
+              "note": "Payroll calculation is not yet exposed as a Kernel-backed application action."
+            }
+          ]
+        },
+        {
+          "id": "payroll.approve",
+          "version": "1.0",
+          "requiresSignature": true,
+          "supportsAsync": true,
+          "receiptSchema": "privatedao.execution-receipt.v1",
+          "applicationBindings": [
+            {
+              "network": "solana-devnet",
+              "mode": "unbound",
+              "entrypoint": null,
+              "method": null,
+              "note": "Payroll approval state machine is not yet exposed as a Kernel-backed application action."
+            }
+          ]
+        },
+        {
+          "id": "payroll.settle",
+          "version": "1.0",
+          "requiresSignature": true,
+          "supportsAsync": true,
+          "receiptSchema": "privatedao.execution-receipt.v1",
+          "applicationBindings": [
+            {
+              "network": "solana-devnet",
+              "mode": "legacy-provider",
+              "entrypoint": "/api/private-payout/prepare",
+              "method": "POST",
+              "note": "Existing private-payout provider route; it is not evidence of an end-to-end payroll settlement."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "treasury",
+      "name": "Private Treasury",
+      "availability": "available",
+      "networks": [
+        "solana-devnet"
+      ],
+      "capabilities": [
+        {
+          "id": "treasury.policy.check",
+          "version": "1.0",
+          "requiresSignature": false,
+          "supportsAsync": true,
+          "receiptSchema": "privatedao.execution-receipt.v1",
+          "applicationBindings": [
+            {
+              "network": "solana-devnet",
+              "mode": "unbound",
+              "entrypoint": null,
+              "method": null,
+              "note": "No exact Kernel-backed treasury policy action is exposed by the web app."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "governance",
+      "name": "Private Governance",
+      "availability": "available",
+      "networks": [
+        "solana-devnet"
+      ],
+      "capabilities": [
+        {
+          "id": "governance.proposal.execute",
+          "version": "1.0",
+          "requiresSignature": true,
+          "supportsAsync": true,
+          "receiptSchema": "privatedao.execution-receipt.v1",
+          "applicationBindings": [
+            {
+              "network": "solana-devnet",
+              "mode": "unbound",
+              "entrypoint": null,
+              "method": null,
+              "note": "No exact Kernel-backed governance execution action is exposed by the web app."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "auction",
+      "name": "Private Auctions",
+      "availability": "available",
+      "networks": [
+        "solana-devnet"
+      ],
+      "capabilities": [
+        {
+          "id": "auction.bid.commit",
+          "version": "1.0",
+          "requiresSignature": true,
+          "supportsAsync": true,
+          "receiptSchema": "privatedao.execution-receipt.v1",
+          "applicationBindings": [
+            {
+              "network": "solana-devnet",
+              "mode": "legacy-provider",
+              "entrypoint": "/api/auctions/sealed/run",
+              "method": "POST",
+              "note": "Existing sealed-auction route; not yet routed through ProductExecutionGateway."
+            }
+          ]
+        },
+        {
+          "id": "auction.settle",
+          "version": "1.0",
+          "requiresSignature": true,
+          "supportsAsync": true,
+          "receiptSchema": "privatedao.execution-receipt.v1",
+          "applicationBindings": [
+            {
+              "network": "solana-devnet",
+              "mode": "legacy-provider",
+              "entrypoint": "/api/auctions/sealed/outcome-proof",
+              "method": "POST",
+              "note": "Existing sealed-auction proof route; settlement evidence remains provider-specific."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "agent",
+      "name": "Agent Marketplace",
+      "availability": "available",
+      "networks": [
+        "solana-devnet"
+      ],
+      "capabilities": [
+        {
+          "id": "agent.discover",
+          "version": "1.0",
+          "requiresSignature": false,
+          "supportsAsync": true,
+          "receiptSchema": "privatedao.execution-receipt.v1",
+          "applicationBindings": [
+            {
+              "network": "solana-devnet",
+              "mode": "unbound",
+              "entrypoint": null,
+              "method": null,
+              "note": "Agent discovery is hosted outside this web application boundary."
+            }
+          ]
+        },
+        {
+          "id": "agent.invoke",
+          "version": "1.0",
+          "requiresSignature": true,
+          "supportsAsync": true,
+          "receiptSchema": "privatedao.execution-receipt.v1",
+          "applicationBindings": [
+            {
+              "network": "solana-devnet",
+              "mode": "unbound",
+              "entrypoint": null,
+              "method": null,
+              "note": "No Kernel-backed Agent Marketplace invocation action is exposed by the web app."
+            }
+          ]
+        }
+      ]
+    }
   ],
   "networks": [
-    { "id": "solana-devnet", "label": "Solana Devnet", "family": "solana", "stage": "available", "environment": "devnet", "adapterId": "solana-devnet" },
-    { "id": "solana-mainnet-beta", "label": "Solana Mainnet", "family": "solana", "stage": "planned", "environment": "mainnet" },
-    { "id": "ethereum-sepolia", "label": "Ethereum Sepolia", "family": "evm", "stage": "planned", "environment": "testnet", "chainId": "11155111" },
-    { "id": "arbitrum-sepolia", "label": "Arbitrum Sepolia", "family": "evm", "stage": "planned", "environment": "testnet", "chainId": "421614" },
-    { "id": "tempo-testnet", "label": "Tempo Testnet", "family": "evm", "stage": "planned", "environment": "testnet" },
-    { "id": "zcash-testnet", "label": "Zcash Testnet", "family": "utxo", "stage": "planned", "environment": "testnet" },
-    { "id": "wormhole-integration", "label": "Wormhole Integration", "family": "bridge", "stage": "planned", "environment": "integration" },
-    { "id": "hyperliquid-testnet", "label": "Hyperliquid Testnet", "family": "exchange", "stage": "planned", "environment": "testnet" }
+    {
+      "id": "solana-devnet",
+      "label": "Solana Devnet",
+      "family": "solana",
+      "stage": "available",
+      "environment": "devnet",
+      "adapterId": "solana-devnet"
+    },
+    {
+      "id": "solana-mainnet-beta",
+      "label": "Solana Mainnet",
+      "family": "solana",
+      "stage": "planned",
+      "environment": "mainnet"
+    },
+    {
+      "id": "ethereum-sepolia",
+      "label": "Ethereum Sepolia",
+      "family": "evm",
+      "stage": "planned",
+      "environment": "testnet",
+      "chainId": "11155111"
+    },
+    {
+      "id": "arbitrum-sepolia",
+      "label": "Arbitrum Sepolia",
+      "family": "evm",
+      "stage": "planned",
+      "environment": "testnet",
+      "chainId": "421614"
+    },
+    {
+      "id": "tempo-testnet",
+      "label": "Tempo Testnet",
+      "family": "evm",
+      "stage": "planned",
+      "environment": "testnet"
+    },
+    {
+      "id": "zcash-testnet",
+      "label": "Zcash Testnet",
+      "family": "utxo",
+      "stage": "planned",
+      "environment": "testnet"
+    },
+    {
+      "id": "wormhole-integration",
+      "label": "Wormhole Integration",
+      "family": "bridge",
+      "stage": "planned",
+      "environment": "integration"
+    },
+    {
+      "id": "hyperliquid-testnet",
+      "label": "Hyperliquid Testnet",
+      "family": "exchange",
+      "stage": "planned",
+      "environment": "testnet"
+    }
   ]
 } as const;

@@ -2,6 +2,7 @@ import type { CapabilityId, NetworkId, ProductId } from "./index.js";
 import { PRODUCT_CATALOG } from "./catalog.js";
 
 export type ApplicationBindingMode = "kernel-gateway" | "legacy-provider" | "unbound";
+export type ApplicationHttpMethod = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
 
 export interface ApplicationCapabilityBinding {
   product: ProductId;
@@ -9,6 +10,7 @@ export interface ApplicationCapabilityBinding {
   network: NetworkId;
   mode: ApplicationBindingMode;
   entrypoint?: string;
+  method?: ApplicationHttpMethod;
   note: string;
 }
 
@@ -24,6 +26,7 @@ export const APPLICATION_CAPABILITY_BINDINGS: readonly ApplicationCapabilityBind
     network: "solana-devnet",
     mode: "legacy-provider",
     entrypoint: "/api/proof-workflows/blind-policy/prove",
+    method: "POST",
     note: "Existing proof-workflow provider route; not yet routed through ProductExecutionGateway.",
   },
   {
@@ -39,6 +42,7 @@ export const APPLICATION_CAPABILITY_BINDINGS: readonly ApplicationCapabilityBind
     network: "solana-devnet",
     mode: "legacy-provider",
     entrypoint: "/api/records/verify",
+    method: "POST",
     note: "Existing record verification proxy; not yet routed through ProductExecutionGateway.",
   },
   {
@@ -61,6 +65,7 @@ export const APPLICATION_CAPABILITY_BINDINGS: readonly ApplicationCapabilityBind
     network: "solana-devnet",
     mode: "legacy-provider",
     entrypoint: "/api/private-payout/prepare",
+    method: "POST",
     note: "Existing private-payout provider route; it is not evidence of an end-to-end payroll settlement.",
   },
   {
@@ -83,6 +88,7 @@ export const APPLICATION_CAPABILITY_BINDINGS: readonly ApplicationCapabilityBind
     network: "solana-devnet",
     mode: "legacy-provider",
     entrypoint: "/api/auctions/sealed/run",
+    method: "POST",
     note: "Existing sealed-auction route; not yet routed through ProductExecutionGateway.",
   },
   {
@@ -91,6 +97,7 @@ export const APPLICATION_CAPABILITY_BINDINGS: readonly ApplicationCapabilityBind
     network: "solana-devnet",
     mode: "legacy-provider",
     entrypoint: "/api/auctions/sealed/outcome-proof",
+    method: "POST",
     note: "Existing sealed-auction proof route; settlement evidence remains provider-specific.",
   },
   {
@@ -142,6 +149,8 @@ export function validateApplicationBindings(
     if (capability && !capability.networks.includes(binding.network)) errors.push(`${key}: network is not declared by capability`);
     if (binding.mode === "unbound" && binding.entrypoint) errors.push(`${key}: unbound binding cannot have an entrypoint`);
     if (binding.mode !== "unbound" && !binding.entrypoint) errors.push(`${key}: executable binding requires an entrypoint`);
+    if (binding.mode === "unbound" && binding.method) errors.push(`${key}: unbound binding cannot have an HTTP method`);
+    if (binding.mode !== "unbound" && !binding.method) errors.push(`${key}: executable binding requires an HTTP method`);
     if (binding.entrypoint && !binding.entrypoint.startsWith("/api/")) errors.push(`${key}: entrypoint must be an application API path`);
   }
   for (const product of catalog) {
