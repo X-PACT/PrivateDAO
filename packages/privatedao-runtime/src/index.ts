@@ -162,3 +162,4 @@ export { InMemoryAuditLog, InMemoryJobStore, isTerminalJobState, nextRetryState 
 export type { AuditEvent, AuditLog, JobState, JobStore, ProtocolJob } from "./jobs.js";
 export { TransportBackedNetworkAdapter } from "./adapters.js";
 export type { AdapterTransport } from "./adapters.js";
+export { registerCatalogCapabilities } from "./product-registry.js";

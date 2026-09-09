@@ -21,3 +21,5 @@ Network-specific adapters belong outside this package and must implement `Kernel
 `NETWORK_MATRIX` records the requested network roadmap without making unsupported claims. Planned entries are metadata only and cannot be resolved by a provider registry until an adapter is implemented and tested.
 
 The migration rule is strict: product code may depend on these contracts, but provider-specific transaction construction belongs behind `KernelProvider` implementations. REST, SDK, MCP, and agent adapters should expose the same `ProtocolCapability` and receipt semantics.
+
+`registerCatalogCapabilities` materializes the current product catalog in the Protocol registry with shared role and permission policies. It only registers contracts; it does not execute a transaction or create a provider success path. Applications still have to inject a real adapter and provide independent network evidence before declaring an action supported.

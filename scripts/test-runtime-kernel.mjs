@@ -2,8 +2,10 @@ import assert from "node:assert/strict";
 
 import {
   InMemoryProviderRegistry,
+  InMemoryProtocolRegistry,
   PrivateDaoKernel,
   listProducts,
+  registerCatalogCapabilities,
 } from "../packages/privatedao-runtime/src/index.ts";
 
 const network = "solana-devnet";
@@ -77,4 +79,12 @@ const products = listProducts();
 assert.equal(products.find((product) => product.id === "blind-verification")?.name, "Blind Verification");
 assert.equal(products.find((product) => product.id === "record-verification")?.name, "Record Verification");
 
-console.log("[runtime-kernel] idempotent prepare/submit and verification catalog checks passed");
+const protocolRegistry = new InMemoryProtocolRegistry();
+const registrations = registerCatalogCapabilities(protocolRegistry);
+const expectedRegistrationCount = products.reduce((count, product) => count + product.capabilities.length, 0);
+assert.equal(registrations.length, expectedRegistrationCount);
+assert.equal(protocolRegistry.list("payroll").length, 3);
+assert.equal(protocolRegistry.authorize("payroll.approve", "execution.submit", "checker"), true);
+assert.equal(protocolRegistry.authorize("payroll.approve", "execution.submit", "auditor"), false);
+
+console.log("[runtime-kernel] idempotent execution, product registration, and verification catalog checks passed");
