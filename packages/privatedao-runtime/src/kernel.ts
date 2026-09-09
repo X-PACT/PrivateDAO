@@ -13,6 +13,7 @@ import { isNetworkAvailable } from "./networks.js";
 
 export type KernelErrorCode =
   | "INVALID_INTENT"
+  | "INTENT_EXPIRED"
   | "DUPLICATE_IDEMPOTENCY_KEY"
   | "PROVIDER_NOT_FOUND"
   | "CAPABILITY_UNSUPPORTED"
@@ -272,6 +273,16 @@ export class PrivateDaoKernel {
   private validateIntent<TPayload>(intent: ExecutionIntent<TPayload>): void {
     if (!intent.context.requestId || !intent.context.idempotencyKey || !intent.context.network || !intent.context.capability) {
       throw new KernelError("INVALID_INTENT", "Execution intent is missing required context fields.");
+    }
+    if (intent.expiresAt) {
+      const expiresAt = Date.parse(intent.expiresAt);
+      const now = Date.parse(this.now());
+      if (!Number.isFinite(expiresAt) || !Number.isFinite(now)) {
+        throw new KernelError("INVALID_INTENT", "Execution intent has an invalid expiry timestamp.");
+      }
+      if (expiresAt <= now) {
+        throw new KernelError("INTENT_EXPIRED", "Execution intent has expired.", { expiresAt: intent.expiresAt });
+      }
     }
   }
 

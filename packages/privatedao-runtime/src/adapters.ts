@@ -63,6 +63,8 @@ export class TransportBackedNetworkAdapter implements NetworkAdapter {
   }
 
   submit<TUnsigned>(execution: PreparedExecution<TUnsigned>, signedPayload: TUnsigned): Promise<{ executionId: string; signatures: string[] }> {
+    this.assertNetwork(execution.intent.context.network);
+    this.assertCapability(execution.intent.context.capability);
     return this.transport.submit(execution, signedPayload);
   }
 

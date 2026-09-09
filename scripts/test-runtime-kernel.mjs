@@ -101,4 +101,10 @@ await assert.rejects(
   (error) => error?.code === "PROVIDER_NOT_FOUND",
 );
 
+const expiredKernel = new PrivateDaoKernel(registry, { now: () => "2026-09-09T00:00:00.000Z" });
+await assert.rejects(
+  () => expiredKernel.prepare({ ...intent, expiresAt: "2026-09-08T23:59:59.000Z" }),
+  (error) => error?.code === "INTENT_EXPIRED",
+);
+
 console.log("[runtime-kernel] idempotent execution, product registration, and verification catalog checks passed");
