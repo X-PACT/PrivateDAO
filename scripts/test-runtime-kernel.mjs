@@ -95,4 +95,10 @@ assert.throws(
   (error) => error?.code === "INVALID_INTENT",
 );
 
+const emptyRuntime = createPrivateDaoRuntime();
+await assert.rejects(
+  () => emptyRuntime.gateway.prepare(intent, "maker"),
+  (error) => error?.code === "PROVIDER_NOT_FOUND",
+);
+
 console.log("[runtime-kernel] idempotent execution, product registration, and verification catalog checks passed");
