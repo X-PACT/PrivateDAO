@@ -53,6 +53,7 @@ echo "[verify-all] checking runtime Kernel idempotency"
 npm run test:runtime >/dev/null
 npm run test:runtime:http >/dev/null
 npm run test:runtime:http-runtime >/dev/null
+npm run test:runtime:payroll >/dev/null
 
 echo "[verify-all] checking tracked secret paths"
 npm run verify:tracked-secrets >/dev/null

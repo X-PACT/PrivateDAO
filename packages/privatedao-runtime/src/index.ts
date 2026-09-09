@@ -166,6 +166,19 @@ export { HttpExecutionTransport } from "./http-transport.js";
 export type { HttpExecutionTransportOptions, HttpExecutionTransportPaths, HttpFetch } from "./http-transport.js";
 export { createHttpBackedPrivateDaoRuntime } from "./http-runtime.js";
 export type { HttpBackedRuntimeOptions } from "./http-runtime.js";
+export {
+  assertPayrollTransition,
+  calculatePayroll,
+  canTransitionPayroll,
+} from "./payroll.js";
+export type {
+  PayrollCalculation,
+  PayrollLine,
+  PayrollLineInput,
+  PayrollPolicy,
+  PayrollRounding,
+  PayrollState,
+} from "./payroll.js";
 export { registerCatalogCapabilities } from "./product-registry.js";
 export { ProductExecutionGateway } from "./product-gateway.js";
 export { createPrivateDaoRuntime } from "./runtime.js";
