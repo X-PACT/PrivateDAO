@@ -200,7 +200,7 @@ export class PrivateDaoKernel {
       this.emit({ name: "execution.submit.started", executionId });
       try {
         const result = await record.provider.submit(record.prepared, signedPayload);
-        if (result.executionId !== executionId || result.signatures.length === 0) {
+        if (result.executionId !== executionId || (record.prepared.requiredSigners.length > 0 && result.signatures.length === 0)) {
           throw new Error("Provider returned an invalid submission result.");
         }
         record.submission = { executionId: result.executionId, signatures: [...result.signatures] };

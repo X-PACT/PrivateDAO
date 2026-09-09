@@ -4,6 +4,7 @@ import {
   assertPayrollTransition,
   calculatePayroll,
   canTransitionPayroll,
+  createPrivateDaoRuntime,
 } from "../packages/privatedao-runtime/src/index.ts";
 
 const policy = {
@@ -38,5 +39,26 @@ assert.equal(canTransitionPayroll("DRAFT", "SETTLED"), false);
 assert.doesNotThrow(() => assertPayrollTransition("RECONCILED", "VERIFIED"));
 assert.throws(() => calculatePayroll([{ employeeRef: "employee-a", grossCents: 90_000 }], policy), /employee limit/);
 assert.throws(() => calculatePayroll([{ employeeRef: "employee-a", grossCents: 10_000 }, { employeeRef: "employee-a", grossCents: 10_000 }], policy), /unique/);
+
+const runtime = createPrivateDaoRuntime();
+const prepared = await runtime.gateway.prepare({
+  context: {
+    requestId: "runtime-payroll-calculation",
+    idempotencyKey: "runtime-payroll-calculation-1",
+    product: "payroll",
+    capability: "payroll.calculate",
+    network: "solana-devnet",
+  },
+  payload: {
+    lines: [{ employeeRef: "employee-a", grossCents: 10_001 }],
+    policy,
+  },
+  accounts: [],
+}, "maker");
+await runtime.gateway.submit(prepared, prepared.unsignedPayload, "maker");
+const receipt = await runtime.gateway.receipt(prepared, "auditor");
+assert.equal(receipt.state, "reconciled");
+assert.equal(receipt.signatures.length, 0);
+assert.equal(receipt.result.netCents, 8_801);
 
 console.log("[runtime-payroll] deterministic calculation and state-machine checks passed");

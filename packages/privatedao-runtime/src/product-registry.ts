@@ -10,7 +10,7 @@ import type {
 
 const readRoles: readonly ProtocolRole[] = ["maker", "checker", "auditor", "admin", "agent"];
 const writeRoles: readonly ProtocolRole[] = ["maker", "checker", "admin", "agent"];
-const readPermissions: readonly ProtocolPermission[] = ["execution.prepare", "execution.read", "receipt.read", "proof.create", "proof.verify"];
+const readPermissions: readonly ProtocolPermission[] = ["execution.prepare", "execution.submit", "execution.read", "receipt.read", "proof.create", "proof.verify"];
 const writePermissions: readonly ProtocolPermission[] = [
   "execution.prepare",
   "execution.submit",

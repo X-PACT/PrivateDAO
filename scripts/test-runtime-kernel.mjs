@@ -94,7 +94,7 @@ const gateway = runtime.gateway;
 const gatewayPrepared = await gateway.prepare(intent, "maker");
 assert.equal(gatewayPrepared.executionId, first.executionId);
 assert.throws(
-  () => gateway.submit(gatewayPrepared, gatewayPrepared.unsignedPayload, "auditor"),
+  () => gateway.prepare({ ...intent, context: { ...intent.context, product: "payroll", capability: "payroll.approve" } }, "auditor"),
   (error) => error?.code === "INVALID_INTENT",
 );
 
@@ -112,7 +112,7 @@ assert.equal(verifiedMatrix.find((entry) => entry.capability === capability && e
 
 assert.equal(validateApplicationBindings().length, 0);
 assert.equal(listApplicationBindings().length, products.reduce((count, product) => count + product.capabilities.length, 0));
-assert.equal(listApplicationBindings().find((entry) => entry.capability === "payroll.calculate")?.mode, "unbound");
+assert.equal(listApplicationBindings().find((entry) => entry.capability === "payroll.calculate")?.mode, "kernel-gateway");
 assert.equal(listApplicationBindings().find((entry) => entry.capability === "verification.blind.prove")?.mode, "legacy-provider");
 
 let currentTime = "2026-09-09T00:00:00.000Z";

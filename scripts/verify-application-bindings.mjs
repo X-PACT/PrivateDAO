@@ -20,8 +20,17 @@ for (const product of catalog.products) {
         continue;
       }
       if (binding.mode === "unbound") continue;
-      if (typeof binding.entrypoint !== "string" || !binding.entrypoint.startsWith("/api/")) {
-        errors.push(`${key}: executable binding has no API entrypoint`);
+      if (typeof binding.entrypoint !== "string") {
+        errors.push(`${key}: executable binding has no entrypoint`);
+        continue;
+      }
+      if (binding.mode === "kernel-gateway") {
+        if (!binding.entrypoint.startsWith("kernel://")) errors.push(`${key}: Kernel gateway binding has no kernel entrypoint`);
+        if (binding.method !== null) errors.push(`${key}: Kernel gateway binding must not declare an HTTP method`);
+        continue;
+      }
+      if (!binding.entrypoint.startsWith("/api/")) {
+        errors.push(`${key}: legacy provider binding has no API entrypoint`);
         continue;
       }
       if (typeof binding.method !== "string") {

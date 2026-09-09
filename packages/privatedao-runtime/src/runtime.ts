@@ -3,6 +3,7 @@ import { ProductExecutionGateway } from "./product-gateway.js";
 import { registerCatalogCapabilities } from "./product-registry.js";
 import { InMemoryProtocolRegistry, type ProtocolRegistry } from "./protocol.js";
 import type { ProviderRegistry } from "./index.js";
+import { PayrollCalculationProvider } from "./payroll-provider.js";
 
 /**
  * Single composition boundary for PrivateDAO applications.
@@ -19,15 +20,14 @@ export interface PrivateDaoRuntime {
   readonly gateway: ProductExecutionGateway;
 }
 
-export function createPrivateDaoRuntime(
-  providers: ProviderRegistry = new InMemoryProviderRegistry(),
-  options: KernelOptions = {},
-): PrivateDaoRuntime {
+export function createPrivateDaoRuntime(providers?: ProviderRegistry, options: KernelOptions = {}): PrivateDaoRuntime {
+  const providerRegistry = providers ?? new InMemoryProviderRegistry();
+  if (!providers && providerRegistry instanceof InMemoryProviderRegistry) providerRegistry.register(new PayrollCalculationProvider());
   const protocols = new InMemoryProtocolRegistry();
   registerCatalogCapabilities(protocols);
-  const kernel = new PrivateDaoKernel(providers, options);
+  const kernel = new PrivateDaoKernel(providerRegistry, options);
   return {
-    providers,
+    providers: providerRegistry,
     protocols,
     kernel,
     gateway: new ProductExecutionGateway(kernel, protocols),

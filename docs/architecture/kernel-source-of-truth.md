@@ -32,6 +32,12 @@ in `application-bindings.ts` and is intentionally classified as one of:
 This classification is enforced by validation and CI. A product is not marked
 Kernel-backed merely because a legacy endpoint exists.
 
+The first Kernel-native application capability is `payroll.calculate` on
+Solana Devnet. It produces a deterministic calculation receipt with no wallet
+signature and no settlement side effect. Payroll approval, settlement, and
+the other product actions remain explicitly classified until their real
+provider lifecycle is wired and independently tested.
+
 ## Network truth
 
 Only `solana-devnet` is currently an available runtime network in the Kernel

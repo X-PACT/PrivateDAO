@@ -49,8 +49,9 @@ export const APPLICATION_CAPABILITY_BINDINGS: readonly ApplicationCapabilityBind
     product: "payroll",
     capability: "payroll.calculate",
     network: "solana-devnet",
-    mode: "unbound",
-    note: "Payroll calculation is not yet exposed as a Kernel-backed application action.",
+    mode: "kernel-gateway",
+    entrypoint: "kernel://payroll.calculate",
+    note: "Kernel-native deterministic calculation; no wallet signature or settlement is performed.",
   },
   {
     product: "payroll",
@@ -150,8 +151,10 @@ export function validateApplicationBindings(
     if (binding.mode === "unbound" && binding.entrypoint) errors.push(`${key}: unbound binding cannot have an entrypoint`);
     if (binding.mode !== "unbound" && !binding.entrypoint) errors.push(`${key}: executable binding requires an entrypoint`);
     if (binding.mode === "unbound" && binding.method) errors.push(`${key}: unbound binding cannot have an HTTP method`);
-    if (binding.mode !== "unbound" && !binding.method) errors.push(`${key}: executable binding requires an HTTP method`);
-    if (binding.entrypoint && !binding.entrypoint.startsWith("/api/")) errors.push(`${key}: entrypoint must be an application API path`);
+    if (binding.mode === "kernel-gateway" && binding.entrypoint && !binding.entrypoint.startsWith("kernel://")) errors.push(`${key}: Kernel gateway entrypoint must use kernel://`);
+    if (binding.mode === "legacy-provider" && binding.entrypoint && !binding.entrypoint.startsWith("/api/")) errors.push(`${key}: legacy provider entrypoint must be an application API path`);
+    if (binding.mode === "kernel-gateway" && binding.method) errors.push(`${key}: Kernel gateway binding cannot declare an HTTP method`);
+    if (binding.mode === "legacy-provider" && !binding.method) errors.push(`${key}: legacy provider binding requires an HTTP method`);
   }
   for (const product of catalog) {
     for (const capability of product.capabilities) {

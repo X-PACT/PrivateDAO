@@ -88,10 +88,10 @@ export const runtimeCatalog = {
           "applicationBindings": [
             {
               "network": "solana-devnet",
-              "mode": "unbound",
-              "entrypoint": null,
+              "mode": "kernel-gateway",
+              "entrypoint": "kernel://payroll.calculate",
               "method": null,
-              "note": "Payroll calculation is not yet exposed as a Kernel-backed application action."
+              "note": "Kernel-native deterministic calculation; no wallet signature or settlement is performed."
             }
           ]
         },
