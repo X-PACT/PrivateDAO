@@ -23,7 +23,10 @@ export function GET() {
         return {
           ...capability,
           executionStatus,
-          executable: executionStatus !== "unbound",
+          // Legacy routes remain discoverable for compatibility, but are not
+          // advertised as Kernel-backed execution.
+          executable: executionStatus === "kernel-bound",
+          legacyRouteAvailable: executionStatus === "legacy-provider",
         };
       }),
     })),

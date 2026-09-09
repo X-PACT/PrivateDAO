@@ -23,7 +23,17 @@ export function isRuntimeCapabilityExecutable(
   network: RuntimeNetworkId,
 ): boolean {
   return getRuntimeCapability(productId, capabilityId).applicationBindings.some(
-    (binding) => binding.network === network && binding.mode !== "unbound",
+    (binding) => binding.network === network && binding.mode === "kernel-gateway",
+  );
+}
+
+export function isRuntimeCapabilityLegacyRoute(
+  productId: RuntimeProductId,
+  capabilityId: RuntimeCapabilityId,
+  network: RuntimeNetworkId,
+): boolean {
+  return getRuntimeCapability(productId, capabilityId).applicationBindings.some(
+    (binding) => binding.network === network && binding.mode === "legacy-provider",
   );
 }
 
