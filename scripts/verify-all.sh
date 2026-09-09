@@ -52,6 +52,7 @@ npm run validate:ranger-strategy -- docs/ranger-strategy-config.devnet.json >/de
 echo "[verify-all] checking runtime Kernel idempotency"
 npm run test:runtime >/dev/null
 npm run test:runtime:http >/dev/null
+npm run test:runtime:http-runtime >/dev/null
 
 echo "[verify-all] checking tracked secret paths"
 npm run verify:tracked-secrets >/dev/null
