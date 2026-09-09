@@ -1,5 +1,6 @@
 export type ProductId =
-  | "verification"
+  | "blind-verification"
+  | "record-verification"
   | "payroll"
   | "treasury"
   | "governance"

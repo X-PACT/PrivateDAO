@@ -32,14 +32,22 @@ function capability(
 
 export const PRODUCT_CATALOG: readonly ProductDescriptor[] = [
   {
-    id: "verification",
-    name: "Verification",
+    id: "blind-verification",
+    name: "Blind Verification",
     availability: "available",
     networks: [solanaDevnet],
     capabilities: [
-      capability("verification.record.create", "verification", false),
-      capability("verification.record.verify", "verification", false),
-      capability("verification.blind.prove", "verification", false),
+      capability("verification.blind.prove", "blind-verification", false),
+    ],
+  },
+  {
+    id: "record-verification",
+    name: "Record Verification",
+    availability: "available",
+    networks: [solanaDevnet],
+    capabilities: [
+      capability("verification.record.create", "record-verification", false),
+      capability("verification.record.verify", "record-verification", false),
     ],
   },
   {
