@@ -62,10 +62,10 @@ export const runtimeCatalog = {
           "applicationBindings": [
             {
               "network": "solana-devnet",
-              "mode": "legacy-provider",
-              "entrypoint": "/api/records/verify",
-              "method": "POST",
-              "note": "Existing record verification proxy; not yet routed through ProductExecutionGateway."
+              "mode": "kernel-gateway",
+              "entrypoint": "kernel://verification.record.verify",
+              "method": null,
+              "note": "Kernel-native digest verification; no source payload is returned and no on-chain anchor is claimed."
             }
           ]
         }
