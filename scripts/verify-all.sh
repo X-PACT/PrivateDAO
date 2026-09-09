@@ -49,6 +49,9 @@ run_with_retry() {
 echo "[verify-all] validating Ranger strategy package"
 npm run validate:ranger-strategy -- docs/ranger-strategy-config.devnet.json >/dev/null
 
+echo "[verify-all] checking runtime Kernel idempotency"
+npm run test:runtime >/dev/null
+
 echo "[verify-all] checking live proof"
 npm run verify:live-proof >/dev/null
 
