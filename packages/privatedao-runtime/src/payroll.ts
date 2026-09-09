@@ -1,4 +1,6 @@
 import type { NetworkId } from "./index.js";
+import { assertPayrollTransition, canTransitionPayroll } from "./payroll-contract.cjs";
+export { assertPayrollTransition, canTransitionPayroll };
 
 export type PayrollState =
   | "DRAFT"
@@ -50,31 +52,6 @@ export interface PayrollCalculation {
   deductionsCents: number;
   netCents: number;
   policy: PayrollPolicy;
-}
-
-const transitions: Record<PayrollState, readonly PayrollState[]> = {
-  DRAFT: ["CALCULATED", "CANCELLED", "EXPIRED"],
-  CALCULATED: ["POLICY_CHECKED", "FAILED", "CANCELLED"],
-  POLICY_CHECKED: ["PENDING_APPROVAL", "FAILED", "CANCELLED"],
-  PENDING_APPROVAL: ["APPROVED", "FAILED", "CANCELLED", "EXPIRED"],
-  APPROVED: ["SIGNING", "CANCELLED", "EXPIRED"],
-  SIGNING: ["SETTLING", "FAILED", "CANCELLED", "EXPIRED"],
-  SETTLING: ["PARTIALLY_SETTLED", "SETTLED", "FAILED", "EXPIRED"],
-  PARTIALLY_SETTLED: ["SETTLING", "SETTLED", "FAILED", "EXPIRED"],
-  SETTLED: ["RECONCILED", "FAILED"],
-  RECONCILED: ["VERIFIED", "FAILED"],
-  VERIFIED: [],
-  FAILED: [],
-  CANCELLED: [],
-  EXPIRED: [],
-};
-
-export function canTransitionPayroll(from: PayrollState, to: PayrollState): boolean {
-  return transitions[from].includes(to);
-}
-
-export function assertPayrollTransition(from: PayrollState, to: PayrollState): void {
-  if (!canTransitionPayroll(from, to)) throw new Error(`Invalid payroll transition: ${from} -> ${to}`);
 }
 
 export function calculatePayroll(lines: readonly PayrollLineInput[], policy: PayrollPolicy): PayrollCalculation {

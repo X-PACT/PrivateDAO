@@ -4,7 +4,7 @@ import { mkdirSync, readFileSync } from "node:fs";
 import { DatabaseSync } from "node:sqlite";
 import { dirname, resolve } from "node:path";
 import { verifyPayrollGroth16 } from "./payroll-groth16.ts";
-import { assertPayrollTransition } from "../../packages/privatedao-runtime/src/payroll.ts";
+import { assertPayrollTransition } from "../../packages/privatedao-runtime/src/payroll-contract.cjs";
 import type { PayrollState } from "../../packages/privatedao-runtime/src/payroll.ts";
 export type { PayrollState } from "../../packages/privatedao-runtime/src/payroll.ts";
 
