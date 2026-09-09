@@ -189,6 +189,8 @@ export { TreasuryPolicyProvider } from "./treasury-policy-provider.js";
 export type { TreasuryPolicyCheckPayload, TreasuryPolicyCheckResult } from "./treasury-policy-provider.js";
 export { RecordCreationProvider, RecordVerificationProvider, RECORD_CANONICALIZATION_VERSION } from "./record-provider.js";
 export type { RecordCreationPayload, RecordCreationResult, RecordVerificationPayload, RecordVerificationResult } from "./record-provider.js";
+export { AgentDiscoveryProvider } from "./agent-provider.js";
+export type { AgentDiscoveryPayload, AgentDiscoveryResult } from "./agent-provider.js";
 export { buildCapabilityMatrix } from "./capability-matrix.js";
 export type { CapabilityMatrixEntry, CapabilityRuntimeStatus } from "./capability-matrix.js";
 export {

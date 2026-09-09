@@ -106,8 +106,9 @@ export const APPLICATION_CAPABILITY_BINDINGS: readonly ApplicationCapabilityBind
     product: "agent",
     capability: "agent.discover",
     network: "solana-devnet",
-    mode: "unbound",
-    note: "Agent discovery is hosted outside this web application boundary.",
+    mode: "kernel-gateway",
+    entrypoint: "kernel://agent.discover",
+    note: "Kernel-native read-only Agent Card fetch; no agent activity or external adoption is inferred.",
   },
   {
     product: "agent",

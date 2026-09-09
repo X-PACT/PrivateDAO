@@ -240,10 +240,10 @@ export const runtimeCatalog = {
           "applicationBindings": [
             {
               "network": "solana-devnet",
-              "mode": "unbound",
-              "entrypoint": null,
+              "mode": "kernel-gateway",
+              "entrypoint": "kernel://agent.discover",
               "method": null,
-              "note": "Agent discovery is hosted outside this web application boundary."
+              "note": "Kernel-native read-only Agent Card fetch; no agent activity or external adoption is inferred."
             }
           ]
         },

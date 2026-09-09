@@ -45,6 +45,10 @@ off-chain Kernel capability. Payroll approval, settlement, and the other
 product actions remain explicitly classified until their real provider
 lifecycle is wired and independently tested.
 
+Agent discovery is also Kernel-backed as a read-only fetch. It returns only
+the received Agent Card and fails on non-HTTPS, non-JSON, or non-2xx responses;
+it does not fabricate agents, usage, payments, or adoption.
+
 ## Network truth
 
 Only `solana-devnet` is currently an available runtime network in the Kernel

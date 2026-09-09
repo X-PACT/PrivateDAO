@@ -148,6 +148,23 @@ await policyRuntime.gateway.submit(tamperedPrepared, tamperedPrepared.unsignedPa
 const tamperedReceipt = await policyRuntime.gateway.receipt(tamperedPrepared, "auditor");
 assert.equal(tamperedReceipt.result.valid, false);
 
+const discoveryProvider = new (await import("../packages/privatedao-runtime/src/agent-provider.ts")).AgentDiscoveryProvider(
+  async () => new Response(JSON.stringify({ name: "PrivateDAO Agent Exchange", protocolVersion: "0.3.0" }), { status: 200, headers: { "content-type": "application/json" } }),
+);
+const discoveryRegistry = new InMemoryProviderRegistry();
+discoveryRegistry.register(discoveryProvider);
+const discoveryRuntime = createPrivateDaoRuntime(discoveryRegistry);
+const discoveryIntent = {
+  context: { requestId: "agent-discover-test", idempotencyKey: "agent-discover-test-key", product: "agent", capability: "agent.discover", network },
+  payload: { url: "https://agents.privatedao.org/.well-known/agent-card.json" },
+  accounts: [],
+};
+const discoveryPrepared = await discoveryRuntime.gateway.prepare(discoveryIntent, "agent");
+await discoveryRuntime.gateway.submit(discoveryPrepared, discoveryPrepared.unsignedPayload, "agent");
+const discoveryReceipt = await discoveryRuntime.gateway.receipt(discoveryPrepared, "agent");
+assert.equal(discoveryReceipt.result.agentCard.protocolVersion, "0.3.0");
+assert.equal(discoveryReceipt.result.status, 200);
+
 const gateway = runtime.gateway;
 const gatewayPrepared = await gateway.prepare(intent, "maker");
 assert.equal(gatewayPrepared.executionId, first.executionId);
@@ -174,6 +191,7 @@ assert.equal(listApplicationBindings().find((entry) => entry.capability === "pay
 assert.equal(listApplicationBindings().find((entry) => entry.capability === "treasury.policy.check")?.mode, "kernel-gateway");
 assert.equal(listApplicationBindings().find((entry) => entry.capability === "verification.record.create")?.mode, "kernel-gateway");
 assert.equal(listApplicationBindings().find((entry) => entry.capability === "verification.record.verify")?.mode, "kernel-gateway");
+assert.equal(listApplicationBindings().find((entry) => entry.capability === "agent.discover")?.mode, "kernel-gateway");
 assert.equal(listApplicationBindings().find((entry) => entry.capability === "verification.blind.prove")?.mode, "legacy-provider");
 
 let currentTime = "2026-09-09T00:00:00.000Z";
