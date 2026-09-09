@@ -164,3 +164,5 @@ export { TransportBackedNetworkAdapter } from "./adapters.js";
 export type { AdapterTransport } from "./adapters.js";
 export { registerCatalogCapabilities } from "./product-registry.js";
 export { ProductExecutionGateway } from "./product-gateway.js";
+export { createPrivateDaoRuntime } from "./runtime.js";
+export type { PrivateDaoRuntime } from "./runtime.js";

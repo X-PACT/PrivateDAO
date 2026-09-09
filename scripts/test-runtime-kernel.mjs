@@ -2,11 +2,9 @@ import assert from "node:assert/strict";
 
 import {
   InMemoryProviderRegistry,
-  InMemoryProtocolRegistry,
+  createPrivateDaoRuntime,
   PrivateDaoKernel,
-  ProductExecutionGateway,
   listProducts,
-  registerCatalogCapabilities,
 } from "../packages/privatedao-runtime/src/index.ts";
 
 const network = "solana-devnet";
@@ -80,15 +78,16 @@ const products = listProducts();
 assert.equal(products.find((product) => product.id === "blind-verification")?.name, "Blind Verification");
 assert.equal(products.find((product) => product.id === "record-verification")?.name, "Record Verification");
 
-const protocolRegistry = new InMemoryProtocolRegistry();
-const registrations = registerCatalogCapabilities(protocolRegistry);
+const runtime = createPrivateDaoRuntime(registry);
+const protocolRegistry = runtime.protocols;
+const registrations = protocolRegistry.list();
 const expectedRegistrationCount = products.reduce((count, product) => count + product.capabilities.length, 0);
 assert.equal(registrations.length, expectedRegistrationCount);
 assert.equal(protocolRegistry.list("payroll").length, 3);
 assert.equal(protocolRegistry.authorize("payroll.approve", "execution.submit", "checker"), true);
 assert.equal(protocolRegistry.authorize("payroll.approve", "execution.submit", "auditor"), false);
 
-const gateway = new ProductExecutionGateway(kernel, protocolRegistry);
+const gateway = runtime.gateway;
 const gatewayPrepared = await gateway.prepare(intent, "maker");
 assert.equal(gatewayPrepared.executionId, first.executionId);
 assert.throws(

@@ -25,3 +25,9 @@ The migration rule is strict: product code may depend on these contracts, but pr
 `registerCatalogCapabilities` materializes the current product catalog in the Protocol registry with shared role and permission policies. It only registers contracts; it does not execute a transaction or create a provider success path. Applications still have to inject a real adapter and provide independent network evidence before declaring an action supported.
 
 `ProductExecutionGateway` is the application boundary for those contracts. It checks product ownership and role permissions before delegating prepare, submit, status, or receipt work to `PrivateDaoKernel`; it does not bypass provider lifecycle checks or create synthetic receipts.
+
+`createPrivateDaoRuntime` is the standard composition root for applications. It
+creates one protocol registry, registers the complete product catalog, and
+connects it to one Kernel and gateway. Applications still must inject a real
+provider; the factory intentionally does not create a test-only provider or a
+fallback-success path.
