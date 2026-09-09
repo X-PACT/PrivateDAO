@@ -51,6 +51,10 @@ Before moving a reference branch, create an archive tag for its current commit,
 verify the tag remotely, and only then fast-forward the reference branch to
 `main`. Never delete a tag that is the only recovery copy of a release.
 
+Run `npm run verify:canonical-repository` from the canonical checkout to verify
+the active branch set, `main`/`canonical-live` synchronization, and available
+archive recovery tags before a release operation.
+
 ## Security boundary
 
 Runtime secrets, wallet keypairs, provider credentials, tokens, and deployment
