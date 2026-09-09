@@ -62,10 +62,10 @@ service. The adapter rejects non-2xx responses and malformed responses; it
 does not create a proof locally, fabricate a proof package, or imply an
 on-chain receipt.
 
-Auction outcome proving is Kernel-routed through the configured HTTPS auction
-proof service. It validates an observed public proof package for an already-
-bound result; it does not claim token movement, settlement finality, or an
-on-chain signature.
+Auction bid commitment and outcome proving are Kernel-routed through the
+configured HTTPS auction proof services. They validate observed public
+commitment/proof packages; they do not claim token movement, settlement
+finality, or an on-chain signature.
 
 ## Network truth
 

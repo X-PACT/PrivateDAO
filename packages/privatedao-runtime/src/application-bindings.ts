@@ -87,10 +87,9 @@ export const APPLICATION_CAPABILITY_BINDINGS: readonly ApplicationCapabilityBind
     product: "auction",
     capability: "auction.bid.commit",
     network: "solana-devnet",
-    mode: "legacy-provider",
-    entrypoint: "/api/auctions/sealed/run",
-    method: "POST",
-    note: "Existing sealed-auction route; not yet routed through ProductExecutionGateway.",
+    mode: "kernel-gateway",
+    entrypoint: "kernel://auction.bid.commit",
+    note: "Kernel adapter delegates to the HTTPS sealed-bid commitment service; it returns observed public commitments and does not claim a wallet signature or token movement.",
   },
   {
     product: "auction",

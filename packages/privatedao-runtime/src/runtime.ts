@@ -9,6 +9,7 @@ import { RecordCreationProvider, RecordVerificationProvider } from "./record-pro
 import { AgentDiscoveryProvider } from "./agent-provider.js";
 import { BlindPolicyProofProvider } from "./blind-policy-provider.js";
 import { AuctionOutcomeProofProvider } from "./auction-outcome-provider.js";
+import { AuctionBidCommitProvider } from "./auction-bid-provider.js";
 
 /**
  * Single composition boundary for PrivateDAO applications.
@@ -35,6 +36,7 @@ export function createPrivateDaoRuntime(providers?: ProviderRegistry, options: K
     providerRegistry.register(new AgentDiscoveryProvider());
     providerRegistry.register(new BlindPolicyProofProvider());
     providerRegistry.register(new AuctionOutcomeProofProvider());
+    providerRegistry.register(new AuctionBidCommitProvider());
   }
   const protocols = new InMemoryProtocolRegistry();
   registerCatalogCapabilities(protocols);

@@ -81,7 +81,9 @@ export const PRODUCT_CATALOG: readonly ProductDescriptor[] = [
     availability: "available",
     networks: [solanaDevnet],
     capabilities: [
-      capability("auction.bid.commit", "auction", true),
+      // The current endpoint issues commitments/proof data off-chain; it does
+      // not submit the financial bid transaction.
+      capability("auction.bid.commit", "auction", false),
       // The current Kernel action proves an already-bound outcome. It does
       // not submit the financial settlement transaction.
       capability("auction.settle", "auction", false),

@@ -195,6 +195,8 @@ export { BlindPolicyProofProvider } from "./blind-policy-provider.js";
 export type { BlindPolicyProofPayload, BlindPolicyProofResult } from "./blind-policy-provider.js";
 export { AuctionOutcomeProofProvider } from "./auction-outcome-provider.js";
 export type { AuctionOutcomeProofPayload, AuctionOutcomeProofResult } from "./auction-outcome-provider.js";
+export { AuctionBidCommitProvider } from "./auction-bid-provider.js";
+export type { AuctionBidCommitPayload, AuctionBidCommitResult } from "./auction-bid-provider.js";
 export { buildCapabilityMatrix } from "./capability-matrix.js";
 export type { CapabilityMatrixEntry, CapabilityRuntimeStatus } from "./capability-matrix.js";
 export {

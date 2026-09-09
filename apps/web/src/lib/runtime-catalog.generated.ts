@@ -192,16 +192,16 @@ export const runtimeCatalog = {
         {
           "id": "auction.bid.commit",
           "version": "1.0",
-          "requiresSignature": true,
+          "requiresSignature": false,
           "supportsAsync": true,
           "receiptSchema": "privatedao.execution-receipt.v1",
           "applicationBindings": [
             {
               "network": "solana-devnet",
-              "mode": "legacy-provider",
-              "entrypoint": "/api/auctions/sealed/run",
-              "method": "POST",
-              "note": "Existing sealed-auction route; not yet routed through ProductExecutionGateway."
+              "mode": "kernel-gateway",
+              "entrypoint": "kernel://auction.bid.commit",
+              "method": null,
+              "note": "Kernel adapter delegates to the HTTPS sealed-bid commitment service; it returns observed public commitments and does not claim a wallet signature or token movement."
             }
           ]
         },
