@@ -8,7 +8,7 @@
     "version": "0.3.0",
     "dependencies": 13,
     "devDependencies": 15,
-      "scripts": 345
+      "scripts": 346
   },
   "lockfiles": {
     "cargo": {
@@ -43,8 +43,8 @@
     },
     {
       "path": "package.json",
-      "sha256": "20164b16857f1cab71272ecab75d19969321801149ce3ae5d16c57041181188a",
-      "bytes": 33542
+      "sha256": "886ecc34045708e0552382f86d1b8eeeb7c9009ea67b2e603aefd9dd7056e719",
+      "bytes": 33615
     },
     {
       "path": "package-lock.json",
@@ -57,7 +57,7 @@
       "bytes": 184244
     }
   ],
-  "aggregateSha256": "5488cbd2bd33fbb2dce4338d383adf0e29853bf8f8a5f789699a01512a584fb8",
+  "aggregateSha256": "cce84db5df7ae42675df31e7dd82651a0668f1ce5af8715416fa603c84eda595",
   "reviewCommands": [
     "npm run build:supply-chain-attestation",
     "npm run verify:supply-chain-attestation",

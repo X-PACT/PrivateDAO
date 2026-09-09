@@ -55,6 +55,10 @@ Run `npm run verify:canonical-repository` from the canonical checkout to verify
 the active branch set, `main`/`canonical-live` synchronization, and available
 archive recovery tags before a release operation.
 
+Run `npm run verify:tracked-secrets` to reject tracked environment files,
+private-key material, and keypair/secret JSON files. Secret stores and runtime
+deployment credentials remain outside GitHub.
+
 ## Security boundary
 
 Runtime secrets, wallet keypairs, provider credentials, tokens, and deployment
