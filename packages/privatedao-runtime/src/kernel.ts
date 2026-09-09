@@ -117,6 +117,7 @@ type ExecutionRecord<TUnsigned> = {
 export class PrivateDaoKernel {
   private readonly executions = new Map<string, ExecutionRecord<unknown>>();
   private readonly idempotency = new Map<string, string>();
+  private readonly inFlightPrepares = new Map<string, Promise<PreparedExecution<unknown>>>();
   private readonly inFlightSubmissions = new Map<string, Promise<{ executionId: string; signatures: string[] }>>();
 
   private readonly telemetry?: KernelTelemetry;
@@ -137,39 +138,50 @@ export class PrivateDaoKernel {
       network: intent.context.network,
       provider: intent.context.provider,
     });
-    const existingId = this.idempotency.get(this.idempotencyKey(intent));
+    const prepareKey = this.idempotencyKey(intent);
+    const existingId = this.idempotency.get(prepareKey);
     if (existingId) {
       const existing = this.executions.get(existingId);
       if (existing) return existing.prepared as PreparedExecution<TUnsigned>;
     }
+    const inFlight = this.inFlightPrepares.get(prepareKey);
+    if (inFlight) return (await inFlight) as PreparedExecution<TUnsigned>;
 
     const provider = this.registry.resolve(intent.context.network, intent.context.capability, intent.context.provider);
+    const preparation = (async (): Promise<PreparedExecution<unknown>> => {
+      try {
+        const prepared = await provider.prepare<TPayload, TUnsigned>(intent);
+        this.executions.set(prepared.executionId, { provider, prepared, state: prepared.state });
+        this.idempotency.set(prepareKey, prepared.executionId);
+        this.emit({
+          name: "execution.prepare.completed",
+          executionId: prepared.executionId,
+          requestId: intent.context.requestId,
+          product: intent.context.product,
+          capability: intent.context.capability,
+          network: intent.context.network,
+          provider: provider.id,
+          state: prepared.state,
+        });
+        return prepared;
+      } catch (error) {
+        this.emit({
+          name: "execution.failed",
+          requestId: intent.context.requestId,
+          product: intent.context.product,
+          capability: intent.context.capability,
+          network: intent.context.network,
+          provider: provider.id,
+          errorCode: "PROVIDER_FAILURE",
+        });
+        throw this.providerError("Provider preparation failed.", error);
+      }
+    })();
+    this.inFlightPrepares.set(prepareKey, preparation);
     try {
-      const prepared = await provider.prepare<TPayload, TUnsigned>(intent);
-      this.executions.set(prepared.executionId, { provider, prepared, state: prepared.state });
-      this.idempotency.set(this.idempotencyKey(intent), prepared.executionId);
-      this.emit({
-        name: "execution.prepare.completed",
-        executionId: prepared.executionId,
-        requestId: intent.context.requestId,
-        product: intent.context.product,
-        capability: intent.context.capability,
-        network: intent.context.network,
-        provider: provider.id,
-        state: prepared.state,
-      });
-      return prepared;
-    } catch (error) {
-      this.emit({
-        name: "execution.failed",
-        requestId: intent.context.requestId,
-        product: intent.context.product,
-        capability: intent.context.capability,
-        network: intent.context.network,
-        provider: provider.id,
-        errorCode: "PROVIDER_FAILURE",
-      });
-      throw this.providerError("Provider preparation failed.", error);
+      return (await preparation) as PreparedExecution<TUnsigned>;
+    } finally {
+      if (this.inFlightPrepares.get(prepareKey) === preparation) this.inFlightPrepares.delete(prepareKey);
     }
   }
 

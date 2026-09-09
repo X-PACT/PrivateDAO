@@ -87,6 +87,9 @@ verify_scan() {
       --glob '!artifacts/**' \
       --glob '!downloads/**' \
       --glob '!**/*.min.js' \
+      --glob '!**/node_modules/**' \
+      --glob '!**/.git/**' \
+      --glob '!case_*/**' \
       --glob '!test/**' \
       --glob '!**/index.html' \
       --glob '!Cargo.lock' \
@@ -117,6 +120,9 @@ verify_scan() {
     ':(exclude)artifacts/**' \
     ':(exclude)downloads/**' \
     ':(exclude)**/*.min.js' \
+    ':(exclude)**/node_modules/**' \
+    ':(exclude)**/.git/**' \
+    ':(exclude)case_*/**' \
     ':(exclude)test/**' \
     ':(exclude)**/index.html' \
     ':(exclude)Cargo.lock' \
