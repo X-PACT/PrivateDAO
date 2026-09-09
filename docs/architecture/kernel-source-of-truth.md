@@ -39,9 +39,11 @@ with no wallet signature or settlement side effect: the former calculates a
 payroll batch, while the latter evaluates bounded budget, transaction-limit,
 recipient-limit, and asset-policy checks. Record creation produces a digest
 and selected public fields without returning the source payload; it does not
-create a public URL or on-chain anchor. Payroll approval, settlement, record
-verification, and the other product actions remain explicitly classified
-until their real provider lifecycle is wired and independently tested.
+create a public URL or on-chain anchor. Record verification now recomputes and
+compares the digest, including a tamper-failure path, but it remains an
+off-chain Kernel capability. Payroll approval, settlement, and the other
+product actions remain explicitly classified until their real provider
+lifecycle is wired and independently tested.
 
 ## Network truth
 

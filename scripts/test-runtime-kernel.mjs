@@ -134,6 +134,20 @@ assert.equal(recordReceipt.result.publicFields.total, 3000);
 assert.equal("employeeSecret" in recordReceipt.result, false);
 assert.equal(recordReceipt.result.canonicalDigest.length, 64);
 
+const verifyIntent = {
+  context: { ...recordIntent.context, requestId: "record-verify-test", idempotencyKey: "record-verify-test-key", capability: "verification.record.verify" },
+  payload: { record: recordIntent.payload, expectedDigest: recordReceipt.result.canonicalDigest },
+  accounts: [],
+};
+const verifyPrepared = await policyRuntime.gateway.prepare(verifyIntent, "auditor");
+await policyRuntime.gateway.submit(verifyPrepared, verifyPrepared.unsignedPayload, "auditor");
+const verifyReceipt = await policyRuntime.gateway.receipt(verifyPrepared, "auditor");
+assert.equal(verifyReceipt.result.valid, true);
+const tamperedPrepared = await policyRuntime.gateway.prepare({ ...verifyIntent, context: { ...verifyIntent.context, requestId: "record-verify-tampered", idempotencyKey: "record-verify-tampered-key" }, payload: { ...verifyIntent.payload, record: { ...verifyIntent.payload.record, payload: { total: 3001 } } } }, "auditor");
+await policyRuntime.gateway.submit(tamperedPrepared, tamperedPrepared.unsignedPayload, "auditor");
+const tamperedReceipt = await policyRuntime.gateway.receipt(tamperedPrepared, "auditor");
+assert.equal(tamperedReceipt.result.valid, false);
+
 const gateway = runtime.gateway;
 const gatewayPrepared = await gateway.prepare(intent, "maker");
 assert.equal(gatewayPrepared.executionId, first.executionId);
@@ -159,6 +173,7 @@ assert.equal(listApplicationBindings().length, products.reduce((count, product) 
 assert.equal(listApplicationBindings().find((entry) => entry.capability === "payroll.calculate")?.mode, "kernel-gateway");
 assert.equal(listApplicationBindings().find((entry) => entry.capability === "treasury.policy.check")?.mode, "kernel-gateway");
 assert.equal(listApplicationBindings().find((entry) => entry.capability === "verification.record.create")?.mode, "kernel-gateway");
+assert.equal(listApplicationBindings().find((entry) => entry.capability === "verification.record.verify")?.mode, "kernel-gateway");
 assert.equal(listApplicationBindings().find((entry) => entry.capability === "verification.blind.prove")?.mode, "legacy-provider");
 
 let currentTime = "2026-09-09T00:00:00.000Z";

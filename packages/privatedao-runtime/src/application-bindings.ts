@@ -41,10 +41,9 @@ export const APPLICATION_CAPABILITY_BINDINGS: readonly ApplicationCapabilityBind
     product: "record-verification",
     capability: "verification.record.verify",
     network: "solana-devnet",
-    mode: "legacy-provider",
-    entrypoint: "/api/records/verify",
-    method: "POST",
-    note: "Existing record verification proxy; not yet routed through ProductExecutionGateway.",
+    mode: "kernel-gateway",
+    entrypoint: "kernel://verification.record.verify",
+    note: "Kernel-native digest verification; no source payload is returned and no on-chain anchor is claimed.",
   },
   {
     product: "payroll",

@@ -187,8 +187,8 @@ export { PayrollCalculationProvider } from "./payroll-provider.js";
 export type { PayrollCalculationPayload } from "./payroll-provider.js";
 export { TreasuryPolicyProvider } from "./treasury-policy-provider.js";
 export type { TreasuryPolicyCheckPayload, TreasuryPolicyCheckResult } from "./treasury-policy-provider.js";
-export { RecordCreationProvider, RECORD_CANONICALIZATION_VERSION } from "./record-provider.js";
-export type { RecordCreationPayload, RecordCreationResult } from "./record-provider.js";
+export { RecordCreationProvider, RecordVerificationProvider, RECORD_CANONICALIZATION_VERSION } from "./record-provider.js";
+export type { RecordCreationPayload, RecordCreationResult, RecordVerificationPayload, RecordVerificationResult } from "./record-provider.js";
 export { buildCapabilityMatrix } from "./capability-matrix.js";
 export type { CapabilityMatrixEntry, CapabilityRuntimeStatus } from "./capability-matrix.js";
 export {

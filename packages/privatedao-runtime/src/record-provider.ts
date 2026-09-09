@@ -31,6 +31,17 @@ export interface RecordCreationResult {
   disclosure: "selective";
 }
 
+export interface RecordVerificationPayload {
+  record: Omit<RecordCreationPayload, "publicFieldPaths">;
+  expectedDigest: string;
+}
+
+export interface RecordVerificationResult {
+  valid: boolean;
+  canonicalDigest: string;
+  expectedDigest: string;
+}
+
 type RecordExecution = {
   intent: ExecutionIntent<RecordCreationPayload>;
   result: RecordCreationResult;
@@ -115,6 +126,61 @@ export class RecordCreationProvider implements KernelProvider {
   }
 }
 
+/** Verifies a record digest without returning the source record. */
+export class RecordVerificationProvider implements KernelProvider {
+  readonly id: ProviderId = "privatedao-record-verification";
+  readonly networks = ["solana-devnet"] as const;
+  private readonly records = new Map<string, { intent: ExecutionIntent<RecordVerificationPayload>; result: RecordVerificationResult; state: ExecutionState; preparedAt: string; submittedAt?: string }>();
+
+  supports(capability: string): boolean {
+    return capability === "verification.record.verify";
+  }
+
+  async prepare<TPayload, TUnsigned>(intent: ExecutionIntent<TPayload>): Promise<PreparedExecution<TUnsigned>> {
+    if (!this.supports(intent.context.capability)) throw new Error("Record verification provider does not support this capability.");
+    const payload = parseVerificationPayload(intent.payload);
+    const canonicalDigest = await digestRecord(payload.record);
+    const result = { valid: canonicalDigest === payload.expectedDigest, canonicalDigest, expectedDigest: payload.expectedDigest };
+    const executionId = `record-verify-${intent.context.requestId}`;
+    const preparedAt = new Date().toISOString();
+    this.records.set(executionId, { intent: intent as ExecutionIntent<RecordVerificationPayload>, result, state: "prepared", preparedAt });
+    return { executionId, intent, unsignedPayload: undefined as TUnsigned, requiredSigners: [], state: "prepared" };
+  }
+
+  async submit<TUnsigned>(execution: PreparedExecution<TUnsigned>, _signedPayload: TUnsigned): Promise<{ executionId: string; signatures: string[] }> {
+    const record = this.records.get(execution.executionId);
+    if (!record) throw new Error("Unknown record verification execution.");
+    if (record.state === "reconciled") return { executionId: execution.executionId, signatures: [] };
+    if (record.state !== "prepared" && record.state !== "awaiting_signature") throw new Error(`Record verification cannot submit from ${record.state}.`);
+    record.state = "reconciled";
+    record.submittedAt = new Date().toISOString();
+    return { executionId: execution.executionId, signatures: [] };
+  }
+
+  async status(executionId: string): Promise<{ executionId: string; state: ExecutionState }> {
+    const record = this.records.get(executionId);
+    if (!record) throw new Error("Unknown record verification execution.");
+    return { executionId, state: record.state };
+  }
+
+  async receipt<TResult = unknown>(executionId: string): Promise<ExecutionReceipt<TResult>> {
+    const record = this.records.get(executionId);
+    if (!record) throw new Error("Unknown record verification execution.");
+    if (record.state !== "reconciled") throw new Error("Record verification is not reconciled.");
+    return {
+      executionId,
+      requestId: record.intent.context.requestId,
+      capability: record.intent.context.capability,
+      network: record.intent.context.network,
+      provider: this.id,
+      state: "reconciled",
+      signatures: [],
+      result: record.result as TResult,
+      createdAt: record.submittedAt || record.preparedAt,
+    };
+  }
+}
+
 function parsePayload(value: unknown): RecordCreationPayload {
   if (!value || typeof value !== "object" || Array.isArray(value)) throw new Error("Record creation payload must be an object.");
   const payload = value as Partial<RecordCreationPayload>;
@@ -143,6 +209,29 @@ function canonicalize(value: unknown): string {
 async function sha256Hex(value: string): Promise<string> {
   const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(value));
   return Array.from(new Uint8Array(digest), (byte) => byte.toString(16).padStart(2, "0")).join("");
+}
+
+async function digestRecord(payload: Omit<RecordCreationPayload, "publicFieldPaths">): Promise<string> {
+  const canonicalBytes = canonicalize({
+    schema_version: payload.schemaVersion,
+    record_type: payload.recordType,
+    record_id: payload.recordId,
+    issuer: payload.issuer,
+    issued_at: payload.issuedAt,
+    effective_at: payload.effectiveAt ?? null,
+    payload: payload.payload,
+    source_refs: payload.sourceRefs ?? [],
+  });
+  return sha256Hex(canonicalBytes);
+}
+
+function parseVerificationPayload(value: unknown): RecordVerificationPayload {
+  if (!value || typeof value !== "object" || Array.isArray(value)) throw new Error("Record verification payload must be an object.");
+  const payload = value as Partial<RecordVerificationPayload>;
+  if (!payload.record || typeof payload.record !== "object" || Array.isArray(payload.record) || typeof payload.expectedDigest !== "string" || !/^[0-9a-f]{64}$/.test(payload.expectedDigest)) {
+    throw new Error("Record verification payload is incomplete.");
+  }
+  return payload as RecordVerificationPayload;
 }
 
 function selectPublicFields(payload: Record<string, unknown>, paths: readonly string[]): Record<string, unknown> {
