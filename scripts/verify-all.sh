@@ -58,6 +58,9 @@ npm run verify:tracked-secrets >/dev/null
 echo "[verify-all] checking web catalog projection from the runtime Kernel"
 npm run verify:web-runtime-catalog >/dev/null
 
+echo "[verify-all] checking application capability bindings"
+npm run verify:application-bindings >/dev/null
+
 echo "[verify-all] checking live proof"
 npm run verify:live-proof >/dev/null
 
