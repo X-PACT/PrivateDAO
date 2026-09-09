@@ -19,7 +19,7 @@ export interface AuctionBidCommitResult {
   publicOutcome: string;
   proofHash: string;
   publicProofPackage: Record<string, unknown>;
-  privateDataExcluded: boolean;
+  privateDataExcluded: true;
   explanation: string;
 }
 
@@ -119,10 +119,11 @@ function parseResult(value: unknown): AuctionBidCommitResult {
     typeof result.status !== "string" ||
     typeof result.publicOutcome !== "string" ||
     typeof result.proofHash !== "string" ||
+    !/^[a-f0-9]{64}$/i.test(result.proofHash) ||
     !result.publicProofPackage ||
     typeof result.publicProofPackage !== "object" ||
     Array.isArray(result.publicProofPackage) ||
-    typeof result.privateDataExcluded !== "boolean" ||
+    result.privateDataExcluded !== true ||
     typeof result.explanation !== "string"
   ) throw new Error("Auction bid response is not a valid public proof package.");
   return result as AuctionBidCommitResult;
