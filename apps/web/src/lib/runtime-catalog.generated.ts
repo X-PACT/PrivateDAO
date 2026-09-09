@@ -208,7 +208,7 @@ export const runtimeCatalog = {
         {
           "id": "auction.settle",
           "version": "1.0",
-          "requiresSignature": true,
+          "requiresSignature": false,
           "supportsAsync": true,
           "receiptSchema": "privatedao.execution-receipt.v1",
           "applicationBindings": [

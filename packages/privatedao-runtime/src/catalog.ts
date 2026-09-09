@@ -82,7 +82,9 @@ export const PRODUCT_CATALOG: readonly ProductDescriptor[] = [
     networks: [solanaDevnet],
     capabilities: [
       capability("auction.bid.commit", "auction", true),
-      capability("auction.settle", "auction", true),
+      // The current Kernel action proves an already-bound outcome. It does
+      // not submit the financial settlement transaction.
+      capability("auction.settle", "auction", false),
     ],
   },
   {
