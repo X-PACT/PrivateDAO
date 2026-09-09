@@ -4,6 +4,8 @@ import {
   InMemoryProviderRegistry,
   createPrivateDaoRuntime,
   buildCapabilityMatrix,
+  listApplicationBindings,
+  validateApplicationBindings,
   PrivateDaoKernel,
   listProducts,
 } from "../packages/privatedao-runtime/src/index.ts";
@@ -107,6 +109,11 @@ assert.equal(emptyMatrix.find((entry) => entry.capability === "treasury.policy.c
 assert.equal(emptyMatrix.find((entry) => entry.capability === "treasury.policy.check" && entry.network === "ethereum-sepolia")?.status, "planned");
 const verifiedMatrix = buildCapabilityMatrix(registry);
 assert.equal(verifiedMatrix.find((entry) => entry.capability === capability && entry.network === network)?.status, "verified");
+
+assert.equal(validateApplicationBindings().length, 0);
+assert.equal(listApplicationBindings().length, products.reduce((count, product) => count + product.capabilities.length, 0));
+assert.equal(listApplicationBindings().find((entry) => entry.capability === "payroll.calculate")?.mode, "unbound");
+assert.equal(listApplicationBindings().find((entry) => entry.capability === "verification.blind.prove")?.mode, "legacy-provider");
 
 let currentTime = "2026-09-09T00:00:00.000Z";
 const expiredKernel = new PrivateDaoKernel(registry, { now: () => currentTime });

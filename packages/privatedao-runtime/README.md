@@ -38,3 +38,11 @@ resolve the exact capability on the exact network, `contract-only` when the
 catalog exists but no provider is registered, and `planned` for undeclared or
 unavailable network combinations. Customer and agent discovery surfaces must
 not promote `contract-only` or `planned` entries to executable support.
+
+`APPLICATION_CAPABILITY_BINDINGS` is the application migration ledger. It
+accounts for every currently declared product capability and records whether
+the web application is routed through the Kernel gateway, an existing legacy
+provider route, or no application binding. A `legacy-provider` row is not
+Kernel evidence, and an `unbound` row must never be advertised as executable.
+The ledger is validated at module load and by the runtime test so a new
+catalog capability cannot be added without an explicit application boundary.

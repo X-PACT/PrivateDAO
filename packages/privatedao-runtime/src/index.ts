@@ -168,3 +168,11 @@ export { createPrivateDaoRuntime } from "./runtime.js";
 export type { PrivateDaoRuntime } from "./runtime.js";
 export { buildCapabilityMatrix } from "./capability-matrix.js";
 export type { CapabilityMatrixEntry, CapabilityRuntimeStatus } from "./capability-matrix.js";
+export {
+  APPLICATION_CAPABILITY_BINDINGS,
+  assertApplicationBindingsValid,
+  findApplicationBinding,
+  listApplicationBindings,
+  validateApplicationBindings,
+} from "./application-bindings.js";
+export type { ApplicationBindingMode, ApplicationCapabilityBinding } from "./application-bindings.js";
