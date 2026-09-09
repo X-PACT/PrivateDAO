@@ -108,6 +108,32 @@ const policyReceipt = await policyRuntime.gateway.receipt(policyPrepared, "maker
 assert.equal(policyReceipt.state, "reconciled");
 assert.equal(policyReceipt.result.passed, true);
 
+const recordIntent = {
+  context: {
+    requestId: "record-create-test",
+    idempotencyKey: "record-create-test-key",
+    product: "record-verification",
+    capability: "verification.record.create",
+    network,
+  },
+  payload: {
+    schemaVersion: "1",
+    recordType: "payroll-summary",
+    recordId: "payroll-001",
+    issuer: "demo-company",
+    issuedAt: "2026-09-09T00:00:00.000Z",
+    payload: { total: 3000, employeeSecret: "must-not-appear" },
+    publicFieldPaths: ["total"],
+  },
+  accounts: [],
+};
+const recordPrepared = await policyRuntime.gateway.prepare(recordIntent, "maker");
+await policyRuntime.gateway.submit(recordPrepared, recordPrepared.unsignedPayload, "maker");
+const recordReceipt = await policyRuntime.gateway.receipt(recordPrepared, "maker");
+assert.equal(recordReceipt.result.publicFields.total, 3000);
+assert.equal("employeeSecret" in recordReceipt.result, false);
+assert.equal(recordReceipt.result.canonicalDigest.length, 64);
+
 const gateway = runtime.gateway;
 const gatewayPrepared = await gateway.prepare(intent, "maker");
 assert.equal(gatewayPrepared.executionId, first.executionId);
@@ -132,6 +158,7 @@ assert.equal(validateApplicationBindings().length, 0);
 assert.equal(listApplicationBindings().length, products.reduce((count, product) => count + product.capabilities.length, 0));
 assert.equal(listApplicationBindings().find((entry) => entry.capability === "payroll.calculate")?.mode, "kernel-gateway");
 assert.equal(listApplicationBindings().find((entry) => entry.capability === "treasury.policy.check")?.mode, "kernel-gateway");
+assert.equal(listApplicationBindings().find((entry) => entry.capability === "verification.record.create")?.mode, "kernel-gateway");
 assert.equal(listApplicationBindings().find((entry) => entry.capability === "verification.blind.prove")?.mode, "legacy-provider");
 
 let currentTime = "2026-09-09T00:00:00.000Z";

@@ -33,8 +33,9 @@ export const APPLICATION_CAPABILITY_BINDINGS: readonly ApplicationCapabilityBind
     product: "record-verification",
     capability: "verification.record.create",
     network: "solana-devnet",
-    mode: "unbound",
-    note: "No exact record-creation application binding is exposed by the web app.",
+    mode: "kernel-gateway",
+    entrypoint: "kernel://verification.record.create",
+    note: "Kernel-native digest and selective disclosure artifact; no public URL or on-chain anchor is created.",
   },
   {
     product: "record-verification",

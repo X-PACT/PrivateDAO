@@ -32,13 +32,16 @@ in `application-bindings.ts` and is intentionally classified as one of:
 This classification is enforced by validation and CI. A product is not marked
 Kernel-backed merely because a legacy endpoint exists.
 
-The first Kernel-native application capabilities are `payroll.calculate` and
-`treasury.policy.check` on Solana Devnet. Both produce deterministic receipts
+The first Kernel-native application capabilities are `payroll.calculate`,
+`treasury.policy.check`, and `verification.record.create` on Solana Devnet.
+They produce deterministic receipts
 with no wallet signature or settlement side effect: the former calculates a
 payroll batch, while the latter evaluates bounded budget, transaction-limit,
-recipient-limit, and asset-policy checks. Payroll approval, settlement, and
-the other product actions remain explicitly classified until their real
-provider lifecycle is wired and independently tested.
+recipient-limit, and asset-policy checks. Record creation produces a digest
+and selected public fields without returning the source payload; it does not
+create a public URL or on-chain anchor. Payroll approval, settlement, record
+verification, and the other product actions remain explicitly classified
+until their real provider lifecycle is wired and independently tested.
 
 ## Network truth
 

@@ -46,10 +46,10 @@ export const runtimeCatalog = {
           "applicationBindings": [
             {
               "network": "solana-devnet",
-              "mode": "unbound",
-              "entrypoint": null,
+              "mode": "kernel-gateway",
+              "entrypoint": "kernel://verification.record.create",
               "method": null,
-              "note": "No exact record-creation application binding is exposed by the web app."
+              "note": "Kernel-native digest and selective disclosure artifact; no public URL or on-chain anchor is created."
             }
           ]
         },
