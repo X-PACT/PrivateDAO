@@ -185,6 +185,8 @@ export { createPrivateDaoRuntime } from "./runtime.js";
 export type { PrivateDaoRuntime } from "./runtime.js";
 export { PayrollCalculationProvider } from "./payroll-provider.js";
 export type { PayrollCalculationPayload } from "./payroll-provider.js";
+export { TreasuryPolicyProvider } from "./treasury-policy-provider.js";
+export type { TreasuryPolicyCheckPayload, TreasuryPolicyCheckResult } from "./treasury-policy-provider.js";
 export { buildCapabilityMatrix } from "./capability-matrix.js";
 export type { CapabilityMatrixEntry, CapabilityRuntimeStatus } from "./capability-matrix.js";
 export {

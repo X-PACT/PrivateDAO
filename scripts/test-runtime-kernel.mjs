@@ -90,6 +90,24 @@ assert.equal(protocolRegistry.list("payroll").length, 3);
 assert.equal(protocolRegistry.authorize("payroll.approve", "execution.submit", "checker"), true);
 assert.equal(protocolRegistry.authorize("payroll.approve", "execution.submit", "auditor"), false);
 
+const policyRuntime = createPrivateDaoRuntime();
+const policyIntent = {
+  context: {
+    requestId: "treasury-policy-test",
+    idempotencyKey: "treasury-policy-test-key",
+    product: "treasury",
+    capability: "treasury.policy.check",
+    network,
+  },
+  payload: { amountCents: 7500, budgetCents: 10000, maxTransactionCents: 8000, requestedAsset: "USDC", allowedAsset: "USDC" },
+  accounts: [],
+};
+const policyPrepared = await policyRuntime.gateway.prepare(policyIntent, "maker");
+await policyRuntime.gateway.submit(policyPrepared, policyPrepared.unsignedPayload, "maker");
+const policyReceipt = await policyRuntime.gateway.receipt(policyPrepared, "maker");
+assert.equal(policyReceipt.state, "reconciled");
+assert.equal(policyReceipt.result.passed, true);
+
 const gateway = runtime.gateway;
 const gatewayPrepared = await gateway.prepare(intent, "maker");
 assert.equal(gatewayPrepared.executionId, first.executionId);
@@ -98,7 +116,7 @@ assert.throws(
   (error) => error?.code === "INVALID_INTENT",
 );
 
-const emptyRuntime = createPrivateDaoRuntime();
+const emptyRuntime = createPrivateDaoRuntime(new InMemoryProviderRegistry());
 await assert.rejects(
   () => emptyRuntime.gateway.prepare(intent, "maker"),
   (error) => error?.code === "PROVIDER_NOT_FOUND",
@@ -113,6 +131,7 @@ assert.equal(verifiedMatrix.find((entry) => entry.capability === capability && e
 assert.equal(validateApplicationBindings().length, 0);
 assert.equal(listApplicationBindings().length, products.reduce((count, product) => count + product.capabilities.length, 0));
 assert.equal(listApplicationBindings().find((entry) => entry.capability === "payroll.calculate")?.mode, "kernel-gateway");
+assert.equal(listApplicationBindings().find((entry) => entry.capability === "treasury.policy.check")?.mode, "kernel-gateway");
 assert.equal(listApplicationBindings().find((entry) => entry.capability === "verification.blind.prove")?.mode, "legacy-provider");
 
 let currentTime = "2026-09-09T00:00:00.000Z";

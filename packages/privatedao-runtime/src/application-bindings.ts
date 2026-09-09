@@ -73,8 +73,9 @@ export const APPLICATION_CAPABILITY_BINDINGS: readonly ApplicationCapabilityBind
     product: "treasury",
     capability: "treasury.policy.check",
     network: "solana-devnet",
-    mode: "unbound",
-    note: "No exact Kernel-backed treasury policy action is exposed by the web app.",
+    mode: "kernel-gateway",
+    entrypoint: "kernel://treasury.policy.check",
+    note: "Kernel-native deterministic policy evaluation; no wallet signature or treasury movement is performed.",
   },
   {
     product: "governance",

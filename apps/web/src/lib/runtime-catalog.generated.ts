@@ -146,10 +146,10 @@ export const runtimeCatalog = {
           "applicationBindings": [
             {
               "network": "solana-devnet",
-              "mode": "unbound",
-              "entrypoint": null,
+              "mode": "kernel-gateway",
+              "entrypoint": "kernel://treasury.policy.check",
               "method": null,
-              "note": "No exact Kernel-backed treasury policy action is exposed by the web app."
+              "note": "Kernel-native deterministic policy evaluation; no wallet signature or treasury movement is performed."
             }
           ]
         }
