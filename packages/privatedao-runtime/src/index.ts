@@ -163,3 +163,4 @@ export type { AuditEvent, AuditLog, JobState, JobStore, ProtocolJob } from "./jo
 export { TransportBackedNetworkAdapter } from "./adapters.js";
 export type { AdapterTransport } from "./adapters.js";
 export { registerCatalogCapabilities } from "./product-registry.js";
+export { ProductExecutionGateway } from "./product-gateway.js";

@@ -4,6 +4,7 @@ import {
   InMemoryProviderRegistry,
   InMemoryProtocolRegistry,
   PrivateDaoKernel,
+  ProductExecutionGateway,
   listProducts,
   registerCatalogCapabilities,
 } from "../packages/privatedao-runtime/src/index.ts";
@@ -86,5 +87,13 @@ assert.equal(registrations.length, expectedRegistrationCount);
 assert.equal(protocolRegistry.list("payroll").length, 3);
 assert.equal(protocolRegistry.authorize("payroll.approve", "execution.submit", "checker"), true);
 assert.equal(protocolRegistry.authorize("payroll.approve", "execution.submit", "auditor"), false);
+
+const gateway = new ProductExecutionGateway(kernel, protocolRegistry);
+const gatewayPrepared = await gateway.prepare(intent, "maker");
+assert.equal(gatewayPrepared.executionId, first.executionId);
+await assert.rejects(
+  () => gateway.submit(gatewayPrepared, gatewayPrepared.unsignedPayload, "auditor"),
+  (error) => error?.code === "INVALID_INTENT",
+);
 
 console.log("[runtime-kernel] idempotent execution, product registration, and verification catalog checks passed");
