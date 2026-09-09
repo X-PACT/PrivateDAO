@@ -193,6 +193,8 @@ export { AgentDiscoveryProvider } from "./agent-provider.js";
 export type { AgentDiscoveryPayload, AgentDiscoveryResult } from "./agent-provider.js";
 export { BlindPolicyProofProvider } from "./blind-policy-provider.js";
 export type { BlindPolicyProofPayload, BlindPolicyProofResult } from "./blind-policy-provider.js";
+export { AuctionOutcomeProofProvider } from "./auction-outcome-provider.js";
+export type { AuctionOutcomeProofPayload, AuctionOutcomeProofResult } from "./auction-outcome-provider.js";
 export { buildCapabilityMatrix } from "./capability-matrix.js";
 export type { CapabilityMatrixEntry, CapabilityRuntimeStatus } from "./capability-matrix.js";
 export {

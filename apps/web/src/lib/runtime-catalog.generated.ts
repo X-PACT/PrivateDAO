@@ -214,10 +214,10 @@ export const runtimeCatalog = {
           "applicationBindings": [
             {
               "network": "solana-devnet",
-              "mode": "legacy-provider",
-              "entrypoint": "/api/auctions/sealed/outcome-proof",
-              "method": "POST",
-              "note": "Existing sealed-auction proof route; settlement evidence remains provider-specific."
+              "mode": "kernel-gateway",
+              "entrypoint": "kernel://auction.settle",
+              "method": null,
+              "note": "Kernel adapter delegates to the HTTPS outcome-proof service; it proves an already-bound result and does not claim token movement or an on-chain signature."
             }
           ]
         }

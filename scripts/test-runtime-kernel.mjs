@@ -194,6 +194,36 @@ assert.equal(proofRequest.workflowId, "workflow-001");
 assert.equal(blindReceipt.result.proofHash, "a".repeat(64));
 assert.equal(blindReceipt.result.publicProofPackage.proofId, "proof-001");
 
+let auctionRequest;
+const auctionProvider = new (await import("../packages/privatedao-runtime/src/auction-outcome-provider.ts")).AuctionOutcomeProofProvider(
+  async (_url, init) => {
+    auctionRequest = JSON.parse(init.body);
+    return new Response(JSON.stringify({
+      ok: true,
+      proofType: "groth16-auction-outcome-v1",
+      publicSignals: ["1", "2"],
+      proof: { pi_a: ["observed"] },
+      privateDataExcluded: true,
+      binding: "finalized SettlementReceipt result_commitment",
+    }), { status: 200, headers: { "content-type": "application/json" } });
+  },
+  "https://api.example.test/auction-outcome-proof",
+);
+const auctionRegistry = new InMemoryProviderRegistry();
+auctionRegistry.register(auctionProvider);
+const auctionRuntime = createPrivateDaoRuntime(auctionRegistry);
+const auctionIntent = {
+  context: { requestId: "auction-outcome-test", idempotencyKey: "auction-outcome-test-key", product: "auction", capability: "auction.settle", network },
+  payload: { metadata: { auctionId: [1, 2, 3] }, bids: [{ bidderCommitment: [4, 5], amount: 10 }] },
+  accounts: [],
+};
+const auctionPrepared = await auctionRuntime.gateway.prepare(auctionIntent, "maker");
+await auctionRuntime.gateway.submit(auctionPrepared, auctionPrepared.unsignedPayload, "maker");
+const auctionReceipt = await auctionRuntime.gateway.receipt(auctionPrepared, "maker");
+assert.equal(auctionRequest.metadata.auctionId[0], 1);
+assert.equal(auctionReceipt.result.proofType, "groth16-auction-outcome-v1");
+assert.equal(auctionReceipt.result.privateDataExcluded, true);
+
 const gateway = runtime.gateway;
 const gatewayPrepared = await gateway.prepare(intent, "maker");
 assert.equal(gatewayPrepared.executionId, first.executionId);
@@ -222,6 +252,7 @@ assert.equal(listApplicationBindings().find((entry) => entry.capability === "ver
 assert.equal(listApplicationBindings().find((entry) => entry.capability === "verification.record.verify")?.mode, "kernel-gateway");
 assert.equal(listApplicationBindings().find((entry) => entry.capability === "agent.discover")?.mode, "kernel-gateway");
 assert.equal(listApplicationBindings().find((entry) => entry.capability === "verification.blind.prove")?.mode, "kernel-gateway");
+assert.equal(listApplicationBindings().find((entry) => entry.capability === "auction.settle")?.mode, "kernel-gateway");
 
 let currentTime = "2026-09-09T00:00:00.000Z";
 const expiredKernel = new PrivateDaoKernel(registry, { now: () => currentTime });
