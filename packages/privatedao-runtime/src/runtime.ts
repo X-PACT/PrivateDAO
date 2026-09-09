@@ -7,6 +7,7 @@ import { PayrollCalculationProvider } from "./payroll-provider.js";
 import { TreasuryPolicyProvider } from "./treasury-policy-provider.js";
 import { RecordCreationProvider, RecordVerificationProvider } from "./record-provider.js";
 import { AgentDiscoveryProvider } from "./agent-provider.js";
+import { BlindPolicyProofProvider } from "./blind-policy-provider.js";
 
 /**
  * Single composition boundary for PrivateDAO applications.
@@ -31,6 +32,7 @@ export function createPrivateDaoRuntime(providers?: ProviderRegistry, options: K
     providerRegistry.register(new RecordCreationProvider());
     providerRegistry.register(new RecordVerificationProvider());
     providerRegistry.register(new AgentDiscoveryProvider());
+    providerRegistry.register(new BlindPolicyProofProvider());
   }
   const protocols = new InMemoryProtocolRegistry();
   registerCatalogCapabilities(protocols);

@@ -165,6 +165,35 @@ const discoveryReceipt = await discoveryRuntime.gateway.receipt(discoveryPrepare
 assert.equal(discoveryReceipt.result.agentCard.protocolVersion, "0.3.0");
 assert.equal(discoveryReceipt.result.status, 200);
 
+let proofRequest;
+const blindProvider = new (await import("../packages/privatedao-runtime/src/blind-policy-provider.ts")).BlindPolicyProofProvider(
+  async (_url, init) => {
+    proofRequest = JSON.parse(init.body);
+    return new Response(JSON.stringify({
+      ok: true,
+      status: "proof-issued",
+      workflowId: proofRequest.workflowId,
+      proofHash: "a".repeat(64),
+      publicProofPackage: { proofId: "proof-001", publicOutcome: "policy-satisfied" },
+    }), { status: 200, headers: { "content-type": "application/json" } });
+  },
+  "https://api.example.test/prove",
+);
+const blindRegistry = new InMemoryProviderRegistry();
+blindRegistry.register(blindProvider);
+const blindRuntime = createPrivateDaoRuntime(blindRegistry);
+const blindIntent = {
+  context: { requestId: "blind-prove-test", idempotencyKey: "blind-prove-test-key", product: "blind-verification", capability: "verification.blind.prove", network },
+  payload: { workflowId: "workflow-001", privateInputs: { subjectId: "subject-001", riskScore: 10 } },
+  accounts: [],
+};
+const blindPrepared = await blindRuntime.gateway.prepare(blindIntent, "maker");
+await blindRuntime.gateway.submit(blindPrepared, blindPrepared.unsignedPayload, "maker");
+const blindReceipt = await blindRuntime.gateway.receipt(blindPrepared, "maker");
+assert.equal(proofRequest.workflowId, "workflow-001");
+assert.equal(blindReceipt.result.proofHash, "a".repeat(64));
+assert.equal(blindReceipt.result.publicProofPackage.proofId, "proof-001");
+
 const gateway = runtime.gateway;
 const gatewayPrepared = await gateway.prepare(intent, "maker");
 assert.equal(gatewayPrepared.executionId, first.executionId);
@@ -192,7 +221,7 @@ assert.equal(listApplicationBindings().find((entry) => entry.capability === "tre
 assert.equal(listApplicationBindings().find((entry) => entry.capability === "verification.record.create")?.mode, "kernel-gateway");
 assert.equal(listApplicationBindings().find((entry) => entry.capability === "verification.record.verify")?.mode, "kernel-gateway");
 assert.equal(listApplicationBindings().find((entry) => entry.capability === "agent.discover")?.mode, "kernel-gateway");
-assert.equal(listApplicationBindings().find((entry) => entry.capability === "verification.blind.prove")?.mode, "legacy-provider");
+assert.equal(listApplicationBindings().find((entry) => entry.capability === "verification.blind.prove")?.mode, "kernel-gateway");
 
 let currentTime = "2026-09-09T00:00:00.000Z";
 const expiredKernel = new PrivateDaoKernel(registry, { now: () => currentTime });

@@ -40,7 +40,8 @@ This classification is enforced by validation and CI. A product is not marked
 Kernel-backed merely because a legacy endpoint exists.
 
 The first Kernel-native application capabilities are `payroll.calculate`,
-`treasury.policy.check`, and `verification.record.create` on Solana Devnet.
+`treasury.policy.check`, `verification.record.create`, and
+`verification.blind.prove` on Solana Devnet.
 They produce deterministic receipts
 with no wallet signature or settlement side effect: the former calculates a
 payroll batch, while the latter evaluates bounded budget, transaction-limit,
@@ -55,6 +56,11 @@ lifecycle is wired and independently tested.
 Agent discovery is also Kernel-backed as a read-only fetch. It returns only
 the received Agent Card and fails on non-HTTPS, non-JSON, or non-2xx responses;
 it does not fabricate agents, usage, payments, or adoption.
+
+Blind policy proving is Kernel-routed through the configured HTTPS proof
+service. The adapter rejects non-2xx responses and malformed responses; it
+does not create a proof locally, fabricate a proof package, or imply an
+on-chain receipt.
 
 ## Network truth
 

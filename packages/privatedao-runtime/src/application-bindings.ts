@@ -24,10 +24,9 @@ export const APPLICATION_CAPABILITY_BINDINGS: readonly ApplicationCapabilityBind
     product: "blind-verification",
     capability: "verification.blind.prove",
     network: "solana-devnet",
-    mode: "legacy-provider",
-    entrypoint: "/api/proof-workflows/blind-policy/prove",
-    method: "POST",
-    note: "Existing proof-workflow provider route; not yet routed through ProductExecutionGateway.",
+    mode: "kernel-gateway",
+    entrypoint: "kernel://verification.blind.prove",
+    note: "Kernel adapter delegates to the HTTPS proof service and accepts only an observed successful public proof package.",
   },
   {
     product: "record-verification",

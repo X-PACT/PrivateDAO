@@ -191,6 +191,8 @@ export { RecordCreationProvider, RecordVerificationProvider, RECORD_CANONICALIZA
 export type { RecordCreationPayload, RecordCreationResult, RecordVerificationPayload, RecordVerificationResult } from "./record-provider.js";
 export { AgentDiscoveryProvider } from "./agent-provider.js";
 export type { AgentDiscoveryPayload, AgentDiscoveryResult } from "./agent-provider.js";
+export { BlindPolicyProofProvider } from "./blind-policy-provider.js";
+export type { BlindPolicyProofPayload, BlindPolicyProofResult } from "./blind-policy-provider.js";
 export { buildCapabilityMatrix } from "./capability-matrix.js";
 export type { CapabilityMatrixEntry, CapabilityRuntimeStatus } from "./capability-matrix.js";
 export {
