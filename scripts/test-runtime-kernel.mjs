@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import {
   InMemoryProviderRegistry,
   createPrivateDaoRuntime,
+  buildCapabilityMatrix,
   PrivateDaoKernel,
   listProducts,
 } from "../packages/privatedao-runtime/src/index.ts";
@@ -100,6 +101,12 @@ await assert.rejects(
   () => emptyRuntime.gateway.prepare(intent, "maker"),
   (error) => error?.code === "PROVIDER_NOT_FOUND",
 );
+
+const emptyMatrix = buildCapabilityMatrix(emptyRuntime.providers);
+assert.equal(emptyMatrix.find((entry) => entry.capability === "treasury.policy.check" && entry.network === network)?.status, "contract-only");
+assert.equal(emptyMatrix.find((entry) => entry.capability === "treasury.policy.check" && entry.network === "ethereum-sepolia")?.status, "planned");
+const verifiedMatrix = buildCapabilityMatrix(registry);
+assert.equal(verifiedMatrix.find((entry) => entry.capability === capability && entry.network === network)?.status, "verified");
 
 let currentTime = "2026-09-09T00:00:00.000Z";
 const expiredKernel = new PrivateDaoKernel(registry, { now: () => currentTime });

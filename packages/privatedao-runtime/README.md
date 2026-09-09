@@ -31,3 +31,10 @@ creates one protocol registry, registers the complete product catalog, and
 connects it to one Kernel and gateway. Applications still must inject a real
 provider; the factory intentionally does not create a test-only provider or a
 fallback-success path.
+
+`buildCapabilityMatrix` is the runtime support check for product and network
+selection. It reports `verified` only when the injected provider registry can
+resolve the exact capability on the exact network, `contract-only` when the
+catalog exists but no provider is registered, and `planned` for undeclared or
+unavailable network combinations. Customer and agent discovery surfaces must
+not promote `contract-only` or `planned` entries to executable support.
