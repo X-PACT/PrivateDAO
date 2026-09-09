@@ -1,7 +1,11 @@
 import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 
-import { NETWORK_MATRIX, PRODUCT_CATALOG } from "../packages/privatedao-runtime/src/index.js";
+import {
+  findApplicationBinding,
+  NETWORK_MATRIX,
+  PRODUCT_CATALOG,
+} from "../packages/privatedao-runtime/src/index.js";
 
 async function main() {
   const root = process.cwd();
@@ -22,6 +26,15 @@ async function main() {
         requiresSignature: capability.requiresSignature,
         supportsAsync: capability.supportsAsync,
         receiptSchema: capability.receiptSchema,
+        applicationBindings: capability.networks.map((network) => {
+          const binding = findApplicationBinding(product.id, capability.id, network);
+          return {
+            network,
+            mode: binding.mode,
+            entrypoint: binding.entrypoint ?? null,
+            note: binding.note,
+          };
+        }),
       })),
     })),
     networks: NETWORK_MATRIX.map((network) => ({
