@@ -27,6 +27,10 @@ Kernel work.
   boundary for network adapters. Product code must not contain direct RPC
   calls or private-key handling.
 - `apps/web/` contains the commercial web surface and product entry points.
+- `apps/web/src/lib/runtime-catalog.generated.ts` is a checked-in, generated
+  projection of the Kernel catalog for the static web build. It is regenerated
+  by `scripts/build-web-runtime-catalog.ts` and verified in CI so product
+  selection cannot drift from the canonical product/network contract.
 - `docs/generated/` contains execution evidence only; it is not a source of
   secrets or a substitute for an independent E2E test.
 

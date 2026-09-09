@@ -7,6 +7,7 @@ import { buttonVariants } from "@/components/ui/button";
 import { buildRouteMetadata } from "@/lib/route-metadata";
 import { cn } from "@/lib/utils";
 import { commercialProductGroups } from "@/lib/commercial-product-map";
+import { getRuntimeProduct, isRuntimeProductAvailable } from "@/lib/runtime-catalog";
 
 export const metadata: Metadata = buildRouteMetadata({
   title: "Products",
@@ -38,12 +39,18 @@ export default function ProductsPage() {
               <div><h2 className="text-2xl font-semibold text-white">{group.title}</h2><p className="mt-2 text-sm leading-6 text-white/58">{group.summary}</p></div>
             </div>
             <div className="mt-5 grid gap-3">
-              {group.products.map((product) => <div key={product.title} className="rounded-2xl border border-white/10 bg-black/20 p-4">
-                <h3 className="text-lg font-semibold text-white">{product.title}</h3>
+              {group.products.map((product) => {
+                const runtime = product.runtimeProductId ? getRuntimeProduct(product.runtimeProductId) : null;
+                return <div key={product.title} className="rounded-2xl border border-white/10 bg-black/20 p-4">
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <h3 className="text-lg font-semibold text-white">{product.title}</h3>
+                  {runtime && isRuntimeProductAvailable(product.runtimeProductId!) ? <span className="text-xs font-medium text-emerald-200">Available now</span> : null}
+                </div>
                 <p className="mt-2 text-sm leading-6 text-white/64">{product.summary}</p>
                 <p className="mt-2 text-xs text-white/42">For: {product.audience}</p>
                 <Link href={product.href} className={cn(buttonVariants({ size: "sm" }), "mt-4")}>{product.cta}<ArrowRight className="h-4 w-4" /></Link>
-              </div>)}
+              </div>;
+              })}
             </div>
           </article>;
         })}

@@ -22,6 +22,8 @@
     "commercial:test:lifecycle": "node scripts/test-commercial-lifecycle.mjs",
     "release:verify": "node scripts/release-verify.mjs",
     "web:build": "npm --prefix apps/web run build",
+    "build:web-runtime-catalog": "node --import tsx scripts/build-web-runtime-catalog.ts",
+    "verify:web-runtime-catalog": "tmp=$(mktemp) && trap 'rm -f \"$tmp\"' EXIT && WEB_RUNTIME_CATALOG_OUTPUT=\"$tmp\" npm run build:web-runtime-catalog >/dev/null && node scripts/verify-web-runtime-catalog.mjs \"$tmp\" apps/web/src/lib/runtime-catalog.generated.ts",
     "web:build:github": "npm --prefix apps/web run build:github",
     "web:build:root": "npm --prefix apps/web run build:root",
     "web:bundle:github": "bash scripts/build-web-mirror-bundle.sh github",

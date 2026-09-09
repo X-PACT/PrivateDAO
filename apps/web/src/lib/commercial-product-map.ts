@@ -1,12 +1,15 @@
 import type { LucideIcon } from "lucide-react";
 import { Banknote, Bot, FileCheck2, Gavel, Gamepad2, GitBranch, ShieldCheck, WalletCards } from "lucide-react";
 
+import type { RuntimeProductId } from "@/lib/runtime-catalog";
+
 export type CommercialProduct = {
   title: string;
   summary: string;
   audience: string;
   href: string;
   cta: string;
+  runtimeProductId?: RuntimeProductId;
 };
 
 export type CommercialProductGroup = {
@@ -28,6 +31,7 @@ export const commercialProductGroups: readonly CommercialProductGroup[] = [
         audience: "Companies, finance teams, operators, and contributor networks.",
         href: "/payroll",
         cta: "Open payroll",
+        runtimeProductId: "payroll",
       },
     ],
   },
@@ -42,6 +46,7 @@ export const commercialProductGroups: readonly CommercialProductGroup[] = [
         audience: "Finance teams, DAOs, operations teams, and treasury committees.",
         href: "/treasury",
         cta: "Open treasury",
+        runtimeProductId: "treasury",
       },
     ],
   },
@@ -56,6 +61,7 @@ export const commercialProductGroups: readonly CommercialProductGroup[] = [
         audience: "DAOs, boards, committees, foundations, and communities.",
         href: "/govern",
         cta: "Start governance",
+        runtimeProductId: "governance",
       },
     ],
   },
@@ -70,6 +76,7 @@ export const commercialProductGroups: readonly CommercialProductGroup[] = [
         audience: "Procurement teams, marketplaces, DAOs, and agent operators.",
         href: "/auctions",
         cta: "Run an auction",
+        runtimeProductId: "auction",
       },
     ],
   },
@@ -84,6 +91,7 @@ export const commercialProductGroups: readonly CommercialProductGroup[] = [
         audience: "Compliance, lending, HR, finance, and review teams.",
         href: "/proof-workflows/blind-policy",
         cta: "Try blind verification",
+        runtimeProductId: "blind-verification",
       },
       {
         title: "Record Verification",
@@ -91,6 +99,7 @@ export const commercialProductGroups: readonly CommercialProductGroup[] = [
         audience: "Auditors, data platforms, finance teams, and API products.",
         href: "/products/record-verification",
         cta: "Verify a record",
+        runtimeProductId: "record-verification",
       },
     ],
   },
@@ -119,6 +128,7 @@ export const commercialProductGroups: readonly CommercialProductGroup[] = [
         audience: "AI agents, Solana bots, data providers, and automation teams.",
         href: "https://agents.privatedao.org/",
         cta: "Open Agent Exchange",
+        runtimeProductId: "agent",
       },
     ],
   },

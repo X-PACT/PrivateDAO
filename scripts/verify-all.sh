@@ -52,6 +52,9 @@ npm run validate:ranger-strategy -- docs/ranger-strategy-config.devnet.json >/de
 echo "[verify-all] checking runtime Kernel idempotency"
 npm run test:runtime >/dev/null
 
+echo "[verify-all] checking web catalog projection from the runtime Kernel"
+npm run verify:web-runtime-catalog >/dev/null
+
 echo "[verify-all] checking live proof"
 npm run verify:live-proof >/dev/null
 
