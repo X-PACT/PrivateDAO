@@ -8,6 +8,13 @@ Kernel and product contracts. `canonical-live` is kept synchronized with
 pre-Kernel snapshot is preserved as the Git tag
 `archive/legacy-integrations-20260909`.
 
+The repository's operational branch set is intentionally small: `main` and
+the synchronized `canonical-live` mirror are the only product source branches.
+Dependabot branches are maintenance proposals, not product variants. Archived
+integration history belongs in the `archive/*` tags and
+`docs/archive/legacy-routes/`; no archived tag or maintenance branch is a
+second source of truth.
+
 ## Runtime boundary
 
 The provider-neutral source of truth is
