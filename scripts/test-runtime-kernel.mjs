@@ -91,7 +91,7 @@ assert.equal(protocolRegistry.authorize("payroll.approve", "execution.submit", "
 const gateway = new ProductExecutionGateway(kernel, protocolRegistry);
 const gatewayPrepared = await gateway.prepare(intent, "maker");
 assert.equal(gatewayPrepared.executionId, first.executionId);
-await assert.rejects(
+assert.throws(
   () => gateway.submit(gatewayPrepared, gatewayPrepared.unsignedPayload, "auditor"),
   (error) => error?.code === "INVALID_INTENT",
 );
