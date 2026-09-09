@@ -31,6 +31,9 @@ Kernel work.
   projection of the Kernel catalog for the static web build. It is regenerated
   by `scripts/build-web-runtime-catalog.ts` and verified in CI so product
   selection cannot drift from the canonical product/network contract.
+- `/api/runtime/catalog` exposes the same generated projection to machine
+  clients. It is a contract/discovery surface only; execution still requires a
+  registered real adapter and independent network evidence.
 - `docs/generated/` contains execution evidence only; it is not a source of
   secrets or a substitute for an independent E2E test.
 
