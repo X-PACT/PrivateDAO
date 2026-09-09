@@ -1,14 +1,21 @@
-# Confidential Auction Network Capability Matrix
+# PrivateDAO Network Capability Matrix
 
-| Network | Status | Scope |
+This file is a human-readable mirror of
+`packages/privatedao-runtime/src/networks.ts`. The runtime catalog is
+authoritative and intentionally fails closed.
+
+| Network | Runtime stage | Product exposure |
 |---|---|---|
-| Solana Devnet | ADAPTER_IMPLEMENTED | Standalone Anchor program and client path; deployment/E2E pending current build and funded test wallets. |
-| Solana Testnet | ADAPTER_IMPLEMENTED | Same program boundary; no certification claim. |
-| MagicBlock PER development environment | ADAPTER_IMPLEMENTED | Permission/delegation client and TEE routing are implemented; runtime evidence is required before certification. |
-| Ethereum/EVM | ADAPTER_PLANNED | No auction provider in this phase. |
-| Stellar/Soroban | ADAPTER_PLANNED | No auction provider in this phase. |
-| Bitcoin | NOT_APPLICABLE | No bid execution or settlement requirement established. |
-| Starknet | ADAPTER_PLANNED | No auction provider in this phase. |
-| Polkadot | ADAPTER_PLANNED | No interoperability requirement in this phase. |
+| Solana Devnet | `available` | Current Kernel network; product capabilities are catalogued here. |
+| Solana Mainnet | `planned` | No current Kernel provider or production claim. |
+| Ethereum Sepolia | `planned` | Adapter and independent lifecycle evidence required. |
+| Arbitrum Sepolia | `planned` | Adapter and independent lifecycle evidence required. |
+| Tempo Testnet | `planned` | Adapter and independent lifecycle evidence required. |
+| Zcash Testnet | `planned` | Adapter and independent lifecycle evidence required. |
+| Wormhole Integration | `planned` | Integration boundary only; not a standalone product network. |
+| Hyperliquid Testnet | `planned` | Adapter and independent lifecycle evidence required. |
 
-Only a network with real deployment, transaction, finality, and receipt reconciliation evidence may be described as supported.
+An entry is not customer-executable merely because it is listed here. A
+network requires a real provider adapter, transaction lifecycle, finality,
+receipt/reconciliation path, and independent tests before discovery or UI may
+present it as supported.

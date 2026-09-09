@@ -1,25 +1,43 @@
-# PrivateDAO Integrations Map
+# PrivateDAO Integration Boundary
 
-This file maps each track technology to the live product lane.
+`packages/privatedao-runtime/` is the source of truth for product
+capabilities, network availability, provider selection, authorization,
+execution lifecycle, receipts, and reconciliation. This document is an
+orientation map only; a provider name or page is not evidence that a product
+is executable.
 
-## Evidence Note
-- Signature-level proof is dynamic and appears in `/proof` via Proof Matrix and operation receipts.
-- Base explorer: `https://solscan.io/?cluster=testnet`
+## Current executable boundary
 
-| Track | Technology | How it is used | Product route | Judge route | Proof route | On-chain evidence |
-|---|---|---|---|---|---|---|
-| 01 | GoldRush | Treasury and counterparty intelligence | `/intelligence` | `/judge` | `/proof` | Dynamic TX links in Proof Matrix |
-| 02 | Cloak | Private settlement lane | `/services/cloak-private-settlement` | `/judge` | `/proof` | Dynamic TX links in Proof Matrix |
-| 03 | Jupiter | Treasury route preview and execution prep | `/services/jupiter-treasury-route` | `/judge` | `/proof` | Dynamic TX links in Proof Matrix |
-| 04 | Zerion | Policy-bound agent execution surface | `/services/zerion-agent-policy` | `/judge` | `/proof` | Dynamic TX links in Proof Matrix |
-| 05 | Torque | Growth event loop tied to real actions | `/services/torque-growth-loop` | `/judge` | `/proof` | Event + receipt references in `/proof` |
-| 06 | AUDD | AUD settlement lane | `/services/audd-stablecoin` | `/judge` | `/proof` | Dynamic TX links in Proof Matrix |
-| 07 | PUSD | Stable treasury/payroll lane | `/services/pusd-stablecoin` | `/judge` | `/proof` | Dynamic TX links in Proof Matrix |
-| 08 | Umbra | Confidential payout/claim lane | `/services/umbra-confidential-payout` | `/judge` | `/proof` | Dynamic TX links in Proof Matrix |
-| 09 | Eitherway | Wallet-first connect/sign/verify lane | `/services/eitherway-live-dapp` | `/judge` | `/proof` | Profile-sign receipts + proof continuity |
-| 10 | Runtime Infra | Read-node + telemetry + host readiness | `/services/runtime-infrastructure` | `/judge` | `/proof` | Runtime evidence + proof continuity |
-| 11 | Encrypt/IKA | Encrypted operations and payload prep | `/services/encrypt-ika-operations` | `/judge` | `/proof` | Commitment receipts + proof continuity |
-| 12 | SolRouter AI | Deterministic AI briefs with encrypted export | `/services/solrouter-encrypted-ai` | `/judge` | `/proof` | Encrypted AI brief receipts |
-| 13 | Consumer UX | Normal-user governance flow (web + android) | `/services/consumer-governance-ux` | `/judge` | `/proof` | Wallet flow receipts in proof |
-| 14 | Main Frontier | Unified integrated operating route | `/services/main-frontier-closure` | `/judge` | `/proof` | Aggregated proof continuity |
-| 15 | QVAC | Local-first on-device AI operation briefing layer | `/services/qvac-sovereign-ai` | `/judge` | `/proof` | Local brief + operation continuity in proof |
+The Kernel catalog currently exposes the following products on Solana Devnet:
+
+| Product | Kernel capabilities | Application exposure |
+|---|---|---|
+| Blind Verification | `verification.blind.prove` | legacy provider route |
+| Record Verification | `verification.record.create`, `verification.record.verify` | create unbound; verify legacy provider route |
+| Confidential Payroll | `payroll.calculate`, `payroll.approve`, `payroll.settle` | calculate/approve unbound; settlement legacy provider route |
+| Private Treasury | `treasury.policy.check` | unbound |
+| Private Governance | `governance.proposal.execute` | unbound |
+| Private Auctions | `auction.bid.commit`, `auction.settle` | legacy provider routes |
+| Agent Marketplace | `agent.discover`, `agent.invoke` | hosted outside this web boundary |
+
+The application binding ledger is authoritative for whether a route is
+`kernel-gateway`, `legacy-provider`, or `unbound`. Only a `kernel-gateway`
+binding with an injected, tested provider may be advertised as Kernel-backed.
+
+## Provider and historical evidence
+
+Umbra, MagicBlock, Ika/Encrypt, Cloak, Jupiter, QVAC, GoldRush, PUSD,
+AUDD, Zerion, Torque, Txline, and related pages remain as provider-specific
+implementation or evidence surfaces where current source references require
+them. They must not be copied into new product paths or treated as a unified
+network adapter without independent execution evidence.
+
+Historical generated route snapshots are archived under
+`docs/archive/legacy-routes/20260909/` and retain redirect stubs at their old
+paths. The archive is for recovery and provenance, not product discovery.
+
+## Verification rule
+
+Claims about signatures, settlement, or proof must point to a current receipt,
+explorer record, or independently rerunnable test. Static marketing pages,
+provider metadata, and old generated snapshots do not establish live support.
