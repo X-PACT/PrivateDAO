@@ -162,6 +162,8 @@ export { InMemoryAuditLog, InMemoryJobStore, isTerminalJobState, nextRetryState 
 export type { AuditEvent, AuditLog, JobState, JobStore, ProtocolJob } from "./jobs.js";
 export { TransportBackedNetworkAdapter } from "./adapters.js";
 export type { AdapterTransport } from "./adapters.js";
+export { HttpExecutionTransport } from "./http-transport.js";
+export type { HttpExecutionTransportOptions, HttpExecutionTransportPaths, HttpFetch } from "./http-transport.js";
 export { registerCatalogCapabilities } from "./product-registry.js";
 export { ProductExecutionGateway } from "./product-gateway.js";
 export { createPrivateDaoRuntime } from "./runtime.js";

@@ -92,6 +92,7 @@
     "test:full:anchor": "bash scripts/run-local-anchor-suite.sh full tests/full-flow-test.ts",
     "test:unit:ts": "TSX_TSCONFIG_PATH=apps/web/tsconfig.scripts.json node --import tsx ./node_modules/mocha/bin/mocha --timeout 30000 --exit test/unit/**/*.ts",
     "test:runtime": "node --import tsx scripts/test-runtime-kernel.mjs",
+    "test:runtime:http": "node --import tsx scripts/test-runtime-http-transport.mjs",
     "verify:canonical-repository": "node scripts/verify-canonical-repository.mjs",
     "verify:tracked-secrets": "node scripts/verify-tracked-secrets.mjs",
     "verify:application-bindings": "node scripts/verify-application-bindings.mjs",
