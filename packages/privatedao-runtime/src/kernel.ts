@@ -189,6 +189,7 @@ export class PrivateDaoKernel {
   async submit<TUnsigned>(executionId: string, signedPayload: TUnsigned): Promise<{ executionId: string; signatures: string[] }> {
     const record = this.getRecord(executionId);
     if (record.submission) return { ...record.submission, signatures: [...record.submission.signatures] };
+    this.validateIntent(record.prepared.intent);
     if (record.state !== "prepared" && record.state !== "awaiting_signature") {
       throw new KernelError("INVALID_STATE", `Execution cannot be submitted from state ${record.state}.`);
     }

@@ -101,9 +101,18 @@ await assert.rejects(
   (error) => error?.code === "PROVIDER_NOT_FOUND",
 );
 
-const expiredKernel = new PrivateDaoKernel(registry, { now: () => "2026-09-09T00:00:00.000Z" });
+let currentTime = "2026-09-09T00:00:00.000Z";
+const expiredKernel = new PrivateDaoKernel(registry, { now: () => currentTime });
 await assert.rejects(
   () => expiredKernel.prepare({ ...intent, expiresAt: "2026-09-08T23:59:59.000Z" }),
+  (error) => error?.code === "INTENT_EXPIRED",
+);
+
+const expiringIntent = { ...intent, context: { ...intent.context, idempotencyKey: "runtime-expiring-idempotency" }, expiresAt: "2026-09-09T00:01:00.000Z" };
+const expiringExecution = await expiredKernel.prepare(expiringIntent);
+currentTime = "2026-09-09T00:02:00.000Z";
+await assert.rejects(
+  () => expiredKernel.submit(expiringExecution.executionId, expiringExecution.unsignedPayload),
   (error) => error?.code === "INTENT_EXPIRED",
 );
 
