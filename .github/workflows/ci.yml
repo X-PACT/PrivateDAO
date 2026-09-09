@@ -88,6 +88,9 @@ jobs:
       - name: Runtime kernel typecheck
         run: npm run typecheck:runtime
 
+      - name: Verify legacy route archive boundary
+        run: npm run verify:legacy-route-archive
+
       - name: Unified review and ops verification
         run: npm run verify:all
 
