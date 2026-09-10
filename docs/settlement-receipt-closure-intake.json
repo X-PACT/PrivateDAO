@@ -1,0 +1,38 @@
+{
+  "project": "PrivateDAO",
+  "status": "testnet-receipt-closure-mainnet-verifier-required",
+  "closureRequirements": [
+    {
+      "id": "canonical-settlement-hash",
+      "label": "Canonical settlement hash",
+      "status": "closed-testnet",
+      "evidence": "docs/testnet-encrypted-integrations-activation-2026-05-23.md and docs/frontier-integrations.generated.md"
+    },
+    {
+      "id": "payout-object-linkage",
+      "label": "Payout object linkage",
+      "status": "closed-testnet",
+      "evidence": "executeConfidentialPayoutPlanV3 receipt and proposal-bound REFHE/MagicBlock entries in docs/frontier-integrations.generated.md"
+    },
+    {
+      "id": "residual-trust-model",
+      "label": "Residual trust model",
+      "status": "closed",
+      "evidence": "explicit written boundary published in docs/canonical-verifier-boundary-decision.md"
+    },
+    {
+      "id": "reviewer-proof-route",
+      "label": "Reviewer proof route",
+      "status": "closed",
+      "evidence": "reviewer-visible route published through docs/settlement-receipt-closure-packet.md and /documents/settlement-receipt-closure-packet"
+    }
+  ],
+  "supportingArtifacts": [
+    "docs/confidential-payout-evidence-packet.md",
+    "docs/canonical-verifier-boundary-decision.md",
+    "docs/magicblock/runtime-evidence.md",
+    "docs/refhe-security-model.md",
+    "docs/testnet-encrypted-integrations-activation-2026-05-23.md",
+    "docs/frontier-integrations.generated.md"
+  ]
+}
