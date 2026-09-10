@@ -74,7 +74,7 @@ const TEMPO_TESTNET_EVIDENCE = {
     "0xffe6e9a78dafd35f230ad51c7bd96ba469d53405",
     "0x9570769a1a4980d199845ccb276706face805cb4",
   ],
-  commit: "32ce1bc",
+  commit: "01c868c",
   timestamp: "2026-09-10T18:57:09.255Z",
 } as const;
 
