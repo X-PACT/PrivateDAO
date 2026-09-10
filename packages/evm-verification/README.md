@@ -32,7 +32,9 @@ npm run test:evm:phase2
 The runner checks the RPC chain IDs, deploys independent contracts to both
 testnets, generates a Groth16 proof from the committed WASM/zkey, verifies and
 anchors it, anchors and verifies a record digest, and tests wrong-chain,
-altered-proof, cross-network replay, expiry, and revocation behavior. It writes
+altered-proof, cross-network replay, and expired-input rejection. Revocation
+remains an explicit lifecycle test to add before this package claims complete
+revocation evidence. It writes
 deployment evidence only after confirmed on-chain transactions.
 
 No Mainnet configuration is accepted by this runner. No public RPC fallback is
