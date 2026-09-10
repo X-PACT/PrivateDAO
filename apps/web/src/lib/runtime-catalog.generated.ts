@@ -397,13 +397,6 @@ export const runtimeCatalog = {
       "environment": "testnet"
     },
     {
-      "id": "wormhole-integration",
-      "label": "Wormhole Integration",
-      "family": "bridge",
-      "stage": "planned",
-      "environment": "integration"
-    },
-    {
       "id": "hyperliquid-testnet",
       "label": "Hyperliquid Testnet",
       "family": "exchange",

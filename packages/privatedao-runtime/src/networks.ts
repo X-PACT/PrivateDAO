@@ -1,7 +1,7 @@
 import type { NetworkId } from "./index.js";
 
 export type NetworkStage = "available" | "planned";
-export type NetworkFamily = "solana" | "evm" | "utxo" | "bridge" | "exchange";
+export type NetworkFamily = "solana" | "evm" | "utxo" | "exchange";
 
 export interface NetworkDescriptor {
   id: NetworkId;
@@ -172,13 +172,6 @@ export const NETWORK_MATRIX: readonly NetworkDescriptor[] = [
     stage: "planned",
     environment: "testnet",
     finalityModel: "shielded transaction confirmation",
-  },
-  {
-    id: "wormhole-integration",
-    label: "Wormhole Integration",
-    family: "bridge",
-    stage: "planned",
-    environment: "integration",
   },
   {
     id: "hyperliquid-testnet",
