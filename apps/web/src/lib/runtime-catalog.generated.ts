@@ -9,7 +9,8 @@ export const runtimeCatalog = {
       "availability": "available",
       "networks": [
         "solana-devnet",
-        "ethereum-sepolia"
+        "ethereum-sepolia",
+        "tempo-testnet"
       ],
       "capabilities": [
         {
@@ -32,6 +33,13 @@ export const runtimeCatalog = {
               "entrypoint": "kernel://verification.blind.prove",
               "method": null,
               "note": "Ethereum Sepolia verifier deployment and negative-proof tests are recorded in the EVM testnet evidence packet."
+            },
+            {
+              "network": "tempo-testnet",
+              "mode": "kernel-gateway",
+              "entrypoint": "kernel://verification.blind.prove",
+              "method": null,
+              "note": "Tempo Testnet Groth16 verifier and blind registry passed real on-chain proof, altered-proof, wrong-chain, expiry, and revocation checks."
             }
           ]
         }
@@ -43,7 +51,8 @@ export const runtimeCatalog = {
       "availability": "available",
       "networks": [
         "solana-devnet",
-        "ethereum-sepolia"
+        "ethereum-sepolia",
+        "tempo-testnet"
       ],
       "capabilities": [
         {
@@ -66,6 +75,13 @@ export const runtimeCatalog = {
               "entrypoint": "kernel://verification.record.create",
               "method": null,
               "note": "Ethereum Sepolia record registry deployment and transaction evidence are recorded; source payload remains off-chain."
+            },
+            {
+              "network": "tempo-testnet",
+              "mode": "kernel-gateway",
+              "entrypoint": "kernel://verification.record.create",
+              "method": null,
+              "note": "Tempo Testnet record registry passed real on-chain anchoring, verification, expiry, and revocation checks."
             }
           ]
         },
@@ -89,6 +105,13 @@ export const runtimeCatalog = {
               "entrypoint": "kernel://verification.record.verify",
               "method": null,
               "note": "Ethereum Sepolia record verification and wrong-network/altered-proof tests are recorded in the EVM evidence packet."
+            },
+            {
+              "network": "tempo-testnet",
+              "mode": "kernel-gateway",
+              "entrypoint": "kernel://verification.record.verify",
+              "method": null,
+              "note": "Tempo Testnet record verification is bound to chain ID 42431 and the deployed registry domain."
             }
           ]
         }
@@ -415,10 +438,10 @@ export const runtimeCatalog = {
       "id": "tempo-testnet",
       "label": "Tempo Testnet",
       "family": "evm",
-      "stage": "planned",
+      "stage": "available",
       "environment": "testnet",
       "chainId": "42431",
-      "adapterId": "evm"
+      "adapterId": "evm-tempo-testnet"
     },
     {
       "id": "tempo-mainnet",

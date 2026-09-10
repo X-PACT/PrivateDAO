@@ -67,6 +67,17 @@ const PAYROLL_SOLANA_DEVNET_EVIDENCE = {
   timestamp: "2026-09-10T16:59:17.362Z",
 } as const;
 
+const TEMPO_TESTNET_EVIDENCE = {
+  provider: "evm-tempo-testnet",
+  verifier: "0xbf495e8147ab23bfa2024eae7c0d2f54af40279c",
+  contracts: [
+    "0xffe6e9a78dafd35f230ad51c7bd96ba469d53405",
+    "0x9570769a1a4980d199845ccb276706face805cb4",
+  ],
+  commit: "32ce1bc",
+  timestamp: "2026-09-10T18:57:09.255Z",
+} as const;
+
 function nativeAsset(network: NetworkDescriptor): string | null {
   if (network.family === "solana") return "SOL";
   if (network.id.startsWith("ethereum") || network.family === "evm") return network.id === "bnb-testnet" || network.id === "bnb-mainnet" ? "BNB" : "ETH";
@@ -143,6 +154,28 @@ function applyPayrollDevnetEvidence(entry: NativeCapabilityEntry): NativeCapabil
   };
 }
 
+function applyTempoTestnetEvidence(entry: NativeCapabilityEntry): NativeCapabilityEntry {
+  const isBlind = entry.product === "blind-verification" && entry.capability === "verification.blind.prove";
+  const isRecord = entry.product === "record-verification" && ["verification.record.create", "verification.record.verify"].includes(entry.capability);
+  if (entry.network !== "tempo-testnet" || (!isBlind && !isRecord)) return entry;
+  return {
+    ...entry,
+    provider: TEMPO_TESTNET_EVIDENCE.provider,
+    contracts: TEMPO_TESTNET_EVIDENCE.contracts,
+    verifier: TEMPO_TESTNET_EVIDENCE.verifier,
+    supportedAssets: ["AlphaUSD"],
+    walletModel: "provider-wallet",
+    supportsExecution: true,
+    supportsProof: isBlind,
+    supportsReceipt: true,
+    supportsReconciliation: true,
+    status: "testnet_verified",
+    lastVerifiedCommit: TEMPO_TESTNET_EVIDENCE.commit,
+    lastVerifiedTimestamp: TEMPO_TESTNET_EVIDENCE.timestamp,
+    evidence: "testnet-e2e",
+  };
+}
+
 /**
  * Conservative native capability registry. Planned entries are emitted so
  * discovery can explain the roadmap, but only evidence-backed entries are
@@ -151,7 +184,7 @@ function applyPayrollDevnetEvidence(entry: NativeCapabilityEntry): NativeCapabil
 export function buildNativeCapabilityRegistry(): readonly NativeCapabilityEntry[] {
   return PRODUCT_CATALOG.flatMap((product) =>
     product.capabilities.flatMap((capability) =>
-      NETWORK_MATRIX.map((network) => applyPayrollDevnetEvidence(applyAgentMainnetEvidence(applyEthereumSepoliaEvidence({
+      NETWORK_MATRIX.map((network) => applyTempoTestnetEvidence(applyPayrollDevnetEvidence(applyAgentMainnetEvidence(applyEthereumSepoliaEvidence({
         product: product.id,
         capability: capability.id,
         network: network.id,
@@ -176,7 +209,7 @@ export function buildNativeCapabilityRegistry(): readonly NativeCapabilityEntry[
         lastVerifiedCommit: null,
         lastVerifiedTimestamp: null,
         evidence: "none",
-      })))),
+      }))))),
     ),
   );
 }
