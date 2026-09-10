@@ -88,6 +88,7 @@
     "test:runtime:evm-foundation": "node --import tsx scripts/test-evm-foundation.mjs",
     "compile:evm-verification": "bash scripts/compile-evm-verification.sh",
     "test:evm:phase2": "node --import tsx packages/evm-verification/scripts/run-e2e.mjs",
+    "probe:evm-rpc": "node --import tsx scripts/probe-evm-rpc-readiness.mjs",
     "verify:canonical-repository": "node scripts/verify-canonical-repository.mjs",
     "verify:tracked-secrets": "node scripts/verify-tracked-secrets.mjs",
     "verify:application-bindings": "node scripts/verify-application-bindings.mjs",
