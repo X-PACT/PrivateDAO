@@ -172,6 +172,8 @@ export { HttpExecutionTransport } from "./http-transport.js";
 export type { HttpExecutionTransportOptions, HttpExecutionTransportPaths, HttpFetch } from "./http-transport.js";
 export { EvmNetworkAdapter, EvmAdapterError, EVM_NETWORK_CONFIGS } from "./evm-network.js";
 export type { EvmEnvironment, EvmNetworkConfig, EvmTransport, EvmWalletAdapter } from "./evm-network.js";
+export { ViemEvmTransport } from "./evm-viem-transport.js";
+export type { ViemContractWritePayload } from "./evm-viem-transport.js";
 export { DeploymentRegistry } from "./deployment-registry.js";
 export type { DeploymentRecord } from "./deployment-registry.js";
 export { createHttpBackedPrivateDaoRuntime } from "./http-runtime.js";

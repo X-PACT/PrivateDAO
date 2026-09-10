@@ -96,6 +96,8 @@
     "test:runtime:http-runtime": "node --import tsx scripts/test-runtime-http-runtime.mjs",
     "test:runtime:payroll": "node --import tsx scripts/test-runtime-payroll.mjs",
     "test:runtime:evm-foundation": "node --import tsx scripts/test-evm-foundation.mjs",
+    "compile:evm-verification": "bash scripts/compile-evm-verification.sh",
+    "test:evm:phase2": "node packages/evm-verification/scripts/run-e2e.mjs",
     "verify:canonical-repository": "node scripts/verify-canonical-repository.mjs",
     "verify:tracked-secrets": "node scripts/verify-tracked-secrets.mjs",
     "verify:application-bindings": "node scripts/verify-application-bindings.mjs",

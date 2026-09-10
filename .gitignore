@@ -18,6 +18,9 @@ wallets/
 *.pem
 .env
 *.json
+!packages/evm-verification/artifacts/*.abi
+!packages/evm-verification/artifacts/*.bin
+!packages/evm-verification/deployments/*.json
 !idl/private_dao.json
 !package-lock.json
 !apps/web/package.json
