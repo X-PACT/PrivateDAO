@@ -96,7 +96,7 @@ export async function createAuctionClient(wallet: AnchorWallet, signMessage: Sig
     throw new Error("Confidential Auctions is restricted to a development Solana network until certification.");
   }
   const idl = await loadIdl();
-  const baseConnection = createSolanaBrowserConnection(AUCTION_SOLANA_RPC_URL, CONFIRM_OPTIONS.commitment);
+  const baseConnection = createSolanaBrowserConnection(AUCTION_SOLANA_RPC_URL, CONFIRM_OPTIONS.commitment ?? "confirmed");
   const baseProvider = new AnchorProvider(baseConnection, wallet, CONFIRM_OPTIONS);
   const base = new Program(idl, baseProvider);
 
