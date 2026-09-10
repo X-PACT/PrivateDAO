@@ -13,6 +13,7 @@ export interface ProductDescriptor {
 
 const solanaDevnet = "solana-devnet" as NetworkId;
 const solanaMainnet = "solana-mainnet-beta" as NetworkId;
+const ethereumSepolia = "ethereum-sepolia" as NetworkId;
 
 function capability(
   id: CapabilityId,
@@ -37,19 +38,19 @@ export const PRODUCT_CATALOG: readonly ProductDescriptor[] = [
     id: "blind-verification",
     name: "Blind Verification",
     availability: "available",
-    networks: [solanaDevnet],
+    networks: [solanaDevnet, ethereumSepolia],
     capabilities: [
-      capability("verification.blind.prove", "blind-verification", false),
+      capability("verification.blind.prove", "blind-verification", false, true, [solanaDevnet, ethereumSepolia]),
     ],
   },
   {
     id: "record-verification",
     name: "Record Verification",
     availability: "available",
-    networks: [solanaDevnet],
+    networks: [solanaDevnet, ethereumSepolia],
     capabilities: [
-      capability("verification.record.create", "record-verification", false),
-      capability("verification.record.verify", "record-verification", false),
+      capability("verification.record.create", "record-verification", false, true, [solanaDevnet, ethereumSepolia]),
+      capability("verification.record.verify", "record-verification", false, true, [solanaDevnet, ethereumSepolia]),
     ],
   },
   {

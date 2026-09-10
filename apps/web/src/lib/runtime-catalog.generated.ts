@@ -8,7 +8,8 @@ export const runtimeCatalog = {
       "name": "Blind Verification",
       "availability": "available",
       "networks": [
-        "solana-devnet"
+        "solana-devnet",
+        "ethereum-sepolia"
       ],
       "capabilities": [
         {
@@ -24,6 +25,13 @@ export const runtimeCatalog = {
               "entrypoint": "kernel://verification.blind.prove",
               "method": null,
               "note": "Kernel adapter delegates to the HTTPS proof service and accepts only an observed successful public proof package."
+            },
+            {
+              "network": "ethereum-sepolia",
+              "mode": "kernel-gateway",
+              "entrypoint": "kernel://verification.blind.prove",
+              "method": null,
+              "note": "Ethereum Sepolia verifier deployment and negative-proof tests are recorded in the EVM testnet evidence packet."
             }
           ]
         }
@@ -34,7 +42,8 @@ export const runtimeCatalog = {
       "name": "Record Verification",
       "availability": "available",
       "networks": [
-        "solana-devnet"
+        "solana-devnet",
+        "ethereum-sepolia"
       ],
       "capabilities": [
         {
@@ -50,6 +59,13 @@ export const runtimeCatalog = {
               "entrypoint": "kernel://verification.record.create",
               "method": null,
               "note": "Kernel-native digest and selective disclosure artifact; no public URL or on-chain anchor is created."
+            },
+            {
+              "network": "ethereum-sepolia",
+              "mode": "kernel-gateway",
+              "entrypoint": "kernel://verification.record.create",
+              "method": null,
+              "note": "Ethereum Sepolia record registry deployment and transaction evidence are recorded; source payload remains off-chain."
             }
           ]
         },
@@ -66,6 +82,13 @@ export const runtimeCatalog = {
               "entrypoint": "kernel://verification.record.verify",
               "method": null,
               "note": "Kernel-native digest verification; no source payload is returned and no on-chain anchor is claimed."
+            },
+            {
+              "network": "ethereum-sepolia",
+              "mode": "kernel-gateway",
+              "entrypoint": "kernel://verification.record.verify",
+              "method": null,
+              "note": "Ethereum Sepolia record verification and wrong-network/altered-proof tests are recorded in the EVM evidence packet."
             }
           ]
         }
@@ -302,10 +325,10 @@ export const runtimeCatalog = {
       "id": "ethereum-sepolia",
       "label": "Ethereum Sepolia",
       "family": "evm",
-      "stage": "planned",
+      "stage": "available",
       "environment": "testnet",
       "chainId": "11155111",
-      "adapterId": "evm"
+      "adapterId": "evm-ethereum-sepolia"
     },
     {
       "id": "ethereum-mainnet",
