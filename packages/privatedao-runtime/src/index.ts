@@ -211,6 +211,8 @@ export { AuctionBidCommitProvider } from "./auction-bid-provider.js";
 export type { AuctionBidCommitPayload, AuctionBidCommitResult } from "./auction-bid-provider.js";
 export { buildCapabilityMatrix } from "./capability-matrix.js";
 export type { CapabilityMatrixEntry, CapabilityRuntimeStatus } from "./capability-matrix.js";
+export { buildNativeCapabilityRegistry } from "./native-capability-registry.js";
+export type { NativeCapabilityEntry, NativeCapabilityStatus } from "./native-capability-registry.js";
 export {
   APPLICATION_CAPABILITY_BINDINGS,
   assertApplicationBindingsValid,

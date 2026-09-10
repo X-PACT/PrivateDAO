@@ -93,6 +93,7 @@
     "test:unit:ts": "TSX_TSCONFIG_PATH=apps/web/tsconfig.scripts.json node --import tsx ./node_modules/mocha/bin/mocha --timeout 30000 --exit test/unit/**/*.ts",
     "test:runtime": "node --import tsx scripts/test-runtime-kernel.mjs",
     "test:runtime:http": "node --import tsx scripts/test-runtime-http-transport.mjs",
+    "test:native-capability-registry": "node --import tsx scripts/test-native-capability-registry.mjs",
     "test:runtime:http-runtime": "node --import tsx scripts/test-runtime-http-runtime.mjs",
     "test:runtime:payroll": "node --import tsx scripts/test-runtime-payroll.mjs",
     "test:runtime:evm-foundation": "node --import tsx scripts/test-evm-foundation.mjs",
