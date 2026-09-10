@@ -38,5 +38,21 @@ conversion:
   completed result.
 - MCP JSON-RPC `initialize` over `POST /mcp`: returned `200` with a result.
 
-No paid job, referral, marketplace listing, payment intent, payment proof, or
-external-agent adoption was created by these checks.
+No paid transaction, referral, marketplace listing, payment proof, or external
+agent adoption was created by these checks.
+
+## Paid Path Boundary Check
+
+`POST /api/jobs` for `token.intelligence` returned `402 Payment Required` and
+issued a real payment intent for job `job_26d39722-2d64-466f-a45c-09d59eedc0ff`:
+
+- Network: `solana-mainnet-beta`
+- Asset: `USDC`
+- Quoted amount: `0.030000`
+- Expiration: returned by the service
+- Payment proof: not submitted
+- Paid conversion: not claimed
+- Revenue: `0`
+
+This proves intent generation only. It is not evidence of payment, job
+execution, external adoption, or revenue.
