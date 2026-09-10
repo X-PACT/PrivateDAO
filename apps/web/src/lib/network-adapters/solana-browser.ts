@@ -44,9 +44,20 @@ export function submitSignedTransaction(
 
 export function confirmTransaction(
   connection: SolanaBrowserConnection,
+  strategy: TransactionConfirmationStrategy,
+  commitment: Commitment,
+): ReturnType<Connection["confirmTransaction"]>;
+export function confirmTransaction(
+  connection: SolanaBrowserConnection,
+  strategy: string,
+  commitment: Commitment,
+): ReturnType<Connection["confirmTransaction"]>;
+export function confirmTransaction(
+  connection: SolanaBrowserConnection,
   strategy: TransactionConfirmationStrategy | string,
   commitment: Commitment,
 ) {
+  if (typeof strategy === "string") return connection.confirmTransaction(strategy, commitment);
   return connection.confirmTransaction(strategy, commitment);
 }
 
