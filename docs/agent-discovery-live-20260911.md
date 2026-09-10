@@ -1,6 +1,9 @@
-# PrivateDAO Agent Discovery Live Evidence
+# PrivateDAO Agent Discovery Revalidation
 
-Observed: `2026-09-10`
+Observed: `2026-09-11`
+
+This revalidation supersedes the earlier `2026-09-10` observation. The
+previous 200 responses must not be treated as current production evidence.
 
 This is a read-only external discovery check. It used unauthenticated `GET`
 requests and did not create jobs, send payments, register agents, or infer
@@ -8,26 +11,24 @@ external adoption.
 
 | Surface | Status | Content type | Result |
 | --- | ---: | --- | --- |
-| `/.well-known/agent-card.json` | 200 | `application/json` | Agent Card, protocol `0.3.0`, 15 skills |
-| `/a2a` | 200 | `application/json` | Agent discovery document |
-| `/mcp` | 200 | `application/json` | MCP discovery document |
-| `/openapi.json` | 200 | `application/json` | OpenAPI document with job, receipt, acquisition and marketplace paths |
-| `/api/services` | 200 | `application/json` | 14 service entries |
-| `/api/acquisition` | 200 | `application/json` | Acquisition metadata, pricing, payment, SDK, receipts and integrations |
+| `/.well-known/agent-card.json` | 404 | `application/json` | Agent Card unavailable at revalidation time |
+| `/openapi.json` | 404 | `application/json` | OpenAPI document unavailable at revalidation time |
+| `/a2a`, `/mcp`, `/api/services`, `/api/acquisition` | not revalidated | - | Do not infer availability from the earlier observation |
 
-## Important Method Boundary
+## Current Production Boundary
 
-An earlier `HEAD` check returned `404` for the well-known path. The required
-agent discovery method is `GET`, which returned `200` and valid JSON in this
-check. This evidence does not claim that `HEAD` is supported.
+The current checks used unauthenticated `HEAD` requests and received 404. A
+successful historical `GET` observation exists in the prior report, but it is
+stale and does not establish current availability. No new Agent Card, A2A,
+MCP, OpenAPI, job, payment, or receipt claim is made here.
 
 ## Safety Boundary
 
-## Free Activation Checks
+## Historical Checks Only
 
-The following production-readiness checks used the free path and were tagged
-as synthetic/internal validation. They did not send funds or create a paid
-conversion:
+The following entries are retained as historical synthetic/internal checks
+from the previous observation. They are not current production evidence and
+did not send funds or create a paid conversion:
 
 - REST `POST /api/jobs` with `verify.basic`: completed, job
   `job_8eff87aa-9f41-4d12-851a-6bad6d3aad95`.
