@@ -29,8 +29,8 @@ npm run compile:evm-verification
 npm run test:evm:phase2
 ```
 
-The runner checks the RPC chain IDs, deploys independent contracts to both
-testnets, generates a Groth16 proof from the committed WASM/zkey, verifies and
+The runner checks the RPC chain IDs, deploys independent contracts to the
+explicitly selected standard-EVM testnets, generates a Groth16 proof from the committed WASM/zkey, verifies and
 anchors it, anchors and verifies a record digest, tests wrong-chain,
 altered-proof, cross-network replay, expired-input rejection, and executes
 owner revocation against disposable record and blind-proof entries before
@@ -39,6 +39,12 @@ deployment evidence only after confirmed on-chain transactions.
 
 No Mainnet configuration is accepted by this runner. No public RPC fallback is
 used. No mock receipt or synthetic success path exists.
+
+The generic runner can be selected with `PDAO_EVM_NETWORKS` for Ethereum
+Sepolia, Base Sepolia, Arbitrum Sepolia, BNB Testnet, or Robinhood Testnet.
+Tempo Testnet is deliberately rejected by this runner because its fee-payer
+transaction flow is not the standard native-gas EVM flow; it requires a
+dedicated Tempo transport before any E2E claim is possible.
 
 ## Current evidence boundary
 

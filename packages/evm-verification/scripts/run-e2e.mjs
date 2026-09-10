@@ -34,12 +34,16 @@ if (!DEPLOYER_KEY || !/^0x[0-9a-fA-F]{64}$/.test(DEPLOYER_KEY)) {
 }
 
 const networks = [
-  { id: "ethereum-sepolia", chainId: 11155111, rpcEnv: "PDAO_EVM_ETHEREUM_SEPOLIA_RPC_URL", explorer: "https://sepolia.etherscan.io" },
-  { id: "base-sepolia", chainId: 84532, rpcEnv: "PDAO_EVM_BASE_SEPOLIA_RPC_URL", explorer: "https://sepolia.basescan.org" },
+  { id: "ethereum-sepolia", chainId: 11155111, nativeAsset: "ETH", rpcEnv: "PDAO_EVM_ETHEREUM_SEPOLIA_RPC_URL", explorer: "https://sepolia.etherscan.io" },
+  { id: "base-sepolia", chainId: 84532, nativeAsset: "ETH", rpcEnv: "PDAO_EVM_BASE_SEPOLIA_RPC_URL", explorer: "https://sepolia.basescan.org" },
+  { id: "arbitrum-sepolia", chainId: 421614, nativeAsset: "ETH", rpcEnv: "PDAO_EVM_ARBITRUM_SEPOLIA_RPC_URL", explorer: "https://sepolia.arbiscan.io" },
+  { id: "bnb-testnet", chainId: 97, nativeAsset: "tBNB", rpcEnv: "PDAO_EVM_BNB_TESTNET_RPC_URL", explorer: "https://testnet.bscscan.com" },
+  { id: "robinhood-testnet", chainId: 46630, nativeAsset: "ETH", rpcEnv: "PDAO_EVM_ROBINHOOD_TESTNET_RPC_URL", explorer: "https://explorer.testnet.chain.robinhood.com" },
+  { id: "tempo-testnet", chainId: 42431, nativeAsset: "USD", rpcEnv: "PDAO_EVM_TEMPO_TESTNET_RPC_URL", explorer: "https://explore.tempo.xyz" },
 ];
 const requestedNetworks = process.env.PDAO_EVM_NETWORKS
   ? process.env.PDAO_EVM_NETWORKS.split(",").map((value) => value.trim()).filter(Boolean)
-  : networks.map(({ id }) => id);
+  : ["ethereum-sepolia"];
 const activeNetworks = networks.filter(({ id }) => requestedNetworks.includes(id));
 if (activeNetworks.length !== requestedNetworks.length || activeNetworks.length === 0) {
   throw new Error(`PDAO_EVM_NETWORKS must contain known networks: ${networks.map(({ id }) => id).join(", ")}`);
@@ -100,7 +104,7 @@ function chainFor(network) {
   return defineChain({
     id: network.chainId,
     name: network.id,
-    nativeCurrency: { name: "Test ETH", symbol: "ETH", decimals: 18 },
+    nativeCurrency: { name: network.nativeAsset, symbol: network.nativeAsset, decimals: 18 },
     rpcUrls: { default: { http: [process.env[network.rpcEnv]] } },
   });
 }
@@ -166,6 +170,9 @@ async function main() {
   const deployed = {};
 
   for (const network of activeNetworks) {
+    if (network.id === "tempo-testnet") {
+      throw new Error("tempo-testnet requires the Tempo fee-payer transaction flow; the generic EVM transport is intentionally disabled for this network.");
+    }
     const rpcUrl = process.env[network.rpcEnv];
     if (!rpcUrl || !/^https:\/\//.test(rpcUrl)) throw new Error(`${network.rpcEnv} must be an explicit HTTPS RPC URL.`);
     const chain = chainFor(network);
@@ -181,7 +188,7 @@ async function main() {
       id: `privatedao-evm-${network.id}`,
       config,
       capabilities: ["verification.blind.prove", "verification.record.create", "verification.record.verify", "verification.record.revoke", "verification.blind.revoke"],
-      transport: new ViemEvmTransport(publicClient, wallet, network.id, String(network.chainId), "testnet", network.explorer, "ETH"),
+      transport: new ViemEvmTransport(publicClient, wallet, network.id, String(network.chainId), "testnet", network.explorer, network.nativeAsset),
     });
     const health = await adapter.health();
     expect(health.ok && health.chainId === String(network.chainId), `${network.id} Kernel adapter health failed`);
