@@ -1,37 +1,6 @@
 name: privatedao-primary-host
 
 services:
-  record-engine:
-    build:
-      context: ../..
-      dockerfile: services/private-engine/Dockerfile
-    env_file:
-      - .env
-    environment:
-      PORT: "8787"
-      PRIVATEDAO_CORS_ORIGIN: "https://privatedao.org"
-      PRIVATEDAO_RECORD_ANCHOR_URL: "http://read-node:8787/api/v1/records/anchor"
-      PRIVATEDAO_RECORD_ANCHOR_RECONCILE_URL: "http://read-node:8787/api/v1/records/anchor/reconcile"
-      PRIVATEDAO_RECORD_VERIFICATION_PUBLIC: "true"
-      PRIVATEDAO_DATA_DIR: "/data"
-    restart: unless-stopped
-    expose:
-      - "8787"
-    volumes:
-      - ./volumes/record-engine:/data
-    healthcheck:
-      test:
-        [
-          "CMD",
-          "node",
-          "-e",
-          "fetch('http://127.0.0.1:8787/health').then((res)=>process.exit(res.ok?0:1)).catch(()=>process.exit(1))",
-        ]
-      interval: 15s
-      timeout: 10s
-      retries: 8
-      start_period: 20s
-
   read-node:
     build:
       context: ../..

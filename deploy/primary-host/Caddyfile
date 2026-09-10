@@ -94,8 +94,7 @@
 
 	@record_api path /api/v1/records/* /api/v1/receipts/* /api/v1/record-schemas
 	handle @record_api {
-		uri strip_prefix /api
-		reverse_proxy record-engine:8787
+		reverse_proxy read-node:8787
 	}
 
 	@api path /api/v1 /api/v1/*

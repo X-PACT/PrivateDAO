@@ -84,47 +84,6 @@ export default function BlindPolicyApiPage() {
     >
       <BlindPolicyApiConsole />
 
-      <section className="rounded-[28px] border border-emerald-300/18 bg-emerald-300/[0.055] p-5 sm:p-6">
-        <div className="text-[11px] uppercase tracking-[0.25em] text-emerald-100/76">Enterprise deployment</div>
-        <h2 className="mt-3 text-2xl font-semibold text-white">Run the proof engine inside your infrastructure.</h2>
-        <p className="mt-3 max-w-4xl text-sm leading-7 text-white/64">
-          The web application is the product surface. The local Private Engine receives private inputs, creates the witness,
-          runs Circom-compatible WASM and <span className="font-mono text-white">snarkjs groth16.fullProve</span>, then verifies
-          the proof locally. The PrivateDAO control plane is only for signed organization licenses and receives metadata, never raw inputs.
-        </p>
-        <div className="mt-5 grid gap-3 lg:grid-cols-3">
-          {[
-            ["Employee", "Uses the web workflow with the same simple buttons."],
-            ["Company System", "Calls the local API or SDK inside the network."],
-            ["Private Engine", "Witness, Groth16, commitments, and receipts stay on-premise."],
-          ].map(([title, body]) => (
-            <article key={title} className="rounded-2xl border border-white/10 bg-black/22 p-4">
-              <div className="text-sm font-semibold text-white">{title}</div>
-              <p className="mt-2 text-sm leading-6 text-white/62">{body}</p>
-            </article>
-          ))}
-        </div>
-        <pre className="mt-5 overflow-auto rounded-2xl border border-white/10 bg-black/30 p-4 text-xs leading-6 text-white/68">
-{`docker compose -f docker-compose.onprem.yml up --build
-
-# Local proof API
-POST http://private-engine:8787/v1/prove
-POST http://private-engine:8787/v1/verify
-GET  http://private-engine:8787/v1/privacy
-GET  http://private-engine:8787/v1/license/status`}
-        </pre>
-        <div className="mt-4 grid gap-3 sm:grid-cols-2">
-          <div className="rounded-2xl border border-white/10 bg-black/22 p-4 text-sm leading-6 text-white/66">
-            <div className="font-semibold text-emerald-100">Never sent to the control plane</div>
-            <div className="mt-2">Private inputs, raw records, witness files, subject identity, risk score, liabilities, and thresholds.</div>
-          </div>
-          <div className="rounded-2xl border border-white/10 bg-black/22 p-4 text-sm leading-6 text-white/66">
-            <div className="font-semibold text-cyan-100">License metadata only</div>
-            <div className="mt-2">Installation id, signed license id, organization, plan, engine version, and feature flags.</div>
-          </div>
-        </div>
-      </section>
-
       <section className="rounded-[28px] border border-white/10 bg-white/[0.035] p-5 sm:p-6">
         <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.25em] text-white/42">
           <Code2 className="h-4 w-4" />
