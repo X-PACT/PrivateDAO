@@ -33,7 +33,9 @@ export async function POST(request: Request) {
     const fs = await import("node:fs/promises");
     await Promise.all([fs.access(files.wasm), fs.access(files.zkey)]);
     const { groth16 } = await import("snarkjs");
-    const result = await groth16.fullProve(input, files.wasm, files.zkey);
+    // snarkjs runtime accepts array witnesses, while its bundled type only
+    // models scalar inputs. Keep the typed circuit input and narrow at this boundary.
+    const result = await groth16.fullProve(input as unknown as Record<string, string>, files.wasm, files.zkey);
     return NextResponse.json({
       ok: true,
       proofType: "groth16-auction-outcome-v1",
