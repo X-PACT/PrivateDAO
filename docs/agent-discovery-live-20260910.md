@@ -23,5 +23,20 @@ check. This evidence does not claim that `HEAD` is supported.
 
 ## Safety Boundary
 
+## Free Activation Checks
+
+The following production-readiness checks used the free path and were tagged
+as synthetic/internal validation. They did not send funds or create a paid
+conversion:
+
+- REST `POST /api/jobs` with `verify.basic`: completed, job
+  `job_8eff87aa-9f41-4d12-851a-6bad6d3aad95`.
+- REST job retrieval: `GET /api/jobs/{jobId}` returned `200` and `completed`.
+- Receipt retrieval: `GET /api/receipts/{receiptId}` returned `200` and
+  `VERIFIED` for receipt `rvr_b784f41582ee5d592f89a0b347defb1e`.
+- A2A JSON-RPC `message/send` over `POST /a2a`: returned `200` with a
+  completed result.
+- MCP JSON-RPC `initialize` over `POST /mcp`: returned `200` with a result.
+
 No paid job, referral, marketplace listing, payment intent, payment proof, or
-external-agent activity was created by this check.
+external-agent adoption was created by these checks.
