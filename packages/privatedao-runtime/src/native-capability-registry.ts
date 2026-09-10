@@ -39,7 +39,7 @@ export interface NativeCapabilityEntry {
   status: NativeCapabilityStatus;
   lastVerifiedCommit: string | null;
   lastVerifiedTimestamp: string | null;
-  evidence: "none" | "runtime-only" | "testnet-e2e";
+  evidence: "none" | "runtime-only" | "devnet-e2e" | "testnet-e2e";
 }
 
 const ETHEREUM_SEPOLIA_EVIDENCE = {
@@ -57,6 +57,14 @@ const AGENT_MAINNET_EVIDENCE = {
   provider: "https://agents.privatedao.org",
   commit: "ac8cc02",
   timestamp: "2026-09-10T17:35:22Z",
+} as const;
+
+const PAYROLL_SOLANA_DEVNET_EVIDENCE = {
+  provider: "umbra-solana-devnet",
+  program: "DSuKkyqGVGgo4QtPABfxKJKygUDACbUhirnuv63mEpAJ",
+  asset: "WSOL",
+  commit: "9479374",
+  timestamp: "2026-09-10T16:59:17.362Z",
 } as const;
 
 function nativeAsset(network: NetworkDescriptor): string | null {
@@ -112,6 +120,29 @@ function applyAgentMainnetEvidence(entry: NativeCapabilityEntry): NativeCapabili
   };
 }
 
+function applyPayrollDevnetEvidence(entry: NativeCapabilityEntry): NativeCapabilityEntry {
+  if (entry.product !== "payroll" || entry.network !== "solana-devnet") return entry;
+  if (!["payroll.calculate", "payroll.approve", "payroll.settle"].includes(entry.capability)) return entry;
+  const isSettlement = entry.capability === "payroll.settle";
+  return {
+    ...entry,
+    provider: PAYROLL_SOLANA_DEVNET_EVIDENCE.provider,
+    supportedAssets: [PAYROLL_SOLANA_DEVNET_EVIDENCE.asset],
+    contracts: [PAYROLL_SOLANA_DEVNET_EVIDENCE.program],
+    walletModel: "external-wallet",
+    supportsExecution: true,
+    supportsPrivateExecution: isSettlement,
+    supportsPrivateSettlement: isSettlement,
+    supportsProof: isSettlement,
+    supportsReceipt: true,
+    supportsReconciliation: isSettlement,
+    status: "devnet_verified",
+    lastVerifiedCommit: PAYROLL_SOLANA_DEVNET_EVIDENCE.commit,
+    lastVerifiedTimestamp: PAYROLL_SOLANA_DEVNET_EVIDENCE.timestamp,
+    evidence: "devnet-e2e",
+  };
+}
+
 /**
  * Conservative native capability registry. Planned entries are emitted so
  * discovery can explain the roadmap, but only evidence-backed entries are
@@ -120,7 +151,7 @@ function applyAgentMainnetEvidence(entry: NativeCapabilityEntry): NativeCapabili
 export function buildNativeCapabilityRegistry(): readonly NativeCapabilityEntry[] {
   return PRODUCT_CATALOG.flatMap((product) =>
     product.capabilities.flatMap((capability) =>
-      NETWORK_MATRIX.map((network) => applyAgentMainnetEvidence(applyEthereumSepoliaEvidence({
+      NETWORK_MATRIX.map((network) => applyPayrollDevnetEvidence(applyAgentMainnetEvidence(applyEthereumSepoliaEvidence({
         product: product.id,
         capability: capability.id,
         network: network.id,
@@ -145,7 +176,7 @@ export function buildNativeCapabilityRegistry(): readonly NativeCapabilityEntry[
         lastVerifiedCommit: null,
         lastVerifiedTimestamp: null,
         evidence: "none",
-      }))),
+      })))),
     ),
   );
 }

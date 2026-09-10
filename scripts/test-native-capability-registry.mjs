@@ -4,10 +4,21 @@ import { buildNativeCapabilityRegistry } from "../packages/privatedao-runtime/sr
 const entries = buildNativeCapabilityRegistry();
 const verified = entries.filter((entry) => entry.status === "testnet_verified");
 const liveAgents = entries.filter((entry) => entry.status === "mainnet_live");
+const verifiedPayroll = entries.filter((entry) => entry.status === "devnet_verified");
 
 assert.equal(entries.length, 192, "unexpected native capability matrix size");
 assert.equal(verified.length, 3, "only the three Sepolia evidence rows should be verified");
 assert.equal(liveAgents.length, 2, "only the two live Agent Exchange rows should be mainnet live");
+assert.equal(verifiedPayroll.length, 3, "only the three Payroll Devnet evidence rows should be verified");
+for (const entry of verifiedPayroll) {
+  assert.equal(entry.product, "payroll");
+  assert.equal(entry.network, "solana-devnet");
+  assert.equal(entry.evidence, "devnet-e2e");
+  assert.equal(entry.supportsExecution, true);
+  assert.equal(entry.supportsReceipt, true);
+  assert.equal(entry.supportsMainnet, false);
+  assert.equal(entry.lastVerifiedCommit, "9479374");
+}
 for (const entry of liveAgents) {
   assert.equal(entry.product, "agent");
   assert.equal(entry.network, "solana-mainnet-beta");
