@@ -25,7 +25,7 @@ async function readValidity(rpc: string, address: string, id: string) {
   if (!response.ok) throw new Error("RPC request failed");
   const payload = await response.json();
   if (payload.error || typeof payload.result !== "string") throw new Error("Verification record was not found");
-  return BigInt(payload.result) !== 0n;
+  return /[1-9a-f]/i.test(payload.result.slice(2));
 }
 
 export default function EvmVerificationPage() {
