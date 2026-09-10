@@ -30,10 +30,11 @@ export const NETWORK_MATRIX: readonly NetworkDescriptor[] = [
     id: "solana-mainnet-beta",
     label: "Solana Mainnet",
     family: "solana",
-    stage: "planned",
+    stage: "available",
     environment: "mainnet",
     finalityModel: "confirmed/finalized commitment",
     explorerBaseUrl: "https://explorer.solana.com/",
+    adapterId: "solana-mainnet-beta",
   },
   {
     id: "ethereum-sepolia",

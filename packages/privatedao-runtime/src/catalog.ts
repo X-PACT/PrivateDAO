@@ -12,18 +12,20 @@ export interface ProductDescriptor {
 }
 
 const solanaDevnet = "solana-devnet" as NetworkId;
+const solanaMainnet = "solana-mainnet-beta" as NetworkId;
 
 function capability(
   id: CapabilityId,
   product: ProductId,
   requiresSignature: boolean,
   supportsAsync = true,
+  networks: readonly NetworkId[] = [solanaDevnet],
 ): ProtocolCapability {
   return {
     id,
     version: "1.0",
     product,
-    networks: [solanaDevnet],
+    networks,
     requiresSignature,
     supportsAsync,
     receiptSchema: "privatedao.execution-receipt.v1",
@@ -93,8 +95,11 @@ export const PRODUCT_CATALOG: readonly ProductDescriptor[] = [
     id: "agent",
     name: "Agent Marketplace",
     availability: "available",
-    networks: [solanaDevnet],
-    capabilities: [capability("agent.discover", "agent", false), capability("agent.invoke", "agent", true)],
+    networks: [solanaDevnet, solanaMainnet],
+    capabilities: [
+      capability("agent.discover", "agent", false, true, [solanaDevnet, solanaMainnet]),
+      capability("agent.invoke", "agent", true, true, [solanaDevnet, solanaMainnet]),
+    ],
   },
 ];
 

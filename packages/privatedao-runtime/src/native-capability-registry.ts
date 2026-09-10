@@ -53,6 +53,12 @@ const ETHEREUM_SEPOLIA_EVIDENCE = {
   timestamp: "2026-09-10T09:48:50.225Z",
 } as const;
 
+const AGENT_MAINNET_EVIDENCE = {
+  provider: "https://agents.privatedao.org",
+  commit: "ac8cc02",
+  timestamp: "2026-09-10T17:35:22Z",
+} as const;
+
 function nativeAsset(network: NetworkDescriptor): string | null {
   if (network.family === "solana") return "SOL";
   if (network.id.startsWith("ethereum") || network.family === "evm") return network.id === "bnb-testnet" || network.id === "bnb-mainnet" ? "BNB" : "ETH";
@@ -87,6 +93,25 @@ function applyEthereumSepoliaEvidence(entry: NativeCapabilityEntry): NativeCapab
   };
 }
 
+function applyAgentMainnetEvidence(entry: NativeCapabilityEntry): NativeCapabilityEntry {
+  if (entry.product !== "agent" || entry.network !== "solana-mainnet-beta") return entry;
+  const isDiscovery = entry.capability === "agent.discover";
+  const isInvocation = entry.capability === "agent.invoke";
+  if (!isDiscovery && !isInvocation) return entry;
+  return {
+    ...entry,
+    provider: AGENT_MAINNET_EVIDENCE.provider,
+    walletModel: isInvocation ? "external-wallet" : "none",
+    supportsExecution: isInvocation,
+    supportsReceipt: isInvocation,
+    supportsMainnet: true,
+    status: "mainnet_live",
+    lastVerifiedCommit: AGENT_MAINNET_EVIDENCE.commit,
+    lastVerifiedTimestamp: AGENT_MAINNET_EVIDENCE.timestamp,
+    evidence: "runtime-only",
+  };
+}
+
 /**
  * Conservative native capability registry. Planned entries are emitted so
  * discovery can explain the roadmap, but only evidence-backed entries are
@@ -95,7 +120,7 @@ function applyEthereumSepoliaEvidence(entry: NativeCapabilityEntry): NativeCapab
 export function buildNativeCapabilityRegistry(): readonly NativeCapabilityEntry[] {
   return PRODUCT_CATALOG.flatMap((product) =>
     product.capabilities.flatMap((capability) =>
-      NETWORK_MATRIX.map((network) => applyEthereumSepoliaEvidence({
+      NETWORK_MATRIX.map((network) => applyAgentMainnetEvidence(applyEthereumSepoliaEvidence({
         product: product.id,
         capability: capability.id,
         network: network.id,
@@ -120,7 +145,7 @@ export function buildNativeCapabilityRegistry(): readonly NativeCapabilityEntry[
         lastVerifiedCommit: null,
         lastVerifiedTimestamp: null,
         evidence: "none",
-      })),
+      }))),
     ),
   );
 }

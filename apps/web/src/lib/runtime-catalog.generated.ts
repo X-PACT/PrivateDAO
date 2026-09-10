@@ -228,7 +228,8 @@ export const runtimeCatalog = {
       "name": "Agent Marketplace",
       "availability": "available",
       "networks": [
-        "solana-devnet"
+        "solana-devnet",
+        "solana-mainnet-beta"
       ],
       "capabilities": [
         {
@@ -244,6 +245,13 @@ export const runtimeCatalog = {
               "entrypoint": "kernel://agent.discover",
               "method": null,
               "note": "Kernel-native read-only Agent Card fetch; no agent activity or external adoption is inferred."
+            },
+            {
+              "network": "solana-mainnet-beta",
+              "mode": "legacy-provider",
+              "entrypoint": "/api/discovery",
+              "method": "GET",
+              "note": "Live Agent Exchange discovery surface; evidence is runtime HTTP discovery, not external adoption or a Kernel execution claim."
             }
           ]
         },
@@ -260,6 +268,13 @@ export const runtimeCatalog = {
               "entrypoint": null,
               "method": null,
               "note": "No Kernel-backed Agent Marketplace invocation action is exposed by the web app."
+            },
+            {
+              "network": "solana-mainnet-beta",
+              "mode": "legacy-provider",
+              "entrypoint": "/api/jobs",
+              "method": "POST",
+              "note": "Live Agent Exchange job surface; free invocation and payment-intent generation are observed, while paid settlement remains unverified."
             }
           ]
         }
@@ -279,8 +294,9 @@ export const runtimeCatalog = {
       "id": "solana-mainnet-beta",
       "label": "Solana Mainnet",
       "family": "solana",
-      "stage": "planned",
-      "environment": "mainnet"
+      "stage": "available",
+      "environment": "mainnet",
+      "adapterId": "solana-mainnet-beta"
     },
     {
       "id": "ethereum-sepolia",

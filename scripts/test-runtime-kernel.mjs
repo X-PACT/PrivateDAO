@@ -276,7 +276,10 @@ const verifiedMatrix = buildCapabilityMatrix(registry);
 assert.equal(verifiedMatrix.find((entry) => entry.capability === capability && entry.network === network)?.status, "verified");
 
 assert.equal(validateApplicationBindings().length, 0);
-assert.equal(listApplicationBindings().length, products.reduce((count, product) => count + product.capabilities.length, 0));
+assert.equal(
+  listApplicationBindings().length,
+  products.reduce((count, product) => count + product.capabilities.reduce((total, capability) => total + capability.networks.length, 0), 0),
+);
 assert.equal(listApplicationBindings().find((entry) => entry.capability === "payroll.calculate")?.mode, "kernel-gateway");
 assert.equal(listApplicationBindings().find((entry) => entry.capability === "treasury.policy.check")?.mode, "kernel-gateway");
 assert.equal(listApplicationBindings().find((entry) => entry.capability === "verification.record.create")?.mode, "kernel-gateway");
