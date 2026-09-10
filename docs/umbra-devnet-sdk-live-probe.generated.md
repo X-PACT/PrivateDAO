@@ -1,6 +1,6 @@
 # Umbra Devnet SDK Live Probe
 
-Generated: `2026-08-27T20:35:25.163Z`
+Generated: `2026-09-10T16:41:08.115Z`
 
 This packet verifies the PrivateDAO Umbra lane against the installed `@umbra-privacy/sdk`, the public devnet relayer, and the live PrivateDAO read-node intent endpoint without printing secret material.
 
@@ -46,8 +46,8 @@ This packet verifies the PrivateDAO Umbra lane against the installed `@umbra-pri
 - Relayer address: `3kbpT5EmRBjDZG5XcTYR4LmXb4EYf2AowfCVd55ePG5B`
 - Supported mint count: `4`
 - PrivateDAO read-node intent receipt: ok
-- Intent execution reference: `umbra-22fd98be8bb36bc49a615b38`
-- Intent receipt hash: `22fd98be8bb36bc49a615b3852ee485837d2cf22699de442e453be3e499ff8f4`
+- Intent execution reference: `umbra-0dfe8ed8d40124268451e98c`
+- Intent receipt hash: `0dfe8ed8d40124268451e98c7db4150cf2f98318b7ebf68df2f629c69b7d838a`
 - Intent mode: `testnet-intent-receipt`
 - Claim lifecycle path: `received -> validating -> offsets_reserved -> building_tx -> tx_built -> submitting -> submitted -> awaiting_callback -> callback_received -> finalizing -> completed`
 

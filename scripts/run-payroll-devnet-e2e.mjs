@@ -3,7 +3,7 @@ import { createHash, randomBytes } from "node:crypto";
 import { readFile, writeFile, mkdir } from "node:fs/promises";
 import { createRequire } from "node:module";
 const requireWeb = createRequire(new URL("../apps/web/package.json", import.meta.url));
-const { Keypair, Connection } = requireWeb("@solana/web3.js");
+const { Keypair, Connection, PublicKey } = requireWeb("@solana/web3.js");
 const nacl = requireWeb("tweetnacl");
 const { createSignerFromPrivateKeyBytes, getUmbraClient } = requireWeb("@umbra-privacy/sdk");
 const depositOps = requireWeb("@umbra-privacy/sdk/deposit");
@@ -51,6 +51,53 @@ async function verifyFinalized(connection, signatures) {
   if (rows.some((row) => row.confirmationStatus !== "finalized" || row.err)) throw new Error(`On-chain verification failed: ${json(rows)}`);
   return { allFinalized: true, rows };
 }
+
+function createDevnetCallbackMonitor(connection) {
+  return {
+    async prepareMonitor(computationAddress, options = {}) {
+      const address = new PublicKey(String(computationAddress));
+      const seen = new Set(
+        (await connection.getSignaturesForAddress(address, { limit: 20 }, "confirmed"))
+          .map((entry) => entry.signature),
+      );
+      const startedAt = Date.now();
+      let stopped = false;
+
+      return {
+        async awaitComputation() {
+          while (!stopped && Date.now() - startedAt < 180000) {
+            if (options.signal?.aborted) {
+              return { status: "timed-out", elapsedMs: Date.now() - startedAt };
+            }
+            const signatures = await connection.getSignaturesForAddress(address, { limit: 20 }, "confirmed");
+            for (const entry of signatures) {
+              if (seen.has(entry.signature) || entry.err !== null) continue;
+              const transaction = await connection.getTransaction(entry.signature, {
+                commitment: "confirmed",
+                maxSupportedTransactionVersion: 0,
+              });
+              const logs = transaction?.meta?.logMessages || [];
+              if (logs.some((line) => line.includes("Instruction: CallbackComputation"))) {
+                return {
+                  status: "finalized",
+                  elapsedMs: Date.now() - startedAt,
+                  queuedSlot: 0n,
+                  callbackSignature: entry.signature,
+                };
+              }
+              seen.add(entry.signature);
+            }
+            await new Promise((resolve) => setTimeout(resolve, 2000));
+          }
+          return { status: "timed-out", elapsedMs: Date.now() - startedAt };
+        },
+        cleanup() {
+          stopped = true;
+        },
+      };
+    },
+  };
+}
 async function prove(manifestCommitment, settlementRoot, policyHash) {
   const root = new URL("..", import.meta.url).pathname;
   const [wasm, zkey, vkeyBytes] = await Promise.all([
@@ -95,7 +142,10 @@ async function main() {
   const bootstrap = await api("/payroll", { method: "POST", headers: bearer, body: json({ action: "bootstrap-devnet", manifestCommitment, batchCommitment, recipientRoot, grossCents: grossCents * 3, taxCents: taxCents * 3, deductionsCents: deductionsCents * 3, netCents: netCents * 3, idempotencyKey: `script-${runId}-${sha256(wallet + manifestCommitment).slice(0, 24)}`, items: itemValues, rows: itemValues, payrollItems: itemValues }) });
   const batchId = bootstrap.batch.batch.batch_id;
   const signer = await createSignerFromPrivateKeyBytes(keypair.secretKey);
-  const client = await getUmbraClient({ signer, network: "devnet", rpcUrl: RPC, rpcSubscriptionsUrl: RPC.replace(/^http/, "ws"), deferMasterSeedSignature: true });
+  const client = await getUmbraClient(
+    { signer, network: "devnet", rpcUrl: RPC, rpcSubscriptionsUrl: RPC.replace(/^http/, "ws"), deferMasterSeedSignature: true },
+    { computationMonitor: createDevnetCallbackMonitor(connection) },
+  );
   const register = registration.getUserRegistrationFunction({ client });
   try { await register({ confidential: true, anonymous: false }); } catch (error) { if (!/already|exist|registered/i.test(String(error?.message || error))) throw error; }
   const deposit = depositOps.getATAIntoETADirectDepositorFunction({ client });
@@ -131,4 +181,20 @@ async function main() {
   console.log(JSON.stringify({ ok: true, network: evidence.network, runId, wallet, batchId, settlements, reconciliation: evidence.reconciliation, chainVerification, verificationUrl: verification.verification.verificationUrl, publicVerification: evidence.publicVerification.status, evidencePath: "docs/generated/payroll-devnet-e2e.generated.json" }, null, 2));
 }
 
-main().catch((error) => { console.error(JSON.stringify({ ok: false, error: error instanceof Error ? error.message : String(error) })); process.exit(1); });
+function describeError(error) {
+  if (!(error instanceof Error)) return { message: String(error) };
+  const cause = error.cause instanceof Error
+    ? { name: error.cause.name, message: error.cause.message }
+    : error.cause === undefined
+      ? undefined
+      : { message: String(error.cause) };
+  return {
+    name: error.name,
+    message: error.message,
+    code: typeof error.code === "string" ? error.code : undefined,
+    stage: typeof error.stage === "string" ? error.stage : undefined,
+    cause,
+  };
+}
+
+main().catch((error) => { console.error(JSON.stringify({ ok: false, error: describeError(error) })); process.exit(1); });

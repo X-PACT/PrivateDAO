@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-08-27T20:35:25.163Z",
+  "generatedAt": "2026-09-10T16:41:08.115Z",
   "package": {
     "name": "@umbra-privacy/sdk",
     "version": "5.0.0-rc.6",
-    "resolvedFrom": "./apps/web/node_modules/@umbra-privacy/sdk/dist/index.cjs"
+    "resolvedFrom": "/tmp/pdao-umbra-runtime/node_modules/@umbra-privacy/sdk/dist/index.cjs"
   },
   "network": {
     "solana": "devnet",
@@ -130,8 +130,8 @@
       "url": "https://api.privatedao.org/api/v1/private-settlement/intent",
       "mode": "testnet-intent-receipt",
       "source": "umbra-read-node-receipt",
-      "executionReference": "umbra-22fd98be8bb36bc49a615b38",
-      "receiptHash": "22fd98be8bb36bc49a615b3852ee485837d2cf22699de442e453be3e499ff8f4",
+      "executionReference": "umbra-0dfe8ed8d40124268451e98c",
+      "receiptHash": "0dfe8ed8d40124268451e98c7db4150cf2f98318b7ebf68df2f629c69b7d838a",
       "claimLifecycle": [
         "received",
         "validating",
