@@ -24,7 +24,15 @@ export type AuctionOutcomeBid = {
   amount: number | bigint;
 };
 
-export type AuctionOutcomeProofInput = AuctionOutcomeMetadata & {
+export type AuctionOutcomeProofInput = {
+  auctionId: string;
+  rulesDigest: string;
+  policyDigest: string;
+  winnerCommitment: string;
+  winningAmount: string;
+  bidCount: string;
+  deadline: string;
+  resultCommitment: string;
   bidderCommitments: string[];
   amounts: string[];
   active: string[];
