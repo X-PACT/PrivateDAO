@@ -42,7 +42,7 @@ const networks = [
   { id: "arbitrum-sepolia", chainId: 421614, nativeAsset: "ETH", rpcEnv: "PDAO_EVM_ARBITRUM_SEPOLIA_RPC_URL", explorer: "https://sepolia.arbiscan.io" },
   { id: "bnb-testnet", chainId: 97, nativeAsset: "tBNB", rpcEnv: "PDAO_EVM_BNB_TESTNET_RPC_URL", explorer: "https://testnet.bscscan.com" },
   { id: "robinhood-testnet", chainId: 46630, nativeAsset: "ETH", rpcEnv: "PDAO_EVM_ROBINHOOD_TESTNET_RPC_URL", explorer: "https://explorer.testnet.chain.robinhood.com" },
-  { id: "tempo-testnet", chainId: 42431, nativeAsset: "USD", rpcEnv: "PDAO_EVM_TEMPO_TESTNET_RPC_URL", explorer: "https://explore.tempo.xyz" },
+  { id: "tempo-testnet", chainId: 42431, nativeAsset: "USD", rpcEnv: "PDAO_EVM_TEMPO_TESTNET_RPC_URL", explorer: "https://explore.testnet.tempo.xyz" },
 ];
 const requestedNetworks = process.env.PDAO_EVM_NETWORKS
   ? process.env.PDAO_EVM_NETWORKS.split(",").map((value) => value.trim()).filter(Boolean)

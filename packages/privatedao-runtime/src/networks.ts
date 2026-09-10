@@ -154,7 +154,7 @@ export const NETWORK_MATRIX: readonly NetworkDescriptor[] = [
     environment: "testnet",
     chainId: "42431",
     finalityModel: "EVM block finality",
-    explorerBaseUrl: "https://explore.tempo.xyz/",
+    explorerBaseUrl: "https://explore.testnet.tempo.xyz/",
     adapterId: "evm-tempo-testnet",
   },
   {
