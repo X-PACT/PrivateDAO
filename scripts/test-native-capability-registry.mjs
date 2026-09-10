@@ -3,12 +3,12 @@ import { buildNativeCapabilityRegistry } from "../packages/privatedao-runtime/sr
 
 const entries = buildNativeCapabilityRegistry();
 const verified = entries.filter((entry) => entry.status === "testnet_verified");
-const liveAgents = entries.filter((entry) => entry.status === "mainnet_live");
+const blockedAgents = entries.filter((entry) => entry.status === "blocked_external");
 const verifiedPayroll = entries.filter((entry) => entry.status === "devnet_verified");
 
 assert.equal(entries.length, 192, "unexpected native capability matrix size");
 assert.equal(verified.length, 6, "only the three Sepolia and three Tempo evidence rows should be verified");
-assert.equal(liveAgents.length, 2, "only the two live Agent Exchange rows should be mainnet live");
+assert.equal(blockedAgents.length, 2, "the two unavailable Agent Exchange rows must remain externally blocked");
 assert.equal(verifiedPayroll.length, 3, "only the three Payroll Devnet evidence rows should be verified");
 for (const entry of verifiedPayroll) {
   assert.equal(entry.product, "payroll");
@@ -19,11 +19,15 @@ for (const entry of verifiedPayroll) {
   assert.equal(entry.supportsMainnet, false);
   assert.equal(entry.lastVerifiedCommit, "9479374");
 }
-for (const entry of liveAgents) {
+for (const entry of blockedAgents) {
   assert.equal(entry.product, "agent");
   assert.equal(entry.network, "solana-mainnet-beta");
   assert.equal(entry.evidence, "runtime-only");
-  assert.equal(entry.supportsMainnet, true);
+  assert.equal(entry.supportsExecution, false);
+  assert.equal(entry.supportsReceipt, false);
+  assert.equal(entry.supportsMainnet, false);
+  assert.equal(entry.lastVerifiedCommit, null);
+  assert.equal(entry.lastVerifiedTimestamp, null);
 }
 for (const entry of verified) {
   assert.equal(entry.evidence, "testnet-e2e");

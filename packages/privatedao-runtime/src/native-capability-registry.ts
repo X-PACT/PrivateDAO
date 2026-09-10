@@ -121,12 +121,12 @@ function applyAgentMainnetEvidence(entry: NativeCapabilityEntry): NativeCapabili
     ...entry,
     provider: AGENT_MAINNET_EVIDENCE.provider,
     walletModel: isInvocation ? "external-wallet" : "none",
-    supportsExecution: isInvocation,
-    supportsReceipt: isInvocation,
-    supportsMainnet: true,
-    status: "mainnet_live",
-    lastVerifiedCommit: AGENT_MAINNET_EVIDENCE.commit,
-    lastVerifiedTimestamp: AGENT_MAINNET_EVIDENCE.timestamp,
+    supportsExecution: false,
+    supportsReceipt: false,
+    supportsMainnet: false,
+    status: "blocked_external",
+    lastVerifiedCommit: null,
+    lastVerifiedTimestamp: null,
     evidence: "runtime-only",
   };
 }
