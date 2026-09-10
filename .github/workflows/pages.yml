@@ -35,7 +35,7 @@ jobs:
         run: npm install
 
       - name: Install web dependencies
-        run: npm --prefix apps/web install
+        run: npm --prefix apps/web install --ignore-scripts --no-audit --no-fund
 
       - name: Build root web mirror bundle
         run: npm run web:bundle:root
