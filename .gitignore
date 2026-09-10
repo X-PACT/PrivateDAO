@@ -22,6 +22,7 @@ wallets/
 !packages/evm-verification/artifacts/*.bin
 !packages/evm-verification/deployments/*.json
 !apps/web/public/evm-verification/*.json
+!apps/web/src/lib/generated/private_dao_blind_policy_overlay*.json
 !idl/private_dao.json
 !package-lock.json
 !apps/web/package.json
