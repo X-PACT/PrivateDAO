@@ -42,9 +42,12 @@ used. No mock receipt or synthetic success path exists.
 
 The generic runner can be selected with `PDAO_EVM_NETWORKS` for Ethereum
 Sepolia, Base Sepolia, Arbitrum Sepolia, BNB Testnet, or Robinhood Testnet.
-Tempo Testnet is deliberately rejected by this runner because its fee-payer
-transaction flow is not the standard native-gas EVM flow; it requires a
-dedicated Tempo transport before any E2E claim is possible.
+Tempo Testnet has an experimental relay path using `viem/tempo`; it is not
+testnet-verified and must not be presented as a supported product network
+until contract writes, receipts, and verification lifecycle checks pass on
+Tempo itself. Its apparent native balance is not a funding gate because Tempo
+uses fee-token/fee-payer transactions rather than a standard native-gas
+balance.
 
 ## Current evidence boundary
 
@@ -58,9 +61,12 @@ successful receipts:
 - Disposable record revocation: [`0x3fcf9b0283ea8a1dc68fd40325d0640c87736e6c0a3d53ecac6c981439443bf2`](https://sepolia.etherscan.io/tx/0x3fcf9b0283ea8a1dc68fd40325d0640c87736e6c0a3d53ecac6c981439443bf2)
 - Disposable blind-proof revocation: [`0x7bb8e17d3ffac17f5aec0fd18addb27c8371999e66fb99397def65cd8420e6ce`](https://sepolia.etherscan.io/tx/0x7bb8e17d3ffac17f5aec0fd18addb27c8371999e66fb99397def65cd8420e6ce)
 
-The public verification routes return HTTP 200 for both artifacts. This is
+The production verification URLs have not been validated as artifact-backed
+public verification endpoints: observed HTTP 200 responses returned the web
+application shell rather than the current JSON evidence artifact. This is
 evidence for the verification package only; Ethereum Sepolia is not yet in the
-customer-executable product catalog until its application binding is wired.
+customer-executable product catalog until its application binding and public
+artifact serving are both verified.
 Base Sepolia remains unverified until a valid RPC endpoint and funded testnet
 account are available. No capability is upgraded from this documentation
 alone.
