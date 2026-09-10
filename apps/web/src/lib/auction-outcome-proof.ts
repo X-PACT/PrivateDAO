@@ -58,14 +58,14 @@ function asBytes(value: Uint8Array | number[], label: string): Uint8Array {
 
 export function bytesToField(value: Uint8Array | number[], label = "digest"): string {
   const bytes = asBytes(value, label);
-  let number = 0n;
-  for (let index = bytes.length - 1; index >= 0; index -= 1) number = (number << 8n) + BigInt(bytes[index]);
+  let number = BigInt(0);
+  for (let index = bytes.length - 1; index >= 0; index -= 1) number = (number << BigInt(8)) + BigInt(bytes[index]);
   return (number % BN254_SCALAR_FIELD).toString(10);
 }
 
 function integer(value: number | bigint, label: string): string {
   const result = BigInt(value);
-  if (result < 0n) throw new Error(`${label} must not be negative.`);
+  if (result < BigInt(0)) throw new Error(`${label} must not be negative.`);
   return result.toString(10);
 }
 
@@ -101,8 +101,8 @@ class BN64 {
   toBytesLE(): Uint8Array {
     const bytes = new Uint8Array(8);
     let value = this.value;
-    for (let index = 0; index < bytes.length; index += 1) { bytes[index] = Number(value & 255n); value >>= 8n; }
-    if (value !== 0n) throw new Error("Integer does not fit u64.");
+    for (let index = 0; index < bytes.length; index += 1) { bytes[index] = Number(value & BigInt(255)); value >>= BigInt(8); }
+    if (value !== BigInt(0)) throw new Error("Integer does not fit u64.");
     return bytes;
   }
 }
