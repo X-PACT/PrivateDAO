@@ -14,6 +14,7 @@ import {
   toBytes,
 } from "viem";
 import { privateKeyToAccount } from "viem/accounts";
+import { EVM_NETWORK_CONFIGS, EvmNetworkAdapter, InMemoryProtocolRegistry, ViemEvmTransport } from "../../privatedao-runtime/src/index.ts";
 
 const { groth16 } = snarkjs;
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../..");
@@ -50,6 +51,36 @@ const blindFunctionAbi = parseAbi(["function verifyAndAnchor(bytes32,bytes32,byt
 const recordFunctionAbi = parseAbi(["function anchorRecord(bytes32,bytes32,bytes32,bytes32,uint256,uint64) returns (bytes32)"]);
 const verifyRecordAbi = parseAbi(["function verifyRecord(bytes32,bytes32) view returns (bool)", "function isValid(bytes32) view returns (bool)"]);
 const verifyBlindAbi = parseAbi(["function isValid(bytes32) view returns (bool)"]);
+
+function createCapabilityRegistry(networkId) {
+  const registry = new InMemoryProtocolRegistry();
+  for (const [product, capability, action] of [
+    ["blind-verification", "verification.blind.prove", "verify-and-anchor"],
+    ["record-verification", "verification.record.create", "anchor-record"],
+    ["record-verification", "verification.record.verify", "verify-record"],
+  ]) {
+    registry.register({
+      capability: { id: capability, version: "1.0.0", product, networks: [networkId], requiresSignature: true, supportsAsync: false, receiptSchema: "privatedao.evm.v1" },
+      product,
+      action,
+      policy: { roles: ["maker", "auditor"], permissions: ["execution.prepare", "execution.submit", "receipt.read", "proof.verify"] },
+    });
+  }
+  return registry;
+}
+
+async function executeViaKernel(adapter, registry, { network, product, capability, requestId, payload }) {
+  const registration = registry.resolve(capability);
+  expect(registration.product === product && registry.authorize(capability, "execution.submit", "maker"), `capability registry rejected ${capability}`);
+  const intent = {
+    context: { requestId, idempotencyKey: `${network}:${requestId}`, product, capability, network },
+    payload,
+    accounts: [{ role: "payer", address: payload.account, network }],
+  };
+  const prepared = await adapter.prepare(intent);
+  await adapter.submit(prepared, prepared.unsignedPayload);
+  return adapter.receipt(prepared.executionId);
+}
 
 function chainFor(network) {
   return defineChain({
@@ -104,6 +135,17 @@ async function main() {
     const wallet = createWalletClient({ account, chain, transport });
     const observedChainId = await publicClient.getChainId();
     expect(observedChainId === network.chainId, `${network.id} RPC chain mismatch: ${observedChainId}`);
+    const config = EVM_NETWORK_CONFIGS.find((entry) => entry.network === network.id);
+    expect(config, `${network.id} is missing from the Kernel EVM configuration`);
+    const capabilityRegistry = createCapabilityRegistry(network.id);
+    const adapter = new EvmNetworkAdapter({
+      id: `privatedao-evm-${network.id}`,
+      config,
+      capabilities: ["verification.blind.prove", "verification.record.create", "verification.record.verify"],
+      transport: new ViemEvmTransport(publicClient, wallet, network.id, String(network.chainId), "testnet", network.explorer, "ETH"),
+    });
+    const health = await adapter.health();
+    expect(health.ok && health.chainId === String(network.chainId), `${network.id} Kernel adapter health failed`);
     const balance = await publicClient.getBalance({ address: account.address });
     expect(balance > 0n, `${network.id} deployer has no native testnet balance`);
 
@@ -115,9 +157,8 @@ async function main() {
     const recordId = keccak256(toBytes(`${network.id}:record-001`));
     const expiresAt = BigInt(Math.floor(Date.now() / 1000) + 86400);
     const digest = keccak256(toBytes(JSON.stringify({ schema: "private-dao-record-v1", recordId, claim: "verified" })));
-    const recordHash = await wallet.writeContract({ address: record.address, abi: recordFunctionAbi, functionName: "anchorRecord", args: [PRODUCT_ID, SCHEMA_ID, recordId, digest, BigInt(network.chainId), expiresAt] });
-    const recordReceipt = await publicClient.waitForTransactionReceipt({ hash: recordHash });
-    expect(recordReceipt.status === "success", `${network.id} record anchor failed`);
+    const recordReceipt = await executeViaKernel(adapter, capabilityRegistry, { network: network.id, product: "record-verification", capability: "verification.record.create", requestId: `${network.id}-record-anchor`, payload: { kind: "contract-write", address: record.address, abi: recordFunctionAbi, functionName: "anchorRecord", args: [PRODUCT_ID, SCHEMA_ID, recordId, digest, BigInt(network.chainId), expiresAt], account: account.address } });
+    const recordHash = recordReceipt.signatures[0];
     const recordLogs = await publicClient.getLogs({ address: record.address, event: { type: "event", name: "RecordAnchored", inputs: [{ indexed: true, name: "verificationId", type: "bytes32" }, { indexed: true, name: "productId", type: "bytes32" }, { indexed: true, name: "recordId", type: "bytes32" }, { indexed: false, name: "schemaId", type: "bytes32" }, { indexed: false, name: "digest", type: "bytes32" }, { indexed: false, name: "domain", type: "bytes32" }, { indexed: false, name: "chainId", type: "uint256" }, { indexed: false, name: "expiresAt", type: "uint64" }] }, fromBlock: recordReceipt.blockNumber, toBlock: recordReceipt.blockNumber });
     const recordVerificationId = recordLogs[0]?.args?.verificationId;
     expect(recordVerificationId, `${network.id} record verification event missing`);
@@ -131,9 +172,8 @@ async function main() {
     };
     const fullProof = await groth16.fullProve(inputs, path.join(ROOT, `zk/build/${CIRCUIT}_js/${CIRCUIT}.wasm`), path.join(ROOT, `zk/setup/${CIRCUIT}_final.zkey`));
     const [a, b, c, publicSignals] = proofArgs({ ...fullProof.proof, publicSignals: fullProof.publicSignals });
-    const blindHash = await wallet.writeContract({ address: blind.address, abi: blindFunctionAbi, functionName: "verifyAndAnchor", args: [PRODUCT_ID, SCHEMA_ID, recordId, BigInt(network.chainId), expiresAt, a, b, c, publicSignals] });
-    const blindReceipt = await publicClient.waitForTransactionReceipt({ hash: blindHash });
-    expect(blindReceipt.status === "success", `${network.id} blind verification failed`);
+    const blindReceipt = await executeViaKernel(adapter, capabilityRegistry, { network: network.id, product: "blind-verification", capability: "verification.blind.prove", requestId: `${network.id}-blind-anchor`, payload: { kind: "contract-write", address: blind.address, abi: blindFunctionAbi, functionName: "verifyAndAnchor", args: [PRODUCT_ID, SCHEMA_ID, recordId, BigInt(network.chainId), expiresAt, a, b, c, publicSignals], account: account.address } });
+    const blindHash = blindReceipt.signatures[0];
     const blindLogs = await publicClient.getLogs({ address: blind.address, event: { type: "event", name: "BlindProofVerified", inputs: [{ indexed: true, name: "verificationId", type: "bytes32" }, { indexed: true, name: "productId", type: "bytes32" }, { indexed: true, name: "recordId", type: "bytes32" }, { indexed: false, name: "schemaId", type: "bytes32" }, { indexed: false, name: "proofHash", type: "bytes32" }, { indexed: false, name: "chainId", type: "uint256" }, { indexed: false, name: "expiresAt", type: "uint64" }] }, fromBlock: blindReceipt.blockNumber, toBlock: blindReceipt.blockNumber });
     const blindVerificationId = blindLogs[0]?.args?.verificationId;
     expect(blindVerificationId, `${network.id} blind verification event missing`);
