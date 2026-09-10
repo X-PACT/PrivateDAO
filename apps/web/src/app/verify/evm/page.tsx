@@ -15,6 +15,7 @@ type Manifest = { networks: ManifestEntry[] };
 const rpcByNetwork: Record<string, string> = {
   "ethereum-sepolia": "https://ethereum-sepolia-rpc.publicnode.com",
   "base-sepolia": "https://sepolia.base.org",
+  "tempo-testnet": "https://rpc.moderato.tempo.xyz",
 };
 
 const labels: Record<string, string> = { record: "Record Verification", blind: "Blind Verification" };
@@ -52,7 +53,9 @@ export default function EvmVerificationPage() {
         const address = type === "record" ? entry.contracts.record.address : entry.contracts.blind.address;
         const valid = await readValidity(rpcByNetwork[network], address, id);
         const txHash = type === "record" ? entry.record?.txHash : entry.blind?.txHash;
-        const explorer = txHash ? `https://${network === "ethereum-sepolia" ? "sepolia.etherscan.io" : "sepolia.basescan.org"}/tx/${txHash}` : undefined;
+        const explorer = txHash
+          ? `${network === "ethereum-sepolia" ? "https://sepolia.etherscan.io" : network === "tempo-testnet" ? "https://explore.testnet.tempo.xyz" : "https://sepolia.basescan.org"}/tx/${txHash}`
+          : undefined;
         setState({ status: "ready", title: `${labels[type]} ${valid ? "verified" : "not valid"}`, message: valid ? "The on-chain verification is currently valid. No source record or private inputs are disclosed." : "The on-chain record exists but is expired or revoked.", details: { Network: network, "Chain ID": String(entry.chainId), "Verification ID": id, Status: valid ? "VALID" : "EXPIRED OR REVOKED" }, explorer });
       } catch (error) {
         setState({ status: "error", title: "Verification unavailable", message: error instanceof Error ? error.message : "Unable to read this verification record." });

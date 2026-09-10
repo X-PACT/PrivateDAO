@@ -41,13 +41,11 @@ No Mainnet configuration is accepted by this runner. No public RPC fallback is
 used. No mock receipt or synthetic success path exists.
 
 The generic runner can be selected with `PDAO_EVM_NETWORKS` for Ethereum
-Sepolia, Base Sepolia, Arbitrum Sepolia, BNB Testnet, or Robinhood Testnet.
-Tempo Testnet has an experimental relay path using `viem/tempo`; it is not
-testnet-verified and must not be presented as a supported product network
-until contract writes, receipts, and verification lifecycle checks pass on
-Tempo itself. Its apparent native balance is not a funding gate because Tempo
-uses fee-token/fee-payer transactions rather than a standard native-gas
-balance.
+Sepolia, Base Sepolia, Arbitrum Sepolia, BNB Testnet, Robinhood Testnet, or
+Tempo Testnet. Tempo uses the native `viem/tempo` client and AlphaUSD fee
+token, not the standard EVM gas-balance path. Tempo Testnet is only promoted
+after the same contract-write, receipt, proof, expiry, wrong-chain, altered-
+proof, and revocation checks pass on the Tempo chain itself.
 
 ## Current evidence boundary
 
@@ -70,3 +68,10 @@ artifact serving are both verified.
 Base Sepolia remains unverified until a valid RPC endpoint and funded testnet
 account are available. No capability is upgraded from this documentation
 alone.
+
+Tempo Testnet has a committed `testnet_verified` artifact at
+`deployments/phase-2-e2e-tempo-testnet.json`. The run deployed independent
+Verifier, Blind Registry, and Record Registry contracts and confirmed the
+verification lifecycle on chain 42431. Its application verification route
+uses the Tempo RPC and testnet explorer; it does not imply confidential
+settlement or Mainnet readiness.

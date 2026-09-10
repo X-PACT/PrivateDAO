@@ -15,12 +15,15 @@ import {
   toBytes,
 } from "viem";
 import { privateKeyToAccount } from "viem/accounts";
+import { createClient as createTempoClient } from "viem/tempo";
+import { tempoModerato } from "viem/chains";
 import { EVM_NETWORK_CONFIGS, EvmNetworkAdapter, InMemoryProtocolRegistry, ViemEvmTransport } from "../../privatedao-runtime/src/index.ts";
 
 const { groth16 } = snarkjs;
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../..");
 const PACKAGE = path.join(ROOT, "packages/evm-verification");
 const CIRCUIT = "private_dao_blind_policy_overlay";
+const TEMPO_FEE_TOKEN = "0x20c0000000000000000000000000000000000001";
 const FIELD = 21888242871839275222246405745257275088548364400416034343698204186575808495617n;
 const PRODUCT_ID = keccak256(toBytes("blind-verification"));
 const SCHEMA_ID = keccak256(toBytes("private-dao-blind-policy-v1"));
@@ -101,6 +104,7 @@ async function executeViaKernel(adapter, registry, { network, product, capabilit
 }
 
 function chainFor(network) {
+  if (network.id === "tempo-testnet") return tempoModerato;
   return defineChain({
     id: network.chainId,
     name: network.id,
@@ -170,15 +174,15 @@ async function main() {
   const deployed = {};
 
   for (const network of activeNetworks) {
-    if (network.id === "tempo-testnet") {
-      throw new Error("tempo-testnet requires the Tempo fee-payer transaction flow; the generic EVM transport is intentionally disabled for this network.");
-    }
     const rpcUrl = process.env[network.rpcEnv];
     if (!rpcUrl || !/^https:\/\//.test(rpcUrl)) throw new Error(`${network.rpcEnv} must be an explicit HTTPS RPC URL.`);
     const chain = chainFor(network);
     const transport = http(rpcUrl, { timeout: 30_000 });
-    const publicClient = createPublicClient({ chain, transport });
-    const wallet = createWalletClient({ account, chain, transport });
+    const tempoClient = network.id === "tempo-testnet"
+      ? createTempoClient({ account, chain: chain.extend({ feeToken: TEMPO_FEE_TOKEN }), transport })
+      : null;
+    const publicClient = tempoClient ?? createPublicClient({ chain, transport });
+    const wallet = tempoClient ?? createWalletClient({ account, chain, transport });
     const observedChainId = await publicClient.getChainId();
     expect(observedChainId === network.chainId, `${network.id} RPC chain mismatch: ${observedChainId}`);
     const config = EVM_NETWORK_CONFIGS.find((entry) => entry.network === network.id);

@@ -1,0 +1,22 @@
+{
+  "network": "tempo-testnet",
+  "chainId": 42431,
+  "environment": "testnet",
+  "contracts": {
+    "verifier": {
+      "address": "0xbf495e8147ab23bfa2024eae7c0d2f54af40279c",
+      "hash": "0x9b2d607a00eaaa54a6311ee2e042aa5f3e4800b79b9a6450f0659db3d55052d0",
+      "blockNumber": "34730003"
+    },
+    "blind": {
+      "address": "0xffe6e9a78dafd35f230ad51c7bd96ba469d53405",
+      "hash": "0x866a8ffdb4cc60771c837547625646ff2e333fdccfb7aaabc966cf0b1559a269",
+      "blockNumber": "34730009"
+    },
+    "record": {
+      "address": "0x9570769a1a4980d199845ccb276706face805cb4",
+      "hash": "0xebccc61ff2f59093ffb87cebd73de2a6a4b55ebd46e40ad78b29487ca8daacbe",
+      "blockNumber": "34730013"
+    }
+  }
+}
