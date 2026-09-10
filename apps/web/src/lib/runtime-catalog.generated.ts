@@ -294,10 +294,10 @@ export const runtimeCatalog = {
             },
             {
               "network": "solana-mainnet-beta",
-              "mode": "legacy-provider",
-              "entrypoint": "/api/discovery",
-              "method": "GET",
-              "note": "Live Agent Exchange discovery surface; evidence is runtime HTTP discovery, not external adoption or a Kernel execution claim."
+              "mode": "unbound",
+              "entrypoint": null,
+              "method": null,
+              "note": "The live Agent Exchange is an external service at agents.privatedao.org; it is verified separately and is not an apps/web application route."
             }
           ]
         },
@@ -317,10 +317,10 @@ export const runtimeCatalog = {
             },
             {
               "network": "solana-mainnet-beta",
-              "mode": "legacy-provider",
-              "entrypoint": "/api/jobs",
-              "method": "POST",
-              "note": "Live Agent Exchange job surface; free invocation and payment-intent generation are observed, while paid settlement remains unverified."
+              "mode": "unbound",
+              "entrypoint": null,
+              "method": null,
+              "note": "The live Agent Exchange job surface is external to apps/web; paid settlement is not verified as a Kernel application action."
             }
           ]
         }

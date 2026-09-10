@@ -166,19 +166,15 @@ export const APPLICATION_CAPABILITY_BINDINGS: readonly ApplicationCapabilityBind
     product: "agent",
     capability: "agent.discover",
     network: "solana-mainnet-beta",
-    mode: "legacy-provider",
-    entrypoint: "/api/discovery",
-    method: "GET",
-    note: "Live Agent Exchange discovery surface; evidence is runtime HTTP discovery, not external adoption or a Kernel execution claim.",
+    mode: "unbound",
+    note: "The live Agent Exchange is an external service at agents.privatedao.org; it is verified separately and is not an apps/web application route.",
   },
   {
     product: "agent",
     capability: "agent.invoke",
     network: "solana-mainnet-beta",
-    mode: "legacy-provider",
-    entrypoint: "/api/jobs",
-    method: "POST",
-    note: "Live Agent Exchange job surface; free invocation and payment-intent generation are observed, while paid settlement remains unverified.",
+    mode: "unbound",
+    note: "The live Agent Exchange job surface is external to apps/web; paid settlement is not verified as a Kernel application action.",
   },
 ];
 

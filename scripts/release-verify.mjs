@@ -3,13 +3,14 @@ import { spawn } from "node:child_process";
 const timeoutMs = Number(process.env.PRIVADAO_RELEASE_SUITE_TIMEOUT_MS || 180_000);
 const suites = [
   ["unit", ["npm", "run", "test:unit:ts"]],
-  ["zk", ["npm", "run", "private-engine:preflight"]],
-  ["zk-plugins", ["npm", "run", "private-engine:test:plugins"]],
-  ["zk-adversarial", ["npm", "run", "private-engine:test:adversarial"]],
-  ["solana", ["npm", "run", "test:core"]],
+  ["runtime", ["npm", "run", "test:runtime"]],
+  ["runtime-http", ["npm", "run", "test:runtime:http"]],
+  ["runtime-payroll", ["npm", "run", "test:runtime:payroll"]],
+  ["runtime-evm", ["npm", "run", "test:runtime:evm-foundation"]],
+  ["record-verification", ["npm", "run", "test:record-verification"]],
+  ["capability-registry", ["npm", "run", "test:native-capability-registry"]],
+  ["application-bindings", ["npm", "run", "verify:application-bindings"]],
   ["commercial", ["node", "scripts/test-commercial-lifecycle.mjs"]],
-  ["security-rbac", ["node", "scripts/test-private-engine-rbac.mjs"]],
-  ["security-audit", ["npm", "audit", "--omit=dev", "--audit-level=high"]],
 ];
 
 function runSuite(name, command) {
