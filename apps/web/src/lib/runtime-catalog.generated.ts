@@ -288,7 +288,17 @@ export const runtimeCatalog = {
       "family": "evm",
       "stage": "planned",
       "environment": "testnet",
-      "chainId": "11155111"
+      "chainId": "11155111",
+      "adapterId": "evm"
+    },
+    {
+      "id": "ethereum-mainnet",
+      "label": "Ethereum Mainnet",
+      "family": "evm",
+      "stage": "planned",
+      "environment": "mainnet",
+      "chainId": "1",
+      "adapterId": "evm"
     },
     {
       "id": "arbitrum-sepolia",
@@ -296,14 +306,88 @@ export const runtimeCatalog = {
       "family": "evm",
       "stage": "planned",
       "environment": "testnet",
-      "chainId": "421614"
+      "chainId": "421614",
+      "adapterId": "evm"
+    },
+    {
+      "id": "arbitrum-one",
+      "label": "Arbitrum One",
+      "family": "evm",
+      "stage": "planned",
+      "environment": "mainnet",
+      "chainId": "42161",
+      "adapterId": "evm"
+    },
+    {
+      "id": "bnb-testnet",
+      "label": "BNB Smart Chain Testnet",
+      "family": "evm",
+      "stage": "planned",
+      "environment": "testnet",
+      "chainId": "97",
+      "adapterId": "evm"
+    },
+    {
+      "id": "bnb-mainnet",
+      "label": "BNB Smart Chain",
+      "family": "evm",
+      "stage": "planned",
+      "environment": "mainnet",
+      "chainId": "56",
+      "adapterId": "evm"
+    },
+    {
+      "id": "base-sepolia",
+      "label": "Base Sepolia",
+      "family": "evm",
+      "stage": "planned",
+      "environment": "testnet",
+      "chainId": "84532",
+      "adapterId": "evm"
+    },
+    {
+      "id": "base-mainnet",
+      "label": "Base Mainnet",
+      "family": "evm",
+      "stage": "planned",
+      "environment": "mainnet",
+      "chainId": "8453",
+      "adapterId": "evm"
+    },
+    {
+      "id": "robinhood-testnet",
+      "label": "Robinhood Chain Testnet",
+      "family": "evm",
+      "stage": "planned",
+      "environment": "testnet",
+      "chainId": "46630",
+      "adapterId": "evm"
+    },
+    {
+      "id": "robinhood-mainnet",
+      "label": "Robinhood Chain",
+      "family": "evm",
+      "stage": "planned",
+      "environment": "mainnet",
+      "chainId": "4663",
+      "adapterId": "evm"
     },
     {
       "id": "tempo-testnet",
       "label": "Tempo Testnet",
       "family": "evm",
       "stage": "planned",
-      "environment": "testnet"
+      "environment": "testnet",
+      "chainId": "42431",
+      "adapterId": "evm"
+    },
+    {
+      "id": "tempo-mainnet",
+      "label": "Tempo Mainnet",
+      "family": "evm",
+      "stage": "planned",
+      "environment": "mainnet",
+      "adapterId": "evm"
     },
     {
       "id": "zcash-testnet",
