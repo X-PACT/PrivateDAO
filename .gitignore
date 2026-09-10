@@ -19,6 +19,7 @@ wallets/
 .env
 *.json
 !docs/monitoring-delivery-intake.json
+!docs/settlement-receipt-closure-intake.json
 !packages/evm-verification/artifacts/*.abi
 !packages/evm-verification/artifacts/*.bin
 !packages/evm-verification/deployments/*.json
