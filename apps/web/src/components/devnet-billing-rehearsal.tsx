@@ -243,7 +243,7 @@ export function TestnetBillingRehearsal() {
         const destinationAta = getAssociatedTokenAddress(destinationOwner, mint, tokenProgram);
         const decimals = selectedAsset.decimals ?? 6;
         const amountRaw = toTokenAmountRaw(selectedSku.amount, decimals);
-        const balance = await readTokenAccountBalance(connection, sourceAta).catch(() => null);
+        const balance = await readTokenAccountBalance(connection, sourceAta, "confirmed").catch(() => null);
         const currentAmount = BigInt(balance?.value.amount ?? "0");
         if (currentAmount < amountRaw) {
           setStatus(
