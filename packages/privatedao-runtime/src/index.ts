@@ -81,6 +81,12 @@ export interface ExecutionReceipt<TResult = unknown> {
   reconciliationId?: string;
   proofId?: string;
   createdAt: string;
+  environment?: "devnet" | "testnet" | "mainnet";
+  chainId?: string;
+  asset?: string;
+  contract?: string;
+  blockNumber?: string;
+  explorerUrl?: string;
 }
 
 export interface KernelProvider {
@@ -164,6 +170,10 @@ export { TransportBackedNetworkAdapter } from "./adapters.js";
 export type { AdapterTransport } from "./adapters.js";
 export { HttpExecutionTransport } from "./http-transport.js";
 export type { HttpExecutionTransportOptions, HttpExecutionTransportPaths, HttpFetch } from "./http-transport.js";
+export { EvmNetworkAdapter, EvmAdapterError, EVM_NETWORK_CONFIGS } from "./evm-network.js";
+export type { EvmEnvironment, EvmNetworkConfig, EvmTransport, EvmWalletAdapter } from "./evm-network.js";
+export { DeploymentRegistry } from "./deployment-registry.js";
+export type { DeploymentRecord } from "./deployment-registry.js";
 export { createHttpBackedPrivateDaoRuntime } from "./http-runtime.js";
 export type { HttpBackedRuntimeOptions } from "./http-runtime.js";
 export {

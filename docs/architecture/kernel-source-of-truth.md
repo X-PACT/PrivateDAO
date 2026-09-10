@@ -73,6 +73,13 @@ Only `solana-devnet` is currently an available runtime network in the Kernel
 catalog. Other requested networks remain planned until each has a real
 provider adapter, transaction lifecycle, receipt path, and independent tests.
 
+Phase 1 adds a reusable `EvmNetworkAdapter` boundary and separated testnet/
+mainnet configuration records for Ethereum, BNB Smart Chain, Arbitrum, Base,
+Robinhood Chain, and Tempo. These records do not activate a network, provide
+an RPC secret, or make a product executable. Mainnet configs are deliberately
+disabled; an EVM capability remains planned until a real transport, deployment,
+receipt path, and independent test evidence are supplied.
+
 ## Migration rule
 
 New product work starts from the Kernel contracts and adds an explicit

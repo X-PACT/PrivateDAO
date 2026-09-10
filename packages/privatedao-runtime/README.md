@@ -12,6 +12,14 @@ Network-specific adapters belong outside this package and must implement `Kernel
 
 `NetworkAdapter` and `WalletSigner` define the integration boundary for real providers. Wallet signing is delegated to an injected wallet session; this package never accepts or stores private keys. `ProtocolRegistry` and its authorization policy types keep product actions, versions, roles, and permissions consistent across REST, SDK, MCP, and agent surfaces. The registry is an in-memory contract implementation for tests and composition; production authentication and persistence remain the responsibility of the application backend.
 
+`EvmNetworkAdapter` is the Phase 1 EVM-family boundary. It accepts an explicit
+network configuration and injected transport/wallet adapters, validates chain
+identity, normalizes RPC timeout/failure errors, validates network-bound receipts,
+and refuses Mainnet activation. `EVM_NETWORK_CONFIGS` contains separated testnet
+and disabled Mainnet records; configuration presence is not support evidence.
+`DeploymentRegistry` stores network-scoped deployment metadata and rejects a
+`mainnet_live` record without an external release gate.
+
 `ProtocolJob` and `AuditEvent` define the shared asynchronous-job and append-only audit shapes. The included in-memory stores are test/composition utilities only; production services must provide durable, tenant-isolated persistence and must not place employee plaintext, salaries, recipient data, secrets, or private keys in audit metadata.
 
 `TransportBackedNetworkAdapter` is the concrete boundary for a real network integration. It accepts an injected transport, validates that the network is currently available, filters capabilities by network, and delegates observed preparation, submission, status, receipts, and fee estimates. It has no mock success path and does not contain an RPC client or signing key.

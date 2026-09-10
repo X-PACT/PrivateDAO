@@ -88,6 +88,9 @@ jobs:
       - name: Runtime kernel typecheck
         run: npm run typecheck:runtime
 
+      - name: EVM foundation tests
+        run: npm run test:runtime:evm-foundation
+
       - name: Verify legacy route archive boundary
         run: npm run verify:legacy-route-archive
 
