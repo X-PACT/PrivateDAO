@@ -4,6 +4,7 @@ import {
   type PublicKey,
   type SendOptions,
   type Transaction,
+  type TransactionConfirmationStrategy,
   type VersionedTransaction,
 } from "@solana/web3.js";
 
@@ -43,7 +44,7 @@ export function submitSignedTransaction(
 
 export function confirmTransaction(
   connection: SolanaBrowserConnection,
-  strategy: Parameters<Connection["confirmTransaction"]>[0],
+  strategy: TransactionConfirmationStrategy | string,
   commitment: Commitment,
 ) {
   return connection.confirmTransaction(strategy, commitment);
