@@ -60,6 +60,7 @@ const domainTypes = [
 ];
 const blindFunctionAbi = parseAbi(["function verifyAndAnchor(bytes32,bytes32,bytes32,uint256,uint64,uint256[2],uint256[2][2],uint256[2],uint256[4]) returns (bytes32)"]);
 const recordFunctionAbi = parseAbi(["function anchorRecord(bytes32,bytes32,bytes32,bytes32,uint256,uint64) returns (bytes32)"]);
+const revokeFunctionAbi = parseAbi(["function revoke(bytes32)"]);
 const verifyRecordAbi = parseAbi(["function verifyRecord(bytes32,bytes32) view returns (bool)", "function isValid(bytes32) view returns (bool)"]);
 const verifyBlindAbi = parseAbi(["function isValid(bytes32) view returns (bool)"]);
 
@@ -69,6 +70,8 @@ function createCapabilityRegistry(networkId) {
     ["blind-verification", "verification.blind.prove", "verify-and-anchor"],
     ["record-verification", "verification.record.create", "anchor-record"],
     ["record-verification", "verification.record.verify", "verify-record"],
+    ["record-verification", "verification.record.revoke", "revoke-record"],
+    ["blind-verification", "verification.blind.revoke", "revoke-blind"],
   ]) {
     registry.register({
       capability: { id: capability, version: "1.0.0", product, networks: [networkId], requiresSignature: true, supportsAsync: false, receiptSchema: "privatedao.evm.v1" },
@@ -177,7 +180,7 @@ async function main() {
     const adapter = new EvmNetworkAdapter({
       id: `privatedao-evm-${network.id}`,
       config,
-      capabilities: ["verification.blind.prove", "verification.record.create", "verification.record.verify"],
+      capabilities: ["verification.blind.prove", "verification.record.create", "verification.record.verify", "verification.record.revoke", "verification.blind.revoke"],
       transport: new ViemEvmTransport(publicClient, wallet, network.id, String(network.chainId), "testnet", network.explorer, "ETH"),
     });
     const health = await adapter.health();
@@ -224,7 +227,35 @@ async function main() {
     await expectRevert(() => publicClient.simulateContract({ address: record.address, abi: recordFunctionAbi, functionName: "anchorRecord", args: [PRODUCT_ID, SCHEMA_ID, keccak256(toBytes(`${network.id}:expired-record-${runId}`)), digest, BigInt(network.chainId), 1n], account: account.address }), `${network.id} expired-record rejection`);
     await expectRevert(() => publicClient.simulateContract({ address: blind.address, abi: blindFunctionAbi, functionName: "verifyAndAnchor", args: [PRODUCT_ID, SCHEMA_ID, recordId, BigInt(network.chainId), 1n, a, b, c, publicSignals], account: account.address }), `${network.id} expired-blind rejection`);
 
-    results.push({ network: network.id, chainId: network.chainId, contracts: { verifier, blind, record }, record: { txHash: recordHash, blockNumber: recordReceipt.blockNumber.toString(), verificationId: recordVerificationId, explorerUrl: `${network.explorer}/tx/${recordHash}` }, blind: { txHash: blindHash, blockNumber: blindReceipt.blockNumber.toString(), verificationId: blindVerificationId, explorerUrl: `${network.explorer}/tx/${blindHash}` }, checks: { recordVerified: true, blindProofVerified: true, wrongChainRejected: true, alteredProofRejected: true, expiredRecordRejected: true, expiredBlindRejected: true }, links: { record: `https://privatedao.org/verify/evm?network=${network.id}&type=record&id=${recordVerificationId}`, blind: `https://privatedao.org/verify/evm?network=${network.id}&type=blind&id=${blindVerificationId}` } });
+    const revokeRecordId = keccak256(toBytes(`${network.id}:revoke-record-${runId}`));
+    const revokeDigest = keccak256(toBytes(JSON.stringify({ schema: "private-dao-record-v1", recordId: revokeRecordId, claim: "revocation-test" })));
+    const revokeRecordReceipt = await executeViaKernel(adapter, capabilityRegistry, { network: network.id, product: "record-verification", capability: "verification.record.create", requestId: `${network.id}-record-revoke-anchor-${runId}`, payload: { kind: "contract-write", address: record.address, abi: recordFunctionAbi, functionName: "anchorRecord", args: [PRODUCT_ID, SCHEMA_ID, revokeRecordId, revokeDigest, BigInt(network.chainId), expiresAt], account: account.address } });
+    const revokeRecordHash = revokeRecordReceipt.signatures[0];
+    const revokeRecordEvent = await eventArgsFromReceipt(publicClient, revokeRecordHash, recordAbi, "RecordAnchored");
+    const revokeRecordVerificationId = revokeRecordEvent.verificationId;
+    expect(await publicClient.readContract({ address: record.address, abi: verifyRecordAbi, functionName: "isValid", args: [revokeRecordVerificationId] }), `${network.id} disposable record was not valid before revocation`);
+    const recordRevokeReceipt = await executeViaKernel(adapter, capabilityRegistry, { network: network.id, product: "record-verification", capability: "verification.record.revoke", requestId: `${network.id}-record-revoke-${runId}`, payload: { kind: "contract-write", address: record.address, abi: revokeFunctionAbi, functionName: "revoke", args: [revokeRecordVerificationId], account: account.address } });
+    const recordRevoked = !(await publicClient.readContract({ address: record.address, abi: verifyRecordAbi, functionName: "isValid", args: [revokeRecordVerificationId] }));
+    expect(recordRevoked, `${network.id} record revocation did not invalidate the record`);
+
+    const revokeDomainBytes = encodeAbiParameters(domainTypes, ["PrivateDAO-Blind-Policy-v1", BigInt(network.chainId), blind.address, PRODUCT_ID, SCHEMA_ID, revokeRecordId]);
+    const revokeDomainField = BigInt(keccak256(revokeDomainBytes)) % FIELD;
+    const revokeInputs = {
+      policyId: revokeDomainField.toString(), policyCommitment: poseidonField([revokeDomainField, 3n, 100n, 10000n, 50n, 777n]).toString(), inputCommitment: poseidonField([11n, 22n, 100n, 100n, 100n, 1n, 80n, 888n]).toString(), satisfiedClaim: "1",
+      organizationKey: "11", subjectKey: "22", membershipVerified: "1", record0: "100", record1: "100", record2: "100", liabilitiesUsd: "1", riskScore: "80", minRecordCount: "3", minAverageAmountUsd: "100", maxLiabilityBps: "10000", minRiskScore: "50", policySalt: "777", inputSalt: "888",
+    };
+    const revokeProof = await groth16.fullProve(revokeInputs, path.join(ROOT, `zk/build/${CIRCUIT}_js/${CIRCUIT}.wasm`), path.join(ROOT, `zk/setup/${CIRCUIT}_final.zkey`));
+    const [revokeA, revokeB, revokeC, revokeSignals] = proofArgs({ ...revokeProof.proof, publicSignals: revokeProof.publicSignals });
+    const revokeBlindReceipt = await executeViaKernel(adapter, capabilityRegistry, { network: network.id, product: "blind-verification", capability: "verification.blind.prove", requestId: `${network.id}-blind-revoke-anchor-${runId}`, payload: { kind: "contract-write", address: blind.address, abi: blindFunctionAbi, functionName: "verifyAndAnchor", args: [PRODUCT_ID, SCHEMA_ID, revokeRecordId, BigInt(network.chainId), expiresAt, revokeA, revokeB, revokeC, revokeSignals], account: account.address } });
+    const revokeBlindHash = revokeBlindReceipt.signatures[0];
+    const revokeBlindEvent = await eventArgsFromReceipt(publicClient, revokeBlindHash, blindAbi, "BlindProofVerified");
+    const revokeBlindVerificationId = revokeBlindEvent.verificationId;
+    expect(await publicClient.readContract({ address: blind.address, abi: verifyBlindAbi, functionName: "isValid", args: [revokeBlindVerificationId] }), `${network.id} disposable blind proof was not valid before revocation`);
+    const blindRevokeReceipt = await executeViaKernel(adapter, capabilityRegistry, { network: network.id, product: "blind-verification", capability: "verification.blind.revoke", requestId: `${network.id}-blind-revoke-${runId}`, payload: { kind: "contract-write", address: blind.address, abi: revokeFunctionAbi, functionName: "revoke", args: [revokeBlindVerificationId], account: account.address } });
+    const blindRevoked = !(await publicClient.readContract({ address: blind.address, abi: verifyBlindAbi, functionName: "isValid", args: [revokeBlindVerificationId] }));
+    expect(blindRevoked, `${network.id} blind proof revocation did not invalidate the proof`);
+
+    results.push({ network: network.id, chainId: network.chainId, contracts: { verifier, blind, record }, record: { txHash: recordHash, blockNumber: recordReceipt.blockNumber.toString(), verificationId: recordVerificationId, explorerUrl: `${network.explorer}/tx/${recordHash}` }, blind: { txHash: blindHash, blockNumber: blindReceipt.blockNumber.toString(), verificationId: blindVerificationId, explorerUrl: `${network.explorer}/tx/${blindHash}` }, revocation: { recordTxHash: recordRevokeReceipt.signatures[0], blindTxHash: blindRevokeReceipt.signatures[0], disposableRecordVerificationId: revokeRecordVerificationId, disposableBlindVerificationId: revokeBlindVerificationId }, checks: { recordVerified: true, blindProofVerified: true, wrongChainRejected: true, alteredProofRejected: true, expiredRecordRejected: true, expiredBlindRejected: true, recordRevoked: true, blindProofRevoked: true }, links: { record: `https://privatedao.org/verify/evm?network=${network.id}&type=record&id=${recordVerificationId}`, blind: `https://privatedao.org/verify/evm?network=${network.id}&type=blind&id=${blindVerificationId}` } });
   }
 
   if (activeNetworks.length > 1) {

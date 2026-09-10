@@ -31,10 +31,10 @@ npm run test:evm:phase2
 
 The runner checks the RPC chain IDs, deploys independent contracts to both
 testnets, generates a Groth16 proof from the committed WASM/zkey, verifies and
-anchors it, anchors and verifies a record digest, and tests wrong-chain,
-altered-proof, cross-network replay, and expired-input rejection. Revocation
-remains an explicit lifecycle test to add before this package claims complete
-revocation evidence. It writes
+anchors it, anchors and verifies a record digest, tests wrong-chain,
+altered-proof, cross-network replay, expired-input rejection, and executes
+owner revocation against disposable record and blind-proof entries before
+asserting that both become invalid. It writes
 deployment evidence only after confirmed on-chain transactions.
 
 No Mainnet configuration is accepted by this runner. No public RPC fallback is
@@ -47,8 +47,10 @@ Ethereum Sepolia has a committed `testnet_verified` artifact at
 transactions were independently read from a public Sepolia RPC and returned
 successful receipts:
 
-- Record anchor: [`0xbc1b6484d235366ab2b3e55f3105a78efe18716859bb2b28f12b5d69b550d98a`](https://sepolia.etherscan.io/tx/0xbc1b6484d235366ab2b3e55f3105a78efe18716859bb2b28f12b5d69b550d98a)
-- Blind proof anchor: [`0xbdb2acaa52360c12ff858b5cd721e8d2505446e2dd6487deb914f6d417390fde`](https://sepolia.etherscan.io/tx/0xbdb2acaa52360c12ff858b5cd721e8d2505446e2dd6487deb914f6d417390fde)
+- Record anchor: [`0x96d67851c8567e575ffabaabe506c4104c42edeb464c606be2d64ec73d3fc043`](https://sepolia.etherscan.io/tx/0x96d67851c8567e575ffabaabe506c4104c42edeb464c606be2d64ec73d3fc043)
+- Blind proof anchor: [`0x042400bd1be2f7dffeee536e13ade5610d84ee28ca2192ee37b70c93c2fc07a7`](https://sepolia.etherscan.io/tx/0x042400bd1be2f7dffeee536e13ade5610d84ee28ca2192ee37b70c93c2fc07a7)
+- Disposable record revocation: [`0x3fcf9b0283ea8a1dc68fd40325d0640c87736e6c0a3d53ecac6c981439443bf2`](https://sepolia.etherscan.io/tx/0x3fcf9b0283ea8a1dc68fd40325d0640c87736e6c0a3d53ecac6c981439443bf2)
+- Disposable blind-proof revocation: [`0x7bb8e17d3ffac17f5aec0fd18addb27c8371999e66fb99397def65cd8420e6ce`](https://sepolia.etherscan.io/tx/0x7bb8e17d3ffac17f5aec0fd18addb27c8371999e66fb99397def65cd8420e6ce)
 
 The public verification routes return HTTP 200 for both artifacts. This is
 evidence for the verification package only; Ethereum Sepolia is not yet in the
