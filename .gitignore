@@ -18,6 +18,7 @@ wallets/
 *.pem
 .env
 *.json
+!docs/monitoring-delivery-intake.json
 !packages/evm-verification/artifacts/*.abi
 !packages/evm-verification/artifacts/*.bin
 !packages/evm-verification/deployments/*.json
