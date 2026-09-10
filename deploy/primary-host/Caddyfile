@@ -112,6 +112,13 @@
 		reverse_proxy read-node:8787
 	}
 
+	# Never mask a missing machine-readable artifact with the HTML app shell.
+	# Verification manifests must return JSON or an explicit 404.
+	@json_artifact path_regexp json_artifact \.json$
+	handle @json_artifact {
+		file_server
+	}
+
 	handle {
 		try_files {path} {path}/index.html /thesis/index.html /index.html
 		file_server
