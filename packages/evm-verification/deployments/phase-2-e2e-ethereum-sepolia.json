@@ -1,0 +1,52 @@
+{
+  "generatedAt": "2026-09-10T05:18:04.785Z",
+  "status": "testnet_verified",
+  "scope": [
+    "ethereum-sepolia"
+  ],
+  "networks": [
+    {
+      "network": "ethereum-sepolia",
+      "chainId": 11155111,
+      "contracts": {
+        "verifier": {
+          "address": "0x26E3515D02bb3D8122Fad109D159f43e81e8bEeb",
+          "hash": "0xa21967495c09c4c0c3aca5fcc8730fd3caa4ff305cd2bd5a587e9f23b9c364d9",
+          "blockNumber": "11672673"
+        },
+        "blind": {
+          "address": "0xdd01dA1b53BA46BF1Ce8c71Bc1C5E86E8784694B",
+          "hash": "0x70493ecd1dd62f12a959c5246071ca3b218b5189620b847a2f43bdae83435b30",
+          "blockNumber": "11672674"
+        },
+        "record": {
+          "address": "0x6f813E1221cB5f760Bb5C467983c014bbE4B3B5c",
+          "hash": "0xe5018bbc4273e5a4cae1f4631d1e4d9a48959aa61623352dd2999b02b6163650",
+          "blockNumber": "11672675"
+        }
+      },
+      "record": {
+        "txHash": "0xbc1b6484d235366ab2b3e55f3105a78efe18716859bb2b28f12b5d69b550d98a",
+        "blockNumber": "11672842",
+        "verificationId": "0x95bfd30756f131c19a263973cdc602fb9db56a544629372b66b871f7cc1c3687",
+        "explorerUrl": "https://sepolia.etherscan.io/tx/0xbc1b6484d235366ab2b3e55f3105a78efe18716859bb2b28f12b5d69b550d98a"
+      },
+      "blind": {
+        "txHash": "0xbdb2acaa52360c12ff858b5cd721e8d2505446e2dd6487deb914f6d417390fde",
+        "blockNumber": "11672845",
+        "verificationId": "0x1cb22fcfa4b566d6045d8f132438474c167f6a304a463be61a140c81742da4c9",
+        "explorerUrl": "https://sepolia.etherscan.io/tx/0xbdb2acaa52360c12ff858b5cd721e8d2505446e2dd6487deb914f6d417390fde"
+      },
+      "checks": {
+        "recordVerified": true,
+        "blindProofVerified": true,
+        "wrongChainRejected": true,
+        "alteredProofRejected": true
+      },
+      "links": {
+        "record": "https://privatedao.org/verify/evm?network=ethereum-sepolia&type=record&id=0x95bfd30756f131c19a263973cdc602fb9db56a544629372b66b871f7cc1c3687",
+        "blind": "https://privatedao.org/verify/evm?network=ethereum-sepolia&type=blind&id=0x1cb22fcfa4b566d6045d8f132438474c167f6a304a463be61a140c81742da4c9"
+      }
+    }
+  ]
+}

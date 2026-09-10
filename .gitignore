@@ -21,6 +21,7 @@ wallets/
 !packages/evm-verification/artifacts/*.abi
 !packages/evm-verification/artifacts/*.bin
 !packages/evm-verification/deployments/*.json
+!apps/web/public/evm-verification/*.json
 !idl/private_dao.json
 !package-lock.json
 !apps/web/package.json

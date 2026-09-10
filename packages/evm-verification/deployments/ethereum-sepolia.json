@@ -1,0 +1,22 @@
+{
+  "network": "ethereum-sepolia",
+  "chainId": 11155111,
+  "environment": "testnet",
+  "contracts": {
+    "verifier": {
+      "address": "0x26E3515D02bb3D8122Fad109D159f43e81e8bEeb",
+      "hash": "0xa21967495c09c4c0c3aca5fcc8730fd3caa4ff305cd2bd5a587e9f23b9c364d9",
+      "blockNumber": "11672673"
+    },
+    "blind": {
+      "address": "0xdd01dA1b53BA46BF1Ce8c71Bc1C5E86E8784694B",
+      "hash": "0x70493ecd1dd62f12a959c5246071ca3b218b5189620b847a2f43bdae83435b30",
+      "blockNumber": "11672674"
+    },
+    "record": {
+      "address": "0x6f813E1221cB5f760Bb5C467983c014bbE4B3B5c",
+      "hash": "0xe5018bbc4273e5a4cae1f4631d1e4d9a48959aa61623352dd2999b02b6163650",
+      "blockNumber": "11672675"
+    }
+  }
+}
