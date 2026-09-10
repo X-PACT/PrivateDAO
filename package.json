@@ -11,7 +11,7 @@
     "private-engine:manifest": "node scripts/build-private-engine-manifest.mjs",
     "private-engine:test:plugins": "node scripts/test-private-engine-plugins.mjs",
     "private-engine:test:adversarial": "node scripts/test-private-engine-adversarial.mjs",
-    "test:record-verification": "node scripts/test-record-verification.mjs",
+    "test:record-verification": "node --import tsx scripts/test-record-verification.mjs",
     "test:payroll:domain": "node --experimental-strip-types scripts/test-payroll-domain.mjs",
     "certify:record-verification": "bash scripts/certify-record-verification.sh",
     "private-engine:preflight": "bash scripts/private-engine-preflight.sh",
