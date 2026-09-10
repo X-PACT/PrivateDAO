@@ -8,7 +8,7 @@ authoritative and intentionally fails closed.
 |---|---|---|---|
 | Solana Devnet | `available` | Current Kernel network; product capabilities are catalogued here. | Solana product evidence remains the current application baseline. |
 | Solana Mainnet | `planned` | No current Kernel provider or production claim. | No Mainnet execution. |
-| Ethereum Sepolia | `planned` | Not exposed by the application catalog yet. | Blind + Record E2E verified; wrong-chain and altered-proof rejection verified in `packages/evm-verification/deployments/phase-2-e2e-ethereum-sepolia.json`. |
+| Ethereum Sepolia | `planned` | Not exposed by the application catalog yet. | Blind + Record E2E verified; wrong-chain, altered-proof, expiry, and owner-revocation rejection verified in `packages/evm-verification/deployments/phase-2-e2e-ethereum-sepolia.json`. |
 | Arbitrum Sepolia | `planned` | Adapter and application binding still required. | No independent E2E evidence. |
 | Tempo Testnet | `planned` | Adapter and application binding still required. | No independent E2E evidence. |
 | Zcash Testnet | `planned` | Native adapter still required. | No independent E2E evidence. |
