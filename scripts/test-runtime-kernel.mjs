@@ -87,7 +87,8 @@ assert.equal(isRuntimeProductAvailable("blind-verification"), true);
 assert.equal(isRuntimeProductAvailable("record-verification"), true);
 assert.equal(isRuntimeProductAvailable("payroll"), false);
 assert.equal(isRuntimeProductAvailable("governance"), false);
-assert.equal(isRuntimeProductAvailable("agent"), false);
+  assert.equal(isRuntimeProductAvailable("agent"), false);
+assert.equal(runtimeCatalogModule.isRuntimeCapabilityExecutable("payroll", "payroll.approve", "solana-devnet"), true);
 
 const runtime = createPrivateDaoRuntime(registry);
 const protocolRegistry = runtime.protocols;
@@ -99,6 +100,35 @@ assert.equal(protocolRegistry.authorize("payroll.approve", "execution.submit", "
 assert.equal(protocolRegistry.authorize("payroll.approve", "execution.submit", "auditor"), false);
 
 const policyRuntime = createPrivateDaoRuntime();
+const approvalIntent = {
+  context: {
+    requestId: "payroll-approval-test",
+    idempotencyKey: "payroll-approval-test-key",
+    product: "payroll",
+    capability: "payroll.approve",
+    network,
+  },
+  payload: {
+    batchId: "batch-001",
+    makerId: "maker-1",
+    policyHash: "policy-hash-001",
+    policy: { requiredApprovals: 1, allowedRoles: ["checker"], preventSelfApproval: true },
+  },
+  accounts: [{ role: "authority", address: "checker-1", network }],
+};
+const approvalPrepared = await policyRuntime.gateway.prepare(approvalIntent, "checker");
+assert.equal(approvalPrepared.state, "awaiting_signature");
+await policyRuntime.gateway.submit(approvalPrepared, { actorId: "checker-1", role: "checker", signature: "wallet-signature-001" }, "checker");
+const approvalReceipt = await policyRuntime.gateway.receipt(approvalPrepared, "checker");
+assert.equal(approvalReceipt.state, "reconciled");
+assert.equal(approvalReceipt.result.approvedBy, "checker-1");
+try {
+  await policyRuntime.gateway.prepare({ ...approvalIntent, context: { ...approvalIntent.context, requestId: "payroll-self-approval", idempotencyKey: "payroll-self-approval-key" }, payload: { ...approvalIntent.payload, makerId: "checker-1" } }, "checker");
+  assert.fail("maker self-approval should be rejected");
+} catch (error) {
+  assert.match(error.message, /Provider preparation failed/);
+}
+
 const policyIntent = {
   context: {
     requestId: "treasury-policy-test",

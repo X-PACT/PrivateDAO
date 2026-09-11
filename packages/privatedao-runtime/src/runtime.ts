@@ -10,6 +10,7 @@ import { AgentDiscoveryProvider } from "./agent-provider.js";
 import { BlindPolicyProofProvider } from "./blind-policy-provider.js";
 import { AuctionOutcomeProofProvider } from "./auction-outcome-provider.js";
 import { AuctionBidCommitProvider } from "./auction-bid-provider.js";
+import { PayrollApprovalProvider } from "./payroll-approval-provider.js";
 
 /**
  * Single composition boundary for PrivateDAO applications.
@@ -30,6 +31,7 @@ export function createPrivateDaoRuntime(providers?: ProviderRegistry, options: K
   const providerRegistry = providers ?? new InMemoryProviderRegistry();
   if (!providers && providerRegistry instanceof InMemoryProviderRegistry) {
     providerRegistry.register(new PayrollCalculationProvider());
+    providerRegistry.register(new PayrollApprovalProvider());
     providerRegistry.register(new TreasuryPolicyProvider());
     providerRegistry.register(new RecordCreationProvider());
     providerRegistry.register(new RecordVerificationProvider());

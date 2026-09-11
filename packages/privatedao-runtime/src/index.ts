@@ -197,6 +197,8 @@ export { createPrivateDaoRuntime } from "./runtime.js";
 export type { PrivateDaoRuntime } from "./runtime.js";
 export { PayrollCalculationProvider } from "./payroll-provider.js";
 export type { PayrollCalculationPayload } from "./payroll-provider.js";
+export { PayrollApprovalProvider } from "./payroll-approval-provider.js";
+export type { PayrollApprovalPayload, PayrollApprovalPolicy, PayrollApprovalSignature } from "./payroll-approval-provider.js";
 export { TreasuryPolicyProvider } from "./treasury-policy-provider.js";
 export type { TreasuryPolicyCheckPayload, TreasuryPolicyCheckResult } from "./treasury-policy-provider.js";
 export { RecordCreationProvider, RecordVerificationProvider, RECORD_CANONICALIZATION_VERSION } from "./record-provider.js";

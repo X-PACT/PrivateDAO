@@ -104,8 +104,9 @@ export const APPLICATION_CAPABILITY_BINDINGS: readonly ApplicationCapabilityBind
     product: "payroll",
     capability: "payroll.approve",
     network: "solana-devnet",
-    mode: "unbound",
-    note: "Payroll approval state machine is not yet exposed as a Kernel-backed application action.",
+    mode: "kernel-gateway",
+    entrypoint: "kernel://payroll.approve",
+    note: "Kernel-backed Maker/Checker policy gate; wallet/network adapter must verify the supplied checker signature before production promotion.",
   },
   {
     product: "payroll",

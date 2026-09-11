@@ -150,10 +150,10 @@ export const runtimeCatalog = {
           "applicationBindings": [
             {
               "network": "solana-devnet",
-              "mode": "unbound",
-              "entrypoint": null,
+              "mode": "kernel-gateway",
+              "entrypoint": "kernel://payroll.approve",
               "method": null,
-              "note": "Payroll approval state machine is not yet exposed as a Kernel-backed application action."
+              "note": "Kernel-backed Maker/Checker policy gate; wallet/network adapter must verify the supplied checker signature before production promotion."
             }
           ]
         },
