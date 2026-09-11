@@ -4878,7 +4878,10 @@ async function readIkaSolanaPreAlphaStatus() {
 }
 
 async function fetchJupiterOrder(body: Record<string, unknown>) {
-  const apiKey = getApiKey("JUP_API_KEY") || getApiKey("JUPITER_API_KEY");
+  const apiKey =
+    getApiKey("JUP_API_KEY") ||
+    getApiKey("JUPITER_API_KEY") ||
+    getApiKey("JUPITER_DEVELOPER_API_KEY");
   const inputMint = stringField(body, "inputMint", "So11111111111111111111111111111111111111112");
   const outputMint = stringField(body, "outputMint", "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v");
   const amount = stringField(body, "amount", "20000000");
