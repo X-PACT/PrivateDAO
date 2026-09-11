@@ -30,6 +30,7 @@ export const umbraPrivatePayoutProvider: PrivatePayoutProvider = {
 
   async prepareIntent(input: PrivatePayoutIntentInput): Promise<PrivatePayoutIntent> {
     const config = getUmbraConfig();
+    if (!config.configured) throw new Error("Umbra provider is not configured.");
     if (config.network === "devnet") assertUmbraDevnetAsset(input.asset);
     const hashes = hashPrivatePayoutIntent(input, "umbra", config.network);
     return {
@@ -47,7 +48,7 @@ export const umbraPrivatePayoutProvider: PrivatePayoutProvider = {
       privacyMode: input.privacyMode ?? "proof-only",
       publicOutcome: input.publicOutcome ?? "prepared confidential payout",
       createdAt: new Date().toISOString(),
-      sandbox: !config.configured,
+      sandbox: false,
       manifestCommitment: input.manifestCommitment,
       privacyTier: input.privacyTier,
       batchId: input.batchId,
@@ -145,11 +146,11 @@ export const umbraPrivatePayoutProvider: PrivatePayoutProvider = {
       enabled: config.enabled,
       configured: config.configured,
       network: config.network,
-      sandbox: !config.configured,
+      sandbox: false,
       receiptMode: config.receiptMode,
       reason: config.configured
         ? "Umbra Devnet provider is configured for the end-to-end test lane. Mainnet is disabled by policy."
-        : "Umbra provider is optional. Missing env falls back to sandbox without claiming real settlement.",
+        : "Umbra provider is unavailable. Select sandbox-testnet explicitly for rehearsal only.",
     };
   },
 };
