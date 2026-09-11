@@ -63,4 +63,38 @@ deployments.register({ product: "record-verification", network: "ethereum-sepoli
 assert.throws(() => deployments.register({ product: "record-verification", network: "ethereum-mainnet", environment: "mainnet", chainId: "1", explorerVerified: false, buildReference: "test", status: "mainnet_live" }), /explicit release gate/);
 assert.throws(() => deployments.register({ product: "record-verification", network: "ethereum-sepolia", environment: "testnet", chainId: "11155111", explorerVerified: false, buildReference: "test", status: "testnet" }), /already registered/);
 
+// Every configured testnet must pass the same lifecycle contract. This is a
+// local adapter test only; it does not imply deployed contracts or on-chain
+// evidence for any network.
+for (const networkConfig of EVM_NETWORK_CONFIGS.filter((entry) => entry.environment === "testnet")) {
+  const networkTransport = {
+    async health() { return { ok: true, chainId: networkConfig.chainId, latencyMs: 1 }; },
+    async prepare(networkIntent) {
+      return { executionId: networkIntent.context.requestId, intent: networkIntent, unsignedPayload: { network: networkConfig.network }, requiredSigners: [], state: "prepared" };
+    },
+    async submit(execution) { return { executionId: execution.executionId, signatures: [`${networkConfig.network}-signature`] }; },
+    async status(executionId) { return { executionId, state: "confirmed" }; },
+    async receipt(executionId) {
+      return { executionId, requestId: executionId, capability: "verification.record.create", network: networkConfig.network, chainId: networkConfig.chainId, state: "confirmed", signatures: [`${networkConfig.network}-signature`], createdAt: new Date().toISOString() };
+    },
+    async estimateFee(networkIntent) { return { network: networkIntent.context.network, atomicAmount: "21000", asset: networkConfig.nativeAsset }; },
+  };
+  const networkAdapter = new EvmNetworkAdapter({
+    id: `evm-${networkConfig.network}-test`,
+    config: networkConfig,
+    capabilities: ["verification.record.create"],
+    transport: networkTransport,
+  });
+  const networkIntent = {
+    context: { requestId: `${networkConfig.network}-foundation`, idempotencyKey: `${networkConfig.network}-foundation`, product: "record-verification", capability: "verification.record.create", network: networkConfig.network },
+    payload: {},
+    accounts: [],
+  };
+  const networkPrepared = await networkAdapter.prepare(networkIntent);
+  await networkAdapter.submit(networkPrepared, networkPrepared.unsignedPayload);
+  assert.equal((await networkAdapter.status(networkPrepared.executionId)).state, "confirmed");
+  assert.equal((await networkAdapter.receipt(networkPrepared.executionId)).chainId, networkConfig.chainId);
+  assert.equal((await networkAdapter.health()).chainId, networkConfig.chainId);
+}
+
 console.log("[evm-foundation] config, lifecycle, wrong-chain, RPC timeout, receipt, deployment, and Mainnet gate checks passed");
