@@ -4878,10 +4878,9 @@ async function readIkaSolanaPreAlphaStatus() {
 }
 
 async function fetchJupiterOrder(body: Record<string, unknown>) {
-  const apiKey =
-    getApiKey("JUP_API_KEY") ||
-    getApiKey("JUPITER_API_KEY") ||
-    getApiKey("JUPITER_DEVELOPER_API_KEY");
+  const apiKeys = ["JUP_API_KEY", "JUPITER_API_KEY", "JUPITER_DEVELOPER_API_KEY"]
+    .map((name) => ({ name, value: getApiKey(name) }))
+    .filter((candidate) => candidate.value.length > 0);
   const inputMint = stringField(body, "inputMint", "So11111111111111111111111111111111111111112");
   const outputMint = stringField(body, "outputMint", "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v");
   const amount = stringField(body, "amount", "20000000");
@@ -4891,7 +4890,7 @@ async function fetchJupiterOrder(body: Record<string, unknown>) {
   if (!/^\d+$/.test(amount)) {
     return { ok: false, source: "jupiter", error: "amount must be an integer string in base units." };
   }
-  if (!apiKey) {
+  if (apiKeys.length === 0) {
     return {
       ok: false,
       source: "jupiter",
@@ -4905,13 +4904,19 @@ async function fetchJupiterOrder(body: Record<string, unknown>) {
   if (taker) params.set("taker", taker);
   if (Number.isFinite(slippageBps)) params.set("slippageBps", String(Math.max(0, Math.min(10_000, Math.round(slippageBps)))));
 
-  const response = await fetch(`https://api.jup.ag/swap/v2/order?${params.toString()}`, {
-    headers: {
-      Accept: "application/json",
-      "x-api-key": apiKey,
-    },
-  });
-  const raw = (await response.json().catch(() => null)) as Record<string, unknown> | null;
+  let response: Response | null = null;
+  let raw: Record<string, unknown> | null = null;
+  for (const candidate of apiKeys) {
+    response = await fetch(`https://api.jup.ag/swap/v2/order?${params.toString()}`, {
+      headers: {
+        Accept: "application/json",
+        "x-api-key": candidate.value,
+      },
+    });
+    raw = (await response.json().catch(() => null)) as Record<string, unknown> | null;
+    if (![401, 403].includes(response.status) || candidate === apiKeys[apiKeys.length - 1]) break;
+  }
+  if (!response) return { ok: false, source: "jupiter", configured: false, error: "No Jupiter request was attempted." };
   return {
     ok: response.ok,
     source: "jupiter",
