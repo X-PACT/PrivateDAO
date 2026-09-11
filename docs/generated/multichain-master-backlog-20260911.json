@@ -47,6 +47,16 @@
       "validation": "Three Testnet transactions and corridor account are finalized; live service audit has zero failures."
     },
     {
+      "id": "agent-exchange-discovery-card",
+      "phase": "agent-marketplace",
+      "status": "verified",
+      "evidence": [
+        "https://agents.privatedao.org/.well-known/agent-card.json",
+        "packages/privatedao-runtime/src/agent-provider.ts"
+      ],
+      "validation": "Public Agent Card returns HTTP 200 and exposes machine-readable discovery metadata for the live exchange."
+    },
+    {
       "id": "verification-arbitrum-sepolia",
       "phase": "verification-e2e",
       "status": "blocked_external",
@@ -92,7 +102,7 @@
       "id": "security-dependency-remediation",
       "phase": "security-hardening",
       "status": "blocked_external",
-      "requires": "Reviewed non-breaking dependency upgrades or explicit accepted-risk decisions; npm audit reports 21 vulnerabilities locally",
+      "requires": "Reviewed non-breaking dependency upgrades or explicit accepted-risk decisions; the latest full npm audit reports 32 vulnerabilities locally",
       "evidence": ["npm audit", "scripts/verify-tracked-secrets.mjs"]
     },
     {
