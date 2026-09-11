@@ -6,18 +6,20 @@ authoritative and intentionally fails closed.
 
 | Network | Runtime stage | Product exposure | Independent evidence |
 |---|---|---|---|
-| Solana Devnet | `available` | Current Kernel network; product capabilities are catalogued here. | Solana product evidence remains the current application baseline. |
-| Solana Mainnet | `planned` | No current Kernel provider or production claim. | No Mainnet execution. |
-| Ethereum Sepolia | `planned` | Not exposed by the application catalog yet. | Blind + Record E2E verified; wrong-chain, altered-proof, expiry, and owner-revocation rejection verified in `packages/evm-verification/deployments/phase-2-e2e-ethereum-sepolia.json`. |
-| Arbitrum Sepolia | `planned` | Adapter and application binding still required. | No independent E2E evidence. |
-| Tempo Testnet | `planned` | Adapter and application binding still required. | No independent E2E evidence. |
-| Zcash Testnet | `planned` | Native adapter still required. | No independent E2E evidence. |
-| Wormhole Integration | `planned` | Integration boundary only; not a standalone product network. | Explicitly excluded from the no-bridge execution model. |
-| Hyperliquid Testnet | `planned` | Adapter and application binding still required. | No independent E2E evidence. |
+| Solana Devnet | `available` | Current Kernel network; Payroll rows are separately marked `devnet_verified`. | Product-specific Solana evidence; do not generalize it to every product. |
+| Solana Mainnet | `planned` | Agent discovery/invocation is externally runtime-verified; no general product Mainnet execution claim. | No new Mainnet execution performed by this workstream. |
+| Ethereum Sepolia | `available` | Blind Verification and Record Verification are application-bound through the Kernel. | Real contract-write E2E in `packages/evm-verification/deployments/phase-2-e2e-ethereum-sepolia.json`, including wrong-chain, altered-proof, expiry, replay, and revocation checks. |
+| Arbitrum Sepolia | `planned` | EVM adapter exists, but no funded real deployment or product evidence is recorded. | RPC chain ID is reachable; deployer balance is zero. No capability is customer-executable. |
+| BNB Testnet | `planned` | EVM adapter exists, but no funded real deployment or product evidence is recorded. | RPC chain ID is reachable; deployer balance is zero. No capability is customer-executable. |
+| Base Sepolia | `planned` | EVM adapter exists, but no funded real deployment or product evidence is recorded. | RPC chain ID is reachable; deployer balance is zero. No capability is customer-executable. |
+| Robinhood Chain Testnet | `planned` | Network configuration exists; no independent product E2E evidence is recorded. | Requires a verified provider and funded testnet execution. |
+| Tempo Testnet | `available` | Blind Verification and Record Verification are application-bound through the Kernel. | Real contract-write E2E in `packages/evm-verification/deployments/phase-2-e2e-tempo-testnet.json` on chain 42431. |
+| Zcash Testnet | `planned` | Native adapter and product execution path are not implemented. | No EVM or bridge substitution is allowed. |
+| Hyperliquid Testnet | `planned` | No product execution adapter is recorded. | Requires a product-specific native capability decision before implementation. |
 
-An entry is not customer-executable merely because evidence exists here. A
-network requires a real provider adapter, transaction lifecycle, finality,
+An entry is not customer-executable merely because an adapter or RPC responds.
+A network requires a real provider adapter, transaction lifecycle, finality,
 receipt/reconciliation path, application binding, and independent tests before
-discovery or UI may present the exact capability as supported. Ethereum Sepolia
-has verification evidence, but remains hidden from customer execution until
-the application binding is completed.
+discovery or UI may present the exact capability as supported. The generated
+machine-readable registry is authoritative for product/capability evidence;
+this document is the human-readable network boundary.
