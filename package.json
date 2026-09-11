@@ -86,6 +86,7 @@
     "test:runtime:http-runtime": "node --import tsx scripts/test-runtime-http-runtime.mjs",
     "test:runtime:payroll": "node --import tsx scripts/test-runtime-payroll.mjs",
     "test:runtime:evm-foundation": "node --import tsx scripts/test-evm-foundation.mjs",
+    "test:runtime:zcash-foundation": "node --import tsx scripts/test-zcash-foundation.mjs",
     "compile:evm-verification": "bash scripts/compile-evm-verification.sh",
     "test:evm:phase2": "node --import tsx packages/evm-verification/scripts/run-e2e.mjs",
     "probe:evm-rpc": "node --import tsx scripts/probe-evm-rpc-readiness.mjs",

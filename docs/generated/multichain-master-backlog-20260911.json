@@ -89,7 +89,7 @@
       "phase": "verification-e2e",
       "status": "implementation",
       "requires": "Native Zcash adapter, wallet flow, verifier/receipt design, and funded testnet execution",
-      "evidence": ["packages/privatedao-runtime/src/networks.ts"]
+      "evidence": ["packages/privatedao-runtime/src/networks.ts", "packages/privatedao-runtime/src/zcash-network.ts", "scripts/test-zcash-foundation.mjs"]
     },
     {
       "id": "native-treasury-governance-auctions",
