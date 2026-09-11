@@ -96,7 +96,7 @@
       "phase": "product-expansion",
       "status": "implementation",
       "requires": "Product-specific native contracts/programs and independent E2E evidence per network",
-      "evidence": ["packages/privatedao-runtime/src/catalog.ts", "packages/privatedao-runtime/src/application-bindings.ts"]
+      "evidence": ["packages/privatedao-runtime/src/catalog.ts", "packages/privatedao-runtime/src/application-bindings.ts", "packages/evm-verification/contracts/PrivateDaoTreasury.sol", "packages/evm-verification/contracts/PrivateDaoGovernance.sol", "packages/evm-verification/contracts/PrivateDaoSealedAuction.sol", "scripts/run-evm-organizational-e2e.mjs", "scripts/compile-evm-verification.sh"]
     },
     {
       "id": "security-dependency-remediation",
