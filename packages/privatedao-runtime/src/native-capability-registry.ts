@@ -62,8 +62,8 @@ const PAYROLL_SOLANA_DEVNET_EVIDENCE = {
   provider: "umbra-solana-devnet",
   program: "DSuKkyqGVGgo4QtPABfxKJKygUDACbUhirnuv63mEpAJ",
   asset: "WSOL",
-  commit: "9479374",
-  timestamp: "2026-09-10T16:59:17.362Z",
+  commit: "adcb3ae",
+  timestamp: "2026-09-11T21:36:18.740Z",
 } as const;
 
 const TEMPO_TESTNET_EVIDENCE = {

@@ -17,7 +17,7 @@ for (const entry of verifiedPayroll) {
   assert.equal(entry.supportsExecution, true);
   assert.equal(entry.supportsReceipt, true);
   assert.equal(entry.supportsMainnet, false);
-  assert.equal(entry.lastVerifiedCommit, "9479374");
+  assert.equal(entry.lastVerifiedCommit, "adcb3ae");
 }
 for (const entry of liveAgents) {
   assert.equal(entry.product, "agent");
