@@ -59,15 +59,19 @@ successful receipts:
 - Disposable record revocation: [`0x3fcf9b0283ea8a1dc68fd40325d0640c87736e6c0a3d53ecac6c981439443bf2`](https://sepolia.etherscan.io/tx/0x3fcf9b0283ea8a1dc68fd40325d0640c87736e6c0a3d53ecac6c981439443bf2)
 - Disposable blind-proof revocation: [`0x7bb8e17d3ffac17f5aec0fd18addb27c8371999e66fb99397def65cd8420e6ce`](https://sepolia.etherscan.io/tx/0x7bb8e17d3ffac17f5aec0fd18addb27c8371999e66fb99397def65cd8420e6ce)
 
-The production verification URLs have not been validated as artifact-backed
-public verification endpoints: observed HTTP 200 responses returned the web
-application shell rather than the current JSON evidence artifact. This is
-evidence for the verification package only; Ethereum Sepolia is not yet in the
-customer-executable product catalog until its application binding and public
-artifact serving are both verified.
-Base Sepolia remains unverified until a valid RPC endpoint and funded testnet
-account are available. No capability is upgraded from this documentation
-alone.
+The public verification URLs are application-bound at
+`/verify/evm?network=...&type=...&id=...`. The page loads the published
+network manifest, calls the configured registry's `isValid(bytes32)` view
+method against the selected testnet, and discloses only network, chain ID,
+verification ID, and validity state. The JSON manifest under
+`/evm-verification/` is the public evidence artifact; the HTML response is
+expected to be the application shell because the verification check runs in
+the browser. No source record or private inputs are returned.
+
+Ethereum Sepolia is therefore application-bound for the two verified
+verification products. Base Sepolia remains unverified until a funded real
+deployment and independent E2E evidence are available. No capability is
+upgraded from documentation alone.
 
 Tempo Testnet has a committed `testnet_verified` artifact at
 `deployments/phase-2-e2e-tempo-testnet.json`. The run deployed independent
