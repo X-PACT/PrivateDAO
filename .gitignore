@@ -18,6 +18,7 @@ wallets/
 *.pem
 .env
 *.json
+!vendor/bigint-buffer/package.json
 !docs/monitoring-delivery-intake.json
 !docs/generated/evm-rpc-readiness-*.json
 !docs/generated/native-capability-matrix-*.json
