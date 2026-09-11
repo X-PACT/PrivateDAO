@@ -26,7 +26,7 @@ jobs:
         run: npm install
 
       - name: Install web dependencies
-        run: npm --prefix apps/web install --ignore-scripts --no-audit --no-fund
+        run: npm --prefix apps/web ci --ignore-scripts --no-audit --no-fund --legacy-peer-deps
 
       - name: Build root web mirror bundle
         run: npm run web:bundle:root
