@@ -20,6 +20,7 @@ wallets/
 *.json
 !docs/monitoring-delivery-intake.json
 !docs/generated/evm-rpc-readiness-*.json
+!docs/generated/native-capability-matrix-*.json
 !docs/settlement-receipt-closure-intake.json
 !packages/evm-verification/artifacts/*.abi
 !packages/evm-verification/artifacts/*.bin
