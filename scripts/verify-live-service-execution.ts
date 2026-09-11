@@ -664,6 +664,12 @@ const API_CHECKS: ApiCheck[] = [
     },
     validate: (payload) => {
       if (payload?.ok !== true) return "Jupiter order preview did not return ok=true";
+      if (payload?.executionBoundary === "quote-only-no-order-transaction-until-server-api-key") {
+        if (payload?.summary?.mode !== "quote-only") return "Jupiter quote fallback mode mismatch";
+        if (typeof payload?.summary?.outAmount !== "string") return "Jupiter quote fallback missing output amount";
+        if (payload?.summary?.transactionAvailable !== false) return "Jupiter quote fallback must not expose a transaction";
+        return null;
+      }
       if (payload?.configured !== true) return "Jupiter order preview is not configured";
       if (typeof payload?.summary?.router !== "string" || payload.summary.router.length === 0) return "Jupiter order preview missing router";
       if (typeof payload?.summary?.requestId !== "string") return "Jupiter order preview missing request id";

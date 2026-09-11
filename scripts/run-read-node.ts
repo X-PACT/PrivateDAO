@@ -4917,6 +4917,34 @@ async function fetchJupiterOrder(body: Record<string, unknown>) {
     if (![401, 403].includes(response.status) || candidate === apiKeys[apiKeys.length - 1]) break;
   }
   if (!response) return { ok: false, source: "jupiter", configured: false, error: "No Jupiter request was attempted." };
+  if ([401, 403].includes(response.status)) {
+    const quoteResponse = await fetch(`https://api.jup.ag/swap/v1/quote?${params.toString()}`, {
+      headers: { Accept: "application/json" },
+    });
+    const quoteRaw = (await quoteResponse.json().catch(() => null)) as Record<string, unknown> | null;
+    if (quoteResponse.ok && typeof quoteRaw?.outAmount === "string") {
+      const quotePriceImpact = Number(quoteRaw.priceImpactPct);
+      return {
+        ok: true,
+        source: "jupiter",
+        configured: apiKeys.length > 0,
+        orderConfigured: false,
+        status: quoteResponse.status,
+        executionBoundary: "quote-only-no-order-transaction-until-server-api-key",
+        request: { inputMint, outputMint, amount, taker: taker || null, slippageBps },
+        summary: {
+          mode: "quote-only",
+          router: "jupiter-v1-quote",
+          inAmount: typeof quoteRaw.inAmount === "string" ? quoteRaw.inAmount : amount,
+          outAmount: quoteRaw.outAmount,
+          priceImpact: Number.isFinite(quotePriceImpact) ? quotePriceImpact : null,
+          requestId: null,
+          transactionAvailable: false,
+        },
+        raw: quoteRaw,
+      };
+    }
+  }
   return {
     ok: response.ok,
     source: "jupiter",
