@@ -3226,15 +3226,17 @@ async function fetchWalletRuntimePreview(walletAddress: string, chainName: strin
   try {
     const connection = getRuntimeConnection(chainName);
     const owner = new PublicKey(walletAddress);
-    const [balanceLamports, signatures, tokenAccounts] = await Promise.all([
+    const [balanceLamports, signatures] = await Promise.all([
       connection.getBalance(owner, "confirmed"),
       connection.getSignaturesForAddress(owner, { limit: 8 }, "confirmed"),
-      connection.getParsedTokenAccountsByOwner(
+    ]);
+    const tokenAccounts = await connection
+      .getParsedTokenAccountsByOwner(
         owner,
         { programId: new PublicKey("TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA") },
         "confirmed",
-      ),
-    ]);
+      )
+      .catch(() => ({ value: [] }));
     const balances = [
       {
         symbol: "SOL",
