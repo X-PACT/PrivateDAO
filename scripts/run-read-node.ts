@@ -3214,7 +3214,12 @@ function getRuntimeConnection(chainName: string) {
   if (normalized.includes("devnet")) {
     return new Connection(process.env.SOLANA_DEVNET_RPC_URL || "https://api.devnet.solana.com", "confirmed");
   }
-  return new Connection(process.env.SOLANA_RPC_URL || "https://api.testnet.solana.com", "confirmed");
+  return new Connection(
+    process.env.SOLANA_TESTNET_RPC_URL ||
+      process.env.SOLANA_RPC_URL ||
+      "https://solana-testnet-rpc.publicnode.com",
+    "confirmed",
+  );
 }
 
 async function fetchWalletRuntimePreview(walletAddress: string, chainName: string) {
