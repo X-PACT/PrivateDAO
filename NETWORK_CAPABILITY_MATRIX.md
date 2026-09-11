@@ -23,3 +23,9 @@ receipt/reconciliation path, application binding, and independent tests before
 discovery or UI may present the exact capability as supported. The generated
 machine-readable registry is authoritative for product/capability evidence;
 this document is the human-readable network boundary.
+
+The read-only EVM RPC probe currently reaches all six configured testnets and
+observes the expected chain IDs: Ethereum Sepolia, Arbitrum Sepolia, BNB
+Testnet, Base Sepolia, Robinhood Testnet, and Tempo Testnet. This is provider
+health evidence only; it does not upgrade any product capability to
+`testnet_verified`.
