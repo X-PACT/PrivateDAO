@@ -4940,7 +4940,7 @@ async function handleIkaCustodyPrepare(body: Record<string, unknown>) {
   const custodyMode = stringField(body, "custodyMode", "shared-dwallet");
   const operationLabel = stringField(body, "operationLabel", "PrivateDAO dWallet custody route").slice(0, 120);
   const ika = requireFromWebApp("@ika.xyz/sdk") as Record<string, unknown>;
-  const sui = requireFromWebApp("@mysten/sui/jsonRpc") as Record<string, unknown>;
+  const sui = requireFromWebApp("@mysten/sui/grpc") as Record<string, unknown>;
   const Curve = ika.Curve as Record<string, string>;
   const SignatureAlgorithm = ika.SignatureAlgorithm as Record<string, string>;
   const Hash = ika.Hash as Record<string, string>;
@@ -4966,9 +4966,11 @@ async function handleIkaCustodyPrepare(body: Record<string, unknown>) {
     initialize: () => Promise<void>;
     getLatestNetworkEncryptionKey: () => Promise<Record<string, unknown>>;
   };
-  const SuiJsonRpcClient = sui.SuiJsonRpcClient as new (args: Record<string, unknown>) => unknown;
-  const getJsonRpcFullnodeUrl = sui.getJsonRpcFullnodeUrl as (target: string) => string;
-  const suiClient = new SuiJsonRpcClient({ url: getJsonRpcFullnodeUrl(network), network });
+  const SuiGrpcClient = sui.SuiGrpcClient as new (args: Record<string, unknown>) => unknown;
+  const grpcUrl =
+    process.env.IKA_SUI_GRPC_URL?.trim() ||
+    (network === "mainnet" ? "https://fullnode.mainnet.sui.io:443" : "https://fullnode.testnet.sui.io:443");
+  const suiClient = new SuiGrpcClient({ baseUrl: grpcUrl, network });
   const ikaClient = new IkaClient({ suiClient, config: getNetworkConfig(network), cache: true });
   await ikaClient.initialize();
   const networkEncryptionKey = await ikaClient.getLatestNetworkEncryptionKey();
