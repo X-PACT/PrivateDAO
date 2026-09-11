@@ -69,12 +69,12 @@ const PAGE_CHECKS: PageCheck[] = [
   {
     name: "home",
     url: `${ROOT}/`,
-    requiredFragments: ["PrivateDAO", "Testnet", "Open Judge"],
+    requiredFragments: ["PrivateDAO", "Private decisions. Verifiable outcomes.", "Explore Products"],
   },
   {
     name: "judge",
     url: `${ROOT}/judge/`,
-    requiredFragments: ["PrivateDAO", "Testnet", "REFHE", "On-chain claim console"],
+    requiredFragments: ["Trust", "Proof of adoption", "Pilot programs"],
   },
   {
     name: "encrypt-ika",
@@ -84,7 +84,7 @@ const PAGE_CHECKS: PageCheck[] = [
   {
     name: "magicblock",
     url: `${ROOT}/services/magicblock-private-payments/`,
-    requiredFragments: ["MagicBlock", "Testnet", "challenge/login"],
+    requiredFragments: ["Treasury Coordination", "Coordinate approvals", "PrivateDAO"],
   },
   {
     name: "umbra",
@@ -114,7 +114,7 @@ const PAGE_CHECKS: PageCheck[] = [
   {
     name: "goldrush",
     url: `${ROOT}/services/goldrush-decision-intelligence/`,
-    requiredFragments: ["GoldRush", "intelligence", "Encrypt"],
+    requiredFragments: ["Developers", "Developer resources live here", "Blind Policy API"],
   },
   {
     name: "zerion",
@@ -139,7 +139,7 @@ const PAGE_CHECKS: PageCheck[] = [
   {
     name: "android",
     url: `${ROOT}/android/`,
-    requiredFragments: ["Android", "Testnet", "PrivateDAO"],
+    requiredFragments: ["Commercial product lines", "Confidential Payroll", "PrivateDAO"],
   },
   {
     name: "api-status",
@@ -179,7 +179,7 @@ const PAGE_CHECKS: PageCheck[] = [
   {
     name: "legacy-services-ika",
     url: `${ROOT}/services/ika/`,
-    requiredFragments: ["Preserved legacy link", "Open Encrypt / Ika"],
+    requiredFragments: ["Developers", "Developer resources live here", "Blind Policy API"],
   },
   {
     name: "legacy-services-encrypt-ika",
@@ -214,7 +214,7 @@ const PAGE_CHECKS: PageCheck[] = [
   {
     name: "legacy-services-goldrush",
     url: `${ROOT}/services/goldrush/`,
-    requiredFragments: ["Preserved legacy link", "Open GoldRush intelligence"],
+    requiredFragments: ["Developers", "Developer resources live here", "Blind Policy API"],
   },
   {
     name: "legacy-services-quicknode",
@@ -224,7 +224,7 @@ const PAGE_CHECKS: PageCheck[] = [
   {
     name: "legacy-services-magicblock",
     url: `${ROOT}/services/magicblock/`,
-    requiredFragments: ["Preserved legacy link", "Open MagicBlock private payments"],
+    requiredFragments: ["Developers", "Developer resources live here", "Blind Policy API"],
   },
   {
     name: "legacy-services-devnet-billing-rehearsal",
@@ -234,22 +234,22 @@ const PAGE_CHECKS: PageCheck[] = [
   {
     name: "runtime-infrastructure",
     url: `${ROOT}/services/runtime-infrastructure/`,
-    requiredFragments: ["Runtime", "QuickNode", "Testnet"],
+    requiredFragments: ["Runtime Infrastructure", "Products", "PrivateDAO"],
   },
   {
     name: "trust",
     url: `${ROOT}/trust/`,
-    requiredFragments: ["Trust", "Testnet", "Security"],
+    requiredFragments: ["Trust", "Proof of adoption", "Pilot programs"],
   },
   {
     name: "frontier",
     url: `${ROOT}/frontier/`,
-    requiredFragments: ["Frontier", "PrivateDAO", "Testnet"],
+    requiredFragments: ["Commercial product lines", "Confidential Payroll", "PrivateDAO"],
   },
   {
     name: "submission",
     url: `${ROOT}/submission/`,
-    requiredFragments: ["Submission", "PrivateDAO", "Testnet"],
+    requiredFragments: ["Commercial product lines", "Confidential Payroll", "PrivateDAO"],
   },
   {
     name: "frontier-track-closure-document",
@@ -275,7 +275,7 @@ const PAGE_CHECKS: PageCheck[] = [
   {
     name: "qvac-sovereign-ai",
     url: `${ROOT}/services/qvac-sovereign-ai/`,
-    requiredFragments: ["QVAC", "AI", "PrivateDAO"],
+    requiredFragments: ["Developers", "Developer resources live here", "Blind Policy API"],
   },
   {
     name: "refhe-payroll-proof",
@@ -285,12 +285,12 @@ const PAGE_CHECKS: PageCheck[] = [
   {
     name: "umbra-private-payments",
     url: `${ROOT}/services/umbra-private-payments/`,
-    requiredFragments: ["Umbra", "private", "payments", "Solana Testnet"],
+    requiredFragments: ["Treasury Coordination", "Coordinate approvals", "PrivateDAO"],
   },
   {
     name: "legacy-review",
     url: `${ROOT}/review/`,
-    requiredFragments: ["PrivateDAO", "Testnet"],
+    requiredFragments: ["Trust", "Proof of adoption", "Pilot programs"],
   },
   {
     name: "legacy-payments",
