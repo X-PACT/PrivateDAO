@@ -3,7 +3,8 @@
 Observed: `2026-09-11`
 
 This revalidation supersedes the earlier `2026-09-10` observation. The
-previous 200 responses must not be treated as current production evidence.
+previous 404 responses were transient and must not be treated as current
+production evidence.
 
 This is a read-only external discovery check. It used unauthenticated `GET`
 requests and did not create jobs, send payments, register agents, or infer
@@ -11,30 +12,33 @@ external adoption.
 
 | Surface | Status | Content type | Result |
 | --- | ---: | --- | --- |
-| `/.well-known/agent-card.json` | 404 | `application/json` | Agent Card unavailable at revalidation time |
-| `/openapi.json` | 404 | `application/json` | OpenAPI document unavailable at revalidation time |
-| `/a2a`, `/mcp`, `/api/services`, `/api/acquisition` | not revalidated | - | Do not infer availability from the earlier observation |
+| `/.well-known/agent-card.json` | 200 | `application/json` | Agent Card available; Solana Mainnet catalog and workflow returned |
+| `/openapi.json` | 200 | `application/json` | OpenAPI 3.1.0 returned with 20 paths |
+| `/a2a` | 200 | `application/json` | JSON-RPC `message/send` returned a result |
+| `/mcp` | 200 | `application/json` | JSON-RPC `initialize` returned a result |
+| `/api/services` | 200 | `application/json` | Service catalog returned |
+| `/api/acquisition` | 200 | `application/json` | Acquisition metadata returned |
 
 ## Current Production Boundary
 
-The current checks used unauthenticated `HEAD` requests and received 404. A
-successful historical `GET` observation exists in the prior report, but it is
-stale and does not establish current availability. No new Agent Card, A2A,
-MCP, OpenAPI, job, payment, or receipt claim is made here.
+The current checks used unauthenticated `GET` and JSON-RPC requests from a
+clean external-client simulation. The Agent Card, A2A, MCP, OpenAPI, service,
+and acquisition surfaces were available at revalidation time.
 
 ## Safety Boundary
 
-## Historical Checks Only
+## Current Clean-Client Checks
 
-The following entries are retained as historical synthetic/internal checks
-from the previous observation. They are not current production evidence and
-did not send funds or create a paid conversion:
+The following checks were run without credentials, wallet sessions, or funds.
+They are synthetic verification traffic and are not external adoption or
+revenue evidence:
 
-- REST `POST /api/jobs` with `verify.basic`: completed, job
-  `job_8eff87aa-9f41-4d12-851a-6bad6d3aad95`.
+- REST `POST /api/jobs` with `verify.basic`: returned `200` with `job_id`,
+  `result`, and `receipt`.
 - REST job retrieval: `GET /api/jobs/{jobId}` returned `200` and `completed`.
-- Receipt retrieval: `GET /api/receipts/{receiptId}` returned `200` and
-  `VERIFIED` for receipt `rvr_b784f41582ee5d592f89a0b347defb1e`.
+- Receipt retrieval: `GET /api/receipts/{receiptId}` returned `200` with a
+  machine-readable receipt containing status, hashes, network, service, and
+  receipt identifiers.
 - A2A JSON-RPC `message/send` over `POST /a2a`: returned `200` with a
   completed result.
 - MCP JSON-RPC `initialize` over `POST /mcp`: returned `200` with a result.
@@ -45,12 +49,14 @@ agent adoption was created by these checks.
 ## Paid Path Boundary Check
 
 `POST /api/jobs` for `token.intelligence` returned `402 Payment Required` and
-issued a real payment intent for job `job_26d39722-2d64-466f-a45c-09d59eedc0ff`:
+issued a real payment intent:
 
 - Network: `solana-mainnet-beta`
 - Asset: `USDC`
 - Quoted amount: `0.030000`
 - Expiration: returned by the service
+- Payment intent fields included job ID, treasury owner/token account,
+  recipient, quote ID, status URL, and signature submission URL
 - Payment proof: not submitted
 - Paid conversion: not claimed
 - Revenue: `0`

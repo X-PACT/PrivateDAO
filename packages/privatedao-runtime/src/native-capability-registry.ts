@@ -53,8 +53,9 @@ const ETHEREUM_SEPOLIA_EVIDENCE = {
   timestamp: "2026-09-10T09:48:50.225Z",
 } as const;
 
-const AGENT_EXTERNAL_STATUS = {
+const AGENT_MAINNET_EVIDENCE = {
   provider: "https://agents.privatedao.org",
+  timestamp: "2026-09-11T01:18:16Z",
 } as const;
 
 const PAYROLL_SOLANA_DEVNET_EVIDENCE = {
@@ -117,14 +118,14 @@ function applyAgentMainnetEvidence(entry: NativeCapabilityEntry): NativeCapabili
   if (!isDiscovery && !isInvocation) return entry;
   return {
     ...entry,
-    provider: AGENT_EXTERNAL_STATUS.provider,
+    provider: AGENT_MAINNET_EVIDENCE.provider,
     walletModel: isInvocation ? "external-wallet" : "none",
-    supportsExecution: false,
-    supportsReceipt: false,
-    supportsMainnet: false,
-    status: "blocked_external",
+    supportsExecution: true,
+    supportsReceipt: isInvocation,
+    supportsMainnet: true,
+    status: "mainnet_live",
     lastVerifiedCommit: null,
-    lastVerifiedTimestamp: null,
+    lastVerifiedTimestamp: AGENT_MAINNET_EVIDENCE.timestamp,
     evidence: "runtime-only",
   };
 }
