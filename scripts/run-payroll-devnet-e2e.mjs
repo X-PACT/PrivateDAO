@@ -3,8 +3,9 @@ import { createHash, randomBytes } from "node:crypto";
 import { readFile, writeFile, mkdir } from "node:fs/promises";
 import { createRequire } from "node:module";
 const requireWeb = createRequire(new URL("../apps/web/package.json", import.meta.url));
-const { Keypair, Connection, PublicKey } = requireWeb("@solana/web3.js");
+const { Keypair, Connection, PublicKey, SystemProgram, Transaction, sendAndConfirmTransaction } = requireWeb("@solana/web3.js");
 const nacl = requireWeb("tweetnacl");
+const { createSyncNativeInstruction } = requireWeb("@solana/spl-token");
 const { createSignerFromPrivateKeyBytes, getUmbraClient } = requireWeb("@umbra-privacy/sdk");
 const depositOps = requireWeb("@umbra-privacy/sdk/deposit");
 const registration = requireWeb("@umbra-privacy/sdk/registration");
@@ -20,10 +21,11 @@ const RECIPIENTS = [
   "4pbnWy5XqdajtjeF6wFonPYj2WAJcU1zVYrDCcJN2HHv",
   "FjTWJeYtmZALuyq96y8L9Pzqgkfkb7XWbszkpamkYW8q",
 ];
-const grossCents = 100;
-const taxCents = 10;
-const deductionsCents = 2;
-const netCents = 88;
+// Keep the live test deliberately small: this is real Devnet WSOL, not a simulated receipt.
+const grossCents = 5;
+const taxCents = 1;
+const deductionsCents = 0;
+const netCents = 4;
 const runId = `devnet-e2e-${Date.now()}-${randomBytes(4).toString("hex")}`;
 
 function sha256(value) { return createHash("sha256").update(value).digest("hex"); }
@@ -50,6 +52,22 @@ async function verifyFinalized(connection, signatures) {
   const rows = statuses.map((status, index) => ({ signature: signatures[index], confirmationStatus: status?.confirmationStatus || null, err: status?.err || null, slot: status?.slot || null }));
   if (rows.some((row) => row.confirmationStatus !== "finalized" || row.err)) throw new Error(`On-chain verification failed: ${json(rows)}`);
   return { allFinalized: true, rows };
+}
+
+async function ensureWrappedSol(connection, keypair, requiredLamports) {
+  const mint = new PublicKey("So11111111111111111111111111111111111111112");
+  const accounts = await connection.getParsedTokenAccountsByOwner(keypair.publicKey, { mint }, "finalized");
+  const account = accounts.value[0];
+  if (!account) throw new Error("The Devnet wallet has no WSOL token account; create one before running payroll E2E.");
+  const currentLamports = BigInt(account.account.data.parsed.info.tokenAmount.amount);
+  if (currentLamports >= requiredLamports) return { ata: account.pubkey.toBase58(), signature: null, wrappedLamports: currentLamports.toString() };
+  const topUpLamports = requiredLamports - currentLamports;
+  const transaction = new Transaction().add(
+    SystemProgram.transfer({ fromPubkey: keypair.publicKey, toPubkey: account.pubkey, lamports: Number(topUpLamports) }),
+    createSyncNativeInstruction(account.pubkey),
+  );
+  const signature = await sendAndConfirmTransaction(connection, transaction, [keypair], { commitment: "finalized" });
+  return { ata: account.pubkey.toBase58(), signature, wrappedLamports: requiredLamports.toString() };
 }
 
 function createDevnetCallbackMonitor(connection) {
@@ -146,6 +164,7 @@ async function main() {
     { signer, network: "devnet", rpcUrl: RPC, rpcSubscriptionsUrl: RPC.replace(/^http/, "ws"), deferMasterSeedSignature: true },
     { computationMonitor: createDevnetCallbackMonitor(connection) },
   );
+  const wrap = await ensureWrappedSol(connection, keypair, BigInt(netCents * RECIPIENTS.length) * 10000000n);
   const register = registration.getUserRegistrationFunction({ client });
   try { await register({ confidential: true, anonymous: false }); } catch (error) { if (!/already|exist|registered/i.test(String(error?.message || error))) throw error; }
   const deposit = depositOps.getATAIntoETADirectDepositorFunction({ client });
@@ -175,7 +194,7 @@ async function main() {
   const verification = await api("/payroll", { method: "POST", headers: bearer, body: json({ action: "create-verification", batchId, scope: "public", expiresAt: new Date(Date.now() + 86400000).toISOString(), proof: proof.proof, publicSignals: proof.publicSignals }) });
   const token = verification.verification.verificationUrl.split("token=")[1];
   const publicVerification = await api(`/payroll/verify/${decodeURIComponent(token)}`);
-  const evidence = { generatedAt: new Date().toISOString(), runId, network: "solana-devnet", wallet, balanceLamports: balance, batchId, intentId: intent.intent?.intentId, settlements, reconciliation: reconciliation.reconciliation, chainVerification, proof: { proofType: proof.proofType, verificationKeyHash: proof.verificationKeyHash, publicSignals: proof.publicSignals }, verification: verification.verification, publicVerification: publicVerification.verification, explorerUrls: settlements.map((row) => `https://explorer.solana.com/tx/${row.signature}?cluster=devnet`) };
+  const evidence = { generatedAt: new Date().toISOString(), runId, network: "solana-devnet", wallet, balanceLamports: balance, wrap, batchId, intentId: intent.intent?.intentId, settlements, reconciliation: reconciliation.reconciliation, chainVerification, proof: { proofType: proof.proofType, verificationKeyHash: proof.verificationKeyHash, publicSignals: proof.publicSignals }, verification: verification.verification, publicVerification: publicVerification.verification, explorerUrls: [...(wrap.signature ? [`https://explorer.solana.com/tx/${wrap.signature}?cluster=devnet`] : []), ...settlements.map((row) => `https://explorer.solana.com/tx/${row.signature}?cluster=devnet`)] };
   await mkdir(new URL("../docs/generated/", import.meta.url), { recursive: true });
   await writeFile(new URL("../docs/generated/payroll-devnet-e2e.generated.json", import.meta.url), `${JSON.stringify(evidence, null, 2)}\n`);
   console.log(JSON.stringify({ ok: true, network: evidence.network, runId, wallet, batchId, settlements, reconciliation: evidence.reconciliation, chainVerification, verificationUrl: verification.verification.verificationUrl, publicVerification: evidence.publicVerification.status, evidencePath: "docs/generated/payroll-devnet-e2e.generated.json" }, null, 2));
@@ -183,6 +202,8 @@ async function main() {
 
 function describeError(error) {
   if (!(error instanceof Error)) return { message: String(error) };
+  const errorRecord = error;
+  const causeRecord = error.cause instanceof Error ? error.cause : undefined;
   const cause = error.cause instanceof Error
     ? { name: error.cause.name, message: error.cause.message }
     : error.cause === undefined
@@ -193,6 +214,12 @@ function describeError(error) {
     message: error.message,
     code: typeof error.code === "string" ? error.code : undefined,
     stage: typeof error.stage === "string" ? error.stage : undefined,
+    simulationErr: errorRecord.simulationErr ?? causeRecord?.simulationErr,
+    simulationLogs: Array.isArray(errorRecord.simulationLogs)
+      ? errorRecord.simulationLogs.slice(0, 120)
+      : Array.isArray(causeRecord?.simulationLogs)
+        ? causeRecord.simulationLogs.slice(0, 120)
+        : undefined,
     cause,
   };
 }
