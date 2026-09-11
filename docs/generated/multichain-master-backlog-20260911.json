@@ -36,8 +36,8 @@
       "id": "payroll-solana-devnet",
       "phase": "payroll-e2e",
       "status": "devnet_verified",
-      "evidence": ["packages/privatedao-runtime/src/native-capability-registry.ts", "scripts/test-runtime-payroll.mjs"],
-      "validation": "Deterministic calculation and state-machine checks are verified; settlement scope remains Solana Devnet-specific."
+      "evidence": ["packages/privatedao-runtime/src/native-capability-registry.ts", "scripts/test-runtime-payroll.mjs", "scripts/run-payroll-devnet-e2e.mjs", "docs/generated/payroll-devnet-e2e.generated.json"],
+      "validation": "Three real Umbra Devnet payouts finalized, reconciliation confirmed 3/3 with zero failures and duplicates, Groth16 proof verified, and a public verification link was opened from an independent session without PII."
     },
     {
       "id": "magicblock-production-proof",
