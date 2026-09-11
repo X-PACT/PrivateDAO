@@ -106,10 +106,19 @@ export const umbraPrivatePayoutProvider: PrivatePayoutProvider = {
       throw new Error(typeof raw?.error === "string" ? raw.error : `Umbra provider responded ${response.status}.`);
     }
 
+    const executionId = typeof raw?.executionId === "string" ? raw.executionId : "";
+    if (!executionId) throw new Error("Umbra provider response is missing an observed execution ID.");
+    const rawStatus = typeof raw?.status === "string"
+      ? raw.status
+      : raw?.execution && typeof raw.execution === "object" && typeof (raw.execution as Record<string, unknown>).status === "string"
+        ? (raw.execution as Record<string, unknown>).status
+        : "";
+    const status = rawStatus === "confirmed" || rawStatus === "finalized" ? "confirmed" : "submitted";
+
     return {
-      executionId: typeof raw?.executionId === "string" ? raw.executionId : `umbra-${intent.intentHash.slice(0, 24)}`,
-      status: "submitted",
-      proofUrl: typeof raw?.proofUrl === "string" ? raw.proofUrl : `/proof/?privatePayout=${intent.intentHash}`,
+      executionId,
+      status,
+      proofUrl: typeof raw?.proofUrl === "string" ? raw.proofUrl : undefined,
       explorerUrl: typeof raw?.explorerUrl === "string" ? raw.explorerUrl : undefined,
       raw,
     };
