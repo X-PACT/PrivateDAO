@@ -1,0 +1,67 @@
+{
+  "schema": "privatedao.evm-rpc-readiness.v1",
+  "readOnly": true,
+  "bridgeFree": true,
+  "results": [
+    {
+      "network": "ethereum-sepolia",
+      "environment": "testnet",
+      "urlHost": "ethereum-sepolia.publicnode.com",
+      "httpStatus": 200,
+      "expectedChainId": 11155111,
+      "observedChainId": 11155111,
+      "latencyMs": 912,
+      "status": "healthy"
+    },
+    {
+      "network": "arbitrum-sepolia",
+      "environment": "testnet",
+      "urlHost": "sepolia-rollup.arbitrum.io",
+      "httpStatus": 200,
+      "expectedChainId": 421614,
+      "observedChainId": 421614,
+      "latencyMs": 673,
+      "status": "healthy"
+    },
+    {
+      "network": "bnb-testnet",
+      "environment": "testnet",
+      "urlHost": "data-seed-prebsc-1-s1.bnbchain.org:8545",
+      "httpStatus": 200,
+      "expectedChainId": 97,
+      "observedChainId": 97,
+      "latencyMs": 865,
+      "status": "healthy"
+    },
+    {
+      "network": "base-sepolia",
+      "environment": "testnet",
+      "urlHost": "sepolia.base.org",
+      "httpStatus": 200,
+      "expectedChainId": 84532,
+      "observedChainId": 84532,
+      "latencyMs": 639,
+      "status": "healthy"
+    },
+    {
+      "network": "robinhood-testnet",
+      "environment": "testnet",
+      "urlHost": "rpc.testnet.chain.robinhood.com",
+      "httpStatus": 200,
+      "expectedChainId": 46630,
+      "observedChainId": 46630,
+      "latencyMs": 716,
+      "status": "healthy"
+    },
+    {
+      "network": "tempo-testnet",
+      "environment": "testnet",
+      "urlHost": "rpc.moderato.tempo.xyz",
+      "httpStatus": 200,
+      "expectedChainId": 42431,
+      "observedChainId": 42431,
+      "latencyMs": 633,
+      "status": "healthy"
+    }
+  ]
+}
