@@ -9,7 +9,15 @@ export async function getPrivatePayoutProvider(provider?: PrivatePayoutProviderI
   if (provider === "umbra") return umbraPrivatePayoutProvider;
 
   const status = await umbraPrivatePayoutProvider.getProviderStatus();
-  return status.configured ? umbraPrivatePayoutProvider : sandboxPrivatePayoutProvider;
+  if (status.configured) return umbraPrivatePayoutProvider;
+
+  // Sandbox execution is intentionally opt-in. A missing Umbra configuration
+  // must fail closed rather than silently producing a deterministic receipt.
+  if (process.env.NODE_ENV !== "production" && process.env.PRIVATE_DAO_PAYOUT_MODE === "sandbox") {
+    return sandboxPrivatePayoutProvider;
+  }
+
+  throw new Error("Umbra private payout provider is not configured; select sandbox-testnet explicitly for rehearsal only.");
 }
 
 export async function getPrivatePayoutProviderStatuses() {

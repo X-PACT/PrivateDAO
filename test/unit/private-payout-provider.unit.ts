@@ -3,12 +3,21 @@ import { assert } from "chai";
 import { getPrivatePayoutProvider } from "../../apps/web/src/lib/providers/private-payout-registry";
 
 describe("private payout provider", () => {
-  it("falls back to clearly labeled sandbox when Umbra env is missing", async () => {
-    const provider = await getPrivatePayoutProvider("default");
+  it("uses the clearly labeled sandbox only when explicitly selected", async () => {
+    const provider = await getPrivatePayoutProvider("sandbox-testnet");
     const status = await provider.getProviderStatus();
 
     assert.equal(status.provider, "sandbox-testnet");
     assert.equal(status.sandbox, true);
+  });
+
+  it("fails closed when the default Umbra provider is unavailable", async () => {
+    try {
+      await getPrivatePayoutProvider("default");
+      assert.fail("expected unavailable Umbra provider to fail closed");
+    } catch (error) {
+      assert.match(error instanceof Error ? error.message : String(error), /Umbra private payout provider is not configured/);
+    }
   });
 
   it("hashes intents deterministically and excludes raw recipient metadata from receipts", async () => {
