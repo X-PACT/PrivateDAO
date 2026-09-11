@@ -9,6 +9,9 @@ import {
   PrivateDaoKernel,
   listProducts,
 } from "../packages/privatedao-runtime/src/index.ts";
+import runtimeCatalogModule from "../apps/web/src/lib/runtime-catalog.ts";
+
+const { isRuntimeProductAvailable } = runtimeCatalogModule;
 
 const network = "solana-devnet";
 const capability = "treasury.policy.check";
@@ -80,6 +83,11 @@ assert.deepEqual(submittedFirst, submittedSecond);
 const products = listProducts();
 assert.equal(products.find((product) => product.id === "blind-verification")?.name, "Blind Verification");
 assert.equal(products.find((product) => product.id === "record-verification")?.name, "Record Verification");
+assert.equal(isRuntimeProductAvailable("blind-verification"), true);
+assert.equal(isRuntimeProductAvailable("record-verification"), true);
+assert.equal(isRuntimeProductAvailable("payroll"), false);
+assert.equal(isRuntimeProductAvailable("governance"), false);
+assert.equal(isRuntimeProductAvailable("agent"), false);
 
 const runtime = createPrivateDaoRuntime(registry);
 const protocolRegistry = runtime.protocols;

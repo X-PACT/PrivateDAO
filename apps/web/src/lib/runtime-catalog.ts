@@ -38,7 +38,16 @@ export function isRuntimeCapabilityLegacyRoute(
 }
 
 export function isRuntimeProductAvailable(productId: RuntimeProductId): boolean {
-  return getRuntimeProduct(productId).availability === "available";
+  const product = getRuntimeProduct(productId);
+  if (product.availability !== "available") return false;
+
+  // A product is advertised as available only when every declared capability
+  // has at least one Kernel-backed application lane. A legacy or unbound
+  // capability can remain visible as roadmap/context, but must not create a
+  // misleading "Available now" claim in the commercial surface.
+  return product.capabilities.every((capability) =>
+    capability.applicationBindings.some((binding) => binding.mode === "kernel-gateway"),
+  );
 }
 
 export function getRuntimeProductIds(): readonly RuntimeProductId[] {
