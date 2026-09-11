@@ -1,0 +1,106 @@
+{
+  "schema": "privatedao.multichain-master-backlog.v1",
+  "generatedAt": "2026-09-11",
+  "principle": "One organizational operating layer; independent native execution environments; no bridge dependency.",
+  "evidenceRule": "Only real network execution can produce testnet_verified, devnet_verified, or mainnet_live.",
+  "tasks": [
+    {
+      "id": "kernel-network-lifecycle",
+      "phase": "kernel-foundation",
+      "status": "verified",
+      "evidence": ["packages/privatedao-runtime/src/evm-network.ts", "scripts/test-evm-foundation.mjs"],
+      "validation": "EVM lifecycle, network mismatch, malformed receipt, RPC timeout, and Mainnet gate pass."
+    },
+    {
+      "id": "rpc-testnet-health",
+      "phase": "network-readiness",
+      "status": "verified",
+      "evidence": ["scripts/probe-evm-rpc-readiness.mjs"],
+      "validation": "Ethereum, Arbitrum, BNB, Base, Robinhood, and Tempo testnet RPCs return expected chain IDs."
+    },
+    {
+      "id": "verification-ethereum-sepolia",
+      "phase": "verification-e2e",
+      "status": "testnet_verified",
+      "evidence": ["packages/evm-verification/deployments/phase-2-e2e-ethereum-sepolia.json", "apps/web/public/evm-verification/phase-2-e2e-ethereum-sepolia.json", "https://privatedao.org/verify/evm"],
+      "validation": "Real record and Groth16 blind proof transactions with negative-path and revocation checks."
+    },
+    {
+      "id": "verification-tempo-testnet",
+      "phase": "verification-e2e",
+      "status": "testnet_verified",
+      "evidence": ["packages/evm-verification/deployments/phase-2-e2e-tempo-testnet.json"],
+      "validation": "Real record and blind verification lifecycle on chain 42431."
+    },
+    {
+      "id": "payroll-solana-devnet",
+      "phase": "payroll-e2e",
+      "status": "devnet_verified",
+      "evidence": ["packages/privatedao-runtime/src/native-capability-registry.ts", "scripts/test-runtime-payroll.mjs"],
+      "validation": "Deterministic calculation and state-machine checks are verified; settlement scope remains Solana Devnet-specific."
+    },
+    {
+      "id": "magicblock-production-proof",
+      "phase": "existing-solana-protection",
+      "status": "verified",
+      "evidence": ["https://api.privatedao.org/api/v1/magicblock/onchain-proof?refresh=1"],
+      "validation": "Three Testnet transactions and corridor account are finalized; live service audit has zero failures."
+    },
+    {
+      "id": "verification-arbitrum-sepolia",
+      "phase": "verification-e2e",
+      "status": "blocked_external",
+      "requires": "Funded testnet deployer on Arbitrum Sepolia",
+      "evidence": ["packages/evm-verification/scripts/run-e2e.mjs", "scripts/probe-evm-rpc-readiness.mjs"]
+    },
+    {
+      "id": "verification-bnb-testnet",
+      "phase": "verification-e2e",
+      "status": "blocked_external",
+      "requires": "Funded testnet deployer on BNB Testnet",
+      "evidence": ["packages/evm-verification/scripts/run-e2e.mjs", "scripts/probe-evm-rpc-readiness.mjs"]
+    },
+    {
+      "id": "verification-base-sepolia",
+      "phase": "verification-e2e",
+      "status": "blocked_external",
+      "requires": "Funded testnet deployer on Base Sepolia",
+      "evidence": ["packages/evm-verification/scripts/run-e2e.mjs", "scripts/probe-evm-rpc-readiness.mjs"]
+    },
+    {
+      "id": "verification-robinhood-testnet",
+      "phase": "verification-e2e",
+      "status": "blocked_external",
+      "requires": "Funded testnet deployer and confirmed production RPC access",
+      "evidence": ["packages/evm-verification/scripts/run-e2e.mjs", "scripts/probe-evm-rpc-readiness.mjs"]
+    },
+    {
+      "id": "verification-zcash-testnet",
+      "phase": "verification-e2e",
+      "status": "implementation",
+      "requires": "Native Zcash adapter, wallet flow, verifier/receipt design, and funded testnet execution",
+      "evidence": ["packages/privatedao-runtime/src/networks.ts"]
+    },
+    {
+      "id": "native-treasury-governance-auctions",
+      "phase": "product-expansion",
+      "status": "implementation",
+      "requires": "Product-specific native contracts/programs and independent E2E evidence per network",
+      "evidence": ["packages/privatedao-runtime/src/catalog.ts", "packages/privatedao-runtime/src/application-bindings.ts"]
+    },
+    {
+      "id": "security-dependency-remediation",
+      "phase": "security-hardening",
+      "status": "blocked_external",
+      "requires": "Reviewed non-breaking dependency upgrades or explicit accepted-risk decisions; npm audit reports 21 vulnerabilities locally",
+      "evidence": ["npm audit", "scripts/verify-tracked-secrets.mjs"]
+    },
+    {
+      "id": "mainnet-release-gate",
+      "phase": "mainnet-readiness",
+      "status": "implementation",
+      "requires": "Independent testnet E2E, security review, authority review, reconciliation evidence, and explicit human approval",
+      "evidence": ["packages/privatedao-runtime/src/evm-network.ts", "packages/privatedao-runtime/src/deployment-registry.ts"]
+    }
+  ]
+}
