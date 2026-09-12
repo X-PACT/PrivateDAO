@@ -1,6 +1,6 @@
 {
   "schema": "privatedao.native-capability-matrix.v1",
-  "generatedAt": "2026-09-11T00:00:00.000Z",
+  "generatedAt": "2026-09-12T03:26:16.264Z",
   "bridgeFree": true,
   "entries": [
     {
@@ -1391,8 +1391,8 @@
       "supportsReconciliation": false,
       "supportsMainnet": false,
       "status": "devnet_verified",
-      "lastVerifiedCommit": "9479374",
-      "lastVerifiedTimestamp": "2026-09-10T16:59:17.362Z",
+      "lastVerifiedCommit": "adcb3ae",
+      "lastVerifiedTimestamp": "2026-09-11T21:36:18.740Z",
       "evidence": "devnet-e2e"
     },
     {
@@ -1841,8 +1841,8 @@
       "supportsReconciliation": false,
       "supportsMainnet": false,
       "status": "devnet_verified",
-      "lastVerifiedCommit": "9479374",
-      "lastVerifiedTimestamp": "2026-09-10T16:59:17.362Z",
+      "lastVerifiedCommit": "adcb3ae",
+      "lastVerifiedTimestamp": "2026-09-11T21:36:18.740Z",
       "evidence": "devnet-e2e"
     },
     {
@@ -2291,8 +2291,8 @@
       "supportsReconciliation": true,
       "supportsMainnet": false,
       "status": "devnet_verified",
-      "lastVerifiedCommit": "9479374",
-      "lastVerifiedTimestamp": "2026-09-10T16:59:17.362Z",
+      "lastVerifiedCommit": "adcb3ae",
+      "lastVerifiedTimestamp": "2026-09-11T21:36:18.740Z",
       "evidence": "devnet-e2e"
     },
     {
@@ -2776,28 +2776,32 @@
       "capability": "treasury.policy.check",
       "network": "ethereum-sepolia",
       "networkFamily": "evm",
-      "declared": false,
+      "declared": true,
       "environment": "testnet",
       "chainId": "11155111",
       "nativeAsset": "ETH",
       "supportedAssets": [
         "ETH"
       ],
-      "contracts": [],
+      "contracts": [
+        "0x92739fdd28d200b7ced0d177c021079ce30412b1",
+        "0x8ea77a4b281c29d92bb6cb991687cc34462cd2a1",
+        "0xff3bbac12cb2630bee9f0576ea2ea202a059edf7"
+      ],
       "verifier": null,
-      "provider": "evm-ethereum-sepolia",
+      "provider": "evm-ethereum-sepolia-organizational",
       "walletModel": "external-wallet",
-      "supportsExecution": false,
+      "supportsExecution": true,
       "supportsPrivateExecution": false,
       "supportsPrivateSettlement": false,
       "supportsProof": false,
-      "supportsReceipt": false,
-      "supportsReconciliation": false,
+      "supportsReceipt": true,
+      "supportsReconciliation": true,
       "supportsMainnet": false,
-      "status": "planned",
-      "lastVerifiedCommit": null,
-      "lastVerifiedTimestamp": null,
-      "evidence": "none"
+      "status": "testnet_verified",
+      "lastVerifiedCommit": "64224f7",
+      "lastVerifiedTimestamp": "2026-09-12T00:40:03.117Z",
+      "evidence": "testnet-e2e"
     },
     {
       "product": "treasury",
@@ -3056,28 +3060,32 @@
       "capability": "treasury.policy.check",
       "network": "tempo-testnet",
       "networkFamily": "evm",
-      "declared": false,
+      "declared": true,
       "environment": "testnet",
       "chainId": "42431",
       "nativeAsset": "ETH",
       "supportedAssets": [
-        "ETH"
+        "AlphaUSD"
       ],
-      "contracts": [],
+      "contracts": [
+        "0x88ef958407ee3929cc23b1737e89f0e8acdf7a57",
+        "0x1f51b3231cbb448793e41903181c68bcc96e4b5d",
+        "0x400805c6b9d4d4a3c4f604a293b0733453dde3ca"
+      ],
       "verifier": null,
-      "provider": "evm-tempo-testnet",
+      "provider": "evm-tempo-testnet-organizational",
       "walletModel": "external-wallet",
-      "supportsExecution": false,
+      "supportsExecution": true,
       "supportsPrivateExecution": false,
       "supportsPrivateSettlement": false,
       "supportsProof": false,
-      "supportsReceipt": false,
-      "supportsReconciliation": false,
+      "supportsReceipt": true,
+      "supportsReconciliation": true,
       "supportsMainnet": false,
-      "status": "planned",
-      "lastVerifiedCommit": null,
-      "lastVerifiedTimestamp": null,
-      "evidence": "none"
+      "status": "testnet_verified",
+      "lastVerifiedCommit": "3bbfdf2",
+      "lastVerifiedTimestamp": "2026-09-12T02:03:31.644Z",
+      "evidence": "testnet-e2e"
     },
     {
       "product": "treasury",
@@ -3224,28 +3232,32 @@
       "capability": "governance.proposal.execute",
       "network": "ethereum-sepolia",
       "networkFamily": "evm",
-      "declared": false,
+      "declared": true,
       "environment": "testnet",
       "chainId": "11155111",
       "nativeAsset": "ETH",
       "supportedAssets": [
         "ETH"
       ],
-      "contracts": [],
+      "contracts": [
+        "0x92739fdd28d200b7ced0d177c021079ce30412b1",
+        "0x8ea77a4b281c29d92bb6cb991687cc34462cd2a1",
+        "0xff3bbac12cb2630bee9f0576ea2ea202a059edf7"
+      ],
       "verifier": null,
-      "provider": "evm-ethereum-sepolia",
+      "provider": "evm-ethereum-sepolia-organizational",
       "walletModel": "external-wallet",
-      "supportsExecution": false,
+      "supportsExecution": true,
       "supportsPrivateExecution": false,
       "supportsPrivateSettlement": false,
       "supportsProof": false,
-      "supportsReceipt": false,
-      "supportsReconciliation": false,
+      "supportsReceipt": true,
+      "supportsReconciliation": true,
       "supportsMainnet": false,
-      "status": "planned",
-      "lastVerifiedCommit": null,
-      "lastVerifiedTimestamp": null,
-      "evidence": "none"
+      "status": "testnet_verified",
+      "lastVerifiedCommit": "64224f7",
+      "lastVerifiedTimestamp": "2026-09-12T00:40:03.117Z",
+      "evidence": "testnet-e2e"
     },
     {
       "product": "governance",
@@ -3504,28 +3516,32 @@
       "capability": "governance.proposal.execute",
       "network": "tempo-testnet",
       "networkFamily": "evm",
-      "declared": false,
+      "declared": true,
       "environment": "testnet",
       "chainId": "42431",
       "nativeAsset": "ETH",
       "supportedAssets": [
-        "ETH"
+        "AlphaUSD"
       ],
-      "contracts": [],
+      "contracts": [
+        "0x88ef958407ee3929cc23b1737e89f0e8acdf7a57",
+        "0x1f51b3231cbb448793e41903181c68bcc96e4b5d",
+        "0x400805c6b9d4d4a3c4f604a293b0733453dde3ca"
+      ],
       "verifier": null,
-      "provider": "evm-tempo-testnet",
+      "provider": "evm-tempo-testnet-organizational",
       "walletModel": "external-wallet",
-      "supportsExecution": false,
+      "supportsExecution": true,
       "supportsPrivateExecution": false,
       "supportsPrivateSettlement": false,
       "supportsProof": false,
-      "supportsReceipt": false,
-      "supportsReconciliation": false,
+      "supportsReceipt": true,
+      "supportsReconciliation": true,
       "supportsMainnet": false,
-      "status": "planned",
-      "lastVerifiedCommit": null,
-      "lastVerifiedTimestamp": null,
-      "evidence": "none"
+      "status": "testnet_verified",
+      "lastVerifiedCommit": "3bbfdf2",
+      "lastVerifiedTimestamp": "2026-09-12T02:03:31.644Z",
+      "evidence": "testnet-e2e"
     },
     {
       "product": "governance",
@@ -3672,28 +3688,32 @@
       "capability": "auction.bid.commit",
       "network": "ethereum-sepolia",
       "networkFamily": "evm",
-      "declared": false,
+      "declared": true,
       "environment": "testnet",
       "chainId": "11155111",
       "nativeAsset": "ETH",
       "supportedAssets": [
         "ETH"
       ],
-      "contracts": [],
+      "contracts": [
+        "0x92739fdd28d200b7ced0d177c021079ce30412b1",
+        "0x8ea77a4b281c29d92bb6cb991687cc34462cd2a1",
+        "0xff3bbac12cb2630bee9f0576ea2ea202a059edf7"
+      ],
       "verifier": null,
-      "provider": "evm-ethereum-sepolia",
+      "provider": "evm-ethereum-sepolia-organizational",
       "walletModel": "external-wallet",
-      "supportsExecution": false,
+      "supportsExecution": true,
       "supportsPrivateExecution": false,
       "supportsPrivateSettlement": false,
       "supportsProof": false,
-      "supportsReceipt": false,
-      "supportsReconciliation": false,
+      "supportsReceipt": true,
+      "supportsReconciliation": true,
       "supportsMainnet": false,
-      "status": "planned",
-      "lastVerifiedCommit": null,
-      "lastVerifiedTimestamp": null,
-      "evidence": "none"
+      "status": "testnet_verified",
+      "lastVerifiedCommit": "64224f7",
+      "lastVerifiedTimestamp": "2026-09-12T00:40:03.117Z",
+      "evidence": "testnet-e2e"
     },
     {
       "product": "auction",
@@ -3952,28 +3972,32 @@
       "capability": "auction.bid.commit",
       "network": "tempo-testnet",
       "networkFamily": "evm",
-      "declared": false,
+      "declared": true,
       "environment": "testnet",
       "chainId": "42431",
       "nativeAsset": "ETH",
       "supportedAssets": [
-        "ETH"
+        "AlphaUSD"
       ],
-      "contracts": [],
+      "contracts": [
+        "0x88ef958407ee3929cc23b1737e89f0e8acdf7a57",
+        "0x1f51b3231cbb448793e41903181c68bcc96e4b5d",
+        "0x400805c6b9d4d4a3c4f604a293b0733453dde3ca"
+      ],
       "verifier": null,
-      "provider": "evm-tempo-testnet",
+      "provider": "evm-tempo-testnet-organizational",
       "walletModel": "external-wallet",
-      "supportsExecution": false,
+      "supportsExecution": true,
       "supportsPrivateExecution": false,
       "supportsPrivateSettlement": false,
       "supportsProof": false,
-      "supportsReceipt": false,
-      "supportsReconciliation": false,
+      "supportsReceipt": true,
+      "supportsReconciliation": true,
       "supportsMainnet": false,
-      "status": "planned",
-      "lastVerifiedCommit": null,
-      "lastVerifiedTimestamp": null,
-      "evidence": "none"
+      "status": "testnet_verified",
+      "lastVerifiedCommit": "3bbfdf2",
+      "lastVerifiedTimestamp": "2026-09-12T02:03:31.644Z",
+      "evidence": "testnet-e2e"
     },
     {
       "product": "auction",
@@ -4120,28 +4144,32 @@
       "capability": "auction.settle",
       "network": "ethereum-sepolia",
       "networkFamily": "evm",
-      "declared": false,
+      "declared": true,
       "environment": "testnet",
       "chainId": "11155111",
       "nativeAsset": "ETH",
       "supportedAssets": [
         "ETH"
       ],
-      "contracts": [],
+      "contracts": [
+        "0x92739fdd28d200b7ced0d177c021079ce30412b1",
+        "0x8ea77a4b281c29d92bb6cb991687cc34462cd2a1",
+        "0xff3bbac12cb2630bee9f0576ea2ea202a059edf7"
+      ],
       "verifier": null,
-      "provider": "evm-ethereum-sepolia",
+      "provider": "evm-ethereum-sepolia-organizational",
       "walletModel": "external-wallet",
-      "supportsExecution": false,
+      "supportsExecution": true,
       "supportsPrivateExecution": false,
       "supportsPrivateSettlement": false,
       "supportsProof": false,
-      "supportsReceipt": false,
-      "supportsReconciliation": false,
+      "supportsReceipt": true,
+      "supportsReconciliation": true,
       "supportsMainnet": false,
-      "status": "planned",
-      "lastVerifiedCommit": null,
-      "lastVerifiedTimestamp": null,
-      "evidence": "none"
+      "status": "testnet_verified",
+      "lastVerifiedCommit": "64224f7",
+      "lastVerifiedTimestamp": "2026-09-12T00:40:03.117Z",
+      "evidence": "testnet-e2e"
     },
     {
       "product": "auction",
@@ -4400,28 +4428,32 @@
       "capability": "auction.settle",
       "network": "tempo-testnet",
       "networkFamily": "evm",
-      "declared": false,
+      "declared": true,
       "environment": "testnet",
       "chainId": "42431",
       "nativeAsset": "ETH",
       "supportedAssets": [
-        "ETH"
+        "AlphaUSD"
       ],
-      "contracts": [],
+      "contracts": [
+        "0x88ef958407ee3929cc23b1737e89f0e8acdf7a57",
+        "0x1f51b3231cbb448793e41903181c68bcc96e4b5d",
+        "0x400805c6b9d4d4a3c4f604a293b0733453dde3ca"
+      ],
       "verifier": null,
-      "provider": "evm-tempo-testnet",
+      "provider": "evm-tempo-testnet-organizational",
       "walletModel": "external-wallet",
-      "supportsExecution": false,
+      "supportsExecution": true,
       "supportsPrivateExecution": false,
       "supportsPrivateSettlement": false,
       "supportsProof": false,
-      "supportsReceipt": false,
-      "supportsReconciliation": false,
+      "supportsReceipt": true,
+      "supportsReconciliation": true,
       "supportsMainnet": false,
-      "status": "planned",
-      "lastVerifiedCommit": null,
-      "lastVerifiedTimestamp": null,
-      "evidence": "none"
+      "status": "testnet_verified",
+      "lastVerifiedCommit": "3bbfdf2",
+      "lastVerifiedTimestamp": "2026-09-12T02:03:31.644Z",
+      "evidence": "testnet-e2e"
     },
     {
       "product": "auction",
