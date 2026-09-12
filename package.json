@@ -83,6 +83,7 @@
     "test:runtime": "node --import tsx scripts/test-runtime-kernel.mjs",
     "test:runtime:http": "node --import tsx scripts/test-runtime-http-transport.mjs",
     "test:native-capability-registry": "node --import tsx scripts/test-native-capability-registry.mjs",
+    "build:native-capability-matrix": "node --import tsx scripts/build-native-capability-matrix.mjs",
     "test:runtime:http-runtime": "node --import tsx scripts/test-runtime-http-runtime.mjs",
     "test:runtime:payroll": "node --import tsx scripts/test-runtime-payroll.mjs",
     "test:runtime:evm-foundation": "node --import tsx scripts/test-evm-foundation.mjs",
