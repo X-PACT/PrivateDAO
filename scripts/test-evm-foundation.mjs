@@ -4,6 +4,7 @@ import {
   EVM_NETWORK_CONFIGS,
   EvmAdapterError,
   EvmNetworkAdapter,
+  getNetwork,
 } from "../packages/privatedao-runtime/src/index.ts";
 
 const config = EVM_NETWORK_CONFIGS.find((entry) => entry.network === "ethereum-sepolia");
@@ -12,6 +13,16 @@ assert.equal(config.environment, "testnet");
 assert.equal(config.chainId, "11155111");
 assert.ok(EVM_NETWORK_CONFIGS.every((entry) => entry.mainnetEnabled === false));
 assert.equal(EVM_NETWORK_CONFIGS.filter((entry) => entry.environment === "mainnet").length, 6);
+const testnetAdapterIds = EVM_NETWORK_CONFIGS
+  .filter((entry) => entry.environment === "testnet")
+  .map((entry) => getNetwork(entry.network).adapterId);
+assert.equal(new Set(testnetAdapterIds).size, testnetAdapterIds.length, "testnet adapters must be uniquely identified");
+assert.ok(EVM_NETWORK_CONFIGS
+  .filter((entry) => entry.environment === "testnet")
+  .every((entry) => getNetwork(entry.network).stage === "available"), "configured testnet adapters must be available");
+assert.ok(EVM_NETWORK_CONFIGS
+  .filter((entry) => entry.environment === "mainnet")
+  .every((entry) => getNetwork(entry.network).stage === "planned"), "mainnet adapters must remain planned");
 
 let mode = "ok";
 const transport = {
