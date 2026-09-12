@@ -1,9 +1,9 @@
 {
   "project": "PrivateDAO",
-  "generatedAt": "2026-09-08T14:52:19.112Z",
+  "generatedAt": "2026-09-12T17:54:35.451Z",
   "algorithm": "sha256",
-  "entryCount": 143,
-  "aggregateSha256": "699c4dedea5609800f5c42d5773a5e81bc1130448c38180d1bcfcb6a8965350f",
+  "entryCount": 145,
+  "aggregateSha256": "d73d26dc3d1aa5e3b05b94dfecd6810dc7308ebbfc955ca64bdceed40edb5b12",
   "files": [
     {
       "path": "zk/circuits/private_dao_vote_overlay.circom",
@@ -179,6 +179,16 @@
       "path": "docs/read-node/snapshot.generated.json",
       "sha256": "da94a1e128cd47ff924148c5c18bd420e879263072805976ef5300e725ff72c9",
       "bytes": 63410
+    },
+    {
+      "path": "docs/backend-provider-readiness-2026-05-24.md",
+      "sha256": "ca88153eb1018b6cb0d2fa1dceea393a3cb706c82164da64a9356dd9f078357a",
+      "bytes": 3431
+    },
+    {
+      "path": "docs/backend-provider-readiness-2026-05-24.json",
+      "sha256": "13ca00fa308ea98b8f67d7a00d1151012219454a650bd757388ab99ead578f86",
+      "bytes": 3689
     },
     {
       "path": "docs/competitive/source.json",
@@ -507,12 +517,12 @@
     },
     {
       "path": "docs/supply-chain-attestation.generated.md",
-      "sha256": "84da23335f9024fec2af8de459ee887be29dee4214944d7c7376f056defbdba9",
+      "sha256": "54d7fa2b66a2ac5ddb414bae0f25a84ddeb68e3fc23f0b30a3720e0ad5822f30",
       "bytes": 1697
     },
     {
       "path": "docs/supply-chain-attestation.generated.json",
-      "sha256": "879154a5a278574d8791425d95f2f62b0eddf742e8ce505160b63718397389c5",
+      "sha256": "9c2a05b14984aec3c5e88755d36a3956eb5ce609839e092fc4124c546aba8b58",
       "bytes": 2023
     },
     {
@@ -592,8 +602,8 @@
     },
     {
       "path": "docs/monitoring-alert-rules.json",
-      "sha256": "a5d41cf18ea6aa2fb67626feb9f9ba74ce4fc13dbd62d39193129b8a93d0ca5a",
-      "bytes": 3927
+      "sha256": "c1b781ee3b388147fde52793e5d903fc81c8fc1b7957aec6051077f9e55af2bd",
+      "bytes": 3909
     },
     {
       "path": "docs/monitoring-alert-rules.md",

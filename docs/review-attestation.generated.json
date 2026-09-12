@@ -44,7 +44,7 @@
   },
   "zk": {
     "stackVersion": 1,
-    "entryCount": 3,
+    "entryCount": 4,
     "verificationDocs": [
       "docs/zk-threat-extension.md",
       "docs/zk-assumption-matrix.md",
@@ -69,13 +69,18 @@
         "layer": "tally",
         "circuit": "private_dao_tally_overlay",
         "publicSignalCount": 7
+      },
+      {
+        "layer": "blind-policy",
+        "circuit": "private_dao_blind_policy_overlay",
+        "publicSignalCount": 4
       }
     ]
   },
   "cryptographicIntegrity": {
     "algorithm": "sha256",
     "entryCount": 145,
-    "aggregateSha256": "6da62807a5d22e499b8f22d2a34e1cb2f02ec828fe2256172105c7701babde98"
+    "aggregateSha256": "d73d26dc3d1aa5e3b05b94dfecd6810dc7308ebbfc955ca64bdceed40edb5b12"
   },
   "runtimeDocs": [
     "docs/governance-hardening-v3.md",
