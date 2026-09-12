@@ -12,7 +12,6 @@
   },
   "dependencies": {
     "@bonfida/spl-name-service": "^3.0.21",
-    "@cloak.dev/sdk-devnet": "^0.1.5-devnet.1",
     "@coral-xyz/anchor": "^0.32.1",
     "@ika.xyz/sdk": "^0.4.1",
     "@magicblock-labs/ephemeral-rollups-kit": "^0.16.2",
@@ -47,7 +46,7 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
-    "eslint-config-next": "16.2.3",
+    "eslint-config-next": "16.3.5",
     "tailwindcss": "^4",
     "typescript": "^5"
   }
