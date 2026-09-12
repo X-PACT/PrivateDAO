@@ -20,17 +20,19 @@ done
 
 echo
 echo "HTTP timing"
+failures=0
 check_url() {
   local url="$1"
   local expect="${2:-200}"
   local result
   result="$(curl -L -sS -o /dev/null \
     -w "%{http_code} dns=%{time_namelookup}s connect=%{time_connect}s tls=%{time_appconnect}s first_byte=%{time_starttransfer}s total=%{time_total}s redirects=%{num_redirects}" \
-    --max-time 20 "$url" || true)"
+    --max-time 45 --retry 1 --retry-delay 1 --retry-all-errors "$url" || true)"
   echo "$url -> $result"
   local code="${result%% *}"
   if [[ "$code" != "$expect" ]]; then
     echo "WARN: expected HTTP $expect for $url but got $code" >&2
+    failures=$((failures + 1))
   fi
 }
 
@@ -47,3 +49,10 @@ echo "Interpretation"
 echo "- Root/www should resolve to GitHub Pages addresses and return 200."
 echo "- API should return JSON 200 for readiness and cryptographic-readiness."
 echo "- Any 502/404 on the API routes indicates live backend deployment drift or reverse-proxy health failure."
+
+if (( failures > 0 )); then
+  echo "Public edge health: FAIL ($failures endpoint checks failed)" >&2
+  exit 1
+fi
+
+echo "Public edge health: PASS"
