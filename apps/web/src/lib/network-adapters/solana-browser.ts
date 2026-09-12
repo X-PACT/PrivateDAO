@@ -86,6 +86,15 @@ export async function sendAndConfirmBrowserTransaction(
   return signature;
 }
 
+export function sendBrowserTransaction(
+  connection: SolanaBrowserConnection,
+  transaction: Transaction,
+  sendTransaction: SolanaWalletSender,
+  options?: SolanaWalletSendOptions,
+) {
+  return sendTransaction(transaction, connection, options);
+}
+
 export function readSignatureStatuses(
   connection: SolanaBrowserConnection,
   signatures: string[],

@@ -36,7 +36,7 @@ import { entryFlowCopy } from "@/lib/entry-flow-copy";
 import { PRIVATE_ROOM_SESSION_KEY } from "@/lib/room-invite";
 import { getProposalById, type ProposalCardModel } from "@/lib/site-data";
 import { buildSolanaTxUrl, SOLANA_NETWORK, SOLANA_NETWORK_LABEL } from "@/lib/solana-network";
-import { submitSignedTransaction } from "@/lib/network-adapters/solana-browser";
+import { sendBrowserTransaction, submitSignedTransaction } from "@/lib/network-adapters/solana-browser";
 import { persistOperationReceipt } from "@/lib/supabase/operation-receipts";
 import { getTreasuryReceiveConfig } from "@/lib/treasury-receive-config";
 import { useServiceHandoffSnapshot } from "@/lib/use-service-handoff-snapshot";
@@ -436,7 +436,7 @@ async function submitWalletTransactionWithFallback({
     });
   } else {
     try {
-      signature = await sendTransaction(transaction, connection, {
+      signature = await sendBrowserTransaction(connection, transaction, sendTransaction, {
         preflightCommitment: "confirmed",
         signers: extraSigners,
       });
