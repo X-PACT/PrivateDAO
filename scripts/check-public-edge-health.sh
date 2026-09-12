@@ -46,7 +46,7 @@ check_url "https://$API_DOMAIN/api/v1/cryptographic-readiness"
 
 echo
 echo "Interpretation"
-echo "- Root/www should resolve to GitHub Pages addresses and return 200."
+echo "- Root/www should resolve to the configured production edge and return 200."
 echo "- API should return JSON 200 for readiness and cryptographic-readiness."
 echo "- Any 502/404 on the API routes indicates live backend deployment drift or reverse-proxy health failure."
 
