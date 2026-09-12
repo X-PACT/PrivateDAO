@@ -7,10 +7,12 @@ const suites = [
   ["runtime-http", ["npm", "run", "test:runtime:http"]],
   ["runtime-payroll", ["npm", "run", "test:runtime:payroll"]],
   ["runtime-evm", ["npm", "run", "test:runtime:evm-foundation"]],
+  ["zcash-foundation", ["npm", "run", "test:runtime:zcash-foundation"]],
   ["record-verification", ["npm", "run", "test:record-verification"]],
   ["capability-registry", ["npm", "run", "test:native-capability-registry"]],
   ["capability-matrix", ["npm", "run", "verify:native-capability-matrix"]],
   ["application-bindings", ["npm", "run", "verify:application-bindings"]],
+  ["tracked-secrets", ["npm", "run", "verify:tracked-secrets"]],
   ["commercial", ["node", "scripts/test-commercial-lifecycle.mjs"]],
 ];
 

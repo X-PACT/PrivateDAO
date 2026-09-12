@@ -86,7 +86,7 @@ assert.equal(products.find((product) => product.id === "record-verification")?.n
 assert.equal(isRuntimeProductAvailable("blind-verification"), true);
 assert.equal(isRuntimeProductAvailable("record-verification"), true);
 assert.equal(isRuntimeProductAvailable("payroll"), false);
-assert.equal(isRuntimeProductAvailable("governance"), false);
+assert.equal(isRuntimeProductAvailable("governance"), true);
   assert.equal(isRuntimeProductAvailable("agent"), false);
 assert.equal(runtimeCatalogModule.isRuntimeCapabilityExecutable("payroll", "payroll.approve", "solana-devnet"), true);
 
@@ -309,7 +309,7 @@ await assert.rejects(
 
 const emptyMatrix = buildCapabilityMatrix(emptyRuntime.providers);
 assert.equal(emptyMatrix.find((entry) => entry.capability === "treasury.policy.check" && entry.network === network)?.status, "contract-only");
-assert.equal(emptyMatrix.find((entry) => entry.capability === "treasury.policy.check" && entry.network === "ethereum-sepolia")?.status, "planned");
+assert.equal(emptyMatrix.find((entry) => entry.capability === "treasury.policy.check" && entry.network === "ethereum-sepolia")?.status, "contract-only");
 const verifiedMatrix = buildCapabilityMatrix(registry);
 assert.equal(verifiedMatrix.find((entry) => entry.capability === capability && entry.network === network)?.status, "verified");
 
