@@ -7,7 +7,8 @@ const allowedFiles = new Set([
   "apps/web/src/lib/network-adapters/magicblock-browser.ts",
 ]);
 const forbiddenPatterns = [
-  /\b(?:sendTransaction|confirmTransaction|getLatestBlockhash|getBalance|getAccountInfo|getSignatureStatuses|getParsedTransaction)\s*\(/g,
+  /\b(?:sendTransaction|sendRawTransaction|simulateTransaction|confirmTransaction|getLatestBlockhash|getLatestBlockhashAndContext|getFeeForMessage|getBalance|getBalanceAndContext|getAccountInfo|getAccountInfoAndContext|getMultipleAccountsInfo|getProgramAccounts|getParsedAccountInfo|getParsedProgramAccounts|getParsedTransaction|getSignatureStatuses|getTokenAccountBalance|getTokenAccountsByOwner|getParsedTokenAccountsByOwner|requestAirdrop)\s*\(/g,
+  /\bnew\s+Connection\s*\(/g,
 ];
 
 async function collectFiles(directory) {
