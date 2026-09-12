@@ -9,7 +9,7 @@ import { createTransferCheckedInstruction, getAssociatedTokenAddress, TOKEN_PROG
 
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { confirmTransaction, createSolanaBrowserConnection } from "@/lib/network-adapters/solana-browser";
+import { createSolanaBrowserConnection, sendAndConfirmBrowserTransaction } from "@/lib/network-adapters/solana-browser";
 
 type LicenseType = "COMMUNITY" | "PROFESSIONAL" | "ORGANIZATION" | "ENTERPRISE";
 type PaymentAsset = "USDC_SOL" | "PDAO_SOL" | "USDC_ETH" | "SOL" | "ETH" | "BTC" | "WBTC" | "ZEC" | "USDT" | "DAI";
@@ -163,8 +163,7 @@ export function CommercialCheckout() {
         transaction.add(createTransferCheckedInstruction(source, mint, destination, publicKey, BigInt(order.amountAtomic), payment.decimals, [], TOKEN_PROGRAM_ID));
       }
       transaction.add(new TransactionInstruction({ keys: [], programId: new PublicKey("MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr"), data: Buffer.from(order.memo, "utf8") }));
-      const signature = await sendTransaction(transaction, solanaConnection);
-      await confirmTransaction(solanaConnection, signature, "confirmed");
+      const signature = await sendAndConfirmBrowserTransaction(solanaConnection, transaction, sendTransaction);
       setPaymentHash(signature);
       await verifyPayment(signature);
     } catch (paymentError) { setError(paymentError instanceof Error ? paymentError.message : "Wallet payment failed."); setLoading(null); }

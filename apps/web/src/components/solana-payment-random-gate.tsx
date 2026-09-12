@@ -9,7 +9,7 @@ import { LAMPORTS_PER_SOL, PublicKey, SystemProgram, Transaction, TransactionIns
 import { WalletConnectButton } from "@/components/wallet-connect-button";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { confirmTransaction, createSolanaBrowserConnection } from "@/lib/network-adapters/solana-browser";
+import { createSolanaBrowserConnection, sendAndConfirmBrowserTransaction } from "@/lib/network-adapters/solana-browser";
 
 const apiBase = "https://api.privatedao.org/api/v1/payment-gate/random";
 const mainnetConnection = createSolanaBrowserConnection("https://rpc.solanatracker.io/public", "confirmed");
@@ -113,9 +113,8 @@ export function SolanaPaymentRandomGate() {
           data: Buffer.from(invoice.memo, "utf8"),
         }),
       );
-      const txSignature = await sendTransaction(transaction, mainnetConnection);
+      const txSignature = await sendAndConfirmBrowserTransaction(mainnetConnection, transaction, sendTransaction);
       setSignature(txSignature);
-      await confirmTransaction(mainnetConnection, txSignature, "confirmed");
     } catch (paymentError) {
       setError(paymentError instanceof Error ? paymentError.message : "Wallet payment failed.");
     } finally {
