@@ -41,6 +41,7 @@
     "tailwind-merge": "^3.3.1"
   },
   "overrides": {
+    "protobufjs": "8.8.0",
     "shell-quote": "1.10.0"
   },
   "devDependencies": {
