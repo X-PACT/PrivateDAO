@@ -422,7 +422,7 @@ export const runtimeCatalog = {
       "stage": "planned",
       "environment": "mainnet",
       "chainId": "1",
-      "adapterId": "evm"
+      "adapterId": "evm-ethereum-mainnet"
     },
     {
       "id": "arbitrum-sepolia",
@@ -431,7 +431,7 @@ export const runtimeCatalog = {
       "stage": "planned",
       "environment": "testnet",
       "chainId": "421614",
-      "adapterId": "evm"
+      "adapterId": "evm-arbitrum-sepolia"
     },
     {
       "id": "arbitrum-one",
@@ -440,7 +440,7 @@ export const runtimeCatalog = {
       "stage": "planned",
       "environment": "mainnet",
       "chainId": "42161",
-      "adapterId": "evm"
+      "adapterId": "evm-arbitrum-one"
     },
     {
       "id": "bnb-testnet",
@@ -449,7 +449,7 @@ export const runtimeCatalog = {
       "stage": "planned",
       "environment": "testnet",
       "chainId": "97",
-      "adapterId": "evm"
+      "adapterId": "evm-bnb-testnet"
     },
     {
       "id": "bnb-mainnet",
@@ -458,7 +458,7 @@ export const runtimeCatalog = {
       "stage": "planned",
       "environment": "mainnet",
       "chainId": "56",
-      "adapterId": "evm"
+      "adapterId": "evm-bnb-mainnet"
     },
     {
       "id": "base-sepolia",
@@ -467,7 +467,7 @@ export const runtimeCatalog = {
       "stage": "planned",
       "environment": "testnet",
       "chainId": "84532",
-      "adapterId": "evm"
+      "adapterId": "evm-base-sepolia"
     },
     {
       "id": "base-mainnet",
@@ -476,7 +476,7 @@ export const runtimeCatalog = {
       "stage": "planned",
       "environment": "mainnet",
       "chainId": "8453",
-      "adapterId": "evm"
+      "adapterId": "evm-base-mainnet"
     },
     {
       "id": "robinhood-testnet",
@@ -485,7 +485,7 @@ export const runtimeCatalog = {
       "stage": "planned",
       "environment": "testnet",
       "chainId": "46630",
-      "adapterId": "evm"
+      "adapterId": "evm-robinhood-testnet"
     },
     {
       "id": "robinhood-mainnet",
@@ -494,7 +494,7 @@ export const runtimeCatalog = {
       "stage": "planned",
       "environment": "mainnet",
       "chainId": "4663",
-      "adapterId": "evm"
+      "adapterId": "evm-robinhood-mainnet"
     },
     {
       "id": "tempo-testnet",
@@ -511,7 +511,7 @@ export const runtimeCatalog = {
       "family": "evm",
       "stage": "planned",
       "environment": "mainnet",
-      "adapterId": "evm"
+      "adapterId": "evm-tempo-mainnet"
     },
     {
       "id": "zcash-testnet",

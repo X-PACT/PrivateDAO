@@ -56,7 +56,7 @@ export const NETWORK_MATRIX: readonly NetworkDescriptor[] = [
     chainId: "1",
     finalityModel: "EVM block finality",
     explorerBaseUrl: "https://etherscan.io/",
-    adapterId: "evm",
+    adapterId: "evm-ethereum-mainnet",
   },
   {
     id: "arbitrum-sepolia",
@@ -67,7 +67,7 @@ export const NETWORK_MATRIX: readonly NetworkDescriptor[] = [
     chainId: "421614",
     finalityModel: "Arbitrum batch/finality lifecycle",
     explorerBaseUrl: "https://sepolia.arbiscan.io/",
-    adapterId: "evm",
+    adapterId: "evm-arbitrum-sepolia",
   },
   {
     id: "arbitrum-one",
@@ -78,7 +78,7 @@ export const NETWORK_MATRIX: readonly NetworkDescriptor[] = [
     chainId: "42161",
     finalityModel: "Arbitrum batch/finality lifecycle",
     explorerBaseUrl: "https://arbiscan.io/",
-    adapterId: "evm",
+    adapterId: "evm-arbitrum-one",
   },
   {
     id: "bnb-testnet",
@@ -89,7 +89,7 @@ export const NETWORK_MATRIX: readonly NetworkDescriptor[] = [
     chainId: "97",
     finalityModel: "EVM block finality",
     explorerBaseUrl: "https://testnet.bscscan.com/",
-    adapterId: "evm",
+    adapterId: "evm-bnb-testnet",
   },
   {
     id: "bnb-mainnet",
@@ -100,7 +100,7 @@ export const NETWORK_MATRIX: readonly NetworkDescriptor[] = [
     chainId: "56",
     finalityModel: "EVM block finality",
     explorerBaseUrl: "https://bscscan.com/",
-    adapterId: "evm",
+    adapterId: "evm-bnb-mainnet",
   },
   {
     id: "base-sepolia",
@@ -111,7 +111,7 @@ export const NETWORK_MATRIX: readonly NetworkDescriptor[] = [
     chainId: "84532",
     finalityModel: "EVM block finality",
     explorerBaseUrl: "https://sepolia.basescan.org/",
-    adapterId: "evm",
+    adapterId: "evm-base-sepolia",
   },
   {
     id: "base-mainnet",
@@ -122,7 +122,7 @@ export const NETWORK_MATRIX: readonly NetworkDescriptor[] = [
     chainId: "8453",
     finalityModel: "EVM block finality",
     explorerBaseUrl: "https://basescan.org/",
-    adapterId: "evm",
+    adapterId: "evm-base-mainnet",
   },
   {
     id: "robinhood-testnet",
@@ -133,7 +133,7 @@ export const NETWORK_MATRIX: readonly NetworkDescriptor[] = [
     chainId: "46630",
     finalityModel: "Arbitrum rollup finality lifecycle",
     explorerBaseUrl: "https://explorer.testnet.chain.robinhood.com/",
-    adapterId: "evm",
+    adapterId: "evm-robinhood-testnet",
   },
   {
     id: "robinhood-mainnet",
@@ -144,7 +144,7 @@ export const NETWORK_MATRIX: readonly NetworkDescriptor[] = [
     chainId: "4663",
     finalityModel: "Arbitrum rollup finality lifecycle",
     explorerBaseUrl: "https://robinhoodchain.blockscout.com/",
-    adapterId: "evm",
+    adapterId: "evm-robinhood-mainnet",
   },
   {
     id: "tempo-testnet",
@@ -164,7 +164,7 @@ export const NETWORK_MATRIX: readonly NetworkDescriptor[] = [
     stage: "planned",
     environment: "mainnet",
     finalityModel: "EVM block finality",
-    adapterId: "evm",
+    adapterId: "evm-tempo-mainnet",
   },
   {
     id: "zcash-testnet",
