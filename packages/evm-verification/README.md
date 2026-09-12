@@ -47,6 +47,20 @@ token, not the standard EVM gas-balance path. Tempo Testnet is only promoted
 after the same contract-write, receipt, proof, expiry, wrong-chain, altered-
 proof, and revocation checks pass on the Tempo chain itself.
 
+The organizational Treasury, Governance, and Sealed Auction E2E runner uses
+`PDAO_EVM_NETWORK` for one standard-EVM testnet at a time:
+
+```bash
+PDAO_EVM_NETWORK=arbitrum-sepolia \
+PDAO_EVM_ARBITRUM_SEPOLIA_RPC_URL=https://... \
+npm run test:evm:organizational
+```
+
+Supported values are `ethereum-sepolia`, `arbitrum-sepolia`, `bnb-testnet`,
+`base-sepolia`, and `robinhood-testnet`. The runner requires a funded testnet
+deployer, writes a network-specific evidence file only after all receipts and
+state assertions pass, and rejects unsupported or Mainnet networks.
+
 ## Current evidence boundary
 
 Ethereum Sepolia has a committed `testnet_verified` artifact at

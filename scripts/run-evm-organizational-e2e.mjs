@@ -16,9 +16,18 @@ import { generatePrivateKey, privateKeyToAccount } from "viem/accounts";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const PACKAGE = path.join(ROOT, "packages/evm-verification");
-const NETWORK = "ethereum-sepolia";
-const CHAIN_ID = 11155111;
-const RPC_ENV = "PDAO_EVM_ETHEREUM_SEPOLIA_RPC_URL";
+const NETWORK = process.env.PDAO_EVM_NETWORK?.trim() || "ethereum-sepolia";
+const NETWORK_CONFIG = {
+  "ethereum-sepolia": { chainId: 11155111, rpcEnv: "PDAO_EVM_ETHEREUM_SEPOLIA_RPC_URL", currency: { name: "Sepolia Ether", symbol: "ETH", decimals: 18 } },
+  "arbitrum-sepolia": { chainId: 421614, rpcEnv: "PDAO_EVM_ARBITRUM_SEPOLIA_RPC_URL", currency: { name: "Arbitrum Sepolia Ether", symbol: "ETH", decimals: 18 } },
+  "bnb-testnet": { chainId: 97, rpcEnv: "PDAO_EVM_BNB_TESTNET_RPC_URL", currency: { name: "BNB Testnet", symbol: "tBNB", decimals: 18 } },
+  "base-sepolia": { chainId: 84532, rpcEnv: "PDAO_EVM_BASE_SEPOLIA_RPC_URL", currency: { name: "Base Sepolia Ether", symbol: "ETH", decimals: 18 } },
+  "robinhood-testnet": { chainId: 46630, rpcEnv: "PDAO_EVM_ROBINHOOD_TESTNET_RPC_URL", currency: { name: "Robinhood Testnet Ether", symbol: "ETH", decimals: 18 } },
+};
+const networkConfig = NETWORK_CONFIG[NETWORK];
+if (!networkConfig) throw new Error(`Unsupported organizational E2E network: ${NETWORK}. Use a configured testnet only.`);
+const CHAIN_ID = networkConfig.chainId;
+const RPC_ENV = networkConfig.rpcEnv;
 const rawKey = process.env.PDAO_EVM_DEPLOYER_PRIVATE_KEY?.trim();
 const deployerKey = rawKey && /^[0-9a-fA-F]{64}$/.test(rawKey) ? `0x${rawKey}` : rawKey;
 if (!deployerKey || !/^0x[0-9a-fA-F]{64}$/.test(deployerKey)) throw new Error("PDAO_EVM_DEPLOYER_PRIVATE_KEY is required for Testnet execution.");
@@ -27,8 +36,8 @@ if (!rpcUrl || !/^https:\/\//.test(rpcUrl)) throw new Error(`${RPC_ENV} must be 
 
 const chain = defineChain({
   id: CHAIN_ID,
-  name: "Ethereum Sepolia",
-  nativeCurrency: { name: "Sepolia Ether", symbol: "ETH", decimals: 18 },
+  name: NETWORK,
+  nativeCurrency: networkConfig.currency,
   rpcUrls: { default: { http: [rpcUrl] } },
 });
 const deployer = privateKeyToAccount(deployerKey);
@@ -71,7 +80,7 @@ const expectRevert = async (operation, label) => {
 const observedChainId = await publicClient.getChainId();
 assert.equal(observedChainId, CHAIN_ID, "RPC chain mismatch");
 const deployerBalance = await publicClient.getBalance({ address: deployer.address });
-assert.ok(deployerBalance > parseEther("0.01"), "deployer lacks enough Sepolia ETH for this E2E");
+assert.ok(deployerBalance > parseEther("0.01"), `deployer lacks enough native testnet asset for ${NETWORK} E2E`);
 
 const deployments = {
   network: NETWORK,
@@ -147,5 +156,5 @@ assert.equal(Number(auctionState[5]), 3, "auction was not settled");
 deployments.evidence.auction = { auctionCreateHash, bidCommitHash, bidRevealHash, auctionFinalizeHash, auctionSettleHash, auctionId, status: "settled" };
 
 await mkdir(path.join(PACKAGE, "deployments"), { recursive: true });
-await writeFile(path.join(PACKAGE, "deployments/organizational-ethereum-sepolia.json"), `${JSON.stringify(deployments, null, 2)}\n`);
+await writeFile(path.join(PACKAGE, `deployments/organizational-${NETWORK}.json`), `${JSON.stringify(deployments, null, 2)}\n`);
 console.log(JSON.stringify({ network: NETWORK, chainId: CHAIN_ID, deployer: deployer.address, contracts: deployments.contracts, evidence: deployments.evidence }, null, 2));
