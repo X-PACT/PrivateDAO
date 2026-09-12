@@ -62,7 +62,8 @@ export const NETWORK_MATRIX: readonly NetworkDescriptor[] = [
     id: "arbitrum-sepolia",
     label: "Arbitrum Sepolia",
     family: "evm",
-    stage: "planned",
+    // The chain adapter and RPC are available; product execution remains gated by evidence.
+    stage: "available",
     environment: "testnet",
     chainId: "421614",
     finalityModel: "Arbitrum batch/finality lifecycle",
@@ -84,7 +85,8 @@ export const NETWORK_MATRIX: readonly NetworkDescriptor[] = [
     id: "bnb-testnet",
     label: "BNB Smart Chain Testnet",
     family: "evm",
-    stage: "planned",
+    // The chain adapter and RPC are available; product execution remains gated by evidence.
+    stage: "available",
     environment: "testnet",
     chainId: "97",
     finalityModel: "EVM block finality",
@@ -106,7 +108,8 @@ export const NETWORK_MATRIX: readonly NetworkDescriptor[] = [
     id: "base-sepolia",
     label: "Base Sepolia",
     family: "evm",
-    stage: "planned",
+    // The chain adapter and RPC are available; product execution remains gated by evidence.
+    stage: "available",
     environment: "testnet",
     chainId: "84532",
     finalityModel: "EVM block finality",
@@ -128,7 +131,8 @@ export const NETWORK_MATRIX: readonly NetworkDescriptor[] = [
     id: "robinhood-testnet",
     label: "Robinhood Chain Testnet",
     family: "evm",
-    stage: "planned",
+    // The chain adapter and RPC are available; product execution remains gated by evidence.
+    stage: "available",
     environment: "testnet",
     chainId: "46630",
     finalityModel: "Arbitrum rollup finality lifecycle",

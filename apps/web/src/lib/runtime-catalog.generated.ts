@@ -428,7 +428,7 @@ export const runtimeCatalog = {
       "id": "arbitrum-sepolia",
       "label": "Arbitrum Sepolia",
       "family": "evm",
-      "stage": "planned",
+      "stage": "available",
       "environment": "testnet",
       "chainId": "421614",
       "adapterId": "evm-arbitrum-sepolia"
@@ -446,7 +446,7 @@ export const runtimeCatalog = {
       "id": "bnb-testnet",
       "label": "BNB Smart Chain Testnet",
       "family": "evm",
-      "stage": "planned",
+      "stage": "available",
       "environment": "testnet",
       "chainId": "97",
       "adapterId": "evm-bnb-testnet"
@@ -464,7 +464,7 @@ export const runtimeCatalog = {
       "id": "base-sepolia",
       "label": "Base Sepolia",
       "family": "evm",
-      "stage": "planned",
+      "stage": "available",
       "environment": "testnet",
       "chainId": "84532",
       "adapterId": "evm-base-sepolia"
@@ -482,7 +482,7 @@ export const runtimeCatalog = {
       "id": "robinhood-testnet",
       "label": "Robinhood Chain Testnet",
       "family": "evm",
-      "stage": "planned",
+      "stage": "available",
       "environment": "testnet",
       "chainId": "46630",
       "adapterId": "evm-robinhood-testnet"
