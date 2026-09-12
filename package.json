@@ -354,7 +354,8 @@
     "deploy:devnet": "PATH=\"$HOME/.avm/bin:$PATH\" anchor deploy --provider.cluster devnet",
     "deploy:testnet": "PATH=\"$HOME/.avm/bin:$PATH\" anchor deploy --provider.cluster testnet",
     "setup:testnet": "bash scripts/setup-testnet.sh",
-    "verify:quicknode-stream-intake": "ts-node scripts/verify-quicknode-stream-intake.ts"
+    "verify:quicknode-stream-intake": "ts-node scripts/verify-quicknode-stream-intake.ts",
+    "verify:browser-network-boundary": "node scripts/verify-browser-network-boundary.mjs"
   },
   "dependencies": {
     "@aws-sdk/client-bedrock-runtime": "^3.1106.0",
