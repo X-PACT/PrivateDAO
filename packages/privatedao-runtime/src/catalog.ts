@@ -69,28 +69,28 @@ export const PRODUCT_CATALOG: readonly ProductDescriptor[] = [
     id: "treasury",
     name: "Private Treasury",
     availability: "available",
-    networks: [solanaDevnet],
-    capabilities: [capability("treasury.policy.check", "treasury", false)],
+    networks: [solanaDevnet, ethereumSepolia, tempoTestnet],
+    capabilities: [capability("treasury.policy.check", "treasury", false, true, [solanaDevnet, ethereumSepolia, tempoTestnet])],
   },
   {
     id: "governance",
     name: "Private Governance",
     availability: "available",
-    networks: [solanaDevnet],
-    capabilities: [capability("governance.proposal.execute", "governance", true)],
+    networks: [solanaDevnet, ethereumSepolia, tempoTestnet],
+    capabilities: [capability("governance.proposal.execute", "governance", true, true, [solanaDevnet, ethereumSepolia, tempoTestnet])],
   },
   {
     id: "auction",
     name: "Private Auctions",
     availability: "available",
-    networks: [solanaDevnet],
+    networks: [solanaDevnet, ethereumSepolia, tempoTestnet],
     capabilities: [
       // The current endpoint issues commitments/proof data off-chain; it does
       // not submit the financial bid transaction.
-      capability("auction.bid.commit", "auction", false),
+      capability("auction.bid.commit", "auction", false, true, [solanaDevnet, ethereumSepolia, tempoTestnet]),
       // The current Kernel action proves an already-bound outcome. It does
       // not submit the financial settlement transaction.
-      capability("auction.settle", "auction", false),
+      capability("auction.settle", "auction", false, true, [solanaDevnet, ethereumSepolia, tempoTestnet]),
     ],
   },
   {

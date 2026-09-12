@@ -180,7 +180,9 @@ export const runtimeCatalog = {
       "name": "Private Treasury",
       "availability": "available",
       "networks": [
-        "solana-devnet"
+        "solana-devnet",
+        "ethereum-sepolia",
+        "tempo-testnet"
       ],
       "capabilities": [
         {
@@ -196,6 +198,20 @@ export const runtimeCatalog = {
               "entrypoint": "kernel://treasury.policy.check",
               "method": null,
               "note": "Kernel-native deterministic policy evaluation; no wallet signature or treasury movement is performed."
+            },
+            {
+              "network": "ethereum-sepolia",
+              "mode": "kernel-gateway",
+              "entrypoint": "kernel://treasury.policy.check",
+              "method": null,
+              "note": "Ethereum Sepolia organizational Treasury contract passed real funding, budget, Maker/Checker approval, execution, receipt, and state reconciliation checks."
+            },
+            {
+              "network": "tempo-testnet",
+              "mode": "kernel-gateway",
+              "entrypoint": "kernel://treasury.policy.check",
+              "method": null,
+              "note": "Tempo Testnet token Treasury passed real AlphaUSD funding, budget, Maker/Checker approval, execution, receipt, and state reconciliation checks."
             }
           ]
         }
@@ -206,7 +222,9 @@ export const runtimeCatalog = {
       "name": "Private Governance",
       "availability": "available",
       "networks": [
-        "solana-devnet"
+        "solana-devnet",
+        "ethereum-sepolia",
+        "tempo-testnet"
       ],
       "capabilities": [
         {
@@ -222,6 +240,20 @@ export const runtimeCatalog = {
               "entrypoint": null,
               "method": null,
               "note": "No exact Kernel-backed governance execution action is exposed by the web app."
+            },
+            {
+              "network": "ethereum-sepolia",
+              "mode": "kernel-gateway",
+              "entrypoint": "kernel://governance.proposal.execute",
+              "method": null,
+              "note": "Ethereum Sepolia commit/reveal governance passed real proposal creation, early-reveal rejection, vote reveal, finalization, receipt, and state checks."
+            },
+            {
+              "network": "tempo-testnet",
+              "mode": "kernel-gateway",
+              "entrypoint": "kernel://governance.proposal.execute",
+              "method": null,
+              "note": "Tempo Testnet commit/reveal governance passed real proposal creation, early-reveal rejection, vote reveal, finalization, receipt, and state checks."
             }
           ]
         }
@@ -232,7 +264,9 @@ export const runtimeCatalog = {
       "name": "Private Auctions",
       "availability": "available",
       "networks": [
-        "solana-devnet"
+        "solana-devnet",
+        "ethereum-sepolia",
+        "tempo-testnet"
       ],
       "capabilities": [
         {
@@ -248,6 +282,20 @@ export const runtimeCatalog = {
               "entrypoint": "kernel://auction.bid.commit",
               "method": null,
               "note": "Kernel adapter delegates to the HTTPS sealed-bid commitment service; it returns observed public commitments and does not claim a wallet signature or token movement."
+            },
+            {
+              "network": "ethereum-sepolia",
+              "mode": "kernel-gateway",
+              "entrypoint": "kernel://auction.bid.commit",
+              "method": null,
+              "note": "Ethereum Sepolia sealed auction passed real commit, altered-reveal rejection, reveal, finalization, settlement, receipt, and state checks."
+            },
+            {
+              "network": "tempo-testnet",
+              "mode": "kernel-gateway",
+              "entrypoint": "kernel://auction.bid.commit",
+              "method": null,
+              "note": "Tempo Testnet AlphaUSD sealed auction passed real token approval, commit, altered-reveal rejection, reveal, finalization, settlement, receipt, and state checks."
             }
           ]
         },
@@ -264,6 +312,20 @@ export const runtimeCatalog = {
               "entrypoint": "kernel://auction.settle",
               "method": null,
               "note": "Kernel adapter delegates to the HTTPS outcome-proof service; it proves an already-bound result and does not claim token movement or an on-chain signature."
+            },
+            {
+              "network": "ethereum-sepolia",
+              "mode": "kernel-gateway",
+              "entrypoint": "kernel://auction.settle",
+              "method": null,
+              "note": "Ethereum Sepolia sealed auction settlement is backed by the committed organizational E2E evidence artifact."
+            },
+            {
+              "network": "tempo-testnet",
+              "mode": "kernel-gateway",
+              "entrypoint": "kernel://auction.settle",
+              "method": null,
+              "note": "Tempo Testnet AlphaUSD sealed auction settlement is backed by the committed organizational E2E evidence artifact."
             }
           ]
         }

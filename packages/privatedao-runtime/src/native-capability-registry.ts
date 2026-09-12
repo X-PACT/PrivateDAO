@@ -77,6 +77,31 @@ const TEMPO_TESTNET_EVIDENCE = {
   timestamp: "2026-09-10T18:57:09.255Z",
 } as const;
 
+const ORGANIZATIONAL_EVIDENCE = {
+  "ethereum-sepolia": {
+    provider: "evm-ethereum-sepolia-organizational",
+    contracts: [
+      "0x92739fdd28d200b7ced0d177c021079ce30412b1",
+      "0x8ea77a4b281c29d92bb6cb991687cc34462cd2a1",
+      "0xff3bbac12cb2630bee9f0576ea2ea202a059edf7",
+    ],
+    assets: ["ETH"],
+    commit: "64224f7",
+    timestamp: "2026-09-12T00:40:03.117Z",
+  },
+  "tempo-testnet": {
+    provider: "evm-tempo-testnet-organizational",
+    contracts: [
+      "0x88ef958407ee3929cc23b1737e89f0e8acdf7a57",
+      "0x1f51b3231cbb448793e41903181c68bcc96e4b5d",
+      "0x400805c6b9d4d4a3c4f604a293b0733453dde3ca",
+    ],
+    assets: ["AlphaUSD"],
+    commit: "3bbfdf2",
+    timestamp: "2026-09-12T02:03:31.644Z",
+  },
+} as const;
+
 function nativeAsset(network: NetworkDescriptor): string | null {
   if (network.family === "solana") return "SOL";
   if (network.id.startsWith("ethereum") || network.family === "evm") return network.id === "bnb-testnet" || network.id === "bnb-mainnet" ? "BNB" : "ETH";
@@ -175,6 +200,32 @@ function applyTempoTestnetEvidence(entry: NativeCapabilityEntry): NativeCapabili
   };
 }
 
+function applyOrganizationalEvidence(entry: NativeCapabilityEntry): NativeCapabilityEntry {
+  const evidence = ORGANIZATIONAL_EVIDENCE[entry.network as keyof typeof ORGANIZATIONAL_EVIDENCE];
+  const supportedCapability =
+    (entry.product === "treasury" && entry.capability === "treasury.policy.check") ||
+    (entry.product === "governance" && entry.capability === "governance.proposal.execute") ||
+    (entry.product === "auction" && ["auction.bid.commit", "auction.settle"].includes(entry.capability));
+  if (!evidence || !supportedCapability) return entry;
+  return {
+    ...entry,
+    provider: evidence.provider,
+    supportedAssets: evidence.assets,
+    contracts: evidence.contracts,
+    walletModel: "external-wallet",
+    supportsExecution: true,
+    supportsPrivateExecution: false,
+    supportsPrivateSettlement: false,
+    supportsProof: false,
+    supportsReceipt: true,
+    supportsReconciliation: true,
+    status: "testnet_verified",
+    lastVerifiedCommit: evidence.commit,
+    lastVerifiedTimestamp: evidence.timestamp,
+    evidence: "testnet-e2e",
+  };
+}
+
 /**
  * Conservative native capability registry. Planned entries are emitted so
  * discovery can explain the roadmap, but only evidence-backed entries are
@@ -183,7 +234,7 @@ function applyTempoTestnetEvidence(entry: NativeCapabilityEntry): NativeCapabili
 export function buildNativeCapabilityRegistry(): readonly NativeCapabilityEntry[] {
   return PRODUCT_CATALOG.flatMap((product) =>
     product.capabilities.flatMap((capability) =>
-      NETWORK_MATRIX.map((network) => applyTempoTestnetEvidence(applyPayrollDevnetEvidence(applyAgentMainnetEvidence(applyEthereumSepoliaEvidence({
+      NETWORK_MATRIX.map((network) => applyOrganizationalEvidence(applyTempoTestnetEvidence(applyPayrollDevnetEvidence(applyAgentMainnetEvidence(applyEthereumSepoliaEvidence({
         product: product.id,
         capability: capability.id,
         network: network.id,
@@ -208,7 +259,7 @@ export function buildNativeCapabilityRegistry(): readonly NativeCapabilityEntry[
         lastVerifiedCommit: null,
         lastVerifiedTimestamp: null,
         evidence: "none",
-      }))))),
+      })))))) ,
     ),
   );
 }
