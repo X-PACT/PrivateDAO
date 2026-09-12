@@ -1,0 +1,84 @@
+{
+  "ok": true,
+  "product": "confidential-payroll",
+  "network": "solana-devnet",
+  "payer": "4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD",
+  "umbraProgram": "DSuKkyqGVGgo4QtPABfxKJKygUDACbUhirnuv63mEpAJ",
+  "recipientCount": 3,
+  "reconciliation": {
+    "expectedCount": 3,
+    "confirmedCount": 3,
+    "failedCount": 0,
+    "duplicateSignatures": 0,
+    "allConfirmed": true
+  },
+  "batchState": "VERIFIED",
+  "proofType": "groth16-private-dao-blind-payroll-v1",
+  "proofHash": "40ff54ca0a9dcef759535184910bc36379c4aff3c3f065855e90b8ca4502b92a",
+  "settlementRoot": "26bb414995e8ade845fc168f9a9e7bc7c91215d69942ceff636a3adf329ab077",
+  "verificationPath": "/verify/payroll?token=_PENKFXIhTpge-i4xyoObd9R1U4mIZiGDOm4Ng8YUgg",
+  "publicRecord": {
+    "verification_id": "verification_5326e578-6efc-4ba1-9307-e17ec646f715",
+    "batch_id": "batch_39301d19-9118-411a-a018-a908b29bf3fa",
+    "scope": "public",
+    "proof_hash": "40ff54ca0a9dcef759535184910bc36379c4aff3c3f065855e90b8ca4502b92a",
+    "settlement_root": "26bb414995e8ade845fc168f9a9e7bc7c91215d69942ceff636a3adf329ab077",
+    "status": "active",
+    "expires_at": "2026-09-12T15:08:58.751Z",
+    "created_at": "2026-09-12T14:09:03.779Z",
+    "revoked_at": null,
+    "proofType": "groth16-private-dao-blind-payroll-v1",
+    "verificationUrl": "/verify/payroll?token=_PENKFXIhTpge-i4xyoObd9R1U4mIZiGDOm4Ng8YUgg"
+  },
+  "recipients": [
+    {
+      "recipient": "3kwFjRB68fbMRu2uRXZhHZ8P7h8T78EZRZfAYBVxLLVe",
+      "fundingSignature": "3m77nQv87cWbpo38nHSAHasvUKZR3ydAyE1uQXQwi8yLyXAwq2uS5DPnXJUkjVCnEC2vDVvBym9bFYZbWTdeR8ip",
+      "registrationSignature": "2dY2TBWtDMnFjkVY2m5LKcSkpCLdJXbG5J3ysH3rrRhzGcrwi4bs3kbbZ63GDNvb7rhJpEzwBzC2MHTdW58GxDXZ",
+      "signature": "2YckUbmXb6jKUyZXgBQ2pQmb2AbLxGgcfypqu4mHNmPFwKavYTdUwdq4jpyFcStAsUpcabH5Nq8QWJwJEjKiSdYu",
+      "slot": 497216468,
+      "optionalDataHash": "c5fd8804c264c5561f40433b47879b57e4075960e19472e3780270e46851c076",
+      "chainEvidence": {
+        "signature": "2YckUbmXb6jKUyZXgBQ2pQmb2AbLxGgcfypqu4mHNmPFwKavYTdUwdq4jpyFcStAsUpcabH5Nq8QWJwJEjKiSdYu",
+        "network": "solana-devnet",
+        "commitment": "finalized",
+        "slot": 497216468,
+        "programId": "DSuKkyqGVGgo4QtPABfxKJKygUDACbUhirnuv63mEpAJ",
+        "optionalDataHash": "c5fd8804c264c5561f40433b47879b57e4075960e19472e3780270e46851c076"
+      }
+    },
+    {
+      "recipient": "9NefMxBVkQday4V9Ad77n4M6J3HLtotMdBiRMpkBQ8Rf",
+      "fundingSignature": "3f1X3YUg9bX8bzD4xPi7poNdvPii29GCxe9DopXv1coWbUyaEqgnpKyyuFNF8QaE47nfciuUEkToviU4DzRkjt6s",
+      "registrationSignature": "3fmpCcHZ9b7XXZkN1gAu6P7jLQY3ToWHrDmitaroKvXt8xYVMmkZVFgE2Jx5xDJ3EaSUcXL3TWFUVfxc3jrEW8M6",
+      "signature": "2NZkPQs2QwwvAj2ZYS7vXraWqm7esXxXQ68oZwGw8NRdoZjNn7fBiC36m8y25MbUTJYrs3SZwmFDw96dJeRpYP76",
+      "slot": 497216590,
+      "optionalDataHash": "b3fe7b1f9237d14b4c23576095d91c64465301b78592a36aba6c3eab75c5223b",
+      "chainEvidence": {
+        "signature": "2NZkPQs2QwwvAj2ZYS7vXraWqm7esXxXQ68oZwGw8NRdoZjNn7fBiC36m8y25MbUTJYrs3SZwmFDw96dJeRpYP76",
+        "network": "solana-devnet",
+        "commitment": "finalized",
+        "slot": 497216590,
+        "programId": "DSuKkyqGVGgo4QtPABfxKJKygUDACbUhirnuv63mEpAJ",
+        "optionalDataHash": "b3fe7b1f9237d14b4c23576095d91c64465301b78592a36aba6c3eab75c5223b"
+      }
+    },
+    {
+      "recipient": "5dV4TuwBiKxKUDHYDuoWVZdGFQjNRQVfNiVpUt6YNRSt",
+      "fundingSignature": "4kEzWUgiJSkQwxxJvzM7FM7ZQB4CkRFSvfFF5p7TD8CTnUGKgMiHZAfxyyUNt7GwvqtSVy4abe6nGUVkX7DWdT51",
+      "registrationSignature": "4xL6v7SCfAHwx9hnouHrsH4ATbcm9Sq6nJiKvXasTAMu1KewtN7Q6e59LBjpV1vLxJyvXee1jG9FvPnHnCKBPDfj",
+      "signature": "5fE5Q6id8gDtZcqvwNm5xL5X8tJG6GZ9mtitMv9zHsGUhBUCZ54J2pAMUW5GQgtUtY2Uo8uxPGm9iiS4o4eyHUdo",
+      "slot": 497216720,
+      "optionalDataHash": "acb72fd22a43251a19295878e8ac96e2748516212fe556dc7667de424c6f4d0c",
+      "chainEvidence": {
+        "signature": "5fE5Q6id8gDtZcqvwNm5xL5X8tJG6GZ9mtitMv9zHsGUhBUCZ54J2pAMUW5GQgtUtY2Uo8uxPGm9iiS4o4eyHUdo",
+        "network": "solana-devnet",
+        "commitment": "finalized",
+        "slot": 497216720,
+        "programId": "DSuKkyqGVGgo4QtPABfxKJKygUDACbUhirnuv63mEpAJ",
+        "optionalDataHash": "acb72fd22a43251a19295878e8ac96e2748516212fe556dc7667de424c6f4d0c"
+      }
+    }
+  ],
+  "secretsPrinted": false
+}

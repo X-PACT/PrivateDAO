@@ -68,6 +68,8 @@
     "probe:qvac-runtime": "node scripts/probe-qvac-sdk.mjs",
     "probe:cloak-devnet-sdk": "node scripts/probe-cloak-devnet-sdk.mjs",
     "probe:umbra-devnet-sdk": "node scripts/probe-umbra-devnet-sdk.mjs",
+    "probe:umbra-payroll-devnet": "node scripts/run-umbra-devnet-settlement-probe.mjs",
+    "test:payroll:devnet:e2e": "node --experimental-strip-types scripts/record-payroll-devnet-e2e.mjs",
     "probe:magicblock-private-payments": "node scripts/probe-magicblock-private-payments.mjs",
     "probe:agent-discovery": "node scripts/probe-agent-discovery.mjs",
     "build:solrouter-encrypted-ai-evidence": "node scripts/generate-solrouter-encrypted-ai-evidence.mjs",
