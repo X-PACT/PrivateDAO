@@ -6,7 +6,7 @@ import { PublicKey, Transaction, TransactionInstruction } from "@solana/web3.js"
 
 import { buttonVariants } from "@/components/ui/button";
 import { captureVisitorTransaction } from "@/lib/visitor-transaction-capture";
-import { confirmTransaction, latestBlockhash } from "@/lib/network-adapters/solana-browser";
+import { latestBlockhash, sendAndConfirmBrowserTransaction } from "@/lib/network-adapters/solana-browser";
 import { buildSolanaTxUrl, SOLANA_NETWORK_LABEL } from "@/lib/solana-network";
 import { cn } from "@/lib/utils";
 
@@ -563,10 +563,18 @@ export function PrivacyExecutionClaimConsole({ compact = false }: { compact?: bo
       );
 
       setStatus(`Awaiting wallet signature for ${selectedClaim.label} claim attestation...`);
-      const nextSignature = await sendTransaction(transaction, connection, {
-        maxRetries: 3,
-        skipPreflight: false,
-      });
+      const nextSignature = await sendAndConfirmBrowserTransaction(
+        connection,
+        transaction,
+        sendTransaction,
+        "confirmed",
+        (signature) => ({
+          signature,
+          blockhash: recentBlockhash.blockhash,
+          lastValidBlockHeight: recentBlockhash.lastValidBlockHeight,
+        }),
+        { maxRetries: 3, skipPreflight: false },
+      );
 
       captureVisitorTransaction({
         txSignature: nextSignature,
@@ -578,16 +586,6 @@ export function PrivacyExecutionClaimConsole({ compact = false }: { compact?: bo
 
       setSignature(nextSignature);
       setStatus(`Signature received. Confirming ${selectedClaim.label} claim on ${SOLANA_NETWORK_LABEL}...`);
-
-      await confirmTransaction(
-        connection,
-        {
-          signature: nextSignature,
-          blockhash: recentBlockhash.blockhash,
-          lastValidBlockHeight: recentBlockhash.lastValidBlockHeight,
-        },
-        "confirmed",
-      );
 
       captureVisitorTransaction({
         txSignature: nextSignature,

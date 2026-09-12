@@ -9,10 +9,10 @@ import { Buffer } from "buffer";
 import { buttonVariants } from "@/components/ui/button";
 import { buildSolanaTxUrl, SOLANA_NETWORK_LABEL } from "@/lib/solana-network";
 import {
-  confirmTransaction,
   latestBlockhash,
   readTokenAccountBalance,
   readTransaction,
+  sendAndConfirmBrowserTransaction,
 } from "@/lib/network-adapters/solana-browser";
 import { persistOperationReceipt } from "@/lib/supabase/operation-receipts";
 import { getTreasuryReceiveConfig } from "@/lib/treasury-receive-config";
@@ -281,10 +281,18 @@ export function TestnetBillingRehearsal() {
       }
 
       setStatus(`Awaiting wallet signature for the ${SOLANA_NETWORK_LABEL} billing rehearsal...`);
-      const nextSignature = await sendTransaction(transaction, connection, {
-        maxRetries: 3,
-        skipPreflight: false,
-      });
+      const nextSignature = await sendAndConfirmBrowserTransaction(
+        connection,
+        transaction,
+        sendTransaction,
+        "confirmed",
+        (signature) => ({
+          signature,
+          blockhash: recentBlockhash.blockhash,
+          lastValidBlockHeight: recentBlockhash.lastValidBlockHeight,
+        }),
+        { maxRetries: 3, skipPreflight: false },
+      );
       captureVisitorTransaction({
         txSignature: nextSignature,
         walletAddress: publicKey.toBase58(),
@@ -295,16 +303,6 @@ export function TestnetBillingRehearsal() {
 
       setSignature(nextSignature);
       setStatus(`Signature received. Confirming the on-chain ${SOLANA_NETWORK_LABEL} billing rehearsal...`);
-
-      await confirmTransaction(
-        connection,
-        {
-          signature: nextSignature,
-          blockhash: recentBlockhash.blockhash,
-          lastValidBlockHeight: recentBlockhash.lastValidBlockHeight,
-        },
-        "confirmed",
-      );
 
       const confirmedTransaction = await readTransaction(connection, nextSignature, {
         commitment: "confirmed",

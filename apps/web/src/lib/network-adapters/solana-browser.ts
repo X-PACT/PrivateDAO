@@ -2,6 +2,7 @@ import {
   Connection,
   type Commitment,
   type PublicKey,
+  type Signer,
   type SendOptions,
   type Transaction,
   type TransactionConfirmationStrategy,
@@ -9,10 +10,11 @@ import {
 } from "@solana/web3.js";
 
 export type SolanaBrowserConnection = Connection;
+export type SolanaWalletSendOptions = SendOptions & { signers?: Signer[] };
 export type SolanaWalletSender = (
   transaction: Transaction,
   connection: SolanaBrowserConnection,
-  options?: SendOptions,
+  options?: SolanaWalletSendOptions,
 ) => Promise<string>;
 
 export function createSolanaBrowserConnection(endpoint: string, commitment: Commitment): SolanaBrowserConnection {
@@ -71,9 +73,16 @@ export async function sendAndConfirmBrowserTransaction(
   transaction: Transaction,
   sendTransaction: SolanaWalletSender,
   commitment: Commitment = "confirmed",
+  confirmation: TransactionConfirmationStrategy | string | ((signature: string) => TransactionConfirmationStrategy) | undefined = undefined,
+  options?: SolanaWalletSendOptions,
 ) {
-  const signature = await sendTransaction(transaction, connection);
-  await confirmTransaction(connection, signature, commitment);
+  const signature = await sendTransaction(transaction, connection, options);
+  const strategy = typeof confirmation === "function" ? confirmation(signature) : confirmation ?? signature;
+  if (typeof strategy === "string") {
+    await confirmTransaction(connection, strategy, commitment);
+  } else {
+    await confirmTransaction(connection, strategy, commitment);
+  }
   return signature;
 }
 
