@@ -9,13 +9,19 @@ import {
   encodeAbiParameters,
   http,
   keccak256,
+  parseAbi,
   parseEther,
+  parseUnits,
   zeroHash,
 } from "viem";
 import { generatePrivateKey, privateKeyToAccount } from "viem/accounts";
+import { createClient as createTempoClient } from "viem/tempo";
+import { tempoModerato } from "viem/chains";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const PACKAGE = path.join(ROOT, "packages/evm-verification");
+const TEMPO_FEE_TOKEN = "0x20c0000000000000000000000000000000000001";
+const TEMPO_TOKEN_DECIMALS = 6;
 const NETWORK = process.env.PDAO_EVM_NETWORK?.trim() || "ethereum-sepolia";
 const NETWORK_CONFIG = {
   "ethereum-sepolia": { chainId: 11155111, rpcEnv: "PDAO_EVM_ETHEREUM_SEPOLIA_RPC_URL", currency: { name: "Sepolia Ether", symbol: "ETH", decimals: 18 } },
@@ -23,6 +29,7 @@ const NETWORK_CONFIG = {
   "bnb-testnet": { chainId: 97, rpcEnv: "PDAO_EVM_BNB_TESTNET_RPC_URL", currency: { name: "BNB Testnet", symbol: "tBNB", decimals: 18 } },
   "base-sepolia": { chainId: 84532, rpcEnv: "PDAO_EVM_BASE_SEPOLIA_RPC_URL", currency: { name: "Base Sepolia Ether", symbol: "ETH", decimals: 18 } },
   "robinhood-testnet": { chainId: 46630, rpcEnv: "PDAO_EVM_ROBINHOOD_TESTNET_RPC_URL", currency: { name: "Robinhood Testnet Ether", symbol: "ETH", decimals: 18 } },
+  "tempo-testnet": { chainId: 42431, rpcEnv: "PDAO_EVM_TEMPO_TESTNET_RPC_URL", currency: { name: "Tempo Testnet USD", symbol: "USD", decimals: 18 } },
 };
 const networkConfig = NETWORK_CONFIG[NETWORK];
 if (!networkConfig) throw new Error(`Unsupported organizational E2E network: ${NETWORK}. Use a configured testnet only.`);
@@ -43,16 +50,29 @@ const chain = defineChain({
 const deployer = privateKeyToAccount(deployerKey);
 const checker = privateKeyToAccount(generatePrivateKey());
 const transport = http(rpcUrl, { timeout: 30_000 });
-const publicClient = createPublicClient({ chain, transport });
-const deployerWallet = createWalletClient({ account: deployer, chain, transport });
-const checkerWallet = createWalletClient({ account: checker, chain, transport });
+const deployerTempoClient = NETWORK === "tempo-testnet"
+  ? createTempoClient({ account: deployer, chain: tempoModerato.extend({ feeToken: TEMPO_FEE_TOKEN }), transport })
+  : null;
+const checkerTempoClient = NETWORK === "tempo-testnet"
+  ? createTempoClient({ account: checker, chain: tempoModerato.extend({ feeToken: TEMPO_FEE_TOKEN }), transport })
+  : null;
+const publicClient = deployerTempoClient ?? createPublicClient({ chain, transport });
+const deployerWallet = deployerTempoClient ?? createWalletClient({ account: deployer, chain, transport });
+const checkerWallet = checkerTempoClient ?? createWalletClient({ account: checker, chain, transport });
+const tempoTokenMode = NETWORK === "tempo-testnet";
+const erc20Abi = parseAbi([
+  "function approve(address spender, uint256 amount) returns (bool)",
+  "function transfer(address to, uint256 amount) returns (bool)",
+  "function transferFrom(address from, address to, uint256 amount) returns (bool)",
+  "function balanceOf(address account) view returns (uint256)",
+]);
 
-const treasuryAbi = JSON.parse(await readFile(path.join(PACKAGE, "artifacts/PrivateDaoTreasury.abi"), "utf8"));
-const treasuryBytecode = `0x${(await readFile(path.join(PACKAGE, "artifacts/PrivateDaoTreasury.bin"), "utf8")).trim()}`;
+const treasuryAbi = JSON.parse(await readFile(path.join(PACKAGE, `artifacts/${tempoTokenMode ? "PrivateDaoTokenTreasury" : "PrivateDaoTreasury"}.abi`), "utf8"));
+const treasuryBytecode = `0x${(await readFile(path.join(PACKAGE, `artifacts/${tempoTokenMode ? "PrivateDaoTokenTreasury" : "PrivateDaoTreasury"}.bin`), "utf8")).trim()}`;
 const governanceAbi = JSON.parse(await readFile(path.join(PACKAGE, "artifacts/PrivateDaoGovernance.abi"), "utf8"));
 const governanceBytecode = `0x${(await readFile(path.join(PACKAGE, "artifacts/PrivateDaoGovernance.bin"), "utf8")).trim()}`;
-const auctionAbi = JSON.parse(await readFile(path.join(PACKAGE, "artifacts/PrivateDaoSealedAuction.abi"), "utf8"));
-const auctionBytecode = `0x${(await readFile(path.join(PACKAGE, "artifacts/PrivateDaoSealedAuction.bin"), "utf8")).trim()}`;
+const auctionAbi = JSON.parse(await readFile(path.join(PACKAGE, `artifacts/${tempoTokenMode ? "PrivateDaoTokenSealedAuction" : "PrivateDaoSealedAuction"}.abi`), "utf8"));
+const auctionBytecode = `0x${(await readFile(path.join(PACKAGE, `artifacts/${tempoTokenMode ? "PrivateDaoTokenSealedAuction" : "PrivateDaoSealedAuction"}.bin`), "utf8")).trim()}`;
 
 const runId = `${Date.now()}-${process.pid}`;
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -93,24 +113,30 @@ const deployments = {
   evidence: {},
 };
 
-const checkerFundingHash = await deployerWallet.sendTransaction({ to: checker.address, value: parseEther("0.002") });
-await tx(checkerFundingHash);
+const checkerFundingHash = tempoTokenMode
+  ? await write(deployerWallet, TEMPO_FEE_TOKEN, erc20Abi, "transfer", [checker.address, parseUnits("10", TEMPO_TOKEN_DECIMALS)])
+  : await deployerWallet.sendTransaction({ to: checker.address, value: parseEther("0.002") });
+if (!tempoTokenMode) await tx(checkerFundingHash);
 
-const treasury = await deploy(deployerWallet, treasuryAbi, treasuryBytecode, [checker.address]);
+const treasury = await deploy(deployerWallet, treasuryAbi, treasuryBytecode, tempoTokenMode ? [checker.address, TEMPO_FEE_TOKEN] : [checker.address]);
 deployments.contracts.treasury = treasury;
-const treasuryFundingHash = await deployerWallet.sendTransaction({ to: treasury.address, value: parseEther("0.001") });
-await tx(treasuryFundingHash);
+const treasuryAmount = tempoTokenMode ? parseUnits("1", TEMPO_TOKEN_DECIMALS) : parseEther("0.001");
+const treasuryApprovalHash = tempoTokenMode ? await write(deployerWallet, TEMPO_FEE_TOKEN, erc20Abi, "approve", [treasury.address, treasuryAmount]) : null;
+const treasuryFundingHash = tempoTokenMode
+  ? await write(deployerWallet, treasury.address, treasuryAbi, "deposit", [treasuryAmount])
+  : await deployerWallet.sendTransaction({ to: treasury.address, value: treasuryAmount });
+if (!tempoTokenMode) await tx(treasuryFundingHash);
 const budgetId = keccak256(`0x${Buffer.from(`budget:${runId}`).toString("hex")}`);
 const paymentId = keccak256(`0x${Buffer.from(`payment:${runId}`).toString("hex")}`);
 const recipient = checker.address;
-const paymentAmount = parseEther("0.0001");
+const paymentAmount = tempoTokenMode ? parseUnits("0.1", TEMPO_TOKEN_DECIMALS) : parseEther("0.0001");
 await write(deployerWallet, treasury.address, treasuryAbi, "configureBudget", [budgetId, paymentAmount]);
 const requestedHash = await write(deployerWallet, treasury.address, treasuryAbi, "requestPayment", [paymentId, budgetId, recipient, paymentAmount]);
 const approvedHash = await write(checkerWallet, treasury.address, treasuryAbi, "approvePayment", [paymentId]);
 const executedHash = await write(deployerWallet, treasury.address, treasuryAbi, "executePayment", [paymentId]);
 const payment = await publicClient.readContract({ address: treasury.address, abi: treasuryAbi, functionName: "payments", args: [paymentId] });
 assert.equal(Number(payment[3]), 3, "treasury payment was not executed");
-deployments.evidence.treasury = { treasuryFundingHash, requestedHash, approvedHash, executedHash, paymentId, status: "executed" };
+deployments.evidence.treasury = { checkerFundingHash, treasuryApprovalHash, treasuryFundingHash, requestedHash, approvedHash, executedHash, paymentId, status: "executed" };
 
 const governance = await deploy(deployerWallet, governanceAbi, governanceBytecode, []);
 deployments.contracts.governance = governance;
@@ -132,19 +158,22 @@ const proposal = await publicClient.readContract({ address: governance.address, 
 assert.equal(Number(proposal[7]), 2, "governance proposal did not pass");
 deployments.evidence.governance = { proposalHash, voteCommitHash, voteRevealHash, proposalFinalizeHash, proposalId, status: "passed" };
 
-const auction = await deploy(deployerWallet, auctionAbi, auctionBytecode, []);
+const auction = await deploy(deployerWallet, auctionAbi, auctionBytecode, tempoTokenMode ? [TEMPO_FEE_TOKEN] : []);
 deployments.contracts.auction = auction;
 const auctionId = keccak256(`0x${Buffer.from(`auction:${runId}`).toString("hex")}`);
-const bidAmount = parseEther("0.0002");
-const escrow = parseEther("0.0003");
+const bidAmount = tempoTokenMode ? parseUnits("0.2", TEMPO_TOKEN_DECIMALS) : parseEther("0.0002");
+const escrow = tempoTokenMode ? parseUnits("0.3", TEMPO_TOKEN_DECIMALS) : parseEther("0.0003");
 const auctionNow = Math.floor(Date.now() / 1000);
 const biddingEnd = BigInt(auctionNow + 120);
 const auctionRevealEnd = BigInt(auctionNow + 300);
 const auctionCreateHash = await write(deployerWallet, auction.address, auctionAbi, "createAuction", [auctionId, deployer.address, biddingEnd, auctionRevealEnd]);
 const bidSalt = keccak256(`0x${Buffer.from(`bid-salt:${runId}`).toString("hex")}`);
 const bidCommitment = keccak256(encodeAbiParameters([{ type: "bytes32" }, { type: "address" }, { type: "uint256" }, { type: "bytes32" }], [auctionId, checker.address, bidAmount, bidSalt]));
-const bidCommitHash = await checkerWallet.writeContract({ address: auction.address, abi: auctionAbi, functionName: "commitBid", args: [auctionId, bidCommitment], value: escrow });
-await tx(bidCommitHash);
+const bidApprovalHash = tempoTokenMode ? await write(checkerWallet, TEMPO_FEE_TOKEN, erc20Abi, "approve", [auction.address, escrow]) : null;
+const bidCommitHash = tempoTokenMode
+  ? await write(checkerWallet, auction.address, auctionAbi, "commitBid", [auctionId, bidCommitment, escrow])
+  : await checkerWallet.writeContract({ address: auction.address, abi: auctionAbi, functionName: "commitBid", args: [auctionId, bidCommitment], value: escrow });
+if (!tempoTokenMode) await tx(bidCommitHash);
 await expectRevert(() => checkerWallet.writeContract({ address: auction.address, abi: auctionAbi, functionName: "revealBid", args: [auctionId, bidAmount + 1n, bidSalt] }), "altered auction reveal");
 await sleep(130_000);
 const bidRevealHash = await write(checkerWallet, auction.address, auctionAbi, "revealBid", [auctionId, bidAmount, bidSalt]);
@@ -153,7 +182,7 @@ const auctionFinalizeHash = await write(deployerWallet, auction.address, auction
 const auctionSettleHash = await write(deployerWallet, auction.address, auctionAbi, "settleAuction", [auctionId]);
 const auctionState = await publicClient.readContract({ address: auction.address, abi: auctionAbi, functionName: "auctions", args: [auctionId] });
 assert.equal(Number(auctionState[5]), 3, "auction was not settled");
-deployments.evidence.auction = { auctionCreateHash, bidCommitHash, bidRevealHash, auctionFinalizeHash, auctionSettleHash, auctionId, status: "settled" };
+deployments.evidence.auction = { bidApprovalHash, auctionCreateHash, bidCommitHash, bidRevealHash, auctionFinalizeHash, auctionSettleHash, auctionId, status: "settled" };
 
 await mkdir(path.join(PACKAGE, "deployments"), { recursive: true });
 await writeFile(path.join(PACKAGE, `deployments/organizational-${NETWORK}.json`), `${JSON.stringify(deployments, null, 2)}\n`);

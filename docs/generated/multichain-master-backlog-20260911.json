@@ -96,7 +96,7 @@
       "phase": "product-expansion",
       "status": "testnet_verified",
       "requires": "Independent E2E evidence per additional network",
-      "evidence": ["packages/privatedao-runtime/src/catalog.ts", "packages/privatedao-runtime/src/application-bindings.ts", "packages/evm-verification/contracts/PrivateDaoTreasury.sol", "packages/evm-verification/contracts/PrivateDaoGovernance.sol", "packages/evm-verification/contracts/PrivateDaoSealedAuction.sol", "scripts/run-evm-organizational-e2e.mjs", "scripts/compile-evm-verification.sh", "packages/evm-verification/deployments/organizational-ethereum-sepolia.json"]
+      "evidence": ["packages/privatedao-runtime/src/catalog.ts", "packages/privatedao-runtime/src/application-bindings.ts", "packages/evm-verification/contracts/PrivateDaoTreasury.sol", "packages/evm-verification/contracts/PrivateDaoTokenTreasury.sol", "packages/evm-verification/contracts/PrivateDaoGovernance.sol", "packages/evm-verification/contracts/PrivateDaoSealedAuction.sol", "packages/evm-verification/contracts/PrivateDaoTokenSealedAuction.sol", "scripts/run-evm-organizational-e2e.mjs", "scripts/compile-evm-verification.sh", "packages/evm-verification/deployments/organizational-ethereum-sepolia.json", "packages/evm-verification/deployments/organizational-tempo-testnet.json"]
     },
     {
       "id": "security-dependency-remediation",

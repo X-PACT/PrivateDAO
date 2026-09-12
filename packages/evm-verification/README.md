@@ -57,9 +57,12 @@ npm run test:evm:organizational
 ```
 
 Supported values are `ethereum-sepolia`, `arbitrum-sepolia`, `bnb-testnet`,
-`base-sepolia`, and `robinhood-testnet`. The runner requires a funded testnet
-deployer, writes a network-specific evidence file only after all receipts and
-state assertions pass, and rejects unsupported or Mainnet networks.
+`base-sepolia`, `robinhood-testnet`, and `tempo-testnet`. Tempo uses the
+AlphaUSD TIP-20 token and the tokenized Treasury/Auction contracts because
+Tempo rejects native `msg.value` transfers. The runner requires a funded
+testnet deployer, writes a network-specific evidence file only after all
+receipts and state assertions pass, and rejects unsupported or Mainnet
+networks.
 
 ## Current evidence boundary
 
