@@ -9,6 +9,7 @@ const suites = [
   ["runtime-evm", ["npm", "run", "test:runtime:evm-foundation"]],
   ["record-verification", ["npm", "run", "test:record-verification"]],
   ["capability-registry", ["npm", "run", "test:native-capability-registry"]],
+  ["capability-matrix", ["npm", "run", "verify:native-capability-matrix"]],
   ["application-bindings", ["npm", "run", "verify:application-bindings"]],
   ["commercial", ["node", "scripts/test-commercial-lifecycle.mjs"]],
 ];
