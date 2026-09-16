@@ -49,8 +49,8 @@ const ETHEREUM_SEPOLIA_EVIDENCE = {
     "0x6f813E1221cB5f760BbC5b467983c014bbE4B3B5c",
   ],
   provider: "evm-ethereum-sepolia",
-  commit: "f7b6dc0",
-  timestamp: "2026-09-10T09:48:50.225Z",
+  commit: "7b4d430",
+  timestamp: "2026-09-16T21:53:12.853Z",
 } as const;
 
 const AGENT_MAINNET_EVIDENCE = {
@@ -73,8 +73,8 @@ const TEMPO_TESTNET_EVIDENCE = {
     "0xffe6e9a78dafd35f230ad51c7bd96ba469d53405",
     "0x9570769a1a4980d199845ccb276706face805cb4",
   ],
-  commit: "01c868c",
-  timestamp: "2026-09-10T18:57:09.255Z",
+  commit: "7b4d430",
+  timestamp: "2026-09-16T21:53:12.853Z",
 } as const;
 
 const ORGANIZATIONAL_EVIDENCE = {

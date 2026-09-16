@@ -41,7 +41,7 @@ for (const entry of verified.filter((candidate) => candidate.network === "tempo-
   assert.equal(entry.provider, "evm-tempo-testnet");
   assert.equal(entry.chainId, "42431");
   assert.equal(entry.supportsMainnet, false);
-  assert.equal(entry.lastVerifiedCommit, "01c868c");
+  assert.equal(entry.lastVerifiedCommit, "7b4d430");
 }
 assert.equal(verified.filter((entry) => entry.network === "tempo-testnet" && entry.provider === "evm-tempo-testnet").length, 3, "Tempo must have three verified verification rows");
 assert.equal(verified.filter((entry) => entry.provider === "evm-ethereum-sepolia-organizational").length, 4, "Ethereum organizational evidence must cover treasury, governance, and auction lanes");
