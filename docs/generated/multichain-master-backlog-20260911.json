@@ -22,15 +22,15 @@
       "id": "verification-ethereum-sepolia",
       "phase": "verification-e2e",
       "status": "testnet_verified",
-      "evidence": ["packages/evm-verification/deployments/phase-2-e2e-ethereum-sepolia.json", "apps/web/public/evm-verification/phase-2-e2e-ethereum-sepolia.json", "https://privatedao.org/verify/evm"],
-      "validation": "Real record and Groth16 blind proof transactions with negative-path and revocation checks."
+      "evidence": ["packages/evm-verification/deployments/phase-2-e2e-ethereum-sepolia-tempo-testnet.json", "packages/evm-verification/deployments/phase-2-e2e-ethereum-sepolia.json", "apps/web/public/evm-verification/phase-2-e2e-ethereum-sepolia.json", "https://privatedao.org/verify/evm"],
+      "validation": "Real record and Groth16 blind proof transactions with wrong-chain, altered-proof, expiry, revocation, and cross-network replay rejection checks."
     },
     {
       "id": "verification-tempo-testnet",
       "phase": "verification-e2e",
       "status": "testnet_verified",
-      "evidence": ["packages/evm-verification/deployments/phase-2-e2e-tempo-testnet.json"],
-      "validation": "Real record and blind verification lifecycle on chain 42431."
+      "evidence": ["packages/evm-verification/deployments/phase-2-e2e-ethereum-sepolia-tempo-testnet.json", "packages/evm-verification/deployments/phase-2-e2e-tempo-testnet.json"],
+      "validation": "Real record and blind verification lifecycle on chain 42431 with wrong-chain, altered-proof, expiry, revocation, and cross-network replay rejection checks."
     },
     {
       "id": "payroll-solana-devnet",
