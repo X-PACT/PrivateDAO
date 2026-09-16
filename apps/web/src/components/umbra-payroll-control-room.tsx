@@ -159,9 +159,9 @@ export function UmbraPayrollControlRoom() {
       });
       for (const item of itemValues) item.recipientCommitment = await sha256(item.recipientAddress);
       const publicItems = itemValues.map((item) => {
-        const publicItem = { ...item };
-        delete publicItem.recipientAddress;
-        delete publicItem.employeeRefCiphertext;
+        const { recipientAddress, employeeRefCiphertext, ...publicItem } = item;
+        void recipientAddress;
+        void employeeRefCiphertext;
         return publicItem;
       });
       const batchCommitment = await sha256(JSON.stringify(publicItems));

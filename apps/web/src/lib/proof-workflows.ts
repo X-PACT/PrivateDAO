@@ -244,8 +244,8 @@ export function createProofWorkflowEvent(input: ProofWorkflowEventInput): ProofW
 }
 
 export function redactProofWorkflowEvent(event: ProofWorkflowEvent): PublicProofWorkflowEvent {
-  const publicEvent = { ...event };
-  delete publicEvent.actorId;
+  const { actorId, ...publicEvent } = event;
+  void actorId;
   return publicEvent;
 }
 
