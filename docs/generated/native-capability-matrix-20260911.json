@@ -1,6 +1,6 @@
 {
   "schema": "privatedao.native-capability-matrix.v1",
-  "generatedAt": "2026-09-16T21:55:03.496Z",
+  "generatedAt": "2026-09-16T22:17:12.394Z",
   "bridgeFree": true,
   "entries": [
     {
@@ -3083,8 +3083,8 @@
       "supportsReconciliation": true,
       "supportsMainnet": false,
       "status": "testnet_verified",
-      "lastVerifiedCommit": "3bbfdf2",
-      "lastVerifiedTimestamp": "2026-09-12T02:03:31.644Z",
+      "lastVerifiedCommit": "332565a",
+      "lastVerifiedTimestamp": "2026-09-16T22:03:49.724Z",
       "evidence": "testnet-e2e"
     },
     {
@@ -3539,8 +3539,8 @@
       "supportsReconciliation": true,
       "supportsMainnet": false,
       "status": "testnet_verified",
-      "lastVerifiedCommit": "3bbfdf2",
-      "lastVerifiedTimestamp": "2026-09-12T02:03:31.644Z",
+      "lastVerifiedCommit": "332565a",
+      "lastVerifiedTimestamp": "2026-09-16T22:03:49.724Z",
       "evidence": "testnet-e2e"
     },
     {
@@ -3995,8 +3995,8 @@
       "supportsReconciliation": true,
       "supportsMainnet": false,
       "status": "testnet_verified",
-      "lastVerifiedCommit": "3bbfdf2",
-      "lastVerifiedTimestamp": "2026-09-12T02:03:31.644Z",
+      "lastVerifiedCommit": "332565a",
+      "lastVerifiedTimestamp": "2026-09-16T22:03:49.724Z",
       "evidence": "testnet-e2e"
     },
     {
@@ -4451,8 +4451,8 @@
       "supportsReconciliation": true,
       "supportsMainnet": false,
       "status": "testnet_verified",
-      "lastVerifiedCommit": "3bbfdf2",
-      "lastVerifiedTimestamp": "2026-09-12T02:03:31.644Z",
+      "lastVerifiedCommit": "332565a",
+      "lastVerifiedTimestamp": "2026-09-16T22:03:49.724Z",
       "evidence": "testnet-e2e"
     },
     {

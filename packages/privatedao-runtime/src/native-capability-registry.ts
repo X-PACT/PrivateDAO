@@ -97,8 +97,8 @@ const ORGANIZATIONAL_EVIDENCE = {
       "0x400805c6b9d4d4a3c4f604a293b0733453dde3ca",
     ],
     assets: ["AlphaUSD"],
-    commit: "3bbfdf2",
-    timestamp: "2026-09-12T02:03:31.644Z",
+    commit: "332565a",
+    timestamp: "2026-09-16T22:03:49.724Z",
   },
 } as const;
 
