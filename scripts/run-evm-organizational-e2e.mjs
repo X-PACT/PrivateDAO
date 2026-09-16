@@ -49,7 +49,11 @@ const chain = defineChain({
 });
 const deployer = privateKeyToAccount(deployerKey);
 const checker = privateKeyToAccount(generatePrivateKey());
-const transport = http(rpcUrl, { timeout: 30_000 });
+const rpcTimeoutMs = Number(process.env.PDAO_EVM_RPC_TIMEOUT_MS || 120_000);
+if (!Number.isInteger(rpcTimeoutMs) || rpcTimeoutMs < 10_000 || rpcTimeoutMs > 300_000) {
+  throw new Error("PDAO_EVM_RPC_TIMEOUT_MS must be an integer between 10000 and 300000.");
+}
+const transport = http(rpcUrl, { timeout: rpcTimeoutMs, retryCount: 3, retryDelay: 1_000 });
 const deployerTempoClient = NETWORK === "tempo-testnet"
   ? createTempoClient({ account: deployer, chain: tempoModerato.extend({ feeToken: TEMPO_FEE_TOKEN }), transport })
   : null;
