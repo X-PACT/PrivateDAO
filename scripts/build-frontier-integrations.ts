@@ -141,14 +141,17 @@ async function main() {
   const capturedConfidentialProposal = confidentialCapture
     ? proposals.find((proposal) => proposal.pubkey === confidentialCapture.proposalPublicKey)
     : null;
+  // Prefer a currently indexed, settled proposal. Runtime captures are
+  // valuable fallback evidence, but an older capture must not hide a newer
+  // live proposal whose accounts can be independently checked now.
   const confidentialProposal =
-    capturedConfidentialProposal ??
     proposals.find(
       (proposal) =>
         proposal.confidentialPayoutPlan &&
         proposal.refheEnvelope?.status === "Settled" &&
         proposal.magicblockCorridor?.status === "Settled",
     ) ??
+    capturedConfidentialProposal ??
     proposals.find(
       (proposal) =>
         proposal.confidentialPayoutPlan &&

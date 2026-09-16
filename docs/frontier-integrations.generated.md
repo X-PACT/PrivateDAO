@@ -3,7 +3,7 @@
 ## Overview
 
 - project: `PrivateDAO`
-- generated at: `2026-05-26T03:05:31.037Z`
+- generated at: `2026-09-16T20:46:23.335Z`
 - network: `testnet`
 - program id: `EP9xE8MJZ6FfyEwLqns6HDdUZBknEa7WGYs1Jzsecuva`
 - verification wallet: `4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD`
@@ -17,7 +17,7 @@
 - rpc provider class: `public-testnet`
 - MagicBlock API base: `https://payments.magicblock.app`
 - MagicBlock health: `ok`
-- indexed proposals: `17`
+- indexed proposals: `24`
 - indexed zk_enforced proposals: `0`
 - indexed confidential payout proposals: `3`
 - indexed MagicBlock-settled proposals: `1`
@@ -25,12 +25,12 @@
 
 ## Simple Governance Path
 
-- dao: `CKDqPz4H64U5b66CDrTKAHDuQXV9NwMsKtDjZyUNHhiH`
-- treasury: `mAM4bKHsk3xWBfzdgLrFByPpXP6bw6h21kMEc5hF6CN`
-- proposal: `8zFTWHhB8YonTX6FjAfRsWRP45izwBQaj57btAqgdtVi`
+- dao: `2gDRTWaNRjiySVdvqoSXnnUYF8CFSaJUxwG6LBg8P1gG`
+- treasury: `GAWAZrDkdM2jSF977E2tCbzRddzKRbqnUFPRtXf1KzyH`
+- proposal: `27FtqDFgsKTqQXUSTPGatffYiQ5mQbuq4PFS4AzHX4uR`
 - proposal source: `live-read-node-fallback`
 - proof-registry proposal: `AegjmwkX1FknBJMDyH5yM6BMhyHsiUreNtz3d8iz3QrP`
-- phase: `Executable`
+- phase: `Executed`
 - lifecycle status: `Passed`
 - verification status: `degraded-testnet-governance-path`
 

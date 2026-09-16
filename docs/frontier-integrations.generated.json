@@ -1,6 +1,6 @@
 {
   "project": "PrivateDAO",
-  "generatedAt": "2026-05-26T03:05:31.037Z",
+  "generatedAt": "2026-09-16T20:46:23.335Z",
   "network": "testnet",
   "programId": "EP9xE8MJZ6FfyEwLqns6HDdUZBknEa7WGYs1Jzsecuva",
   "verificationWallet": "4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD",
@@ -13,9 +13,9 @@
     "magicBlockApiBase": "https://payments.magicblock.app",
     "magicBlockHealth": "ok",
     "overview": {
-      "generatedAt": "2026-05-26T03:05:21.068Z",
-      "proposals": 17,
-      "uniqueDaos": 16,
+      "generatedAt": "2026-09-16T20:45:56.929Z",
+      "proposals": 24,
+      "uniqueDaos": 23,
       "zkEnforced": 0,
       "confidentialPayouts": 3,
       "magicblockConfigured": 2,
@@ -27,14 +27,14 @@
     }
   },
   "simpleGovernance": {
-    "dao": "CKDqPz4H64U5b66CDrTKAHDuQXV9NwMsKtDjZyUNHhiH",
-    "treasury": "mAM4bKHsk3xWBfzdgLrFByPpXP6bw6h21kMEc5hF6CN",
+    "dao": "2gDRTWaNRjiySVdvqoSXnnUYF8CFSaJUxwG6LBg8P1gG",
+    "treasury": "GAWAZrDkdM2jSF977E2tCbzRddzKRbqnUFPRtXf1KzyH",
     "proofRegistryDao": "FZV9KmpeY1B31XvszQypp5T6nQN5C44JDLM4QWBEDvhx",
     "proofRegistryTreasury": "AZUroiNeGAjNdD84eEHnAKHHFwqAFmkjr2g1eoF7Ek5c",
-    "proposal": "8zFTWHhB8YonTX6FjAfRsWRP45izwBQaj57btAqgdtVi",
+    "proposal": "27FtqDFgsKTqQXUSTPGatffYiQ5mQbuq4PFS4AzHX4uR",
     "proposalSource": "live-read-node-fallback",
     "proofRegistryProposal": "AegjmwkX1FknBJMDyH5yM6BMhyHsiUreNtz3d8iz3QrP",
-    "phase": "Executable",
+    "phase": "Executed",
     "lifecycleStatus": "Passed",
     "accountChecks": [
       {
@@ -46,21 +46,21 @@
       },
       {
         "label": "simple-dao",
-        "pubkey": "CKDqPz4H64U5b66CDrTKAHDuQXV9NwMsKtDjZyUNHhiH",
+        "pubkey": "2gDRTWaNRjiySVdvqoSXnnUYF8CFSaJUxwG6LBg8P1gG",
         "endpoint": "https://api.testnet.solana.com",
         "exists": true,
         "executable": false
       },
       {
         "label": "simple-treasury",
-        "pubkey": "mAM4bKHsk3xWBfzdgLrFByPpXP6bw6h21kMEc5hF6CN",
-        "endpoint": "unavailable",
-        "exists": false,
+        "pubkey": "GAWAZrDkdM2jSF977E2tCbzRddzKRbqnUFPRtXf1KzyH",
+        "endpoint": "https://api.testnet.solana.com",
+        "exists": true,
         "executable": false
       },
       {
         "label": "simple-proposal",
-        "pubkey": "8zFTWHhB8YonTX6FjAfRsWRP45izwBQaj57btAqgdtVi",
+        "pubkey": "27FtqDFgsKTqQXUSTPGatffYiQ5mQbuq4PFS4AzHX4uR",
         "endpoint": "https://api.testnet.solana.com",
         "exists": true,
         "executable": false
