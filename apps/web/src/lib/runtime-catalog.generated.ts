@@ -25,21 +25,51 @@ export const runtimeCatalog = {
               "mode": "kernel-gateway",
               "entrypoint": "kernel://verification.blind.prove",
               "method": null,
-              "note": "Kernel adapter delegates to the HTTPS proof service and accepts only an observed successful public proof package."
+              "note": "Kernel adapter delegates to the HTTPS proof service and accepts only an observed successful public proof package.",
+              "evidenceStatus": "implementation",
+              "evidence": "none",
+              "supportsExecution": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "SOL"
+              ],
+              "provider": "solana-devnet"
             },
             {
               "network": "ethereum-sepolia",
               "mode": "kernel-gateway",
               "entrypoint": "kernel://verification.blind.prove",
               "method": null,
-              "note": "Ethereum Sepolia verifier deployment and negative-proof tests are recorded in the EVM testnet evidence packet."
+              "note": "Ethereum Sepolia verifier deployment and negative-proof tests are recorded in the EVM testnet evidence packet.",
+              "evidenceStatus": "testnet_verified",
+              "evidence": "testnet-e2e",
+              "supportsExecution": true,
+              "supportsProof": true,
+              "supportsReceipt": true,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-ethereum-sepolia"
             },
             {
               "network": "tempo-testnet",
               "mode": "kernel-gateway",
               "entrypoint": "kernel://verification.blind.prove",
               "method": null,
-              "note": "Tempo Testnet Groth16 verifier and blind registry passed real on-chain proof, altered-proof, wrong-chain, expiry, and revocation checks."
+              "note": "Tempo Testnet Groth16 verifier and blind registry passed real on-chain proof, altered-proof, wrong-chain, expiry, and revocation checks.",
+              "evidenceStatus": "testnet_verified",
+              "evidence": "testnet-e2e",
+              "supportsExecution": true,
+              "supportsProof": true,
+              "supportsReceipt": true,
+              "supportsReconciliation": true,
+              "supportedAssets": [
+                "AlphaUSD"
+              ],
+              "provider": "evm-tempo-testnet"
             }
           ]
         }
@@ -67,21 +97,51 @@ export const runtimeCatalog = {
               "mode": "kernel-gateway",
               "entrypoint": "kernel://verification.record.create",
               "method": null,
-              "note": "Kernel-native digest and selective disclosure artifact; no public URL or on-chain anchor is created."
+              "note": "Kernel-native digest and selective disclosure artifact; no public URL or on-chain anchor is created.",
+              "evidenceStatus": "implementation",
+              "evidence": "none",
+              "supportsExecution": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "SOL"
+              ],
+              "provider": "solana-devnet"
             },
             {
               "network": "ethereum-sepolia",
               "mode": "kernel-gateway",
               "entrypoint": "kernel://verification.record.create",
               "method": null,
-              "note": "Ethereum Sepolia record registry deployment and transaction evidence are recorded; source payload remains off-chain."
+              "note": "Ethereum Sepolia record registry deployment and transaction evidence are recorded; source payload remains off-chain.",
+              "evidenceStatus": "testnet_verified",
+              "evidence": "testnet-e2e",
+              "supportsExecution": true,
+              "supportsProof": false,
+              "supportsReceipt": true,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-ethereum-sepolia"
             },
             {
               "network": "tempo-testnet",
               "mode": "kernel-gateway",
               "entrypoint": "kernel://verification.record.create",
               "method": null,
-              "note": "Tempo Testnet record registry passed real on-chain anchoring, verification, expiry, and revocation checks."
+              "note": "Tempo Testnet record registry passed real on-chain anchoring, verification, expiry, and revocation checks.",
+              "evidenceStatus": "testnet_verified",
+              "evidence": "testnet-e2e",
+              "supportsExecution": true,
+              "supportsProof": false,
+              "supportsReceipt": true,
+              "supportsReconciliation": true,
+              "supportedAssets": [
+                "AlphaUSD"
+              ],
+              "provider": "evm-tempo-testnet"
             }
           ]
         },
@@ -97,21 +157,51 @@ export const runtimeCatalog = {
               "mode": "kernel-gateway",
               "entrypoint": "kernel://verification.record.verify",
               "method": null,
-              "note": "Kernel-native digest verification; no source payload is returned and no on-chain anchor is claimed."
+              "note": "Kernel-native digest verification; no source payload is returned and no on-chain anchor is claimed.",
+              "evidenceStatus": "implementation",
+              "evidence": "none",
+              "supportsExecution": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "SOL"
+              ],
+              "provider": "solana-devnet"
             },
             {
               "network": "ethereum-sepolia",
               "mode": "kernel-gateway",
               "entrypoint": "kernel://verification.record.verify",
               "method": null,
-              "note": "Ethereum Sepolia record verification and wrong-network/altered-proof tests are recorded in the EVM evidence packet."
+              "note": "Ethereum Sepolia record verification and wrong-network/altered-proof tests are recorded in the EVM evidence packet.",
+              "evidenceStatus": "testnet_verified",
+              "evidence": "testnet-e2e",
+              "supportsExecution": true,
+              "supportsProof": false,
+              "supportsReceipt": true,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-ethereum-sepolia"
             },
             {
               "network": "tempo-testnet",
               "mode": "kernel-gateway",
               "entrypoint": "kernel://verification.record.verify",
               "method": null,
-              "note": "Tempo Testnet record verification is bound to chain ID 42431 and the deployed registry domain."
+              "note": "Tempo Testnet record verification is bound to chain ID 42431 and the deployed registry domain.",
+              "evidenceStatus": "testnet_verified",
+              "evidence": "testnet-e2e",
+              "supportsExecution": true,
+              "supportsProof": false,
+              "supportsReceipt": true,
+              "supportsReconciliation": true,
+              "supportedAssets": [
+                "AlphaUSD"
+              ],
+              "provider": "evm-tempo-testnet"
             }
           ]
         }
@@ -137,7 +227,17 @@ export const runtimeCatalog = {
               "mode": "kernel-gateway",
               "entrypoint": "kernel://payroll.calculate",
               "method": null,
-              "note": "Kernel-native deterministic calculation; no wallet signature or settlement is performed."
+              "note": "Kernel-native deterministic calculation; no wallet signature or settlement is performed.",
+              "evidenceStatus": "devnet_verified",
+              "evidence": "devnet-e2e",
+              "supportsExecution": true,
+              "supportsProof": false,
+              "supportsReceipt": true,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "WSOL"
+              ],
+              "provider": "umbra-solana-devnet"
             }
           ]
         },
@@ -153,7 +253,17 @@ export const runtimeCatalog = {
               "mode": "kernel-gateway",
               "entrypoint": "kernel://payroll.approve",
               "method": null,
-              "note": "Kernel-backed Maker/Checker policy gate; wallet/network adapter must verify the supplied checker signature before production promotion."
+              "note": "Kernel-backed Maker/Checker policy gate; wallet/network adapter must verify the supplied checker signature before production promotion.",
+              "evidenceStatus": "devnet_verified",
+              "evidence": "devnet-e2e",
+              "supportsExecution": true,
+              "supportsProof": false,
+              "supportsReceipt": true,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "WSOL"
+              ],
+              "provider": "umbra-solana-devnet"
             }
           ]
         },
@@ -169,7 +279,17 @@ export const runtimeCatalog = {
               "mode": "legacy-provider",
               "entrypoint": "/api/private-payout/prepare",
               "method": "POST",
-              "note": "Existing private-payout provider route; it is not evidence of an end-to-end payroll settlement."
+              "note": "Existing private-payout provider route; it is not evidence of an end-to-end payroll settlement.",
+              "evidenceStatus": "devnet_verified",
+              "evidence": "devnet-e2e",
+              "supportsExecution": true,
+              "supportsProof": true,
+              "supportsReceipt": true,
+              "supportsReconciliation": true,
+              "supportedAssets": [
+                "WSOL"
+              ],
+              "provider": "umbra-solana-devnet"
             }
           ]
         }
@@ -197,21 +317,51 @@ export const runtimeCatalog = {
               "mode": "kernel-gateway",
               "entrypoint": "kernel://treasury.policy.check",
               "method": null,
-              "note": "Kernel-native deterministic policy evaluation; no wallet signature or treasury movement is performed."
+              "note": "Kernel-native deterministic policy evaluation; no wallet signature or treasury movement is performed.",
+              "evidenceStatus": "implementation",
+              "evidence": "none",
+              "supportsExecution": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "SOL"
+              ],
+              "provider": "solana-devnet"
             },
             {
               "network": "ethereum-sepolia",
               "mode": "kernel-gateway",
               "entrypoint": "kernel://treasury.policy.check",
               "method": null,
-              "note": "Ethereum Sepolia organizational Treasury contract passed real funding, budget, Maker/Checker approval, execution, receipt, and state reconciliation checks."
+              "note": "Ethereum Sepolia organizational Treasury contract passed real funding, budget, Maker/Checker approval, execution, receipt, and state reconciliation checks.",
+              "evidenceStatus": "testnet_verified",
+              "evidence": "testnet-e2e",
+              "supportsExecution": true,
+              "supportsProof": false,
+              "supportsReceipt": true,
+              "supportsReconciliation": true,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-ethereum-sepolia-organizational"
             },
             {
               "network": "tempo-testnet",
               "mode": "kernel-gateway",
               "entrypoint": "kernel://treasury.policy.check",
               "method": null,
-              "note": "Tempo Testnet token Treasury passed real AlphaUSD funding, budget, Maker/Checker approval, execution, receipt, and state reconciliation checks."
+              "note": "Tempo Testnet token Treasury passed real AlphaUSD funding, budget, Maker/Checker approval, execution, receipt, and state reconciliation checks.",
+              "evidenceStatus": "testnet_verified",
+              "evidence": "testnet-e2e",
+              "supportsExecution": true,
+              "supportsProof": false,
+              "supportsReceipt": true,
+              "supportsReconciliation": true,
+              "supportedAssets": [
+                "AlphaUSD"
+              ],
+              "provider": "evm-tempo-testnet-organizational"
             }
           ]
         }
@@ -239,21 +389,51 @@ export const runtimeCatalog = {
               "mode": "unbound",
               "entrypoint": null,
               "method": null,
-              "note": "No exact Kernel-backed governance execution action is exposed by the web app."
+              "note": "No exact Kernel-backed governance execution action is exposed by the web app.",
+              "evidenceStatus": "implementation",
+              "evidence": "none",
+              "supportsExecution": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "SOL"
+              ],
+              "provider": "solana-devnet"
             },
             {
               "network": "ethereum-sepolia",
               "mode": "kernel-gateway",
               "entrypoint": "kernel://governance.proposal.execute",
               "method": null,
-              "note": "Ethereum Sepolia commit/reveal governance passed real proposal creation, early-reveal rejection, vote reveal, finalization, receipt, and state checks."
+              "note": "Ethereum Sepolia commit/reveal governance passed real proposal creation, early-reveal rejection, vote reveal, finalization, receipt, and state checks.",
+              "evidenceStatus": "testnet_verified",
+              "evidence": "testnet-e2e",
+              "supportsExecution": true,
+              "supportsProof": false,
+              "supportsReceipt": true,
+              "supportsReconciliation": true,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-ethereum-sepolia-organizational"
             },
             {
               "network": "tempo-testnet",
               "mode": "kernel-gateway",
               "entrypoint": "kernel://governance.proposal.execute",
               "method": null,
-              "note": "Tempo Testnet commit/reveal governance passed real proposal creation, early-reveal rejection, vote reveal, finalization, receipt, and state checks."
+              "note": "Tempo Testnet commit/reveal governance passed real proposal creation, early-reveal rejection, vote reveal, finalization, receipt, and state checks.",
+              "evidenceStatus": "testnet_verified",
+              "evidence": "testnet-e2e",
+              "supportsExecution": true,
+              "supportsProof": false,
+              "supportsReceipt": true,
+              "supportsReconciliation": true,
+              "supportedAssets": [
+                "AlphaUSD"
+              ],
+              "provider": "evm-tempo-testnet-organizational"
             }
           ]
         }
@@ -281,21 +461,51 @@ export const runtimeCatalog = {
               "mode": "kernel-gateway",
               "entrypoint": "kernel://auction.bid.commit",
               "method": null,
-              "note": "Kernel adapter delegates to the HTTPS sealed-bid commitment service; it returns observed public commitments and does not claim a wallet signature or token movement."
+              "note": "Kernel adapter delegates to the HTTPS sealed-bid commitment service; it returns observed public commitments and does not claim a wallet signature or token movement.",
+              "evidenceStatus": "implementation",
+              "evidence": "none",
+              "supportsExecution": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "SOL"
+              ],
+              "provider": "solana-devnet"
             },
             {
               "network": "ethereum-sepolia",
               "mode": "kernel-gateway",
               "entrypoint": "kernel://auction.bid.commit",
               "method": null,
-              "note": "Ethereum Sepolia sealed auction passed real commit, altered-reveal rejection, reveal, finalization, settlement, receipt, and state checks."
+              "note": "Ethereum Sepolia sealed auction passed real commit, altered-reveal rejection, reveal, finalization, settlement, receipt, and state checks.",
+              "evidenceStatus": "testnet_verified",
+              "evidence": "testnet-e2e",
+              "supportsExecution": true,
+              "supportsProof": false,
+              "supportsReceipt": true,
+              "supportsReconciliation": true,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-ethereum-sepolia-organizational"
             },
             {
               "network": "tempo-testnet",
               "mode": "kernel-gateway",
               "entrypoint": "kernel://auction.bid.commit",
               "method": null,
-              "note": "Tempo Testnet AlphaUSD sealed auction passed real token approval, commit, altered-reveal rejection, reveal, finalization, settlement, receipt, and state checks."
+              "note": "Tempo Testnet AlphaUSD sealed auction passed real token approval, commit, altered-reveal rejection, reveal, finalization, settlement, receipt, and state checks.",
+              "evidenceStatus": "testnet_verified",
+              "evidence": "testnet-e2e",
+              "supportsExecution": true,
+              "supportsProof": false,
+              "supportsReceipt": true,
+              "supportsReconciliation": true,
+              "supportedAssets": [
+                "AlphaUSD"
+              ],
+              "provider": "evm-tempo-testnet-organizational"
             }
           ]
         },
@@ -311,21 +521,51 @@ export const runtimeCatalog = {
               "mode": "kernel-gateway",
               "entrypoint": "kernel://auction.settle",
               "method": null,
-              "note": "Kernel adapter delegates to the HTTPS outcome-proof service; it proves an already-bound result and does not claim token movement or an on-chain signature."
+              "note": "Kernel adapter delegates to the HTTPS outcome-proof service; it proves an already-bound result and does not claim token movement or an on-chain signature.",
+              "evidenceStatus": "implementation",
+              "evidence": "none",
+              "supportsExecution": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "SOL"
+              ],
+              "provider": "solana-devnet"
             },
             {
               "network": "ethereum-sepolia",
               "mode": "kernel-gateway",
               "entrypoint": "kernel://auction.settle",
               "method": null,
-              "note": "Ethereum Sepolia sealed auction settlement is backed by the committed organizational E2E evidence artifact."
+              "note": "Ethereum Sepolia sealed auction settlement is backed by the committed organizational E2E evidence artifact.",
+              "evidenceStatus": "testnet_verified",
+              "evidence": "testnet-e2e",
+              "supportsExecution": true,
+              "supportsProof": false,
+              "supportsReceipt": true,
+              "supportsReconciliation": true,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-ethereum-sepolia-organizational"
             },
             {
               "network": "tempo-testnet",
               "mode": "kernel-gateway",
               "entrypoint": "kernel://auction.settle",
               "method": null,
-              "note": "Tempo Testnet AlphaUSD sealed auction settlement is backed by the committed organizational E2E evidence artifact."
+              "note": "Tempo Testnet AlphaUSD sealed auction settlement is backed by the committed organizational E2E evidence artifact.",
+              "evidenceStatus": "testnet_verified",
+              "evidence": "testnet-e2e",
+              "supportsExecution": true,
+              "supportsProof": false,
+              "supportsReceipt": true,
+              "supportsReconciliation": true,
+              "supportedAssets": [
+                "AlphaUSD"
+              ],
+              "provider": "evm-tempo-testnet-organizational"
             }
           ]
         }
@@ -352,14 +592,34 @@ export const runtimeCatalog = {
               "mode": "kernel-gateway",
               "entrypoint": "kernel://agent.discover",
               "method": null,
-              "note": "Kernel-native read-only Agent Card fetch; no agent activity or external adoption is inferred."
+              "note": "Kernel-native read-only Agent Card fetch; no agent activity or external adoption is inferred.",
+              "evidenceStatus": "implementation",
+              "evidence": "none",
+              "supportsExecution": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "SOL"
+              ],
+              "provider": "solana-devnet"
             },
             {
               "network": "solana-mainnet-beta",
               "mode": "unbound",
               "entrypoint": null,
               "method": null,
-              "note": "The live Agent Exchange is an external service at agents.privatedao.org; it is verified separately and is not an apps/web application route."
+              "note": "The live Agent Exchange is an external service at agents.privatedao.org; it is verified separately and is not an apps/web application route.",
+              "evidenceStatus": "mainnet_live",
+              "evidence": "runtime-only",
+              "supportsExecution": true,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "SOL"
+              ],
+              "provider": "https://agents.privatedao.org"
             }
           ]
         },
@@ -375,14 +635,34 @@ export const runtimeCatalog = {
               "mode": "unbound",
               "entrypoint": null,
               "method": null,
-              "note": "No Kernel-backed Agent Marketplace invocation action is exposed by the web app."
+              "note": "No Kernel-backed Agent Marketplace invocation action is exposed by the web app.",
+              "evidenceStatus": "implementation",
+              "evidence": "none",
+              "supportsExecution": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "SOL"
+              ],
+              "provider": "solana-devnet"
             },
             {
               "network": "solana-mainnet-beta",
               "mode": "unbound",
               "entrypoint": null,
               "method": null,
-              "note": "The live Agent Exchange job surface is external to apps/web; paid settlement is not verified as a Kernel application action."
+              "note": "The live Agent Exchange job surface is external to apps/web; paid settlement is not verified as a Kernel application action.",
+              "evidenceStatus": "mainnet_live",
+              "evidence": "runtime-only",
+              "supportsExecution": true,
+              "supportsProof": false,
+              "supportsReceipt": true,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "SOL"
+              ],
+              "provider": "https://agents.privatedao.org"
             }
           ]
         }

@@ -2,6 +2,7 @@ import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 
 import {
+  buildNativeCapabilityRegistry,
   findApplicationBinding,
   NETWORK_MATRIX,
   PRODUCT_CATALOG,
@@ -9,6 +10,7 @@ import {
 
 async function main() {
   const root = process.cwd();
+  const nativeCapabilities = buildNativeCapabilityRegistry();
   const outputPath = process.env.WEB_RUNTIME_CATALOG_OUTPUT
     ? path.resolve(root, process.env.WEB_RUNTIME_CATALOG_OUTPUT)
     : path.join(root, "apps/web/src/lib/runtime-catalog.generated.ts");
@@ -25,16 +27,28 @@ async function main() {
         version: capability.version,
         requiresSignature: capability.requiresSignature,
         supportsAsync: capability.supportsAsync,
-        receiptSchema: capability.receiptSchema,
-        applicationBindings: capability.networks.map((network) => {
-          const binding = findApplicationBinding(product.id, capability.id, network);
-          return {
-            network,
-            mode: binding.mode,
-            entrypoint: binding.entrypoint ?? null,
-            method: binding.method ?? null,
-            note: binding.note,
-          };
+          receiptSchema: capability.receiptSchema,
+          applicationBindings: capability.networks.map((network) => {
+            const binding = findApplicationBinding(product.id, capability.id, network);
+            const evidence = nativeCapabilities.find(
+              (entry) => entry.product === product.id && entry.capability === capability.id && entry.network === network,
+            );
+            if (!evidence) throw new Error(`Missing native capability evidence row for ${product.id}/${capability.id}/${network}`);
+            return {
+              network,
+              mode: binding.mode,
+              entrypoint: binding.entrypoint ?? null,
+              method: binding.method ?? null,
+              note: binding.note,
+              evidenceStatus: evidence.status,
+              evidence: evidence.evidence,
+              supportsExecution: evidence.supportsExecution,
+              supportsProof: evidence.supportsProof,
+              supportsReceipt: evidence.supportsReceipt,
+              supportsReconciliation: evidence.supportsReconciliation,
+              supportedAssets: [...evidence.supportedAssets],
+              provider: evidence.provider,
+            };
         }),
       })),
     })),

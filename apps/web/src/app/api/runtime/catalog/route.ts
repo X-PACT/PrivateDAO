@@ -1,5 +1,7 @@
 import { runtimeCatalog } from "@/lib/runtime-catalog.generated";
 
+const VERIFIED_EVIDENCE = new Set(["devnet_verified", "testnet_verified", "mainnet_live"] as const);
+
 export const dynamic = "force-static";
 
 /**
@@ -15,7 +17,10 @@ export function GET() {
       ...product,
       capabilities: product.capabilities.map((capability) => {
         const modes = capability.applicationBindings.map((binding) => binding.mode);
-        const executionStatus = modes.includes("kernel-gateway")
+        const evidenceBacked = capability.applicationBindings.some(
+          (binding) => binding.mode === "kernel-gateway" && binding.supportsExecution && VERIFIED_EVIDENCE.has(binding.evidenceStatus),
+        );
+        const executionStatus = evidenceBacked
           ? "kernel-bound"
           : modes.includes("legacy-provider")
             ? "legacy-provider"
@@ -26,6 +31,7 @@ export function GET() {
           // Legacy routes remain discoverable for compatibility, but are not
           // advertised as Kernel-backed execution.
           executable: executionStatus === "kernel-bound",
+          evidenceBacked,
           legacyRouteAvailable: executionStatus === "legacy-provider",
         };
       }),
