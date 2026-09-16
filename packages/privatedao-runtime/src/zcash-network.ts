@@ -112,8 +112,14 @@ export class ZcashNetworkAdapter implements KernelProvider {
 
   async receipt<TResult = unknown>(executionId: string): Promise<ExecutionReceipt<TResult>> {
     const receipt = await this.call(() => this.transport.receipt<TResult>(executionId));
-    if (receipt.network !== this.config.network || !receipt.createdAt || receipt.signatures.length === 0) {
-      throw new ZcashAdapterError("MALFORMED_RECEIPT", "Zcash receipt is missing the network, timestamp, or transaction reference.");
+    if (
+      receipt.network !== this.config.network
+      || receipt.environment !== this.config.environment
+      || receipt.asset !== this.config.nativeAsset
+      || !receipt.createdAt
+      || receipt.signatures.length === 0
+    ) {
+      throw new ZcashAdapterError("MALFORMED_RECEIPT", "Zcash receipt is missing the configured network, environment, asset, timestamp, or transaction reference.");
     }
     return receipt;
   }

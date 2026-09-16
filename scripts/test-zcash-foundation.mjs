@@ -53,6 +53,9 @@ mode = "timeout";
 await assert.rejects(() => adapter.health(), (error) => error instanceof ZcashAdapterError && error.code === "RPC_TIMEOUT");
 mode = "malformed-receipt";
 await assert.rejects(() => adapter.receipt(prepared.executionId), (error) => error instanceof ZcashAdapterError && error.code === "MALFORMED_RECEIPT");
+mode = "ok";
+transport.receipt = async (executionId) => ({ executionId, requestId: executionId, capability: "verification.record.create", network: "zcash-testnet", state: "confirmed", signatures: ["zcash-testnet-txid"], createdAt: new Date().toISOString(), environment: "mainnet", asset: "ZEC" });
+await assert.rejects(() => adapter.receipt(prepared.executionId), (error) => error instanceof ZcashAdapterError && error.code === "MALFORMED_RECEIPT");
 assert.throws(() => new ZcashNetworkAdapter({ id: "zcash-mainnet-disabled", config: { ...config, network: "zcash-mainnet", environment: "mainnet", nativeAsset: "ZEC" }, capabilities: ["verification.record.create"], transport }), /Unknown PrivateDAO network|Mainnet execution is disabled/);
 
 console.log("[zcash-foundation] native UTXO adapter, network isolation, timeout, receipt, fee, and Mainnet gate checks passed");

@@ -37,7 +37,7 @@ const transport = {
   async status(executionId) { return { executionId, state: "confirmed" }; },
   async receipt(executionId) {
     if (mode === "malformed-receipt") return { executionId, requestId: executionId, capability: "verification.record.create", network: "ethereum-sepolia", state: "confirmed", signatures: [], createdAt: new Date().toISOString() };
-    return { executionId, requestId: executionId, capability: "verification.record.create", network: "ethereum-sepolia", chainId: "11155111", state: "confirmed", signatures: ["0xreceipt"], createdAt: new Date().toISOString() };
+    return { executionId, requestId: executionId, capability: "verification.record.create", network: "ethereum-sepolia", chainId: "11155111", state: "confirmed", signatures: ["0xreceipt"], createdAt: new Date().toISOString(), environment: "testnet", asset: "ETH" };
   },
   async estimateFee(intent) { return { network: intent.context.network, atomicAmount: "21000", asset: "ETH" }; },
 };
@@ -86,7 +86,7 @@ for (const networkConfig of EVM_NETWORK_CONFIGS.filter((entry) => entry.environm
     async submit(execution) { return { executionId: execution.executionId, signatures: [`${networkConfig.network}-signature`] }; },
     async status(executionId) { return { executionId, state: "confirmed" }; },
     async receipt(executionId) {
-      return { executionId, requestId: executionId, capability: "verification.record.create", network: networkConfig.network, chainId: networkConfig.chainId, state: "confirmed", signatures: [`${networkConfig.network}-signature`], createdAt: new Date().toISOString() };
+      return { executionId, requestId: executionId, capability: "verification.record.create", network: networkConfig.network, chainId: networkConfig.chainId, state: "confirmed", signatures: [`${networkConfig.network}-signature`], createdAt: new Date().toISOString(), environment: networkConfig.environment, asset: networkConfig.nativeAsset };
     },
     async estimateFee(networkIntent) { return { network: networkIntent.context.network, atomicAmount: "21000", asset: networkConfig.nativeAsset }; },
   };

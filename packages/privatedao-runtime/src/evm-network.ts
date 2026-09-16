@@ -103,8 +103,14 @@ export class EvmNetworkAdapter implements KernelProvider {
 
   async receipt<TResult = unknown>(executionId: string): Promise<ExecutionReceipt<TResult>> {
     const receipt = await this.call(() => this.transport.receipt<TResult>(executionId));
-    if (receipt.network !== this.config.network || receipt.chainId !== this.config.chainId || !receipt.createdAt) {
-      throw new EvmAdapterError("MALFORMED_RECEIPT", "EVM receipt is missing the configured network, chain ID, or timestamp.");
+    if (
+      receipt.network !== this.config.network
+      || receipt.chainId !== this.config.chainId
+      || receipt.environment !== this.config.environment
+      || receipt.asset !== this.config.nativeAsset
+      || !receipt.createdAt
+    ) {
+      throw new EvmAdapterError("MALFORMED_RECEIPT", "EVM receipt is missing the configured network, chain ID, environment, asset, or timestamp.");
     }
     return receipt;
   }
