@@ -11,7 +11,7 @@ import {
 } from "../packages/privatedao-runtime/src/index.ts";
 import runtimeCatalogModule from "../apps/web/src/lib/runtime-catalog.ts";
 
-const { isRuntimeProductAvailable } = runtimeCatalogModule;
+const { isRuntimeProductAvailable, isRuntimeCapabilityExecutable } = runtimeCatalogModule;
 
 const network = "solana-devnet";
 const capability = "treasury.policy.check";
@@ -88,7 +88,9 @@ assert.equal(isRuntimeProductAvailable("record-verification"), true);
 assert.equal(isRuntimeProductAvailable("payroll"), false);
 assert.equal(isRuntimeProductAvailable("governance"), true);
   assert.equal(isRuntimeProductAvailable("agent"), false);
-assert.equal(runtimeCatalogModule.isRuntimeCapabilityExecutable("payroll", "payroll.approve", "solana-devnet"), true);
+assert.equal(isRuntimeCapabilityExecutable("payroll", "payroll.calculate", "solana-devnet"), true);
+assert.equal(isRuntimeCapabilityExecutable("payroll", "payroll.approve", "solana-devnet"), true);
+assert.equal(isRuntimeCapabilityExecutable("payroll", "payroll.settle", "solana-devnet"), false);
 
 const runtime = createPrivateDaoRuntime(registry);
 const protocolRegistry = runtime.protocols;
