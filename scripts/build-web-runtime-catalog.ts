@@ -27,8 +27,8 @@ async function main() {
         version: capability.version,
         requiresSignature: capability.requiresSignature,
         supportsAsync: capability.supportsAsync,
-          receiptSchema: capability.receiptSchema,
-          applicationBindings: capability.networks.map((network) => {
+        receiptSchema: capability.receiptSchema,
+        applicationBindings: capability.networks.map((network) => {
             const binding = findApplicationBinding(product.id, capability.id, network);
             const evidence = nativeCapabilities.find(
               (entry) => entry.product === product.id && entry.capability === capability.id && entry.network === network,
@@ -49,6 +49,35 @@ async function main() {
               supportedAssets: [...evidence.supportedAssets],
               provider: evidence.provider,
             };
+        }),
+        networkAvailability: NETWORK_MATRIX.map((network) => {
+          const declared = capability.networks.includes(network.id) && product.networks.includes(network.id);
+          const binding = declared ? findApplicationBinding(product.id, capability.id, network.id) : null;
+          const evidence = nativeCapabilities.find(
+            (entry) => entry.product === product.id && entry.capability === capability.id && entry.network === network.id,
+          );
+          if (!evidence) throw new Error(`Missing native capability evidence row for ${product.id}/${capability.id}/${network.id}`);
+          const evidenceBacked = Boolean(
+            binding?.mode === "kernel-gateway"
+              && evidence.supportsExecution
+              && ["devnet_verified", "testnet_verified", "mainnet_live"].includes(evidence.status),
+          );
+          return {
+            network: network.id,
+            stage: network.stage,
+            environment: network.environment,
+            chainId: network.chainId ?? null,
+            declared,
+            mode: binding?.mode ?? "unbound",
+            evidenceStatus: evidence.status,
+            evidence: evidence.evidence,
+            executable: evidenceBacked,
+            supportsProof: evidence.supportsProof,
+            supportsReceipt: evidence.supportsReceipt,
+            supportsReconciliation: evidence.supportsReconciliation,
+            supportedAssets: [...evidence.supportedAssets],
+            provider: evidence.provider,
+          };
         }),
       })),
     })),

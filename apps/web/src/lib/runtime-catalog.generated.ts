@@ -71,6 +71,296 @@ export const runtimeCatalog = {
               ],
               "provider": "evm-tempo-testnet"
             }
+          ],
+          "networkAvailability": [
+            {
+              "network": "solana-devnet",
+              "stage": "available",
+              "environment": "devnet",
+              "chainId": null,
+              "declared": true,
+              "mode": "kernel-gateway",
+              "evidenceStatus": "implementation",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "SOL"
+              ],
+              "provider": "solana-devnet"
+            },
+            {
+              "network": "solana-mainnet-beta",
+              "stage": "available",
+              "environment": "mainnet",
+              "chainId": null,
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "SOL"
+              ],
+              "provider": "solana-mainnet-beta"
+            },
+            {
+              "network": "ethereum-sepolia",
+              "stage": "available",
+              "environment": "testnet",
+              "chainId": "11155111",
+              "declared": true,
+              "mode": "kernel-gateway",
+              "evidenceStatus": "testnet_verified",
+              "evidence": "testnet-e2e",
+              "executable": true,
+              "supportsProof": true,
+              "supportsReceipt": true,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-ethereum-sepolia"
+            },
+            {
+              "network": "ethereum-mainnet",
+              "stage": "planned",
+              "environment": "mainnet",
+              "chainId": "1",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-ethereum-mainnet"
+            },
+            {
+              "network": "arbitrum-sepolia",
+              "stage": "available",
+              "environment": "testnet",
+              "chainId": "421614",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-arbitrum-sepolia"
+            },
+            {
+              "network": "arbitrum-one",
+              "stage": "planned",
+              "environment": "mainnet",
+              "chainId": "42161",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-arbitrum-one"
+            },
+            {
+              "network": "bnb-testnet",
+              "stage": "available",
+              "environment": "testnet",
+              "chainId": "97",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "BNB"
+              ],
+              "provider": "evm-bnb-testnet"
+            },
+            {
+              "network": "bnb-mainnet",
+              "stage": "planned",
+              "environment": "mainnet",
+              "chainId": "56",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "BNB"
+              ],
+              "provider": "evm-bnb-mainnet"
+            },
+            {
+              "network": "base-sepolia",
+              "stage": "available",
+              "environment": "testnet",
+              "chainId": "84532",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-base-sepolia"
+            },
+            {
+              "network": "base-mainnet",
+              "stage": "planned",
+              "environment": "mainnet",
+              "chainId": "8453",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-base-mainnet"
+            },
+            {
+              "network": "robinhood-testnet",
+              "stage": "available",
+              "environment": "testnet",
+              "chainId": "46630",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-robinhood-testnet"
+            },
+            {
+              "network": "robinhood-mainnet",
+              "stage": "planned",
+              "environment": "mainnet",
+              "chainId": "4663",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-robinhood-mainnet"
+            },
+            {
+              "network": "tempo-testnet",
+              "stage": "available",
+              "environment": "testnet",
+              "chainId": "42431",
+              "declared": true,
+              "mode": "kernel-gateway",
+              "evidenceStatus": "testnet_verified",
+              "evidence": "testnet-e2e",
+              "executable": true,
+              "supportsProof": true,
+              "supportsReceipt": true,
+              "supportsReconciliation": true,
+              "supportedAssets": [
+                "AlphaUSD"
+              ],
+              "provider": "evm-tempo-testnet"
+            },
+            {
+              "network": "tempo-mainnet",
+              "stage": "planned",
+              "environment": "mainnet",
+              "chainId": null,
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-tempo-mainnet"
+            },
+            {
+              "network": "zcash-testnet",
+              "stage": "planned",
+              "environment": "testnet",
+              "chainId": null,
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ZEC"
+              ],
+              "provider": null
+            },
+            {
+              "network": "hyperliquid-testnet",
+              "stage": "planned",
+              "environment": "testnet",
+              "chainId": null,
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "USDC"
+              ],
+              "provider": null
+            }
           ]
         }
       ]
@@ -143,6 +433,296 @@ export const runtimeCatalog = {
               ],
               "provider": "evm-tempo-testnet"
             }
+          ],
+          "networkAvailability": [
+            {
+              "network": "solana-devnet",
+              "stage": "available",
+              "environment": "devnet",
+              "chainId": null,
+              "declared": true,
+              "mode": "kernel-gateway",
+              "evidenceStatus": "implementation",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "SOL"
+              ],
+              "provider": "solana-devnet"
+            },
+            {
+              "network": "solana-mainnet-beta",
+              "stage": "available",
+              "environment": "mainnet",
+              "chainId": null,
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "SOL"
+              ],
+              "provider": "solana-mainnet-beta"
+            },
+            {
+              "network": "ethereum-sepolia",
+              "stage": "available",
+              "environment": "testnet",
+              "chainId": "11155111",
+              "declared": true,
+              "mode": "kernel-gateway",
+              "evidenceStatus": "testnet_verified",
+              "evidence": "testnet-e2e",
+              "executable": true,
+              "supportsProof": false,
+              "supportsReceipt": true,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-ethereum-sepolia"
+            },
+            {
+              "network": "ethereum-mainnet",
+              "stage": "planned",
+              "environment": "mainnet",
+              "chainId": "1",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-ethereum-mainnet"
+            },
+            {
+              "network": "arbitrum-sepolia",
+              "stage": "available",
+              "environment": "testnet",
+              "chainId": "421614",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-arbitrum-sepolia"
+            },
+            {
+              "network": "arbitrum-one",
+              "stage": "planned",
+              "environment": "mainnet",
+              "chainId": "42161",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-arbitrum-one"
+            },
+            {
+              "network": "bnb-testnet",
+              "stage": "available",
+              "environment": "testnet",
+              "chainId": "97",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "BNB"
+              ],
+              "provider": "evm-bnb-testnet"
+            },
+            {
+              "network": "bnb-mainnet",
+              "stage": "planned",
+              "environment": "mainnet",
+              "chainId": "56",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "BNB"
+              ],
+              "provider": "evm-bnb-mainnet"
+            },
+            {
+              "network": "base-sepolia",
+              "stage": "available",
+              "environment": "testnet",
+              "chainId": "84532",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-base-sepolia"
+            },
+            {
+              "network": "base-mainnet",
+              "stage": "planned",
+              "environment": "mainnet",
+              "chainId": "8453",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-base-mainnet"
+            },
+            {
+              "network": "robinhood-testnet",
+              "stage": "available",
+              "environment": "testnet",
+              "chainId": "46630",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-robinhood-testnet"
+            },
+            {
+              "network": "robinhood-mainnet",
+              "stage": "planned",
+              "environment": "mainnet",
+              "chainId": "4663",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-robinhood-mainnet"
+            },
+            {
+              "network": "tempo-testnet",
+              "stage": "available",
+              "environment": "testnet",
+              "chainId": "42431",
+              "declared": true,
+              "mode": "kernel-gateway",
+              "evidenceStatus": "testnet_verified",
+              "evidence": "testnet-e2e",
+              "executable": true,
+              "supportsProof": false,
+              "supportsReceipt": true,
+              "supportsReconciliation": true,
+              "supportedAssets": [
+                "AlphaUSD"
+              ],
+              "provider": "evm-tempo-testnet"
+            },
+            {
+              "network": "tempo-mainnet",
+              "stage": "planned",
+              "environment": "mainnet",
+              "chainId": null,
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-tempo-mainnet"
+            },
+            {
+              "network": "zcash-testnet",
+              "stage": "planned",
+              "environment": "testnet",
+              "chainId": null,
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ZEC"
+              ],
+              "provider": null
+            },
+            {
+              "network": "hyperliquid-testnet",
+              "stage": "planned",
+              "environment": "testnet",
+              "chainId": null,
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "USDC"
+              ],
+              "provider": null
+            }
           ]
         },
         {
@@ -203,6 +783,296 @@ export const runtimeCatalog = {
               ],
               "provider": "evm-tempo-testnet"
             }
+          ],
+          "networkAvailability": [
+            {
+              "network": "solana-devnet",
+              "stage": "available",
+              "environment": "devnet",
+              "chainId": null,
+              "declared": true,
+              "mode": "kernel-gateway",
+              "evidenceStatus": "implementation",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "SOL"
+              ],
+              "provider": "solana-devnet"
+            },
+            {
+              "network": "solana-mainnet-beta",
+              "stage": "available",
+              "environment": "mainnet",
+              "chainId": null,
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "SOL"
+              ],
+              "provider": "solana-mainnet-beta"
+            },
+            {
+              "network": "ethereum-sepolia",
+              "stage": "available",
+              "environment": "testnet",
+              "chainId": "11155111",
+              "declared": true,
+              "mode": "kernel-gateway",
+              "evidenceStatus": "testnet_verified",
+              "evidence": "testnet-e2e",
+              "executable": true,
+              "supportsProof": false,
+              "supportsReceipt": true,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-ethereum-sepolia"
+            },
+            {
+              "network": "ethereum-mainnet",
+              "stage": "planned",
+              "environment": "mainnet",
+              "chainId": "1",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-ethereum-mainnet"
+            },
+            {
+              "network": "arbitrum-sepolia",
+              "stage": "available",
+              "environment": "testnet",
+              "chainId": "421614",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-arbitrum-sepolia"
+            },
+            {
+              "network": "arbitrum-one",
+              "stage": "planned",
+              "environment": "mainnet",
+              "chainId": "42161",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-arbitrum-one"
+            },
+            {
+              "network": "bnb-testnet",
+              "stage": "available",
+              "environment": "testnet",
+              "chainId": "97",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "BNB"
+              ],
+              "provider": "evm-bnb-testnet"
+            },
+            {
+              "network": "bnb-mainnet",
+              "stage": "planned",
+              "environment": "mainnet",
+              "chainId": "56",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "BNB"
+              ],
+              "provider": "evm-bnb-mainnet"
+            },
+            {
+              "network": "base-sepolia",
+              "stage": "available",
+              "environment": "testnet",
+              "chainId": "84532",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-base-sepolia"
+            },
+            {
+              "network": "base-mainnet",
+              "stage": "planned",
+              "environment": "mainnet",
+              "chainId": "8453",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-base-mainnet"
+            },
+            {
+              "network": "robinhood-testnet",
+              "stage": "available",
+              "environment": "testnet",
+              "chainId": "46630",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-robinhood-testnet"
+            },
+            {
+              "network": "robinhood-mainnet",
+              "stage": "planned",
+              "environment": "mainnet",
+              "chainId": "4663",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-robinhood-mainnet"
+            },
+            {
+              "network": "tempo-testnet",
+              "stage": "available",
+              "environment": "testnet",
+              "chainId": "42431",
+              "declared": true,
+              "mode": "kernel-gateway",
+              "evidenceStatus": "testnet_verified",
+              "evidence": "testnet-e2e",
+              "executable": true,
+              "supportsProof": false,
+              "supportsReceipt": true,
+              "supportsReconciliation": true,
+              "supportedAssets": [
+                "AlphaUSD"
+              ],
+              "provider": "evm-tempo-testnet"
+            },
+            {
+              "network": "tempo-mainnet",
+              "stage": "planned",
+              "environment": "mainnet",
+              "chainId": null,
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-tempo-mainnet"
+            },
+            {
+              "network": "zcash-testnet",
+              "stage": "planned",
+              "environment": "testnet",
+              "chainId": null,
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ZEC"
+              ],
+              "provider": null
+            },
+            {
+              "network": "hyperliquid-testnet",
+              "stage": "planned",
+              "environment": "testnet",
+              "chainId": null,
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "USDC"
+              ],
+              "provider": null
+            }
           ]
         }
       ]
@@ -239,6 +1109,296 @@ export const runtimeCatalog = {
               ],
               "provider": "umbra-solana-devnet"
             }
+          ],
+          "networkAvailability": [
+            {
+              "network": "solana-devnet",
+              "stage": "available",
+              "environment": "devnet",
+              "chainId": null,
+              "declared": true,
+              "mode": "kernel-gateway",
+              "evidenceStatus": "devnet_verified",
+              "evidence": "devnet-e2e",
+              "executable": true,
+              "supportsProof": false,
+              "supportsReceipt": true,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "WSOL"
+              ],
+              "provider": "umbra-solana-devnet"
+            },
+            {
+              "network": "solana-mainnet-beta",
+              "stage": "available",
+              "environment": "mainnet",
+              "chainId": null,
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "SOL"
+              ],
+              "provider": "solana-mainnet-beta"
+            },
+            {
+              "network": "ethereum-sepolia",
+              "stage": "available",
+              "environment": "testnet",
+              "chainId": "11155111",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-ethereum-sepolia"
+            },
+            {
+              "network": "ethereum-mainnet",
+              "stage": "planned",
+              "environment": "mainnet",
+              "chainId": "1",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-ethereum-mainnet"
+            },
+            {
+              "network": "arbitrum-sepolia",
+              "stage": "available",
+              "environment": "testnet",
+              "chainId": "421614",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-arbitrum-sepolia"
+            },
+            {
+              "network": "arbitrum-one",
+              "stage": "planned",
+              "environment": "mainnet",
+              "chainId": "42161",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-arbitrum-one"
+            },
+            {
+              "network": "bnb-testnet",
+              "stage": "available",
+              "environment": "testnet",
+              "chainId": "97",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "BNB"
+              ],
+              "provider": "evm-bnb-testnet"
+            },
+            {
+              "network": "bnb-mainnet",
+              "stage": "planned",
+              "environment": "mainnet",
+              "chainId": "56",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "BNB"
+              ],
+              "provider": "evm-bnb-mainnet"
+            },
+            {
+              "network": "base-sepolia",
+              "stage": "available",
+              "environment": "testnet",
+              "chainId": "84532",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-base-sepolia"
+            },
+            {
+              "network": "base-mainnet",
+              "stage": "planned",
+              "environment": "mainnet",
+              "chainId": "8453",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-base-mainnet"
+            },
+            {
+              "network": "robinhood-testnet",
+              "stage": "available",
+              "environment": "testnet",
+              "chainId": "46630",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-robinhood-testnet"
+            },
+            {
+              "network": "robinhood-mainnet",
+              "stage": "planned",
+              "environment": "mainnet",
+              "chainId": "4663",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-robinhood-mainnet"
+            },
+            {
+              "network": "tempo-testnet",
+              "stage": "available",
+              "environment": "testnet",
+              "chainId": "42431",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-tempo-testnet"
+            },
+            {
+              "network": "tempo-mainnet",
+              "stage": "planned",
+              "environment": "mainnet",
+              "chainId": null,
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-tempo-mainnet"
+            },
+            {
+              "network": "zcash-testnet",
+              "stage": "planned",
+              "environment": "testnet",
+              "chainId": null,
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ZEC"
+              ],
+              "provider": null
+            },
+            {
+              "network": "hyperliquid-testnet",
+              "stage": "planned",
+              "environment": "testnet",
+              "chainId": null,
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "USDC"
+              ],
+              "provider": null
+            }
           ]
         },
         {
@@ -265,6 +1425,296 @@ export const runtimeCatalog = {
               ],
               "provider": "umbra-solana-devnet"
             }
+          ],
+          "networkAvailability": [
+            {
+              "network": "solana-devnet",
+              "stage": "available",
+              "environment": "devnet",
+              "chainId": null,
+              "declared": true,
+              "mode": "kernel-gateway",
+              "evidenceStatus": "devnet_verified",
+              "evidence": "devnet-e2e",
+              "executable": true,
+              "supportsProof": false,
+              "supportsReceipt": true,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "WSOL"
+              ],
+              "provider": "umbra-solana-devnet"
+            },
+            {
+              "network": "solana-mainnet-beta",
+              "stage": "available",
+              "environment": "mainnet",
+              "chainId": null,
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "SOL"
+              ],
+              "provider": "solana-mainnet-beta"
+            },
+            {
+              "network": "ethereum-sepolia",
+              "stage": "available",
+              "environment": "testnet",
+              "chainId": "11155111",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-ethereum-sepolia"
+            },
+            {
+              "network": "ethereum-mainnet",
+              "stage": "planned",
+              "environment": "mainnet",
+              "chainId": "1",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-ethereum-mainnet"
+            },
+            {
+              "network": "arbitrum-sepolia",
+              "stage": "available",
+              "environment": "testnet",
+              "chainId": "421614",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-arbitrum-sepolia"
+            },
+            {
+              "network": "arbitrum-one",
+              "stage": "planned",
+              "environment": "mainnet",
+              "chainId": "42161",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-arbitrum-one"
+            },
+            {
+              "network": "bnb-testnet",
+              "stage": "available",
+              "environment": "testnet",
+              "chainId": "97",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "BNB"
+              ],
+              "provider": "evm-bnb-testnet"
+            },
+            {
+              "network": "bnb-mainnet",
+              "stage": "planned",
+              "environment": "mainnet",
+              "chainId": "56",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "BNB"
+              ],
+              "provider": "evm-bnb-mainnet"
+            },
+            {
+              "network": "base-sepolia",
+              "stage": "available",
+              "environment": "testnet",
+              "chainId": "84532",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-base-sepolia"
+            },
+            {
+              "network": "base-mainnet",
+              "stage": "planned",
+              "environment": "mainnet",
+              "chainId": "8453",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-base-mainnet"
+            },
+            {
+              "network": "robinhood-testnet",
+              "stage": "available",
+              "environment": "testnet",
+              "chainId": "46630",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-robinhood-testnet"
+            },
+            {
+              "network": "robinhood-mainnet",
+              "stage": "planned",
+              "environment": "mainnet",
+              "chainId": "4663",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-robinhood-mainnet"
+            },
+            {
+              "network": "tempo-testnet",
+              "stage": "available",
+              "environment": "testnet",
+              "chainId": "42431",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-tempo-testnet"
+            },
+            {
+              "network": "tempo-mainnet",
+              "stage": "planned",
+              "environment": "mainnet",
+              "chainId": null,
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-tempo-mainnet"
+            },
+            {
+              "network": "zcash-testnet",
+              "stage": "planned",
+              "environment": "testnet",
+              "chainId": null,
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ZEC"
+              ],
+              "provider": null
+            },
+            {
+              "network": "hyperliquid-testnet",
+              "stage": "planned",
+              "environment": "testnet",
+              "chainId": null,
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "USDC"
+              ],
+              "provider": null
+            }
           ]
         },
         {
@@ -290,6 +1740,296 @@ export const runtimeCatalog = {
                 "WSOL"
               ],
               "provider": "umbra-solana-devnet"
+            }
+          ],
+          "networkAvailability": [
+            {
+              "network": "solana-devnet",
+              "stage": "available",
+              "environment": "devnet",
+              "chainId": null,
+              "declared": true,
+              "mode": "legacy-provider",
+              "evidenceStatus": "devnet_verified",
+              "evidence": "devnet-e2e",
+              "executable": false,
+              "supportsProof": true,
+              "supportsReceipt": true,
+              "supportsReconciliation": true,
+              "supportedAssets": [
+                "WSOL"
+              ],
+              "provider": "umbra-solana-devnet"
+            },
+            {
+              "network": "solana-mainnet-beta",
+              "stage": "available",
+              "environment": "mainnet",
+              "chainId": null,
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "SOL"
+              ],
+              "provider": "solana-mainnet-beta"
+            },
+            {
+              "network": "ethereum-sepolia",
+              "stage": "available",
+              "environment": "testnet",
+              "chainId": "11155111",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-ethereum-sepolia"
+            },
+            {
+              "network": "ethereum-mainnet",
+              "stage": "planned",
+              "environment": "mainnet",
+              "chainId": "1",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-ethereum-mainnet"
+            },
+            {
+              "network": "arbitrum-sepolia",
+              "stage": "available",
+              "environment": "testnet",
+              "chainId": "421614",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-arbitrum-sepolia"
+            },
+            {
+              "network": "arbitrum-one",
+              "stage": "planned",
+              "environment": "mainnet",
+              "chainId": "42161",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-arbitrum-one"
+            },
+            {
+              "network": "bnb-testnet",
+              "stage": "available",
+              "environment": "testnet",
+              "chainId": "97",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "BNB"
+              ],
+              "provider": "evm-bnb-testnet"
+            },
+            {
+              "network": "bnb-mainnet",
+              "stage": "planned",
+              "environment": "mainnet",
+              "chainId": "56",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "BNB"
+              ],
+              "provider": "evm-bnb-mainnet"
+            },
+            {
+              "network": "base-sepolia",
+              "stage": "available",
+              "environment": "testnet",
+              "chainId": "84532",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-base-sepolia"
+            },
+            {
+              "network": "base-mainnet",
+              "stage": "planned",
+              "environment": "mainnet",
+              "chainId": "8453",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-base-mainnet"
+            },
+            {
+              "network": "robinhood-testnet",
+              "stage": "available",
+              "environment": "testnet",
+              "chainId": "46630",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-robinhood-testnet"
+            },
+            {
+              "network": "robinhood-mainnet",
+              "stage": "planned",
+              "environment": "mainnet",
+              "chainId": "4663",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-robinhood-mainnet"
+            },
+            {
+              "network": "tempo-testnet",
+              "stage": "available",
+              "environment": "testnet",
+              "chainId": "42431",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-tempo-testnet"
+            },
+            {
+              "network": "tempo-mainnet",
+              "stage": "planned",
+              "environment": "mainnet",
+              "chainId": null,
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-tempo-mainnet"
+            },
+            {
+              "network": "zcash-testnet",
+              "stage": "planned",
+              "environment": "testnet",
+              "chainId": null,
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ZEC"
+              ],
+              "provider": null
+            },
+            {
+              "network": "hyperliquid-testnet",
+              "stage": "planned",
+              "environment": "testnet",
+              "chainId": null,
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "USDC"
+              ],
+              "provider": null
             }
           ]
         }
@@ -363,6 +2103,296 @@ export const runtimeCatalog = {
               ],
               "provider": "evm-tempo-testnet-organizational"
             }
+          ],
+          "networkAvailability": [
+            {
+              "network": "solana-devnet",
+              "stage": "available",
+              "environment": "devnet",
+              "chainId": null,
+              "declared": true,
+              "mode": "kernel-gateway",
+              "evidenceStatus": "implementation",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "SOL"
+              ],
+              "provider": "solana-devnet"
+            },
+            {
+              "network": "solana-mainnet-beta",
+              "stage": "available",
+              "environment": "mainnet",
+              "chainId": null,
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "SOL"
+              ],
+              "provider": "solana-mainnet-beta"
+            },
+            {
+              "network": "ethereum-sepolia",
+              "stage": "available",
+              "environment": "testnet",
+              "chainId": "11155111",
+              "declared": true,
+              "mode": "kernel-gateway",
+              "evidenceStatus": "testnet_verified",
+              "evidence": "testnet-e2e",
+              "executable": true,
+              "supportsProof": false,
+              "supportsReceipt": true,
+              "supportsReconciliation": true,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-ethereum-sepolia-organizational"
+            },
+            {
+              "network": "ethereum-mainnet",
+              "stage": "planned",
+              "environment": "mainnet",
+              "chainId": "1",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-ethereum-mainnet"
+            },
+            {
+              "network": "arbitrum-sepolia",
+              "stage": "available",
+              "environment": "testnet",
+              "chainId": "421614",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-arbitrum-sepolia"
+            },
+            {
+              "network": "arbitrum-one",
+              "stage": "planned",
+              "environment": "mainnet",
+              "chainId": "42161",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-arbitrum-one"
+            },
+            {
+              "network": "bnb-testnet",
+              "stage": "available",
+              "environment": "testnet",
+              "chainId": "97",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "BNB"
+              ],
+              "provider": "evm-bnb-testnet"
+            },
+            {
+              "network": "bnb-mainnet",
+              "stage": "planned",
+              "environment": "mainnet",
+              "chainId": "56",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "BNB"
+              ],
+              "provider": "evm-bnb-mainnet"
+            },
+            {
+              "network": "base-sepolia",
+              "stage": "available",
+              "environment": "testnet",
+              "chainId": "84532",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-base-sepolia"
+            },
+            {
+              "network": "base-mainnet",
+              "stage": "planned",
+              "environment": "mainnet",
+              "chainId": "8453",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-base-mainnet"
+            },
+            {
+              "network": "robinhood-testnet",
+              "stage": "available",
+              "environment": "testnet",
+              "chainId": "46630",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-robinhood-testnet"
+            },
+            {
+              "network": "robinhood-mainnet",
+              "stage": "planned",
+              "environment": "mainnet",
+              "chainId": "4663",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-robinhood-mainnet"
+            },
+            {
+              "network": "tempo-testnet",
+              "stage": "available",
+              "environment": "testnet",
+              "chainId": "42431",
+              "declared": true,
+              "mode": "kernel-gateway",
+              "evidenceStatus": "testnet_verified",
+              "evidence": "testnet-e2e",
+              "executable": true,
+              "supportsProof": false,
+              "supportsReceipt": true,
+              "supportsReconciliation": true,
+              "supportedAssets": [
+                "AlphaUSD"
+              ],
+              "provider": "evm-tempo-testnet-organizational"
+            },
+            {
+              "network": "tempo-mainnet",
+              "stage": "planned",
+              "environment": "mainnet",
+              "chainId": null,
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-tempo-mainnet"
+            },
+            {
+              "network": "zcash-testnet",
+              "stage": "planned",
+              "environment": "testnet",
+              "chainId": null,
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ZEC"
+              ],
+              "provider": null
+            },
+            {
+              "network": "hyperliquid-testnet",
+              "stage": "planned",
+              "environment": "testnet",
+              "chainId": null,
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "USDC"
+              ],
+              "provider": null
+            }
           ]
         }
       ]
@@ -434,6 +2464,296 @@ export const runtimeCatalog = {
                 "AlphaUSD"
               ],
               "provider": "evm-tempo-testnet-organizational"
+            }
+          ],
+          "networkAvailability": [
+            {
+              "network": "solana-devnet",
+              "stage": "available",
+              "environment": "devnet",
+              "chainId": null,
+              "declared": true,
+              "mode": "unbound",
+              "evidenceStatus": "implementation",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "SOL"
+              ],
+              "provider": "solana-devnet"
+            },
+            {
+              "network": "solana-mainnet-beta",
+              "stage": "available",
+              "environment": "mainnet",
+              "chainId": null,
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "SOL"
+              ],
+              "provider": "solana-mainnet-beta"
+            },
+            {
+              "network": "ethereum-sepolia",
+              "stage": "available",
+              "environment": "testnet",
+              "chainId": "11155111",
+              "declared": true,
+              "mode": "kernel-gateway",
+              "evidenceStatus": "testnet_verified",
+              "evidence": "testnet-e2e",
+              "executable": true,
+              "supportsProof": false,
+              "supportsReceipt": true,
+              "supportsReconciliation": true,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-ethereum-sepolia-organizational"
+            },
+            {
+              "network": "ethereum-mainnet",
+              "stage": "planned",
+              "environment": "mainnet",
+              "chainId": "1",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-ethereum-mainnet"
+            },
+            {
+              "network": "arbitrum-sepolia",
+              "stage": "available",
+              "environment": "testnet",
+              "chainId": "421614",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-arbitrum-sepolia"
+            },
+            {
+              "network": "arbitrum-one",
+              "stage": "planned",
+              "environment": "mainnet",
+              "chainId": "42161",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-arbitrum-one"
+            },
+            {
+              "network": "bnb-testnet",
+              "stage": "available",
+              "environment": "testnet",
+              "chainId": "97",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "BNB"
+              ],
+              "provider": "evm-bnb-testnet"
+            },
+            {
+              "network": "bnb-mainnet",
+              "stage": "planned",
+              "environment": "mainnet",
+              "chainId": "56",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "BNB"
+              ],
+              "provider": "evm-bnb-mainnet"
+            },
+            {
+              "network": "base-sepolia",
+              "stage": "available",
+              "environment": "testnet",
+              "chainId": "84532",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-base-sepolia"
+            },
+            {
+              "network": "base-mainnet",
+              "stage": "planned",
+              "environment": "mainnet",
+              "chainId": "8453",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-base-mainnet"
+            },
+            {
+              "network": "robinhood-testnet",
+              "stage": "available",
+              "environment": "testnet",
+              "chainId": "46630",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-robinhood-testnet"
+            },
+            {
+              "network": "robinhood-mainnet",
+              "stage": "planned",
+              "environment": "mainnet",
+              "chainId": "4663",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-robinhood-mainnet"
+            },
+            {
+              "network": "tempo-testnet",
+              "stage": "available",
+              "environment": "testnet",
+              "chainId": "42431",
+              "declared": true,
+              "mode": "kernel-gateway",
+              "evidenceStatus": "testnet_verified",
+              "evidence": "testnet-e2e",
+              "executable": true,
+              "supportsProof": false,
+              "supportsReceipt": true,
+              "supportsReconciliation": true,
+              "supportedAssets": [
+                "AlphaUSD"
+              ],
+              "provider": "evm-tempo-testnet-organizational"
+            },
+            {
+              "network": "tempo-mainnet",
+              "stage": "planned",
+              "environment": "mainnet",
+              "chainId": null,
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-tempo-mainnet"
+            },
+            {
+              "network": "zcash-testnet",
+              "stage": "planned",
+              "environment": "testnet",
+              "chainId": null,
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ZEC"
+              ],
+              "provider": null
+            },
+            {
+              "network": "hyperliquid-testnet",
+              "stage": "planned",
+              "environment": "testnet",
+              "chainId": null,
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "USDC"
+              ],
+              "provider": null
             }
           ]
         }
@@ -507,6 +2827,296 @@ export const runtimeCatalog = {
               ],
               "provider": "evm-tempo-testnet-organizational"
             }
+          ],
+          "networkAvailability": [
+            {
+              "network": "solana-devnet",
+              "stage": "available",
+              "environment": "devnet",
+              "chainId": null,
+              "declared": true,
+              "mode": "kernel-gateway",
+              "evidenceStatus": "implementation",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "SOL"
+              ],
+              "provider": "solana-devnet"
+            },
+            {
+              "network": "solana-mainnet-beta",
+              "stage": "available",
+              "environment": "mainnet",
+              "chainId": null,
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "SOL"
+              ],
+              "provider": "solana-mainnet-beta"
+            },
+            {
+              "network": "ethereum-sepolia",
+              "stage": "available",
+              "environment": "testnet",
+              "chainId": "11155111",
+              "declared": true,
+              "mode": "kernel-gateway",
+              "evidenceStatus": "testnet_verified",
+              "evidence": "testnet-e2e",
+              "executable": true,
+              "supportsProof": false,
+              "supportsReceipt": true,
+              "supportsReconciliation": true,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-ethereum-sepolia-organizational"
+            },
+            {
+              "network": "ethereum-mainnet",
+              "stage": "planned",
+              "environment": "mainnet",
+              "chainId": "1",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-ethereum-mainnet"
+            },
+            {
+              "network": "arbitrum-sepolia",
+              "stage": "available",
+              "environment": "testnet",
+              "chainId": "421614",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-arbitrum-sepolia"
+            },
+            {
+              "network": "arbitrum-one",
+              "stage": "planned",
+              "environment": "mainnet",
+              "chainId": "42161",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-arbitrum-one"
+            },
+            {
+              "network": "bnb-testnet",
+              "stage": "available",
+              "environment": "testnet",
+              "chainId": "97",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "BNB"
+              ],
+              "provider": "evm-bnb-testnet"
+            },
+            {
+              "network": "bnb-mainnet",
+              "stage": "planned",
+              "environment": "mainnet",
+              "chainId": "56",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "BNB"
+              ],
+              "provider": "evm-bnb-mainnet"
+            },
+            {
+              "network": "base-sepolia",
+              "stage": "available",
+              "environment": "testnet",
+              "chainId": "84532",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-base-sepolia"
+            },
+            {
+              "network": "base-mainnet",
+              "stage": "planned",
+              "environment": "mainnet",
+              "chainId": "8453",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-base-mainnet"
+            },
+            {
+              "network": "robinhood-testnet",
+              "stage": "available",
+              "environment": "testnet",
+              "chainId": "46630",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-robinhood-testnet"
+            },
+            {
+              "network": "robinhood-mainnet",
+              "stage": "planned",
+              "environment": "mainnet",
+              "chainId": "4663",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-robinhood-mainnet"
+            },
+            {
+              "network": "tempo-testnet",
+              "stage": "available",
+              "environment": "testnet",
+              "chainId": "42431",
+              "declared": true,
+              "mode": "kernel-gateway",
+              "evidenceStatus": "testnet_verified",
+              "evidence": "testnet-e2e",
+              "executable": true,
+              "supportsProof": false,
+              "supportsReceipt": true,
+              "supportsReconciliation": true,
+              "supportedAssets": [
+                "AlphaUSD"
+              ],
+              "provider": "evm-tempo-testnet-organizational"
+            },
+            {
+              "network": "tempo-mainnet",
+              "stage": "planned",
+              "environment": "mainnet",
+              "chainId": null,
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-tempo-mainnet"
+            },
+            {
+              "network": "zcash-testnet",
+              "stage": "planned",
+              "environment": "testnet",
+              "chainId": null,
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ZEC"
+              ],
+              "provider": null
+            },
+            {
+              "network": "hyperliquid-testnet",
+              "stage": "planned",
+              "environment": "testnet",
+              "chainId": null,
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "USDC"
+              ],
+              "provider": null
+            }
           ]
         },
         {
@@ -567,6 +3177,296 @@ export const runtimeCatalog = {
               ],
               "provider": "evm-tempo-testnet-organizational"
             }
+          ],
+          "networkAvailability": [
+            {
+              "network": "solana-devnet",
+              "stage": "available",
+              "environment": "devnet",
+              "chainId": null,
+              "declared": true,
+              "mode": "kernel-gateway",
+              "evidenceStatus": "implementation",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "SOL"
+              ],
+              "provider": "solana-devnet"
+            },
+            {
+              "network": "solana-mainnet-beta",
+              "stage": "available",
+              "environment": "mainnet",
+              "chainId": null,
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "SOL"
+              ],
+              "provider": "solana-mainnet-beta"
+            },
+            {
+              "network": "ethereum-sepolia",
+              "stage": "available",
+              "environment": "testnet",
+              "chainId": "11155111",
+              "declared": true,
+              "mode": "kernel-gateway",
+              "evidenceStatus": "testnet_verified",
+              "evidence": "testnet-e2e",
+              "executable": true,
+              "supportsProof": false,
+              "supportsReceipt": true,
+              "supportsReconciliation": true,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-ethereum-sepolia-organizational"
+            },
+            {
+              "network": "ethereum-mainnet",
+              "stage": "planned",
+              "environment": "mainnet",
+              "chainId": "1",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-ethereum-mainnet"
+            },
+            {
+              "network": "arbitrum-sepolia",
+              "stage": "available",
+              "environment": "testnet",
+              "chainId": "421614",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-arbitrum-sepolia"
+            },
+            {
+              "network": "arbitrum-one",
+              "stage": "planned",
+              "environment": "mainnet",
+              "chainId": "42161",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-arbitrum-one"
+            },
+            {
+              "network": "bnb-testnet",
+              "stage": "available",
+              "environment": "testnet",
+              "chainId": "97",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "BNB"
+              ],
+              "provider": "evm-bnb-testnet"
+            },
+            {
+              "network": "bnb-mainnet",
+              "stage": "planned",
+              "environment": "mainnet",
+              "chainId": "56",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "BNB"
+              ],
+              "provider": "evm-bnb-mainnet"
+            },
+            {
+              "network": "base-sepolia",
+              "stage": "available",
+              "environment": "testnet",
+              "chainId": "84532",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-base-sepolia"
+            },
+            {
+              "network": "base-mainnet",
+              "stage": "planned",
+              "environment": "mainnet",
+              "chainId": "8453",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-base-mainnet"
+            },
+            {
+              "network": "robinhood-testnet",
+              "stage": "available",
+              "environment": "testnet",
+              "chainId": "46630",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-robinhood-testnet"
+            },
+            {
+              "network": "robinhood-mainnet",
+              "stage": "planned",
+              "environment": "mainnet",
+              "chainId": "4663",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-robinhood-mainnet"
+            },
+            {
+              "network": "tempo-testnet",
+              "stage": "available",
+              "environment": "testnet",
+              "chainId": "42431",
+              "declared": true,
+              "mode": "kernel-gateway",
+              "evidenceStatus": "testnet_verified",
+              "evidence": "testnet-e2e",
+              "executable": true,
+              "supportsProof": false,
+              "supportsReceipt": true,
+              "supportsReconciliation": true,
+              "supportedAssets": [
+                "AlphaUSD"
+              ],
+              "provider": "evm-tempo-testnet-organizational"
+            },
+            {
+              "network": "tempo-mainnet",
+              "stage": "planned",
+              "environment": "mainnet",
+              "chainId": null,
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-tempo-mainnet"
+            },
+            {
+              "network": "zcash-testnet",
+              "stage": "planned",
+              "environment": "testnet",
+              "chainId": null,
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ZEC"
+              ],
+              "provider": null
+            },
+            {
+              "network": "hyperliquid-testnet",
+              "stage": "planned",
+              "environment": "testnet",
+              "chainId": null,
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "USDC"
+              ],
+              "provider": null
+            }
           ]
         }
       ]
@@ -621,6 +3521,296 @@ export const runtimeCatalog = {
               ],
               "provider": "https://agents.privatedao.org"
             }
+          ],
+          "networkAvailability": [
+            {
+              "network": "solana-devnet",
+              "stage": "available",
+              "environment": "devnet",
+              "chainId": null,
+              "declared": true,
+              "mode": "kernel-gateway",
+              "evidenceStatus": "implementation",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "SOL"
+              ],
+              "provider": "solana-devnet"
+            },
+            {
+              "network": "solana-mainnet-beta",
+              "stage": "available",
+              "environment": "mainnet",
+              "chainId": null,
+              "declared": true,
+              "mode": "unbound",
+              "evidenceStatus": "mainnet_live",
+              "evidence": "runtime-only",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "SOL"
+              ],
+              "provider": "https://agents.privatedao.org"
+            },
+            {
+              "network": "ethereum-sepolia",
+              "stage": "available",
+              "environment": "testnet",
+              "chainId": "11155111",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-ethereum-sepolia"
+            },
+            {
+              "network": "ethereum-mainnet",
+              "stage": "planned",
+              "environment": "mainnet",
+              "chainId": "1",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-ethereum-mainnet"
+            },
+            {
+              "network": "arbitrum-sepolia",
+              "stage": "available",
+              "environment": "testnet",
+              "chainId": "421614",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-arbitrum-sepolia"
+            },
+            {
+              "network": "arbitrum-one",
+              "stage": "planned",
+              "environment": "mainnet",
+              "chainId": "42161",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-arbitrum-one"
+            },
+            {
+              "network": "bnb-testnet",
+              "stage": "available",
+              "environment": "testnet",
+              "chainId": "97",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "BNB"
+              ],
+              "provider": "evm-bnb-testnet"
+            },
+            {
+              "network": "bnb-mainnet",
+              "stage": "planned",
+              "environment": "mainnet",
+              "chainId": "56",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "BNB"
+              ],
+              "provider": "evm-bnb-mainnet"
+            },
+            {
+              "network": "base-sepolia",
+              "stage": "available",
+              "environment": "testnet",
+              "chainId": "84532",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-base-sepolia"
+            },
+            {
+              "network": "base-mainnet",
+              "stage": "planned",
+              "environment": "mainnet",
+              "chainId": "8453",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-base-mainnet"
+            },
+            {
+              "network": "robinhood-testnet",
+              "stage": "available",
+              "environment": "testnet",
+              "chainId": "46630",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-robinhood-testnet"
+            },
+            {
+              "network": "robinhood-mainnet",
+              "stage": "planned",
+              "environment": "mainnet",
+              "chainId": "4663",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-robinhood-mainnet"
+            },
+            {
+              "network": "tempo-testnet",
+              "stage": "available",
+              "environment": "testnet",
+              "chainId": "42431",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-tempo-testnet"
+            },
+            {
+              "network": "tempo-mainnet",
+              "stage": "planned",
+              "environment": "mainnet",
+              "chainId": null,
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-tempo-mainnet"
+            },
+            {
+              "network": "zcash-testnet",
+              "stage": "planned",
+              "environment": "testnet",
+              "chainId": null,
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ZEC"
+              ],
+              "provider": null
+            },
+            {
+              "network": "hyperliquid-testnet",
+              "stage": "planned",
+              "environment": "testnet",
+              "chainId": null,
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "USDC"
+              ],
+              "provider": null
+            }
           ]
         },
         {
@@ -663,6 +3853,296 @@ export const runtimeCatalog = {
                 "SOL"
               ],
               "provider": "https://agents.privatedao.org"
+            }
+          ],
+          "networkAvailability": [
+            {
+              "network": "solana-devnet",
+              "stage": "available",
+              "environment": "devnet",
+              "chainId": null,
+              "declared": true,
+              "mode": "unbound",
+              "evidenceStatus": "implementation",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "SOL"
+              ],
+              "provider": "solana-devnet"
+            },
+            {
+              "network": "solana-mainnet-beta",
+              "stage": "available",
+              "environment": "mainnet",
+              "chainId": null,
+              "declared": true,
+              "mode": "unbound",
+              "evidenceStatus": "mainnet_live",
+              "evidence": "runtime-only",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": true,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "SOL"
+              ],
+              "provider": "https://agents.privatedao.org"
+            },
+            {
+              "network": "ethereum-sepolia",
+              "stage": "available",
+              "environment": "testnet",
+              "chainId": "11155111",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-ethereum-sepolia"
+            },
+            {
+              "network": "ethereum-mainnet",
+              "stage": "planned",
+              "environment": "mainnet",
+              "chainId": "1",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-ethereum-mainnet"
+            },
+            {
+              "network": "arbitrum-sepolia",
+              "stage": "available",
+              "environment": "testnet",
+              "chainId": "421614",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-arbitrum-sepolia"
+            },
+            {
+              "network": "arbitrum-one",
+              "stage": "planned",
+              "environment": "mainnet",
+              "chainId": "42161",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-arbitrum-one"
+            },
+            {
+              "network": "bnb-testnet",
+              "stage": "available",
+              "environment": "testnet",
+              "chainId": "97",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "BNB"
+              ],
+              "provider": "evm-bnb-testnet"
+            },
+            {
+              "network": "bnb-mainnet",
+              "stage": "planned",
+              "environment": "mainnet",
+              "chainId": "56",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "BNB"
+              ],
+              "provider": "evm-bnb-mainnet"
+            },
+            {
+              "network": "base-sepolia",
+              "stage": "available",
+              "environment": "testnet",
+              "chainId": "84532",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-base-sepolia"
+            },
+            {
+              "network": "base-mainnet",
+              "stage": "planned",
+              "environment": "mainnet",
+              "chainId": "8453",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-base-mainnet"
+            },
+            {
+              "network": "robinhood-testnet",
+              "stage": "available",
+              "environment": "testnet",
+              "chainId": "46630",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-robinhood-testnet"
+            },
+            {
+              "network": "robinhood-mainnet",
+              "stage": "planned",
+              "environment": "mainnet",
+              "chainId": "4663",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-robinhood-mainnet"
+            },
+            {
+              "network": "tempo-testnet",
+              "stage": "available",
+              "environment": "testnet",
+              "chainId": "42431",
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-tempo-testnet"
+            },
+            {
+              "network": "tempo-mainnet",
+              "stage": "planned",
+              "environment": "mainnet",
+              "chainId": null,
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-tempo-mainnet"
+            },
+            {
+              "network": "zcash-testnet",
+              "stage": "planned",
+              "environment": "testnet",
+              "chainId": null,
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ZEC"
+              ],
+              "provider": null
+            },
+            {
+              "network": "hyperliquid-testnet",
+              "stage": "planned",
+              "environment": "testnet",
+              "chainId": null,
+              "declared": false,
+              "mode": "unbound",
+              "evidenceStatus": "planned",
+              "evidence": "none",
+              "executable": false,
+              "supportsProof": false,
+              "supportsReceipt": false,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "USDC"
+              ],
+              "provider": null
             }
           ]
         }
