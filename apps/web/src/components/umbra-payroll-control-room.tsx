@@ -158,7 +158,13 @@ export function UmbraPayrollControlRoom() {
         return { recipientAddress: row.recipientAddress, recipientCommitment: "", employeeRefCiphertext: `devnet-${index}`, payoutId: `payout-${index + 1}`, ...values };
       });
       for (const item of itemValues) item.recipientCommitment = await sha256(item.recipientAddress);
-      const batchCommitment = await sha256(JSON.stringify(itemValues.map(({ recipientAddress: _recipientAddress, employeeRefCiphertext: _employeeRefCiphertext, ...item }) => item)));
+      const publicItems = itemValues.map((item) => {
+        const publicItem = { ...item };
+        delete publicItem.recipientAddress;
+        delete publicItem.employeeRefCiphertext;
+        return publicItem;
+      });
+      const batchCommitment = await sha256(JSON.stringify(publicItems));
       const recipientRoot = await sha256(itemValues.map((item) => item.recipientCommitment).sort().join("|"));
       const grossCents = itemValues.reduce((sum, item) => sum + item.grossCents, 0);
       const taxCents = itemValues.reduce((sum, item) => sum + item.taxCents, 0);

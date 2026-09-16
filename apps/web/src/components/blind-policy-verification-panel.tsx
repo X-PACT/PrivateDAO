@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { CheckCircle2, Copy, ShieldCheck, XCircle } from "lucide-react";
+import { Copy, ShieldCheck, XCircle } from "lucide-react";
 
 import { stableStringify } from "@/lib/proof-workflow-proof-package";
 import type { BlindPolicyProofPackage, BlindPolicyVerification } from "@/lib/blind-policy-proof";

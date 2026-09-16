@@ -25,10 +25,12 @@ export function PrivacyExecutionClaimConsoleLazy({ compact = false }: { compact?
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     if (params.has("claim") || params.has("rail") || window.location.hash === "#privacy-claim-console") {
-      setActive(true);
       window.setTimeout(() => {
-        document.getElementById("privacy-claim-console")?.scrollIntoView({ block: "start" });
-      }, 120);
+        setActive(true);
+        window.setTimeout(() => {
+          document.getElementById("privacy-claim-console")?.scrollIntoView({ block: "start" });
+        }, 120);
+      }, 0);
     }
   }, []);
 

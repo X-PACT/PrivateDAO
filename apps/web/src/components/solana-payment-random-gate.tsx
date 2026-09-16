@@ -4,15 +4,16 @@ import { useMemo, useState } from "react";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { Buffer } from "buffer";
 import { ArrowRight, CheckCircle2, Copy, Hash, ShieldCheck, Shuffle, Wallet } from "lucide-react";
-import { LAMPORTS_PER_SOL, PublicKey, SystemProgram, Transaction, TransactionInstruction } from "@solana/web3.js";
+import { PublicKey, SystemProgram, Transaction, TransactionInstruction } from "@solana/web3.js";
 
 import { WalletConnectButton } from "@/components/wallet-connect-button";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { createSolanaBrowserConnection, sendAndConfirmBrowserTransaction } from "@/lib/network-adapters/solana-browser";
+import { getSolanaRpcEndpoint } from "@/lib/solana-network";
 
 const apiBase = "https://api.privatedao.org/api/v1/payment-gate/random";
-const mainnetConnection = createSolanaBrowserConnection("https://rpc.solanatracker.io/public", "confirmed");
+const solanaConnection = createSolanaBrowserConnection(getSolanaRpcEndpoint(), "confirmed");
 
 type Invoice = {
   invoiceId: string;
@@ -113,7 +114,7 @@ export function SolanaPaymentRandomGate() {
           data: Buffer.from(invoice.memo, "utf8"),
         }),
       );
-      const txSignature = await sendAndConfirmBrowserTransaction(mainnetConnection, transaction, sendTransaction);
+      const txSignature = await sendAndConfirmBrowserTransaction(solanaConnection, transaction, sendTransaction);
       setSignature(txSignature);
     } catch (paymentError) {
       setError(paymentError instanceof Error ? paymentError.message : "Wallet payment failed.");

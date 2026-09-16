@@ -305,7 +305,7 @@ export default function JudgePage() {
           <div className="min-w-0">
             <div className="text-[11px] uppercase tracking-[0.32em] text-cyan-100/78">Canonical judge hub</div>
             <h2 className="mt-3 max-w-4xl text-3xl font-semibold tracking-[-0.04em] text-white sm:text-5xl">
-              Your DAO votes, payroll, and treasury are public. They shouldn't be.
+              Your DAO votes, payroll, and treasury are public. They shouldn&apos;t be.
             </h2>
             <p className="mt-4 max-w-4xl text-sm leading-7 text-white/66 sm:text-base">
               Most DAOs expose votes, salaries, treasury activity, and internal operations. PrivateDAO enables organizations

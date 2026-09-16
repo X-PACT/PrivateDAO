@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { BarChart3, CheckCircle2, EyeOff, KeyRound, Play, QrCode, ShieldCheck, XCircle } from "lucide-react";
+import Image from "next/image";
 
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -206,7 +207,7 @@ export function SealedAuctionWorkbench() {
               Invite access
             </div>
             <div className="mt-4 flex flex-col gap-4 sm:flex-row sm:items-center">
-              <img src={qrUrl(inviteLink)} alt="Auction invite QR" className="h-36 w-36 rounded-2xl border border-white/10 bg-white p-2" />
+              <Image src={qrUrl(inviteLink)} alt="Auction invite QR" width={144} height={144} unoptimized className="h-36 w-36 rounded-2xl border border-white/10 bg-white p-2" />
               <div className="min-w-0">
                 <div className="text-xs uppercase tracking-[0.22em] text-white/42">Invite link</div>
                 <div className="mt-2 break-all font-mono text-xs text-white/68">{inviteLink}</div>

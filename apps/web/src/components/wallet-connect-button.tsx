@@ -45,12 +45,12 @@ export function WalletConnectButton({
   const [isMobileViewport, setIsMobileViewport] = useState(false);
 
   useEffect(() => {
-    setIsMounted(true);
-    if (typeof window !== "undefined") {
+    window.setTimeout(() => {
+      setIsMounted(true);
       setSessionUrl(window.location.href);
       setSessionOrigin(window.location.origin);
       setIsMobileViewport(window.matchMedia("(max-width: 768px)").matches);
-    }
+    }, 0);
   }, []);
 
   useEffect(() => {

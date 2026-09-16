@@ -56,7 +56,7 @@ export function ProductCommandCenter({ compact = false }: { compact?: boolean })
         <div>
           <div className="text-[11px] uppercase tracking-[0.3em] text-cyan-100/78">One product operating layer</div>
           <h2 className="mt-3 max-w-4xl text-2xl font-semibold tracking-[-0.035em] text-white md:text-3xl">
-            Your organization runs on public wallets, public votes, and public treasury activity. We're fixing that.
+            Your organization runs on public wallets, public votes, and public treasury activity. We&apos;re fixing that.
           </h2>
           <p className="mt-3 max-w-4xl text-sm leading-7 text-white/64">
             Private governance, payroll, and treasury operations on Solana. A visitor connects a Testnet wallet, reviews a

@@ -287,7 +287,7 @@ export default function InvestorsPage() {
         <div className="text-[11px] uppercase tracking-[0.25em] text-cyan-100/76">Founder prior work</div>
         <h2 className="mt-3 text-2xl font-semibold text-white">Confidential payroll did not start as a slide.</h2>
         <p className="mt-3 max-w-4xl text-sm leading-7 text-white/64">
-          PrivateDAO's payroll and contributor-operations lane builds on earlier founder work around confidential salary
+          PrivateDAO&apos;s payroll and contributor-operations lane builds on earlier founder work around confidential salary
           state, employee onboarding, equity attestations, and verifier-safe payslip proof.
         </p>
         <div className="mt-5 grid gap-3 md:grid-cols-2">

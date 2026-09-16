@@ -19,10 +19,6 @@ const DEVNET_TEE_VALIDATOR = new PublicKey("MTEWGuqxUpYZGFJQcp8tLN7x5v9BSeoFHYWQ
 
 type Step = "idle" | "created" | "active" | "private" | "submitted" | "closed" | "finalized" | "anchored";
 
-function bytesFromHex(hex: string) {
-  return new Uint8Array(hex.match(/.{1,2}/g)?.map((value) => Number.parseInt(value, 16)) ?? []);
-}
-
 async function digestBytes(value: Uint8Array | string) {
   const input = typeof value === "string" ? new TextEncoder().encode(value) : value;
   const owned = new Uint8Array(input);

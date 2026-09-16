@@ -919,7 +919,7 @@ export function HomeShell() {
                   <div className="mt-1 text-base font-semibold text-white">Top 1% in Solana</div>
                 </div>
                 <div className="mt-2 text-xs leading-6 text-amber-100/60">
-                  The live read-node, hosted APIs, and telemetry surfaces keep PrivateDAO's Testnet evidence inspectable throughout review.
+                  The live read-node, hosted APIs, and telemetry surfaces keep PrivateDAO&apos;s Testnet evidence inspectable throughout review.
                 </div>
               </div>
             </CardContent>

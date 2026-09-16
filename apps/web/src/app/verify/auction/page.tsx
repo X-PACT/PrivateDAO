@@ -6,7 +6,7 @@ import { PublicKey } from "@solana/web3.js";
 import { CheckCircle2, Loader2, ShieldAlert } from "lucide-react";
 
 import { OperationsShell } from "@/components/operations-shell";
-import { AUCTION_PROGRAM_ID, AUCTION_SOLANA_NETWORK, AUCTION_SOLANA_RPC_URL } from "@/lib/privatedao-auction-client";
+import { AUCTION_SOLANA_NETWORK, AUCTION_SOLANA_RPC_URL } from "@/lib/privatedao-auction-client";
 import { createSolanaBrowserConnection, readSignatureStatuses } from "@/lib/network-adapters/solana-browser";
 
 type Receipt = {

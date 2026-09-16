@@ -45,9 +45,11 @@ export function PrivateRoomEntry({ mode }: { mode: "create" | "join" }) {
   const [knownRoomCount, setKnownRoomCount] = useState(0);
 
   useEffect(() => {
-    setKnownRoomCount(Number(window.localStorage.getItem(ROOM_COUNT_KEY) || "0"));
-    const hashInvite = new URLSearchParams(window.location.hash.replace(/^#/, "")).get("invite");
-    if (hashInvite) setInviteCode(hashInvite);
+    window.setTimeout(() => {
+      setKnownRoomCount(Number(window.localStorage.getItem(ROOM_COUNT_KEY) || "0"));
+      const hashInvite = new URLSearchParams(window.location.hash.replace(/^#/, "")).get("invite");
+      if (hashInvite) setInviteCode(hashInvite);
+    }, 0);
   }, []);
 
   const canCreate = connected && Boolean(publicKey) && roomName.trim().length >= 3;

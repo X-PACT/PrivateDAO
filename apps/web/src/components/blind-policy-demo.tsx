@@ -129,7 +129,6 @@ export function BlindPolicyDemo() {
           liabilitiesUsd: Number(liabilitiesUsd),
         },
       });
-      const workflowId = `${organizationId.toLowerCase().replace(/[^a-z0-9]+/g, "_") || "organization"}_blind_policy_${Date.now()}`;
       let response: Response;
       if (localExecutionMode) {
         const workflowResponse = await fetch(`${LOCAL_ENGINE_BASE_URL}/v1/workflows`, {

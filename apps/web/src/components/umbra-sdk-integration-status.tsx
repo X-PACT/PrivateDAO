@@ -31,7 +31,7 @@ export function UmbraSdkIntegrationStatus() {
         <div>
           <h2 className="text-2xl font-semibold text-white">Umbra relayer boundary, SDK contract, and claim lifecycle are exposed for review</h2>
           <p className="mt-3 max-w-4xl text-sm leading-7 text-white/66">
-            The live lane reaches Umbra's public relayer endpoint through the PrivateDAO read-node and keeps the exact
+            The live lane reaches Umbra&apos;s public relayer endpoint through the PrivateDAO read-node and keeps the exact
             claim boundary visible: browser clients still need wallet signing, SDK-generated proof account data, UTXO
             slot data, and relayer polling before a real claim is submitted. The upstream hostname is preserved as
             evidence; the PrivateDAO operating surface remains routed through the Testnet read-node.

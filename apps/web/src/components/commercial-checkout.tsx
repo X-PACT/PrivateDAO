@@ -10,6 +10,7 @@ import { createTransferCheckedInstruction, getAssociatedTokenAddress, TOKEN_PROG
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { createSolanaBrowserConnection, sendAndConfirmBrowserTransaction } from "@/lib/network-adapters/solana-browser";
+import { getSolanaRpcEndpoint } from "@/lib/solana-network";
 
 type LicenseType = "COMMUNITY" | "PROFESSIONAL" | "ORGANIZATION" | "ENTERPRISE";
 type PaymentAsset = "USDC_SOL" | "PDAO_SOL" | "USDC_ETH" | "SOL" | "ETH" | "BTC" | "WBTC" | "ZEC" | "USDT" | "DAI";
@@ -79,7 +80,7 @@ const assetOptions: Array<{ value: PaymentAsset; label: string }> = [
 
 const commercialCheckoutApiBase = "https://api.privatedao.org/api/v1/commercial/orders";
 const commercialControlPlaneBase = "https://api.privatedao.org";
-const solanaConnection = createSolanaBrowserConnection("https://rpc.solanatracker.io/public", "confirmed");
+const solanaConnection = createSolanaBrowserConnection(getSolanaRpcEndpoint(), "confirmed");
 
 const contactLinks = [
   { label: "Telegram", href: "https://t.me/privateDAOOS" },
