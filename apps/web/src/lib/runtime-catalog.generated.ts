@@ -321,7 +321,7 @@ export const runtimeCatalog = {
               "supportsReceipt": false,
               "supportsReconciliation": false,
               "supportedAssets": [
-                "ETH"
+                "USD"
               ],
               "provider": "evm-tempo-mainnet"
             },
@@ -683,7 +683,7 @@ export const runtimeCatalog = {
               "supportsReceipt": false,
               "supportsReconciliation": false,
               "supportedAssets": [
-                "ETH"
+                "USD"
               ],
               "provider": "evm-tempo-mainnet"
             },
@@ -1033,7 +1033,7 @@ export const runtimeCatalog = {
               "supportsReceipt": false,
               "supportsReconciliation": false,
               "supportedAssets": [
-                "ETH"
+                "USD"
               ],
               "provider": "evm-tempo-mainnet"
             },
@@ -1341,7 +1341,7 @@ export const runtimeCatalog = {
               "supportsReceipt": false,
               "supportsReconciliation": false,
               "supportedAssets": [
-                "ETH"
+                "USD"
               ],
               "provider": "evm-tempo-testnet"
             },
@@ -1359,7 +1359,7 @@ export const runtimeCatalog = {
               "supportsReceipt": false,
               "supportsReconciliation": false,
               "supportedAssets": [
-                "ETH"
+                "USD"
               ],
               "provider": "evm-tempo-mainnet"
             },
@@ -1657,7 +1657,7 @@ export const runtimeCatalog = {
               "supportsReceipt": false,
               "supportsReconciliation": false,
               "supportedAssets": [
-                "ETH"
+                "USD"
               ],
               "provider": "evm-tempo-testnet"
             },
@@ -1675,7 +1675,7 @@ export const runtimeCatalog = {
               "supportsReceipt": false,
               "supportsReconciliation": false,
               "supportedAssets": [
-                "ETH"
+                "USD"
               ],
               "provider": "evm-tempo-mainnet"
             },
@@ -1973,7 +1973,7 @@ export const runtimeCatalog = {
               "supportsReceipt": false,
               "supportsReconciliation": false,
               "supportedAssets": [
-                "ETH"
+                "USD"
               ],
               "provider": "evm-tempo-testnet"
             },
@@ -1991,7 +1991,7 @@ export const runtimeCatalog = {
               "supportsReceipt": false,
               "supportsReconciliation": false,
               "supportedAssets": [
-                "ETH"
+                "USD"
               ],
               "provider": "evm-tempo-mainnet"
             },
@@ -2353,7 +2353,7 @@ export const runtimeCatalog = {
               "supportsReceipt": false,
               "supportsReconciliation": false,
               "supportedAssets": [
-                "ETH"
+                "USD"
               ],
               "provider": "evm-tempo-mainnet"
             },
@@ -2715,7 +2715,7 @@ export const runtimeCatalog = {
               "supportsReceipt": false,
               "supportsReconciliation": false,
               "supportedAssets": [
-                "ETH"
+                "USD"
               ],
               "provider": "evm-tempo-mainnet"
             },
@@ -3077,7 +3077,7 @@ export const runtimeCatalog = {
               "supportsReceipt": false,
               "supportsReconciliation": false,
               "supportedAssets": [
-                "ETH"
+                "USD"
               ],
               "provider": "evm-tempo-mainnet"
             },
@@ -3427,7 +3427,7 @@ export const runtimeCatalog = {
               "supportsReceipt": false,
               "supportsReconciliation": false,
               "supportedAssets": [
-                "ETH"
+                "USD"
               ],
               "provider": "evm-tempo-mainnet"
             },
@@ -3753,7 +3753,7 @@ export const runtimeCatalog = {
               "supportsReceipt": false,
               "supportsReconciliation": false,
               "supportedAssets": [
-                "ETH"
+                "USD"
               ],
               "provider": "evm-tempo-testnet"
             },
@@ -3771,7 +3771,7 @@ export const runtimeCatalog = {
               "supportsReceipt": false,
               "supportsReconciliation": false,
               "supportedAssets": [
-                "ETH"
+                "USD"
               ],
               "provider": "evm-tempo-mainnet"
             },
@@ -4086,7 +4086,7 @@ export const runtimeCatalog = {
               "supportsReceipt": false,
               "supportsReconciliation": false,
               "supportedAssets": [
-                "ETH"
+                "USD"
               ],
               "provider": "evm-tempo-testnet"
             },
@@ -4104,7 +4104,7 @@ export const runtimeCatalog = {
               "supportsReceipt": false,
               "supportsReconciliation": false,
               "supportedAssets": [
-                "ETH"
+                "USD"
               ],
               "provider": "evm-tempo-mainnet"
             },
