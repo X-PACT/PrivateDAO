@@ -1,6 +1,6 @@
 {
   "schema": "privatedao.multichain-master-backlog.v1",
-  "generatedAt": "2026-09-11",
+  "generatedAt": "2026-09-17",
   "principle": "One organizational operating layer; independent native execution environments; no bridge dependency.",
   "evidenceRule": "Only real network execution can produce testnet_verified, devnet_verified, or mainnet_live.",
   "tasks": [
@@ -57,6 +57,13 @@
       "validation": "Public Agent Card returns HTTP 200 and exposes machine-readable discovery metadata for the live exchange."
     },
     {
+      "id": "release-verification-gate",
+      "phase": "security-and-release",
+      "status": "verified",
+      "evidence": ["scripts/verify-all.sh", "package.json", "git status --short --branch"],
+      "validation": "Full repository verification passed on 2026-09-17; the canonical worktree is clean and synchronized with the release refs."
+    },
+    {
       "id": "verification-arbitrum-sepolia",
       "phase": "verification-e2e",
       "status": "blocked_external",
@@ -102,8 +109,8 @@
       "id": "security-dependency-remediation",
       "phase": "security-hardening",
       "status": "blocked_external",
-      "requires": "Reviewed non-breaking dependency upgrades or explicit accepted-risk decisions; the latest full npm audit reports 32 vulnerabilities locally",
-      "evidence": ["npm audit", "scripts/verify-tracked-secrets.mjs"]
+      "requires": "Reviewed non-breaking dependency upgrades or explicit accepted-risk decisions; the current production dependency audit still reports 17 low vulnerabilities",
+      "evidence": ["npm audit --omit=dev", "scripts/verify-tracked-secrets.mjs"]
     },
     {
       "id": "mainnet-release-gate",
