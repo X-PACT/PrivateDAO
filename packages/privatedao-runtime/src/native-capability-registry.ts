@@ -86,8 +86,8 @@ const ORGANIZATIONAL_EVIDENCE = {
       "0xff3bbac12cb2630bee9f0576ea2ea202a059edf7",
     ],
     assets: ["ETH"],
-    commit: "64224f7",
-    timestamp: "2026-09-12T00:40:03.117Z",
+    commit: "bc9e662",
+    timestamp: "2026-09-16T23:03:17.944Z",
   },
   "tempo-testnet": {
     provider: "evm-tempo-testnet-organizational",
