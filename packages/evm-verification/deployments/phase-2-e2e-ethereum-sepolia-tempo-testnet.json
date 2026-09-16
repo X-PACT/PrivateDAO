@@ -1,0 +1,118 @@
+{
+  "generatedAt": "2026-09-16T21:53:12.853Z",
+  "status": "testnet_verified",
+  "scope": [
+    "ethereum-sepolia",
+    "tempo-testnet"
+  ],
+  "networks": [
+    {
+      "network": "ethereum-sepolia",
+      "chainId": 11155111,
+      "contracts": {
+        "verifier": {
+          "address": "0x26E3515D02bb3D8122Fad109D159f43e81e8bEeb",
+          "hash": "0xa21967495c09c4c0c3aca5fcc8730fd3caa4ff305cd2bd5a587e9f23b9c364d9",
+          "blockNumber": "11672673"
+        },
+        "blind": {
+          "address": "0xdd01dA1b53BA46BF1Ce8c71Bc1C5E86E8784694B",
+          "hash": "0x70493ecd1dd62f12a959c5246071ca3b218b5189620b847a2f43bdae83435b30",
+          "blockNumber": "11672674"
+        },
+        "record": {
+          "address": "0x6f813E1221cB5f760Bb5C467983c014bbE4B3B5c",
+          "hash": "0xe5018bbc4273e5a4cae1f4631d1e4d9a48959aa61623352dd2999b02b6163650",
+          "blockNumber": "11672675"
+        }
+      },
+      "record": {
+        "txHash": "0xb990c64d3206e0fe6d6ab19683e683130c516b1d7c1456ffa289c85bd6d6a9ad",
+        "blockNumber": "11719484",
+        "verificationId": "0x58db4ff4878f96bbef19e3a67d8fc1bb8f7c58e9daba809687046341de628f9e",
+        "explorerUrl": "https://sepolia.etherscan.io/tx/0xb990c64d3206e0fe6d6ab19683e683130c516b1d7c1456ffa289c85bd6d6a9ad"
+      },
+      "blind": {
+        "txHash": "0xb70dd8367864a028539c410b9c67f9137c1cf736734f0dec09efd2017a030780",
+        "blockNumber": "11719485",
+        "verificationId": "0xfeab3abb389beabfabaeeafb5398d51ab2b846c1713b62bffb52c28af5e9e385",
+        "explorerUrl": "https://sepolia.etherscan.io/tx/0xb70dd8367864a028539c410b9c67f9137c1cf736734f0dec09efd2017a030780"
+      },
+      "revocation": {
+        "recordTxHash": "0xd68b3e0bd763c84977343b67e55d983663a27a7b0f85b340cce46cb0c4ac1856",
+        "blindTxHash": "0xcc7f3d5cc1810cbd63a3b717ba532b4db3a35bc28180c95ac99d9cf72854cb4b",
+        "disposableRecordVerificationId": "0xcfaf8ca702db62da9902abfe3f47bbe87dedeabb5d1c9ec7f1e0a5922ad02904",
+        "disposableBlindVerificationId": "0x944d6e6cc81a0ee9539cdf73357ff5cd330b65e7495a2cc492f57e7d642642e0"
+      },
+      "checks": {
+        "recordVerified": true,
+        "blindProofVerified": true,
+        "wrongChainRejected": true,
+        "alteredProofRejected": true,
+        "expiredRecordRejected": true,
+        "expiredBlindRejected": true,
+        "recordRevoked": true,
+        "blindProofRevoked": true,
+        "crossNetworkReplayRejected": true
+      },
+      "links": {
+        "record": "https://privatedao.org/verify/evm?network=ethereum-sepolia&type=record&id=0x58db4ff4878f96bbef19e3a67d8fc1bb8f7c58e9daba809687046341de628f9e",
+        "blind": "https://privatedao.org/verify/evm?network=ethereum-sepolia&type=blind&id=0xfeab3abb389beabfabaeeafb5398d51ab2b846c1713b62bffb52c28af5e9e385"
+      }
+    },
+    {
+      "network": "tempo-testnet",
+      "chainId": 42431,
+      "contracts": {
+        "verifier": {
+          "address": "0xbf495e8147ab23bfa2024eae7c0d2f54af40279c",
+          "hash": "0x9b2d607a00eaaa54a6311ee2e042aa5f3e4800b79b9a6450f0659db3d55052d0",
+          "blockNumber": "34730003"
+        },
+        "blind": {
+          "address": "0xffe6e9a78dafd35f230ad51c7bd96ba469d53405",
+          "hash": "0x866a8ffdb4cc60771c837547625646ff2e333fdccfb7aaabc966cf0b1559a269",
+          "blockNumber": "34730009"
+        },
+        "record": {
+          "address": "0x9570769a1a4980d199845ccb276706face805cb4",
+          "hash": "0xebccc61ff2f59093ffb87cebd73de2a6a4b55ebd46e40ad78b29487ca8daacbe",
+          "blockNumber": "34730013"
+        }
+      },
+      "record": {
+        "txHash": "0x68a796d768c4a114a035ab5ecfa588d1e82e1fe594f840302adebb587e24da53",
+        "blockNumber": "35606125",
+        "verificationId": "0xfaf36763f7d9a5281d57e250d12e2b16a9f870d21ac9efafd59aa6ae55a5c8ab",
+        "explorerUrl": "https://explore.testnet.tempo.xyz/tx/0x68a796d768c4a114a035ab5ecfa588d1e82e1fe594f840302adebb587e24da53"
+      },
+      "blind": {
+        "txHash": "0x67f38987a5814fb3d45b26dfa95b29a7d729800dfe537aeee49f16be7ef8a1f0",
+        "blockNumber": "35606130",
+        "verificationId": "0xc6dbd27369ab64d3144751809dbd40ba50970d033206c88145afd5db9b57be8c",
+        "explorerUrl": "https://explore.testnet.tempo.xyz/tx/0x67f38987a5814fb3d45b26dfa95b29a7d729800dfe537aeee49f16be7ef8a1f0"
+      },
+      "revocation": {
+        "recordTxHash": "0xbff2d3d3983d8a497ed67e67f7c0952bb76bbcad1fbfecf39acf0e0fc542272e",
+        "blindTxHash": "0x252e2e90a63dc1ad8c8ad22280e085c9312c5b4ae5dd3e9c14e37212cea02bb8",
+        "disposableRecordVerificationId": "0x704c8dfc0069749bfe6feceecc594ca54d1f10d05e6986baa5347ab641e0516c",
+        "disposableBlindVerificationId": "0xd39cd6a694f7dffe137c749a9cfc08cf6dae39a8e8a742dafac467b927d80faa"
+      },
+      "checks": {
+        "recordVerified": true,
+        "blindProofVerified": true,
+        "wrongChainRejected": true,
+        "alteredProofRejected": true,
+        "expiredRecordRejected": true,
+        "expiredBlindRejected": true,
+        "recordRevoked": true,
+        "blindProofRevoked": true,
+        "crossNetworkReplayRejected": true
+      },
+      "links": {
+        "record": "https://privatedao.org/verify/evm?network=tempo-testnet&type=record&id=0xfaf36763f7d9a5281d57e250d12e2b16a9f870d21ac9efafd59aa6ae55a5c8ab",
+        "blind": "https://privatedao.org/verify/evm?network=tempo-testnet&type=blind&id=0xc6dbd27369ab64d3144751809dbd40ba50970d033206c88145afd5db9b57be8c"
+      }
+    }
+  ]
+}

@@ -274,7 +274,7 @@ async function main() {
     const secondPublicClient = createPublicClient({ chain: chainFor(secondNetwork), transport: http(process.env[secondNetwork.rpcEnv], { timeout: 30_000 }) });
     const secondAccount = privateKeyToAccount(DEPLOYER_KEY);
     const secondRecordId = keccak256(toBytes(`${activeNetworks[0].id}:record-${runId}`));
-    const secondDomainBytes = encodeAbiParameters(domainTypes, ["PrivateDAO-Blind-Policy-v1", BigInt(activeNetworks[0].chainId), first.blind.address, PRODUCT_ID, SCHEMA_ID, secondRecordId]);
+    const secondDomainBytes = encodeAbiParameters(domainTypes, ["PrivateDAO-Blind-Policy-v1", BigInt(activeNetworks[0].chainId), first.contracts.blind.address, PRODUCT_ID, SCHEMA_ID, secondRecordId]);
     const secondDomainField = BigInt(keccak256(secondDomainBytes)) % FIELD;
     const replayInputs = { policyId: secondDomainField.toString(), policyCommitment: poseidonField([secondDomainField, 3n, 100n, 10000n, 50n, 777n]).toString(), inputCommitment: poseidonField([11n, 22n, 100n, 100n, 100n, 1n, 80n, 888n]).toString(), satisfiedClaim: "1", organizationKey: "11", subjectKey: "22", membershipVerified: "1", record0: "100", record1: "100", record2: "100", liabilitiesUsd: "1", riskScore: "80", minRecordCount: "3", minAverageAmountUsd: "100", maxLiabilityBps: "10000", minRiskScore: "50", policySalt: "777", inputSalt: "888" };
     const replayProof = await groth16.fullProve(replayInputs, path.join(ROOT, `zk/build/${CIRCUIT}_js/${CIRCUIT}.wasm`), path.join(ROOT, `zk/setup/${CIRCUIT}_final.zkey`));
