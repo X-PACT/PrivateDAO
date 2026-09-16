@@ -1,6 +1,6 @@
 {
   "schema": "privatedao.native-capability-matrix.v1",
-  "generatedAt": "2026-09-16T21:12:22.356Z",
+  "generatedAt": "2026-09-16T21:40:36.147Z",
   "bridgeFree": true,
   "entries": [
     {
@@ -350,7 +350,7 @@
       "declared": true,
       "environment": "testnet",
       "chainId": "42431",
-      "nativeAsset": "ETH",
+      "nativeAsset": "USD",
       "supportedAssets": [
         "AlphaUSD"
       ],
@@ -381,9 +381,9 @@
       "declared": false,
       "environment": "mainnet",
       "chainId": null,
-      "nativeAsset": "ETH",
+      "nativeAsset": "USD",
       "supportedAssets": [
-        "ETH"
+        "USD"
       ],
       "contracts": [],
       "verifier": null,
@@ -804,7 +804,7 @@
       "declared": true,
       "environment": "testnet",
       "chainId": "42431",
-      "nativeAsset": "ETH",
+      "nativeAsset": "USD",
       "supportedAssets": [
         "AlphaUSD"
       ],
@@ -835,9 +835,9 @@
       "declared": false,
       "environment": "mainnet",
       "chainId": null,
-      "nativeAsset": "ETH",
+      "nativeAsset": "USD",
       "supportedAssets": [
-        "ETH"
+        "USD"
       ],
       "contracts": [],
       "verifier": null,
@@ -1258,7 +1258,7 @@
       "declared": true,
       "environment": "testnet",
       "chainId": "42431",
-      "nativeAsset": "ETH",
+      "nativeAsset": "USD",
       "supportedAssets": [
         "AlphaUSD"
       ],
@@ -1289,9 +1289,9 @@
       "declared": false,
       "environment": "mainnet",
       "chainId": null,
-      "nativeAsset": "ETH",
+      "nativeAsset": "USD",
       "supportedAssets": [
-        "ETH"
+        "USD"
       ],
       "contracts": [],
       "verifier": null,
@@ -1711,9 +1711,9 @@
       "declared": false,
       "environment": "testnet",
       "chainId": "42431",
-      "nativeAsset": "ETH",
+      "nativeAsset": "USD",
       "supportedAssets": [
-        "ETH"
+        "USD"
       ],
       "contracts": [],
       "verifier": null,
@@ -1739,9 +1739,9 @@
       "declared": false,
       "environment": "mainnet",
       "chainId": null,
-      "nativeAsset": "ETH",
+      "nativeAsset": "USD",
       "supportedAssets": [
-        "ETH"
+        "USD"
       ],
       "contracts": [],
       "verifier": null,
@@ -2161,9 +2161,9 @@
       "declared": false,
       "environment": "testnet",
       "chainId": "42431",
-      "nativeAsset": "ETH",
+      "nativeAsset": "USD",
       "supportedAssets": [
-        "ETH"
+        "USD"
       ],
       "contracts": [],
       "verifier": null,
@@ -2189,9 +2189,9 @@
       "declared": false,
       "environment": "mainnet",
       "chainId": null,
-      "nativeAsset": "ETH",
+      "nativeAsset": "USD",
       "supportedAssets": [
-        "ETH"
+        "USD"
       ],
       "contracts": [],
       "verifier": null,
@@ -2611,9 +2611,9 @@
       "declared": false,
       "environment": "testnet",
       "chainId": "42431",
-      "nativeAsset": "ETH",
+      "nativeAsset": "USD",
       "supportedAssets": [
-        "ETH"
+        "USD"
       ],
       "contracts": [],
       "verifier": null,
@@ -2639,9 +2639,9 @@
       "declared": false,
       "environment": "mainnet",
       "chainId": null,
-      "nativeAsset": "ETH",
+      "nativeAsset": "USD",
       "supportedAssets": [
-        "ETH"
+        "USD"
       ],
       "contracts": [],
       "verifier": null,
@@ -3063,7 +3063,7 @@
       "declared": true,
       "environment": "testnet",
       "chainId": "42431",
-      "nativeAsset": "ETH",
+      "nativeAsset": "USD",
       "supportedAssets": [
         "AlphaUSD"
       ],
@@ -3095,9 +3095,9 @@
       "declared": false,
       "environment": "mainnet",
       "chainId": null,
-      "nativeAsset": "ETH",
+      "nativeAsset": "USD",
       "supportedAssets": [
-        "ETH"
+        "USD"
       ],
       "contracts": [],
       "verifier": null,
@@ -3519,7 +3519,7 @@
       "declared": true,
       "environment": "testnet",
       "chainId": "42431",
-      "nativeAsset": "ETH",
+      "nativeAsset": "USD",
       "supportedAssets": [
         "AlphaUSD"
       ],
@@ -3551,9 +3551,9 @@
       "declared": false,
       "environment": "mainnet",
       "chainId": null,
-      "nativeAsset": "ETH",
+      "nativeAsset": "USD",
       "supportedAssets": [
-        "ETH"
+        "USD"
       ],
       "contracts": [],
       "verifier": null,
@@ -3975,7 +3975,7 @@
       "declared": true,
       "environment": "testnet",
       "chainId": "42431",
-      "nativeAsset": "ETH",
+      "nativeAsset": "USD",
       "supportedAssets": [
         "AlphaUSD"
       ],
@@ -4007,9 +4007,9 @@
       "declared": false,
       "environment": "mainnet",
       "chainId": null,
-      "nativeAsset": "ETH",
+      "nativeAsset": "USD",
       "supportedAssets": [
-        "ETH"
+        "USD"
       ],
       "contracts": [],
       "verifier": null,
@@ -4431,7 +4431,7 @@
       "declared": true,
       "environment": "testnet",
       "chainId": "42431",
-      "nativeAsset": "ETH",
+      "nativeAsset": "USD",
       "supportedAssets": [
         "AlphaUSD"
       ],
@@ -4463,9 +4463,9 @@
       "declared": false,
       "environment": "mainnet",
       "chainId": null,
-      "nativeAsset": "ETH",
+      "nativeAsset": "USD",
       "supportedAssets": [
-        "ETH"
+        "USD"
       ],
       "contracts": [],
       "verifier": null,
@@ -4883,9 +4883,9 @@
       "declared": false,
       "environment": "testnet",
       "chainId": "42431",
-      "nativeAsset": "ETH",
+      "nativeAsset": "USD",
       "supportedAssets": [
-        "ETH"
+        "USD"
       ],
       "contracts": [],
       "verifier": null,
@@ -4911,9 +4911,9 @@
       "declared": false,
       "environment": "mainnet",
       "chainId": null,
-      "nativeAsset": "ETH",
+      "nativeAsset": "USD",
       "supportedAssets": [
-        "ETH"
+        "USD"
       ],
       "contracts": [],
       "verifier": null,
@@ -5331,9 +5331,9 @@
       "declared": false,
       "environment": "testnet",
       "chainId": "42431",
-      "nativeAsset": "ETH",
+      "nativeAsset": "USD",
       "supportedAssets": [
-        "ETH"
+        "USD"
       ],
       "contracts": [],
       "verifier": null,
@@ -5359,9 +5359,9 @@
       "declared": false,
       "environment": "mainnet",
       "chainId": null,
-      "nativeAsset": "ETH",
+      "nativeAsset": "USD",
       "supportedAssets": [
-        "ETH"
+        "USD"
       ],
       "contracts": [],
       "verifier": null,

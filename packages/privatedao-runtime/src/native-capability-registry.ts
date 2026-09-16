@@ -104,7 +104,11 @@ const ORGANIZATIONAL_EVIDENCE = {
 
 function nativeAsset(network: NetworkDescriptor): string | null {
   if (network.family === "solana") return "SOL";
-  if (network.id.startsWith("ethereum") || network.family === "evm") return network.id === "bnb-testnet" || network.id === "bnb-mainnet" ? "BNB" : "ETH";
+  if (network.family === "evm") {
+    if (network.id === "tempo-testnet" || network.id === "tempo-mainnet") return "USD";
+    if (network.id === "bnb-testnet" || network.id === "bnb-mainnet") return "BNB";
+    return "ETH";
+  }
   if (network.family === "utxo") return "ZEC";
   if (network.family === "exchange") return "USDC";
   return null;

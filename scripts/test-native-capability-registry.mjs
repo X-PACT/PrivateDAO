@@ -46,6 +46,7 @@ for (const entry of verified.filter((candidate) => candidate.network === "tempo-
 assert.equal(verified.filter((entry) => entry.network === "tempo-testnet" && entry.provider === "evm-tempo-testnet").length, 3, "Tempo must have three verified verification rows");
 assert.equal(verified.filter((entry) => entry.provider === "evm-ethereum-sepolia-organizational").length, 4, "Ethereum organizational evidence must cover treasury, governance, and auction lanes");
 assert.equal(verified.filter((entry) => entry.provider === "evm-tempo-testnet-organizational").length, 4, "Tempo organizational evidence must cover treasury, governance, and auction lanes");
+assert.equal(entries.find((entry) => entry.network === "tempo-testnet" && entry.product === "treasury")?.nativeAsset, "USD", "Tempo native asset must match the EVM adapter configuration");
 
 assert.equal(entries.some((entry) => entry.network === "wormhole-integration"), false, "bridge network must not be present");
 console.log(`[native-capability-registry] rows=${entries.length} verified=${verified.length} bridge-free=true`);
