@@ -5,6 +5,7 @@ import {
   buildNativeCapabilityRegistry,
   findApplicationBinding,
   NETWORK_MATRIX,
+  PAYMENT_RAIL_CATALOG,
   PRODUCT_CATALOG,
 } from "../packages/privatedao-runtime/src/index.js";
 
@@ -89,6 +90,18 @@ async function main() {
       environment: network.environment,
       chainId: network.chainId,
       adapterId: network.adapterId,
+    })),
+    paymentRails: PAYMENT_RAIL_CATALOG.map((rail) => ({
+      id: rail.id,
+      label: rail.label,
+      purpose: rail.purpose,
+      sourceNetwork: rail.sourceNetwork,
+      destinationNetwork: rail.destinationNetwork,
+      asset: rail.asset,
+      privacy: rail.privacy,
+      supportsBatch: rail.supportsBatch,
+      status: rail.status,
+      evidence: [...rail.evidence],
     })),
   };
 

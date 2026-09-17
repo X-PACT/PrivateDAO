@@ -4340,5 +4340,35 @@ export const runtimeCatalog = {
       "stage": "planned",
       "environment": "testnet"
     }
+  ],
+  "paymentRails": [
+    {
+      "id": "tempo-testnet-tip20",
+      "label": "Tempo Testnet atomic payments",
+      "purpose": "native-payment",
+      "sourceNetwork": "tempo-testnet",
+      "destinationNetwork": "tempo-testnet",
+      "asset": "0x20c0000000000000000000000000000000000001",
+      "privacy": "public-onchain",
+      "supportsBatch": true,
+      "status": "testnet_verified",
+      "evidence": [
+        "packages/evm-verification/deployments/payment-rail-tempo.json"
+      ]
+    },
+    {
+      "id": "base-sepolia-deposit",
+      "label": "Ethereum Sepolia to Base Sepolia deposit",
+      "purpose": "optional-funding",
+      "sourceNetwork": "ethereum-sepolia",
+      "destinationNetwork": "base-sepolia",
+      "asset": "ETH",
+      "privacy": "public-onchain",
+      "supportsBatch": false,
+      "status": "testnet_verified",
+      "evidence": [
+        "packages/evm-verification/deployments/payment-rail-base-bridge.json"
+      ]
+    }
   ]
 } as const;
