@@ -11,19 +11,19 @@
 
 ## RPC Health
 
-- primary slot: 464952476
-- primary blockhash: `EbNQavaGFiiCgrHQebGxi9LF8xtSygcFxkdDKbMvSdVm`
-- primary version latency: 796 ms
-- primary blockhash latency: 104 ms
-- fallback slot: 422199469
-- fallback blockhash: `HH9HS8wEhoiETw8BfxVVTycRTexZHUNvfWMgmZTSGYcw`
-- fallback version latency: 576 ms
-- fallback blockhash latency: 372 ms
+- primary slot: 499571673
+- primary blockhash: `Am21KsP1oBs9Wddv7K9tJVMfyeo7t5bR8ZHjzpNS9wYu`
+- primary version latency: 338 ms
+- primary blockhash latency: 96 ms
+- fallback slot: 447668930
+- fallback blockhash: `HMYEDzZ1PwJU7WScax1oa46sTiyY2vy9ML9qwkpk5tbV`
+- fallback version latency: 422 ms
+- fallback blockhash latency: 326 ms
 
 ## Anchor Checks
 
 - program: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx` | exists: yes | owner: `BPFLoaderUpgradeab1e11111111111111111111111` | lamports: 1141440 | data length: 36
-- verification-wallet: `4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD` | exists: yes | owner: `11111111111111111111111111111111` | lamports: 27196764058 | data length: 0
+- verification-wallet: `4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD` | exists: yes | owner: `11111111111111111111111111111111` | lamports: 12854986 | data length: 0
 - dao: `FZV9KmpeY1B31XvszQypp5T6nQN5C44JDLM4QWBEDvhx` | exists: yes | owner: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx` | lamports: 2352480 | data length: 210
 - treasury: `AZUroiNeGAjNdD84eEHnAKHHFwqAFmkjr2g1eoF7Ek5c` | exists: yes | owner: `11111111111111111111111111111111` | lamports: 150000000 | data length: 0
 - proposal: `AegjmwkX1FknBJMDyH5yM6BMhyHsiUreNtz3d8iz3QrP` | exists: yes | owner: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx` | lamports: 10565280 | data length: 1390

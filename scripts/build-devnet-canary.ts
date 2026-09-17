@@ -41,7 +41,18 @@ async function main() {
   const proof = readJson<ProofRegistry>("docs/proof-registry.json");
 
   const candidates = uniqueRpcUrls([DEFAULT_PRIMARY_RPC, DEFAULT_FALLBACK_RPC, "https://api.devnet.solana.com"]);
-  const primaryResult = await firstHealthyRpc("primary", candidates);
+  const pdaoTokenNetwork = (proof.pdaoToken?.network ?? "Devnet").toLowerCase();
+  const includePdaoTokenAccount = Boolean(proof.pdaoToken?.tokenAccount && pdaoTokenNetwork === "devnet");
+  const anchorSpecs: Array<readonly [string, string]> = [
+    ["program", proof.programId],
+    ["verification-wallet", proof.verificationWallet],
+    ["dao", proof.dao],
+    ["treasury", proof.treasury],
+    ["proposal", proof.proposal],
+    ["governance-mint", proof.governanceMint],
+  ];
+  if (includePdaoTokenAccount) anchorSpecs.push(["pdao-token-account", proof.pdaoToken!.tokenAccount]);
+  const primaryResult = await firstCanaryRpc("primary", candidates, anchorSpecs);
   if (!primaryResult) throw new Error("No configured Solana Devnet RPC responded successfully.");
   const fallbackResult = await firstHealthyRpc(
     "fallback",
@@ -50,20 +61,8 @@ async function main() {
   const primary = primaryResult.connection;
   const primaryHealth = primaryResult.health;
   const fallbackHealth = fallbackResult?.health ?? null;
-  const pdaoTokenNetwork = (proof.pdaoToken?.network ?? "Devnet").toLowerCase();
-  const includePdaoTokenAccount = Boolean(proof.pdaoToken?.tokenAccount && pdaoTokenNetwork === "devnet");
-
-  const anchorChecks = await Promise.all([
-    inspectAccount(primary, "program", proof.programId),
-    inspectAccount(primary, "verification-wallet", proof.verificationWallet),
-    inspectAccount(primary, "dao", proof.dao),
-    inspectAccount(primary, "treasury", proof.treasury),
-    inspectAccount(primary, "proposal", proof.proposal),
-    inspectAccount(primary, "governance-mint", proof.governanceMint),
-    ...(includePdaoTokenAccount ? [inspectAccount(primary, "pdao-token-account", proof.pdaoToken!.tokenAccount)] : []),
-  ]);
-
-  const tokenSupply = await readTokenSupply(primary, proof.governanceMint);
+  const anchorChecks = primaryResult.anchorChecks;
+  const tokenSupply = primaryResult.tokenSupply;
 
   const report = {
     project: "PrivateDAO",
@@ -170,6 +169,34 @@ async function firstHealthyRpc(label: "primary" | "fallback", urls: string[]) {
     }
   }
   return null;
+}
+
+async function firstCanaryRpc(
+  label: "primary" | "fallback",
+  urls: string[],
+  anchorSpecs: readonly (readonly [string, string])[],
+) {
+  let firstHealthy: {
+    url: string;
+    connection: Connection;
+    health: Awaited<ReturnType<typeof measureRpc>>;
+    anchorChecks: AnchorCheck[];
+    tokenSupply: Awaited<ReturnType<typeof readTokenSupply>>;
+  } | null = null;
+  for (const url of urls) {
+    try {
+      const connection = new Connection(url, "confirmed");
+      const health = await measureRpc(label, url, connection);
+      const anchorChecks = await Promise.all(anchorSpecs.map(([anchorLabel, address]) => inspectAccount(connection, anchorLabel, address)));
+      const tokenSupply = await readTokenSupply(connection, anchorSpecs.find(([anchorLabel]) => anchorLabel === "governance-mint")![1]);
+      const result = { url, connection, health, anchorChecks, tokenSupply };
+      if (!firstHealthy) firstHealthy = result;
+      if (anchorChecks.every((entry) => entry.exists) && tokenSupply) return result;
+    } catch {
+      // Continue to the next candidate; no endpoint is trusted on partial health alone.
+    }
+  }
+  return firstHealthy;
 }
 
 function uniqueRpcUrls(urls: string[]): string[] {
