@@ -227,3 +227,5 @@ export {
 export type { ApplicationBindingMode, ApplicationCapabilityBinding, ApplicationHttpMethod } from "./application-bindings.js";
 export { buildTempoPaymentBatch, reconcileTempoPayments, buildBaseTestnetDeposit, baseDepositDestinationHash, reconcileBaseDeposit, TEMPO_PAYMENT_CHAIN, TEMPO_PAYMENT_TOKEN, BASE_DEPOSIT_PORTAL } from "./payment-rails.js";
 export type { PaymentLine } from "./payment-rails.js";
+export { PAYMENT_RAIL_CATALOG, findPaymentRail } from "./payment-rail-catalog.js";
+export type { PaymentRailDescriptor, PaymentRailId, PaymentRailStatus } from "./payment-rail-catalog.js";

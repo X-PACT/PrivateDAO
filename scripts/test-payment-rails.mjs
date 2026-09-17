@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { findPaymentRail, PAYMENT_RAIL_CATALOG } from "../packages/privatedao-runtime/src/payment-rail-catalog.ts";
 import { concat, toHex, encodeAbiParameters, encodeEventTopics, decodeFunctionData, parseAbi } from "viem";
 import { Abis } from "viem/tempo";
 import { buildTempoPaymentBatch, reconcileTempoPayments, buildBaseTestnetDeposit, baseDepositDestinationHash, reconcileBaseDeposit, BASE_DEPOSIT_PORTAL } from "../packages/privatedao-runtime/src/payment-rails.ts";
@@ -16,6 +17,10 @@ const log = {
 };
 const receipt = { status: "success", from: sender, transactionHash: reference, blockNumber: 1n, logs: [log] };
 assert.equal(reconcileTempoPayments(batch, 42431, receipt).count, 1);
+assert.equal(PAYMENT_RAIL_CATALOG.length, 2);
+assert.equal(findPaymentRail("tempo-testnet-tip20").purpose, "native-payment");
+assert.equal(findPaymentRail("base-sepolia-deposit").purpose, "optional-funding");
+assert.throws(() => findPaymentRail("unknown-rail"));
 assert.equal(decodeFunctionData({ abi: Abis.tip20, data: batch.calls[0].data }).functionName, "transferWithMemo");
 for (const change of [{ chainId: 4217 }, { maxTotal: 9n }, { lines: [] }, { lines: [input.lines[0], input.lines[0]] }, { lines: [{ ...input.lines[0], amount: 0n }] }, { lines: [{ ...input.lines[0], reference: "employee-name" }] }]) {
   assert.throws(() => buildTempoPaymentBatch({ ...input, ...change }));
