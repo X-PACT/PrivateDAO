@@ -181,9 +181,14 @@ export const NETWORK_MATRIX: readonly NetworkDescriptor[] = [
   {
     id: "hyperliquid-testnet",
     label: "Hyperliquid Testnet",
-    family: "exchange",
-    stage: "planned",
+    family: "evm",
+    // HyperEVM JSON-RPC adapter is available; product execution remains gated by evidence.
+    stage: "available",
     environment: "testnet",
+    chainId: "998",
+    finalityModel: "HyperBFT/EVM block finality",
+    explorerBaseUrl: "https://www.hyperscan.com/",
+    adapterId: "evm-hyperliquid-testnet",
   },
 ];
 

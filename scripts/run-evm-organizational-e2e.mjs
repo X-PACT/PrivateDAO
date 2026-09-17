@@ -29,6 +29,7 @@ const NETWORK_CONFIG = {
   "bnb-testnet": { chainId: 97, rpcEnv: "PDAO_EVM_BNB_TESTNET_RPC_URL", currency: { name: "BNB Testnet", symbol: "tBNB", decimals: 18 } },
   "base-sepolia": { chainId: 84532, rpcEnv: "PDAO_EVM_BASE_SEPOLIA_RPC_URL", currency: { name: "Base Sepolia Ether", symbol: "ETH", decimals: 18 } },
   "robinhood-testnet": { chainId: 46630, rpcEnv: "PDAO_EVM_ROBINHOOD_TESTNET_RPC_URL", currency: { name: "Robinhood Testnet Ether", symbol: "ETH", decimals: 18 } },
+  "hyperliquid-testnet": { chainId: 998, rpcEnv: "PDAO_EVM_HYPERLIQUID_TESTNET_RPC_URL", currency: { name: "Hyperliquid Testnet HYPE", symbol: "HYPE", decimals: 18 } },
   "tempo-testnet": { chainId: 42431, rpcEnv: "PDAO_EVM_TEMPO_TESTNET_RPC_URL", currency: { name: "Tempo Testnet USD", symbol: "USD", decimals: 18 } },
 };
 const networkConfig = NETWORK_CONFIG[NETWORK];

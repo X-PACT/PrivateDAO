@@ -6,6 +6,7 @@ const endpoints = {
   "bnb-testnet": "https://data-seed-prebsc-1-s1.bnbchain.org:8545",
   "base-sepolia": "https://sepolia.base.org",
   "robinhood-testnet": "https://rpc.testnet.chain.robinhood.com",
+  "hyperliquid-testnet": "https://rpc.hyperliquid-testnet.xyz/evm",
   "tempo-testnet": "https://rpc.moderato.tempo.xyz",
 };
 

@@ -142,6 +142,7 @@ function nativeAsset(network: NetworkDescriptor): string | null {
   if (network.family === "evm") {
     if (network.id === "tempo-testnet" || network.id === "tempo-mainnet") return "USD";
     if (network.id === "bnb-testnet" || network.id === "bnb-mainnet") return "BNB";
+    if (network.id === "hyperliquid-testnet") return "HYPE";
     return "ETH";
   }
   if (network.family === "utxo") return "ZEC";
