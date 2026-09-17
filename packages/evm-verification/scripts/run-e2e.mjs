@@ -24,6 +24,7 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../.
 const PACKAGE = path.join(ROOT, "packages/evm-verification");
 const CIRCUIT = "private_dao_blind_policy_overlay";
 const TEMPO_FEE_TOKEN = "0x20c0000000000000000000000000000000000001";
+const RECEIPT_TIMEOUT_MS = Number(process.env.PRIVATEDAO_EVM_RECEIPT_TIMEOUT_MS || 120_000);
 const FIELD = 21888242871839275222246405745257275088548364400416034343698204186575808495617n;
 const PRODUCT_ID = keccak256(toBytes("blind-verification"));
 const SCHEMA_ID = keccak256(toBytes("private-dao-blind-policy-v1"));
@@ -171,7 +172,7 @@ async function expectRevert(operation, label) {
 
 async function deploy(wallet, publicClient, abi, bytecode, args = []) {
   const hash = await wallet.deployContract({ abi, bytecode, args });
-  const receipt = await publicClient.waitForTransactionReceipt({ hash });
+  const receipt = await publicClient.waitForTransactionReceipt({ hash, timeout: RECEIPT_TIMEOUT_MS });
   expect(receipt.status === "success", `deployment reverted: ${hash}`);
   expect(receipt.contractAddress, `deployment did not return an address: ${hash}`);
   return { address: receipt.contractAddress, hash, blockNumber: receipt.blockNumber.toString() };

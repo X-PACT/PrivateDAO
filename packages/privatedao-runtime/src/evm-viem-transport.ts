@@ -19,10 +19,12 @@ export type ViemContractWritePayload = {
 
 type ViemPublicClient = {
   getChainId(): Promise<number>;
-  waitForTransactionReceipt(input: { hash: `0x${string}` }): Promise<{ status: "success" | "reverted"; blockNumber: bigint }>;
+  waitForTransactionReceipt(input: { hash: `0x${string}`; timeout?: number }): Promise<{ status: "success" | "reverted"; blockNumber: bigint }>;
   estimateContractGas(input: Record<string, unknown>): Promise<bigint>;
   getGasPrice(): Promise<bigint>;
 };
+
+const RECEIPT_TIMEOUT_MS = Number(process.env.PRIVATEDAO_EVM_RECEIPT_TIMEOUT_MS || 120_000);
 
 type ViemWalletClient = {
   writeContract(input: Record<string, unknown>): Promise<`0x${string}`>;
@@ -108,7 +110,7 @@ export class ViemEvmTransport implements EvmTransport {
     const record = this.executions.get(executionId);
     if (!record?.signature) throw new Error("EVM execution has not been submitted.");
     if (record.receipt) return record.receipt as ExecutionReceipt<TResult>;
-    const chainReceipt = await this.publicClient.waitForTransactionReceipt({ hash: record.signature });
+    const chainReceipt = await this.publicClient.waitForTransactionReceipt({ hash: record.signature, timeout: RECEIPT_TIMEOUT_MS });
     if (chainReceipt.status !== "success") {
       record.state = "failed";
       throw new Error(`EVM transaction reverted: ${record.signature}`);
