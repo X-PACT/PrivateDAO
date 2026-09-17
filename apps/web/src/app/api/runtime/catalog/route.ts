@@ -37,5 +37,6 @@ export function GET() {
       }),
     })),
     networks: runtimeCatalog.networks,
+    paymentRails: runtimeCatalog.paymentRails,
   });
 }
