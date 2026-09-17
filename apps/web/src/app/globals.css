@@ -1,12 +1,19 @@
 @import "tailwindcss";
 
 :root {
-  --background: #030510;
-  --foreground: #f4f7fb;
-  --solana-mint: #14f195;
-  --solana-purple: #9945ff;
-  --solana-cyan: #00c2ff;
-  --solana-magenta: #e746ff;
+  --background: #ffffff;
+  --foreground: #10233f;
+  --surface: #f7f9fc;
+  --surface-strong: #eef3f9;
+  --line: #dce5f0;
+  --navy: #10233f;
+  --cobalt: #175cd3;
+  --cobalt-dark: #1146a5;
+  --muted: #5d6d82;
+  --solana-mint: #14a875;
+  --solana-purple: #6c3fd1;
+  --solana-cyan: #1479c9;
+  --solana-magenta: #b43cae;
 }
 
 @theme inline {
@@ -54,18 +61,58 @@ li {
   overflow-wrap: anywhere;
 }
 
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  background:
-    radial-gradient(circle at 18% 16%, rgba(20, 241, 149, 0.13), transparent 22%),
-    radial-gradient(circle at 80% 9%, rgba(153, 69, 255, 0.16), transparent 30%),
-    radial-gradient(circle at 70% 32%, rgba(255, 111, 60, 0.08), transparent 20%),
-    radial-gradient(circle at 38% 76%, rgba(0, 194, 255, 0.07), transparent 24%),
-    linear-gradient(180deg, rgba(255,255,255,0.03), transparent 24%);
-  z-index: -1;
+body::before,
+body::after {
+  display: none;
+}
+
+.enterprise-page {
+  background: var(--background);
+  color: var(--navy);
+}
+
+.enterprise-page a {
+  color: inherit;
+}
+
+.enterprise-muted {
+  color: var(--muted);
+}
+
+.enterprise-card {
+  border: 1px solid var(--line);
+  background: var(--surface);
+  box-shadow: 0 12px 32px rgba(16, 35, 63, 0.06);
+}
+
+.network-marquee {
+  mask-image: linear-gradient(90deg, transparent, black 4%, black 96%, transparent);
+}
+
+.network-marquee-track {
+  display: flex;
+  width: max-content;
+  animation: network-marquee 34s linear infinite;
+}
+
+.network-marquee:hover .network-marquee-track,
+.network-marquee:focus-within .network-marquee-track {
+  animation-play-state: paused;
+}
+
+@keyframes network-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .network-marquee-track {
+    animation: none;
+  }
 }
 
 .solana-claim-shell {

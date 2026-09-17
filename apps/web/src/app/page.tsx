@@ -5,6 +5,7 @@ import { LegacyEntryBridge } from "@/components/legacy-entry-bridge";
 import { BusinessValueSurface } from "@/components/business-value-surface";
 import { ServiceLauncher } from "@/components/service-launcher";
 import { SimpleHomeHero } from "@/components/simple-home-hero";
+import { NetworkMarquee } from "@/components/network-marquee";
 import { buildBrandHomeMetadata } from "@/lib/route-metadata";
 
 export const metadata: Metadata = buildBrandHomeMetadata();
@@ -83,76 +84,77 @@ export default function HomePage() {
         <LegacyEntryBridge />
       </Suspense>
       <SimpleHomeHero />
-      <div className="mx-auto w-full max-w-7xl space-y-5 px-4 pb-12 sm:px-6 lg:px-8">
-        <section className="border-b border-cyan-300/15 py-7 sm:py-9">
+      <NetworkMarquee />
+      <div className="enterprise-page mx-auto w-full max-w-7xl space-y-5 px-4 pb-12 sm:px-6 lg:px-8">
+        <section className="border-b border-[#dce5f0] py-7 sm:py-9">
           <div className="max-w-4xl">
-            <div className="text-[11px] font-semibold uppercase tracking-[0.28em] text-cyan-100/76">The PrivateDAO platform</div>
-            <h2 className="mt-3 text-3xl font-semibold tracking-[-0.04em] text-white sm:text-4xl">
+            <div className="text-[11px] font-semibold uppercase tracking-[0.28em] text-[#175cd3]">The PrivateDAO platform</div>
+            <h2 className="mt-3 text-3xl font-semibold tracking-[-0.04em] text-[#10233f] sm:text-4xl">
               One simple promise: private work, trusted outcomes.
             </h2>
-            <p className="mt-3 max-w-3xl text-sm leading-7 text-white/66">
+            <p className="mt-3 max-w-3xl text-sm leading-7 text-[#5d6d82]">
               Start with the result you need. The cryptography, storage, and network integrations stay in the platform core so your team can focus on the workflow.
             </p>
           </div>
         </section>
-        <section className="border-y border-white/10 py-6 sm:py-8">
-          <div className="text-[11px] font-semibold uppercase tracking-[0.28em] text-emerald-100/78">Why now?</div>
+        <section className="border-y border-[#dce5f0] py-6 sm:py-8">
+          <div className="text-[11px] font-semibold uppercase tracking-[0.28em] text-[#175cd3]">Why now?</div>
           <div className="mt-4 grid gap-3 lg:grid-cols-3">
             {whyNowPoints.map((point) => (
-              <div key={point} className="border-l border-emerald-300/32 pl-4 text-sm leading-7 text-white/68">
+              <div key={point} className="border-l border-[#b9d8f2] pl-4 text-sm leading-7 text-[#5d6d82]">
                 {point}
               </div>
             ))}
           </div>
         </section>
-        <section id="products" className="border-b border-white/10 pb-7 sm:pb-9">
+        <section id="products" className="border-b border-[#dce5f0] pb-7 sm:pb-9">
           <div className="max-w-4xl">
-            <div className="text-[11px] font-semibold uppercase tracking-[0.28em] text-cyan-100/76">Products</div>
-            <h2 className="mt-3 text-2xl font-semibold tracking-[-0.035em] text-white sm:text-3xl">
+            <div className="text-[11px] font-semibold uppercase tracking-[0.28em] text-[#175cd3]">Products</div>
+            <h2 className="mt-3 text-2xl font-semibold tracking-[-0.035em] text-[#10233f] sm:text-3xl">
               Product lines. Launch surfaces. One promise.
             </h2>
-            <p className="mt-3 text-sm leading-7 text-white/66">
+            <p className="mt-3 text-sm leading-7 text-[#5d6d82]">
               PrivateDAO helps teams make private decisions, coordinate treasury actions, and prove operational workflows
               without exposing sensitive data.
             </p>
           </div>
           <div className="mt-6 grid gap-3 md:grid-cols-2 xl:grid-cols-5">
             {productCategories.map((item) => (
-              <article key={item.title} className="min-w-0 rounded-[24px] border border-cyan-300/16 bg-cyan-300/[0.055] p-5">
-                <h3 className="text-xl font-semibold leading-7 text-white">{item.title}</h3>
-                <p className="mt-3 min-h-20 text-sm leading-7 text-white/64">{item.body}</p>
-                <a href={item.href} className="mt-5 inline-flex text-sm font-semibold text-cyan-100 underline underline-offset-4">
+              <article key={item.title} className="enterprise-card min-w-0 rounded-[16px] p-5">
+                <h3 className="text-xl font-semibold leading-7 text-[#10233f]">{item.title}</h3>
+                <p className="mt-3 min-h-20 text-sm leading-7 text-[#5d6d82]">{item.body}</p>
+                <a href={item.href} className="mt-5 inline-flex text-sm font-semibold text-[#175cd3] underline underline-offset-4">
                   {item.cta}
                 </a>
               </article>
             ))}
           </div>
         </section>
-        <section className="grid gap-5 border-b border-white/10 pb-7 sm:pb-9 lg:grid-cols-[0.9fr_1.1fr]">
+        <section className="grid gap-5 border-b border-[#dce5f0] pb-7 sm:pb-9 lg:grid-cols-[0.9fr_1.1fr]">
           <div>
-            <div className="text-[11px] font-semibold uppercase tracking-[0.28em] text-emerald-100/78">Who it is for</div>
+            <div className="text-[11px] font-semibold uppercase tracking-[0.28em] text-[#175cd3]">Who it is for</div>
             <div className="mt-4 flex flex-wrap gap-2">
               {buyerSegments.map((item) => (
-                <span key={item} className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-sm text-white/64">
+                <span key={item} className="rounded-full border border-[#dce5f0] bg-[#f7f9fc] px-3 py-1.5 text-sm text-[#5d6d82]">
                   {item}
                 </span>
               ))}
             </div>
           </div>
           <div className="grid gap-3 sm:grid-cols-2">
-            <article className="rounded-[24px] border border-violet-300/16 bg-violet-300/[0.06] p-5">
-              <h3 className="text-base font-semibold text-white">What stays private</h3>
+            <article className="enterprise-card rounded-[16px] p-5">
+              <h3 className="text-base font-semibold text-[#10233f]">What stays private</h3>
               <div className="mt-3 grid gap-2">
                 {privateValues.map((item) => (
-                  <div key={item} className="text-sm text-white/62">{item}</div>
+                  <div key={item} className="text-sm text-[#5d6d82]">{item}</div>
                 ))}
               </div>
             </article>
-            <article className="rounded-[24px] border border-emerald-300/16 bg-emerald-300/[0.06] p-5">
-              <h3 className="text-base font-semibold text-white">What becomes verifiable</h3>
+            <article className="enterprise-card rounded-[16px] p-5">
+              <h3 className="text-base font-semibold text-[#10233f]">What becomes verifiable</h3>
               <div className="mt-3 grid gap-2">
                 {verifiableValues.map((item) => (
-                  <div key={item} className="text-sm text-white/62">{item}</div>
+                  <div key={item} className="text-sm text-[#5d6d82]">{item}</div>
                 ))}
               </div>
             </article>

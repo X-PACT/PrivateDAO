@@ -86,7 +86,7 @@ export default function RootLayout({
       lang="en"
       className="h-full antialiased"
     >
-      <body className="min-h-full bg-[#030510] text-white">
+      <body className="min-h-full bg-white text-[#10233f]">
         <AppShellProviders>
             <Script
               id="privatedao-domain-redirect"
@@ -121,7 +121,6 @@ export default function RootLayout({
               dangerouslySetInnerHTML={{ __html: JSON.stringify(buildSoftwareApplicationJsonLd()) }}
             />
             <div className="relative flex min-h-full flex-col overflow-x-hidden">
-              <div className="pointer-events-none absolute inset-x-0 top-0 h-[420px] bg-[radial-gradient(circle_at_top,rgba(153,69,255,0.28),transparent_44%),radial-gradient(circle_at_20%_20%,rgba(20,241,149,0.2),transparent_26%),radial-gradient(circle_at_80%_0%,rgba(0,194,255,0.18),transparent_28%)]" />
               <SiteActivityBeacon />
               <SiteChrome>{children}</SiteChrome>
             </div>
