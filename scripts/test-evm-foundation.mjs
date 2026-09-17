@@ -11,6 +11,10 @@ const config = EVM_NETWORK_CONFIGS.find((entry) => entry.network === "ethereum-s
 assert.ok(config);
 assert.equal(config.environment, "testnet");
 assert.equal(config.chainId, "11155111");
+const hyperliquidConfig = EVM_NETWORK_CONFIGS.find((entry) => entry.network === "hyperliquid-testnet");
+assert.ok(hyperliquidConfig);
+assert.equal(hyperliquidConfig.chainId, "998");
+assert.equal(hyperliquidConfig.nativeAsset, "HYPE");
 assert.ok(EVM_NETWORK_CONFIGS.every((entry) => entry.mainnetEnabled === false));
 assert.equal(EVM_NETWORK_CONFIGS.filter((entry) => entry.environment === "mainnet").length, 6);
 const testnetAdapterIds = EVM_NETWORK_CONFIGS
