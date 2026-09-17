@@ -1,0 +1,62 @@
+{
+  "generatedAt": "2026-09-17T07:28:40.940Z",
+  "status": "testnet_verified",
+  "scope": [
+    "arbitrum-sepolia"
+  ],
+  "networks": [
+    {
+      "network": "arbitrum-sepolia",
+      "chainId": 421614,
+      "contracts": {
+        "verifier": {
+          "address": "0x53aa3e1d6c7a0844c900c5f4e0d4b5967a3367dc",
+          "hash": "0x890f68f611bb86c167aba68ad57b0b192cdd67bc47af6c53132433bba67a9321",
+          "blockNumber": "309766855"
+        },
+        "blind": {
+          "address": "0xff7fa49a29a1bbc91c04368f45b0d238f21e0af6",
+          "hash": "0x0bc4423712b4e9786815bb1eda1ef3e146ed6ec251ad1ce7e36e10c9fabbe1a3",
+          "blockNumber": "309766869"
+        },
+        "record": {
+          "address": "0x88ef958407ee3929cc23b1737e89f0e8acdf7a57",
+          "hash": "0xe7c2ac9897aaa373239d0178783a824de28161509a07f88cc8fc539e60862259",
+          "blockNumber": "309766879"
+        }
+      },
+      "record": {
+        "txHash": "0xa17116f5e03eb09407b48c1e354e7b095fd6188c888e2a85389d14181ece0a1f",
+        "blockNumber": "309766891",
+        "verificationId": "0xd4ba43fdbac15eedd8e09c133aa7a122397997117125f0fc8122e12329ad6d8c",
+        "explorerUrl": "https://sepolia.arbiscan.io/tx/0xa17116f5e03eb09407b48c1e354e7b095fd6188c888e2a85389d14181ece0a1f"
+      },
+      "blind": {
+        "txHash": "0x4337bf68c252e7247f299b069c7a2f5d25efbb5ee033ada75e48504d7babe0c5",
+        "blockNumber": "309766908",
+        "verificationId": "0x9b421a88489499989d05c2fcdf52d06f12ceb3bcdba8a4ca62954c6768855cde",
+        "explorerUrl": "https://sepolia.arbiscan.io/tx/0x4337bf68c252e7247f299b069c7a2f5d25efbb5ee033ada75e48504d7babe0c5"
+      },
+      "revocation": {
+        "recordTxHash": "0xbd0070729b66c676622a377d09e11556febd1e2268b71f75c58f8071aa5aaa17",
+        "blindTxHash": "0xfb24624d8ec6b65304d7895df50b4dc4574a4f8c9e30ee6b7e8db4a8341de65c",
+        "disposableRecordVerificationId": "0xae66afc888d42ff546879c2debed6bbf22b15984b77b072a9fa80c7c8d36c3c7",
+        "disposableBlindVerificationId": "0x9cc105fe51e64d2966d70ababc3b67ec82c805313331c96fad9554c5e15833ba"
+      },
+      "checks": {
+        "recordVerified": true,
+        "blindProofVerified": true,
+        "wrongChainRejected": true,
+        "alteredProofRejected": true,
+        "expiredRecordRejected": true,
+        "expiredBlindRejected": true,
+        "recordRevoked": true,
+        "blindProofRevoked": true
+      },
+      "links": {
+        "record": "https://privatedao.org/verify/evm?network=arbitrum-sepolia&type=record&id=0xd4ba43fdbac15eedd8e09c133aa7a122397997117125f0fc8122e12329ad6d8c",
+        "blind": "https://privatedao.org/verify/evm?network=arbitrum-sepolia&type=blind&id=0x9b421a88489499989d05c2fcdf52d06f12ceb3bcdba8a4ca62954c6768855cde"
+      }
+    }
+  ]
+}

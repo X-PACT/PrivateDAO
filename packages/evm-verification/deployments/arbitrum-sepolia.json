@@ -1,0 +1,22 @@
+{
+  "network": "arbitrum-sepolia",
+  "chainId": 421614,
+  "environment": "testnet",
+  "contracts": {
+    "verifier": {
+      "address": "0x53aa3e1d6c7a0844c900c5f4e0d4b5967a3367dc",
+      "hash": "0x890f68f611bb86c167aba68ad57b0b192cdd67bc47af6c53132433bba67a9321",
+      "blockNumber": "309766855"
+    },
+    "blind": {
+      "address": "0xff7fa49a29a1bbc91c04368f45b0d238f21e0af6",
+      "hash": "0x0bc4423712b4e9786815bb1eda1ef3e146ed6ec251ad1ce7e36e10c9fabbe1a3",
+      "blockNumber": "309766869"
+    },
+    "record": {
+      "address": "0x88ef958407ee3929cc23b1737e89f0e8acdf7a57",
+      "hash": "0xe7c2ac9897aaa373239d0178783a824de28161509a07f88cc8fc539e60862259",
+      "blockNumber": "309766879"
+    }
+  }
+}

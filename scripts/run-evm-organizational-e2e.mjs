@@ -48,7 +48,6 @@ const chain = defineChain({
   rpcUrls: { default: { http: [rpcUrl] } },
 });
 const deployer = privateKeyToAccount(deployerKey);
-const checker = privateKeyToAccount(generatePrivateKey());
 const rpcTimeoutMs = Number(process.env.PDAO_EVM_RPC_TIMEOUT_MS || 120_000);
 if (!Number.isInteger(rpcTimeoutMs) || rpcTimeoutMs < 10_000 || rpcTimeoutMs > 300_000) {
   throw new Error("PDAO_EVM_RPC_TIMEOUT_MS must be an integer between 10000 and 300000.");
@@ -57,11 +56,21 @@ const transport = http(rpcUrl, { timeout: rpcTimeoutMs, retryCount: 3, retryDela
 const deployerTempoClient = NETWORK === "tempo-testnet"
   ? createTempoClient({ account: deployer, chain: tempoModerato.extend({ feeToken: TEMPO_FEE_TOKEN }), transport })
   : null;
+const publicClient = deployerTempoClient ?? createPublicClient({ chain, transport });
+const deployerWallet = deployerTempoClient ?? createWalletClient({ account: deployer, chain, transport });
+let checker;
+for (let attempt = 0; attempt < 8; attempt += 1) {
+  const candidate = privateKeyToAccount(generatePrivateKey());
+  const code = await publicClient.getBytecode({ address: candidate.address });
+  if (!code || code === "0x") {
+    checker = candidate;
+    break;
+  }
+}
+if (!checker) throw new Error("Could not allocate a fresh checker EOA without deployed code.");
 const checkerTempoClient = NETWORK === "tempo-testnet"
   ? createTempoClient({ account: checker, chain: tempoModerato.extend({ feeToken: TEMPO_FEE_TOKEN }), transport })
   : null;
-const publicClient = deployerTempoClient ?? createPublicClient({ chain, transport });
-const deployerWallet = deployerTempoClient ?? createWalletClient({ account: deployer, chain, transport });
 const checkerWallet = checkerTempoClient ?? createWalletClient({ account: checker, chain, transport });
 const tempoTokenMode = NETWORK === "tempo-testnet";
 const erc20Abi = parseAbi([
@@ -128,15 +137,29 @@ const treasuryAmount = tempoTokenMode ? parseUnits("1", TEMPO_TOKEN_DECIMALS) : 
 const treasuryApprovalHash = tempoTokenMode ? await write(deployerWallet, TEMPO_FEE_TOKEN, erc20Abi, "approve", [treasury.address, treasuryAmount]) : null;
 const treasuryFundingHash = tempoTokenMode
   ? await write(deployerWallet, treasury.address, treasuryAbi, "deposit", [treasuryAmount])
-  : await deployerWallet.sendTransaction({ to: treasury.address, value: treasuryAmount });
+  : await deployerWallet.sendTransaction({ to: treasury.address, value: treasuryAmount, gas: 100_000n });
 if (!tempoTokenMode) await tx(treasuryFundingHash);
 const budgetId = keccak256(`0x${Buffer.from(`budget:${runId}`).toString("hex")}`);
 const paymentId = keccak256(`0x${Buffer.from(`payment:${runId}`).toString("hex")}`);
 const recipient = checker.address;
 const paymentAmount = tempoTokenMode ? parseUnits("0.1", TEMPO_TOKEN_DECIMALS) : parseEther("0.0001");
 await write(deployerWallet, treasury.address, treasuryAbi, "configureBudget", [budgetId, paymentAmount]);
+let configuredBudget = 0n;
+for (let attempt = 0; attempt < 20; attempt += 1) {
+  configuredBudget = await publicClient.readContract({ address: treasury.address, abi: treasuryAbi, functionName: "budgetRemaining", args: [budgetId] });
+  if (configuredBudget === paymentAmount) break;
+  await sleep(1_000);
+}
+assert.equal(configuredBudget, paymentAmount, "configured budget was not visible after its successful receipt");
 const requestedHash = await write(deployerWallet, treasury.address, treasuryAbi, "requestPayment", [paymentId, budgetId, recipient, paymentAmount]);
 const approvedHash = await write(checkerWallet, treasury.address, treasuryAbi, "approvePayment", [paymentId]);
+let approvedPayment;
+for (let attempt = 0; attempt < 20; attempt += 1) {
+  approvedPayment = await publicClient.readContract({ address: treasury.address, abi: treasuryAbi, functionName: "payments", args: [paymentId] });
+  if (Number(approvedPayment[3]) === 2) break;
+  await sleep(1_000);
+}
+assert.equal(Number(approvedPayment[3]), 2, "approved payment was not visible before execution");
 const executedHash = await write(deployerWallet, treasury.address, treasuryAbi, "executePayment", [paymentId]);
 const payment = await publicClient.readContract({ address: treasury.address, abi: treasuryAbi, functionName: "payments", args: [paymentId] });
 assert.equal(Number(payment[3]), 3, "treasury payment was not executed");
