@@ -1,6 +1,6 @@
 {
   "schema": "privatedao.native-capability-matrix.v1",
-  "generatedAt": "2026-09-16T23:19:32.490Z",
+  "generatedAt": "2026-09-17T00:41:30.535Z",
   "bridgeFree": true,
   "entries": [
     {
@@ -235,28 +235,32 @@
       "capability": "verification.blind.prove",
       "network": "base-sepolia",
       "networkFamily": "evm",
-      "declared": false,
+      "declared": true,
       "environment": "testnet",
       "chainId": "84532",
       "nativeAsset": "ETH",
       "supportedAssets": [
         "ETH"
       ],
-      "contracts": [],
-      "verifier": null,
+      "contracts": [
+        "0xdd01da1b53ba46bf1ce8c71bc1c5e86e8784694b",
+        "0x6f813e1221cb5f760bb5c467983c014bbe4b3b5c",
+        "0xa0cbe18d8b8b54befda83f33288347466f2c88b9"
+      ],
+      "verifier": "0xdd01da1b53ba46bf1ce8c71bc1c5e86e8784694b",
       "provider": "evm-base-sepolia",
-      "walletModel": "external-wallet",
-      "supportsExecution": false,
+      "walletModel": "provider-wallet",
+      "supportsExecution": true,
       "supportsPrivateExecution": false,
       "supportsPrivateSettlement": false,
-      "supportsProof": false,
-      "supportsReceipt": false,
+      "supportsProof": true,
+      "supportsReceipt": true,
       "supportsReconciliation": false,
       "supportsMainnet": false,
-      "status": "planned",
-      "lastVerifiedCommit": null,
-      "lastVerifiedTimestamp": null,
-      "evidence": "none"
+      "status": "testnet_verified",
+      "lastVerifiedCommit": "64ccc59",
+      "lastVerifiedTimestamp": "2026-09-17T00:39:48.896Z",
+      "evidence": "testnet-e2e"
     },
     {
       "product": "blind-verification",
@@ -689,28 +693,32 @@
       "capability": "verification.record.create",
       "network": "base-sepolia",
       "networkFamily": "evm",
-      "declared": false,
+      "declared": true,
       "environment": "testnet",
       "chainId": "84532",
       "nativeAsset": "ETH",
       "supportedAssets": [
         "ETH"
       ],
-      "contracts": [],
-      "verifier": null,
+      "contracts": [
+        "0xdd01da1b53ba46bf1ce8c71bc1c5e86e8784694b",
+        "0x6f813e1221cb5f760bb5c467983c014bbe4b3b5c",
+        "0xa0cbe18d8b8b54befda83f33288347466f2c88b9"
+      ],
+      "verifier": "0xdd01da1b53ba46bf1ce8c71bc1c5e86e8784694b",
       "provider": "evm-base-sepolia",
-      "walletModel": "external-wallet",
-      "supportsExecution": false,
+      "walletModel": "provider-wallet",
+      "supportsExecution": true,
       "supportsPrivateExecution": false,
       "supportsPrivateSettlement": false,
       "supportsProof": false,
-      "supportsReceipt": false,
+      "supportsReceipt": true,
       "supportsReconciliation": false,
       "supportsMainnet": false,
-      "status": "planned",
-      "lastVerifiedCommit": null,
-      "lastVerifiedTimestamp": null,
-      "evidence": "none"
+      "status": "testnet_verified",
+      "lastVerifiedCommit": "64ccc59",
+      "lastVerifiedTimestamp": "2026-09-17T00:39:48.896Z",
+      "evidence": "testnet-e2e"
     },
     {
       "product": "record-verification",
@@ -1143,28 +1151,32 @@
       "capability": "verification.record.verify",
       "network": "base-sepolia",
       "networkFamily": "evm",
-      "declared": false,
+      "declared": true,
       "environment": "testnet",
       "chainId": "84532",
       "nativeAsset": "ETH",
       "supportedAssets": [
         "ETH"
       ],
-      "contracts": [],
-      "verifier": null,
+      "contracts": [
+        "0xdd01da1b53ba46bf1ce8c71bc1c5e86e8784694b",
+        "0x6f813e1221cb5f760bb5c467983c014bbe4b3b5c",
+        "0xa0cbe18d8b8b54befda83f33288347466f2c88b9"
+      ],
+      "verifier": "0xdd01da1b53ba46bf1ce8c71bc1c5e86e8784694b",
       "provider": "evm-base-sepolia",
-      "walletModel": "external-wallet",
-      "supportsExecution": false,
+      "walletModel": "provider-wallet",
+      "supportsExecution": true,
       "supportsPrivateExecution": false,
       "supportsPrivateSettlement": false,
       "supportsProof": false,
-      "supportsReceipt": false,
+      "supportsReceipt": true,
       "supportsReconciliation": false,
       "supportsMainnet": false,
-      "status": "planned",
-      "lastVerifiedCommit": null,
-      "lastVerifiedTimestamp": null,
-      "evidence": "none"
+      "status": "testnet_verified",
+      "lastVerifiedCommit": "64ccc59",
+      "lastVerifiedTimestamp": "2026-09-17T00:39:48.896Z",
+      "evidence": "testnet-e2e"
     },
     {
       "product": "record-verification",

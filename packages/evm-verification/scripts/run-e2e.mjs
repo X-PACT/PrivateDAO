@@ -126,6 +126,33 @@ function expect(condition, message) {
   if (!condition) throw new Error(message);
 }
 
+async function readAtConfirmedBlock(publicClient, request, label) {
+  for (let attempt = 0; attempt < 12; attempt += 1) {
+    try {
+      return await publicClient.readContract({ ...request, blockNumber: BigInt(request.blockNumber) });
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error);
+      if (!/block not found|resource not found|unknown block/i.test(message) || attempt === 11) throw error;
+      await new Promise((resolve) => setTimeout(resolve, 1_000));
+    }
+  }
+  throw new Error(`${label} confirmed-block read did not converge`);
+}
+
+async function readLatestUntilTrue(publicClient, request, label) {
+  for (let attempt = 0; attempt < 12; attempt += 1) {
+    try {
+      const value = await publicClient.readContract(request);
+      if (value) return value;
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error);
+      if (!/block not found|resource not found|unknown block/i.test(message) || attempt === 11) throw error;
+    }
+    await new Promise((resolve) => setTimeout(resolve, 1_000));
+  }
+  throw new Error(`${label} latest read did not converge`);
+}
+
 async function eventArgsFromReceipt(publicClient, hash, abi, eventName) {
   const receipt = await publicClient.getTransactionReceipt({ hash });
   const events = parseEventLogs({ abi, eventName, logs: receipt.logs, strict: false });
@@ -215,7 +242,17 @@ async function main() {
     const recordEvent = await eventArgsFromReceipt(publicClient, recordHash, recordAbi, "RecordAnchored");
     const recordVerificationId = recordEvent.verificationId;
     expect(recordVerificationId, `${network.id} record verification event missing`);
-    expect(await publicClient.readContract({ address: record.address, abi: verifyRecordAbi, functionName: "verifyRecord", args: [recordVerificationId, digest] }), `${network.id} record verification failed`);
+    // Some public RPCs briefly serve a stale `latest` state after returning a
+    // receipt. Read at the confirmed block first, then require `latest` to
+    // converge before promoting the result to E2E evidence.
+    const recordVerifiedAtReceipt = await readAtConfirmedBlock(publicClient, { address: record.address, abi: verifyRecordAbi, functionName: "verifyRecord", args: [recordVerificationId, digest], blockNumber: recordReceipt.blockNumber }, `${network.id} record verification`);
+    expect(recordVerifiedAtReceipt, `${network.id} record verification failed at confirmed block`);
+    let recordVerifiedAtLatest = false;
+    for (let attempt = 0; attempt < 5 && !recordVerifiedAtLatest; attempt += 1) {
+      recordVerifiedAtLatest = await publicClient.readContract({ address: record.address, abi: verifyRecordAbi, functionName: "verifyRecord", args: [recordVerificationId, digest] });
+      if (!recordVerifiedAtLatest) await new Promise((resolve) => setTimeout(resolve, 1_000));
+    }
+    expect(recordVerifiedAtLatest, `${network.id} record verification did not converge at latest`);
 
     const domainBytes = encodeAbiParameters(domainTypes, ["PrivateDAO-Blind-Policy-v1", BigInt(network.chainId), blind.address, PRODUCT_ID, SCHEMA_ID, recordId]);
     const domainField = BigInt(keccak256(domainBytes)) % FIELD;
@@ -230,7 +267,17 @@ async function main() {
     const blindEvent = await eventArgsFromReceipt(publicClient, blindHash, blindAbi, "BlindProofVerified");
     const blindVerificationId = blindEvent.verificationId;
     expect(blindVerificationId, `${network.id} blind verification event missing`);
-    expect(await publicClient.readContract({ address: blind.address, abi: verifyBlindAbi, functionName: "isValid", args: [blindVerificationId] }), `${network.id} blind receipt verification failed`);
+    const blindVerifiedAtReceipt = await readAtConfirmedBlock(publicClient, { address: blind.address, abi: verifyBlindAbi, functionName: "isValid", args: [blindVerificationId], blockNumber: blindReceipt.blockNumber }, `${network.id} blind verification`);
+    expect(blindVerifiedAtReceipt, `${network.id} blind receipt verification failed at confirmed block`);
+    let blindVerifiedAtLatest = false;
+    for (let attempt = 0; attempt < 12 && !blindVerifiedAtLatest; attempt += 1) {
+      try { blindVerifiedAtLatest = await publicClient.readContract({ address: blind.address, abi: verifyBlindAbi, functionName: "isValid", args: [blindVerificationId] }); }
+      catch (error) {
+        if (!/block not found|resource not found|unknown block/i.test(error instanceof Error ? error.message : String(error)) || attempt === 11) throw error;
+      }
+      if (!blindVerifiedAtLatest) await new Promise((resolve) => setTimeout(resolve, 1_000));
+    }
+    expect(blindVerifiedAtLatest, `${network.id} blind verification did not converge at latest`);
 
     await expectRevert(() => publicClient.simulateContract({ address: blind.address, abi: blindFunctionAbi, functionName: "verifyAndAnchor", args: [PRODUCT_ID, SCHEMA_ID, recordId, BigInt(network.chainId === 11155111 ? 84532 : 11155111), expiresAt, a, b, c, publicSignals], account: account.address }), `${network.id} wrong-chain rejection`);
     const alteredSignals = [...publicSignals]; alteredSignals[1] += 1n;
@@ -244,9 +291,13 @@ async function main() {
     const revokeRecordHash = revokeRecordReceipt.signatures[0];
     const revokeRecordEvent = await eventArgsFromReceipt(publicClient, revokeRecordHash, recordAbi, "RecordAnchored");
     const revokeRecordVerificationId = revokeRecordEvent.verificationId;
-    expect(await publicClient.readContract({ address: record.address, abi: verifyRecordAbi, functionName: "isValid", args: [revokeRecordVerificationId] }), `${network.id} disposable record was not valid before revocation`);
+    await readLatestUntilTrue(publicClient, { address: record.address, abi: verifyRecordAbi, functionName: "isValid", args: [revokeRecordVerificationId] }, `${network.id} disposable record`);
     const recordRevokeReceipt = await executeViaKernel(adapter, capabilityRegistry, { network: network.id, product: "record-verification", capability: "verification.record.revoke", requestId: `${network.id}-record-revoke-${runId}`, payload: { kind: "contract-write", address: record.address, abi: revokeFunctionAbi, functionName: "revoke", args: [revokeRecordVerificationId], account: account.address } });
-    const recordRevoked = !(await publicClient.readContract({ address: record.address, abi: verifyRecordAbi, functionName: "isValid", args: [revokeRecordVerificationId] }));
+    let recordRevoked = false;
+    for (let attempt = 0; attempt < 12 && !recordRevoked; attempt += 1) {
+      recordRevoked = !(await publicClient.readContract({ address: record.address, abi: verifyRecordAbi, functionName: "isValid", args: [revokeRecordVerificationId] }));
+      if (!recordRevoked) await new Promise((resolve) => setTimeout(resolve, 1_000));
+    }
     expect(recordRevoked, `${network.id} record revocation did not invalidate the record`);
 
     const revokeDomainBytes = encodeAbiParameters(domainTypes, ["PrivateDAO-Blind-Policy-v1", BigInt(network.chainId), blind.address, PRODUCT_ID, SCHEMA_ID, revokeRecordId]);
@@ -261,9 +312,13 @@ async function main() {
     const revokeBlindHash = revokeBlindReceipt.signatures[0];
     const revokeBlindEvent = await eventArgsFromReceipt(publicClient, revokeBlindHash, blindAbi, "BlindProofVerified");
     const revokeBlindVerificationId = revokeBlindEvent.verificationId;
-    expect(await publicClient.readContract({ address: blind.address, abi: verifyBlindAbi, functionName: "isValid", args: [revokeBlindVerificationId] }), `${network.id} disposable blind proof was not valid before revocation`);
+    await readLatestUntilTrue(publicClient, { address: blind.address, abi: verifyBlindAbi, functionName: "isValid", args: [revokeBlindVerificationId] }, `${network.id} disposable blind proof`);
     const blindRevokeReceipt = await executeViaKernel(adapter, capabilityRegistry, { network: network.id, product: "blind-verification", capability: "verification.blind.revoke", requestId: `${network.id}-blind-revoke-${runId}`, payload: { kind: "contract-write", address: blind.address, abi: revokeFunctionAbi, functionName: "revoke", args: [revokeBlindVerificationId], account: account.address } });
-    const blindRevoked = !(await publicClient.readContract({ address: blind.address, abi: verifyBlindAbi, functionName: "isValid", args: [revokeBlindVerificationId] }));
+    let blindRevoked = false;
+    for (let attempt = 0; attempt < 12 && !blindRevoked; attempt += 1) {
+      blindRevoked = !(await publicClient.readContract({ address: blind.address, abi: verifyBlindAbi, functionName: "isValid", args: [revokeBlindVerificationId] }));
+      if (!blindRevoked) await new Promise((resolve) => setTimeout(resolve, 1_000));
+    }
     expect(blindRevoked, `${network.id} blind proof revocation did not invalidate the proof`);
 
     results.push({ network: network.id, chainId: network.chainId, contracts: { verifier, blind, record }, record: { txHash: recordHash, blockNumber: recordReceipt.blockNumber.toString(), verificationId: recordVerificationId, explorerUrl: `${network.explorer}/tx/${recordHash}` }, blind: { txHash: blindHash, blockNumber: blindReceipt.blockNumber.toString(), verificationId: blindVerificationId, explorerUrl: `${network.explorer}/tx/${blindHash}` }, revocation: { recordTxHash: recordRevokeReceipt.signatures[0], blindTxHash: blindRevokeReceipt.signatures[0], disposableRecordVerificationId: revokeRecordVerificationId, disposableBlindVerificationId: revokeBlindVerificationId }, checks: { recordVerified: true, blindProofVerified: true, wrongChainRejected: true, alteredProofRejected: true, expiredRecordRejected: true, expiredBlindRejected: true, recordRevoked: true, blindProofRevoked: true }, links: { record: `https://privatedao.org/verify/evm?network=${network.id}&type=record&id=${recordVerificationId}`, blind: `https://privatedao.org/verify/evm?network=${network.id}&type=blind&id=${blindVerificationId}` } });

@@ -53,6 +53,18 @@ const ETHEREUM_SEPOLIA_EVIDENCE = {
   timestamp: "2026-09-16T21:53:12.853Z",
 } as const;
 
+const BASE_SEPOLIA_EVIDENCE = {
+  verifier: "0xdd01da1b53ba46bf1ce8c71bc1c5e86e8784694b",
+  contracts: [
+    "0xdd01da1b53ba46bf1ce8c71bc1c5e86e8784694b",
+    "0x6f813e1221cb5f760bb5c467983c014bbe4b3b5c",
+    "0xa0cbe18d8b8b54befda83f33288347466f2c88b9",
+  ],
+  provider: "evm-base-sepolia",
+  commit: "64ccc59",
+  timestamp: "2026-09-17T00:39:48.896Z",
+} as const;
+
 const AGENT_MAINNET_EVIDENCE = {
   provider: "https://agents.privatedao.org",
   timestamp: "2026-09-11T01:18:16Z",
@@ -136,6 +148,27 @@ function applyEthereumSepoliaEvidence(entry: NativeCapabilityEntry): NativeCapab
     status: "testnet_verified",
     lastVerifiedCommit: ETHEREUM_SEPOLIA_EVIDENCE.commit,
     lastVerifiedTimestamp: ETHEREUM_SEPOLIA_EVIDENCE.timestamp,
+    evidence: "testnet-e2e",
+  };
+}
+
+function applyBaseSepoliaEvidence(entry: NativeCapabilityEntry): NativeCapabilityEntry {
+  const isBlind = entry.product === "blind-verification" && entry.capability === "verification.blind.prove";
+  const isRecord = entry.product === "record-verification" && ["verification.record.create", "verification.record.verify"].includes(entry.capability);
+  if (entry.network !== "base-sepolia" || (!isBlind && !isRecord)) return entry;
+  return {
+    ...entry,
+    provider: BASE_SEPOLIA_EVIDENCE.provider,
+    contracts: BASE_SEPOLIA_EVIDENCE.contracts,
+    verifier: BASE_SEPOLIA_EVIDENCE.verifier,
+    walletModel: "provider-wallet",
+    supportsExecution: true,
+    supportsProof: isBlind,
+    supportsReceipt: true,
+    supportsReconciliation: false,
+    status: "testnet_verified",
+    lastVerifiedCommit: BASE_SEPOLIA_EVIDENCE.commit,
+    lastVerifiedTimestamp: BASE_SEPOLIA_EVIDENCE.timestamp,
     evidence: "testnet-e2e",
   };
 }
@@ -238,7 +271,7 @@ function applyOrganizationalEvidence(entry: NativeCapabilityEntry): NativeCapabi
 export function buildNativeCapabilityRegistry(): readonly NativeCapabilityEntry[] {
   return PRODUCT_CATALOG.flatMap((product) =>
     product.capabilities.flatMap((capability) =>
-      NETWORK_MATRIX.map((network) => applyOrganizationalEvidence(applyTempoTestnetEvidence(applyPayrollDevnetEvidence(applyAgentMainnetEvidence(applyEthereumSepoliaEvidence({
+      NETWORK_MATRIX.map((network) => applyOrganizationalEvidence(applyTempoTestnetEvidence(applyPayrollDevnetEvidence(applyAgentMainnetEvidence(applyBaseSepoliaEvidence(applyEthereumSepoliaEvidence({
         product: product.id,
         capability: capability.id,
         network: network.id,
@@ -263,7 +296,7 @@ export function buildNativeCapabilityRegistry(): readonly NativeCapabilityEntry[
         lastVerifiedCommit: null,
         lastVerifiedTimestamp: null,
         evidence: "none",
-      })))))) ,
+      }))))))) ,
     ),
   );
 }
