@@ -73,9 +73,9 @@
     {
       "id": "release-verification-gate",
       "phase": "security-and-release",
-      "status": "verified",
+      "status": "blocked_external",
       "evidence": ["scripts/verify-all.sh", "package.json", "git status --short --branch"],
-      "validation": "Full repository verification passed on 2026-09-17; the canonical worktree is clean and synchronized with the release refs."
+      "validation": "Targeted runtime, payment, catalog, and secret gates pass; the latest full verify-all run is externally blocked by Solana RPC timeout/DNS failure during devnet-canary artifact generation."
     },
     {
       "id": "verification-arbitrum-sepolia",
@@ -94,9 +94,10 @@
     {
       "id": "verification-base-sepolia",
       "phase": "verification-e2e",
-      "status": "blocked_external",
-      "requires": "Funded testnet deployer on Base Sepolia",
-      "evidence": ["packages/evm-verification/scripts/run-e2e.mjs", "scripts/probe-evm-rpc-readiness.mjs"]
+      "status": "testnet_verified",
+      "requires": "None for the recorded verification evidence; further organizational E2E requires additional funded gas",
+      "evidence": ["packages/evm-verification/deployments/base-sepolia.json", "packages/evm-verification/deployments/phase-2-e2e-base-sepolia.json", "packages/evm-verification/scripts/run-e2e.mjs"],
+      "validation": "Real Base Sepolia record and Groth16 blind verification transactions passed wrong-chain, altered-proof, expiry, revocation, and cross-network replay rejection checks."
     },
     {
       "id": "verification-robinhood-testnet",
@@ -123,7 +124,7 @@
       "id": "security-dependency-remediation",
       "phase": "security-hardening",
       "status": "blocked_external",
-      "requires": "Reviewed non-breaking dependency upgrades or explicit accepted-risk decisions; the current production dependency audit still reports 17 low vulnerabilities",
+      "requires": "Reviewed non-breaking dependency upgrades or explicit accepted-risk decisions; the current production dependency audit reports 20 vulnerabilities (3 high, 17 low)",
       "evidence": ["npm audit --omit=dev", "scripts/verify-tracked-secrets.mjs"]
     },
     {
