@@ -44,3 +44,13 @@ through `GET /api/receipts/{receiptId}` from separate HTTP requests.
 
 This proves payment-intent generation only. It does not prove paid conversion,
 external-agent adoption, or revenue.
+
+## Protocol Requests
+
+- A2A `POST /a2a` with JSON-RPC `message/send`: successful response, task state
+  `completed`, data artifact returned.
+- MCP `POST /mcp` with JSON-RPC `initialize`: successful response, protocol
+  `2025-03-26`, server `pdao-agent-exchange` `1.1.0`.
+
+These protocol checks were performed without credentials and did not create a
+paid job or submit a payment.
