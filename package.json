@@ -88,6 +88,7 @@
     "test:native-capability-registry": "node --import tsx scripts/test-native-capability-registry.mjs",
     "build:native-capability-matrix": "node --import tsx scripts/build-native-capability-matrix.mjs",
     "verify:native-capability-matrix": "node --import tsx scripts/verify-native-capability-matrix.mjs",
+    "test:payment-rails": "node scripts/test-payment-rails.mjs",
     "test:runtime:http-runtime": "node --import tsx scripts/test-runtime-http-runtime.mjs",
     "test:runtime:payroll": "node --import tsx scripts/test-runtime-payroll.mjs",
     "test:runtime:evm-foundation": "node --import tsx scripts/test-evm-foundation.mjs",
