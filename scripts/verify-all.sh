@@ -58,6 +58,7 @@ node --import tsx scripts/test-payment-rails.mjs >/dev/null
 
 echo "[verify-all] checking tracked secret paths"
 npm run verify:tracked-secrets >/dev/null
+npm run test:vendored-bigint-buffer >/dev/null
 
 echo "[verify-all] checking web catalog projection from the runtime Kernel"
 npm run verify:web-runtime-catalog >/dev/null
