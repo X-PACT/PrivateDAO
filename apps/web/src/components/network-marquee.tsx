@@ -43,7 +43,7 @@ export function NetworkMarquee() {
         </div>
       </div>
       <p className="mx-auto mt-2 max-w-7xl px-4 text-[11px] text-[#7a8ba0] sm:px-6 lg:px-8">
-        Availability depends on the selected product and environment. Testnet and devnet access are shown before mainnet activation.
+        Availability depends on the selected solution and deployment.
       </p>
     </section>
   );

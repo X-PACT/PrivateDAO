@@ -2,167 +2,108 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 
 import { LegacyEntryBridge } from "@/components/legacy-entry-bridge";
-import { BusinessValueSurface } from "@/components/business-value-surface";
-import { ServiceLauncher } from "@/components/service-launcher";
 import { SimpleHomeHero } from "@/components/simple-home-hero";
 import { NetworkMarquee } from "@/components/network-marquee";
 import { buildBrandHomeMetadata } from "@/lib/route-metadata";
 
 export const metadata: Metadata = buildBrandHomeMetadata();
 
-const whyNowPoints = [
-  "DAO treasuries are growing faster than governance infrastructure.",
-  "Sensitive coordination still happens in private chats and spreadsheets.",
-  "Solana organizations increasingly need privacy without sacrificing verifiability.",
-] as const;
-
-const productCategories = [
+const productGroups = [
   {
-    title: "Verify",
-    body: "Turn records, claims, and private policy checks into evidence others can verify without seeing sensitive inputs.",
-    href: "/products/record-verification",
-    cta: "Explore Verify",
+    eyebrow: "Private Operations",
+    title: "Run sensitive work with control.",
+    products: [
+      ["Confidential Payroll", "Run payroll without exposing employee salaries while preserving evidence of calculation, approval, and settlement.", "/payroll"],
+      ["Treasury Coordination", "Move spending requests through clear budgets, approvals, and accountable execution.", "/treasury"],
+      ["Private Governance", "Make organizational decisions privately while keeping the outcome understandable and accountable.", "/govern"],
+    ],
   },
   {
-    title: "Govern",
-    body: "Run private proposals, rooms, reviews, and approvals while keeping the final outcome accountable.",
-    href: "/govern",
-    cta: "Explore Governance",
+    eyebrow: "Private Transactions",
+    title: "Coordinate offers without exposing them.",
+    products: [
+      ["Confidential Auctions", "Run sealed procurement and auction workflows where bids stay private until the decision is complete.", "/auctions"],
+      ["Private Settlement Workflows", "Move approved transactions through a controlled workflow with a clear record of what happened.", "/payments"],
+    ],
   },
   {
-    title: "Decide",
-    body: "Collect private offers, choose fairly, and share a verified result when the decision is complete.",
-    href: "/auctions",
-    cta: "Explore private auctions",
-  },
-  {
-    title: "Coordinate",
-    body: "Move treasury requests and operational approvals through a clear workflow with evidence at each step.",
-    href: "/treasury",
-    cta: "Explore Treasury",
-  },
-  {
-    title: "Pay",
-    body: "Run confidential payroll with policy checks, private settlement, and a proof link that reveals no employee details.",
-    href: "/payroll",
-    cta: "Explore Payroll",
-  },
-  {
-    title: "Connect",
-    body: "Let agents discover services, hire providers, and verify results through a machine-ready marketplace.",
-    href: "/agents",
-    cta: "Explore Agent Exchange",
-  },
-  {
-    title: "Platform",
-    body: "Connect the workflows to your systems through API, SDK, security, and evidence surfaces.",
-    href: "/developers",
-    cta: "Explore Integrations",
+    eyebrow: "Verification",
+    title: "Prove the result without publishing the source.",
+    products: [
+      ["Blind Verification", "Prove that private conditions were satisfied without disclosing the underlying data.", "/proof-workflows/blind-policy"],
+      ["Record Verification", "Create shareable records that let a third party verify a result without receiving the original private file.", "/products/record-verification"],
+    ],
   },
 ] as const;
 
-const buyerSegments = [
-  "fintech companies",
-  "lenders",
-  "foundations",
-  "DAOs",
-  "gaming organizations",
-  "compliance teams",
-  "treasury committees",
-  "public-good communities",
-] as const;
-
-const privateValues = ["earnings", "votes", "reviewer notes", "internal policies", "treasury context", "sensitive documents"] as const;
-const verifiableValues = ["process completed", "approvals happened", "decision produced", "proof generated", "tamper check passed"] as const;
+const audiences = ["Finance teams", "Web3 organizations", "Institutions", "Treasury committees", "Compliance teams", "Onchain operations"] as const;
 
 export default function HomePage() {
   return (
     <>
-      <Suspense
-        fallback={null}
-      >
+      <Suspense fallback={null}>
         <LegacyEntryBridge />
       </Suspense>
       <SimpleHomeHero />
       <NetworkMarquee />
-      <div className="enterprise-page mx-auto w-full max-w-7xl space-y-5 px-4 pb-12 sm:px-6 lg:px-8">
-        <section className="border-b border-[#dce5f0] py-7 sm:py-9">
-          <div className="max-w-4xl">
-            <div className="text-[11px] font-semibold uppercase tracking-[0.28em] text-[#175cd3]">The PrivateDAO platform</div>
-            <h2 className="mt-3 text-3xl font-semibold tracking-[-0.04em] text-[#10233f] sm:text-4xl">
-              One simple promise: private work, trusted outcomes.
-            </h2>
-            <p className="mt-3 max-w-3xl text-sm leading-7 text-[#5d6d82]">
-              Start with the result you need. The cryptography, storage, and network integrations stay in the platform core so your team can focus on the workflow.
-            </p>
+      <main className="enterprise-page mx-auto w-full max-w-7xl space-y-16 px-4 pb-16 sm:px-6 lg:px-8">
+        <section className="pt-12 sm:pt-16">
+          <div className="max-w-3xl">
+            <div className="text-[11px] font-bold uppercase tracking-[0.28em] text-[#175cd3]">What PrivateDAO solves</div>
+            <h2 className="mt-3 text-3xl font-semibold tracking-[-0.04em] text-[#10233f] sm:text-5xl">Privacy should not make important work impossible to verify.</h2>
+            <p className="mt-5 text-lg leading-8 text-[#5d6d82]">Salaries, treasury decisions, bids, approvals, and organizational records should not become public simply because an organization uses modern infrastructure.</p>
           </div>
-        </section>
-        <section className="border-y border-[#dce5f0] py-6 sm:py-8">
-          <div className="text-[11px] font-semibold uppercase tracking-[0.28em] text-[#175cd3]">Why now?</div>
-          <div className="mt-4 grid gap-3 lg:grid-cols-3">
-            {whyNowPoints.map((point) => (
-              <div key={point} className="border-l border-[#b9d8f2] pl-4 text-sm leading-7 text-[#5d6d82]">
-                {point}
-              </div>
-            ))}
-          </div>
-        </section>
-        <section id="products" className="border-b border-[#dce5f0] pb-7 sm:pb-9">
-          <div className="max-w-4xl">
-            <div className="text-[11px] font-semibold uppercase tracking-[0.28em] text-[#175cd3]">Products</div>
-            <h2 className="mt-3 text-2xl font-semibold tracking-[-0.035em] text-[#10233f] sm:text-3xl">
-              Product lines. Launch surfaces. One promise.
-            </h2>
-            <p className="mt-3 text-sm leading-7 text-[#5d6d82]">
-              PrivateDAO helps teams make private decisions, coordinate treasury actions, and prove operational workflows
-              without exposing sensitive data.
-            </p>
-          </div>
-          <div className="mt-6 grid gap-3 md:grid-cols-2 xl:grid-cols-5">
-            {productCategories.map((item) => (
-              <article key={item.title} className="enterprise-card min-w-0 rounded-[16px] p-5">
-                <h3 className="text-xl font-semibold leading-7 text-[#10233f]">{item.title}</h3>
-                <p className="mt-3 min-h-20 text-sm leading-7 text-[#5d6d82]">{item.body}</p>
-                <a href={item.href} className="mt-5 inline-flex text-sm font-semibold text-[#175cd3] underline underline-offset-4">
-                  {item.cta}
-                </a>
+          <div className="mt-8 grid gap-3 sm:grid-cols-3">
+            {[
+              ["Protect sensitive work", "Keep the details that should remain internal inside the workflow."],
+              ["Coordinate with confidence", "Give the right people a clear path to review and approve."],
+              ["Share trusted outcomes", "Publish the evidence a customer, auditor, or partner actually needs."],
+            ].map(([title, body]) => (
+              <article key={title} className="enterprise-card rounded-[16px] p-5">
+                <h3 className="text-base font-semibold text-[#10233f]">{title}</h3>
+                <p className="mt-2 text-sm leading-7 text-[#5d6d82]">{body}</p>
               </article>
             ))}
           </div>
         </section>
-        <section className="grid gap-5 border-b border-[#dce5f0] pb-7 sm:pb-9 lg:grid-cols-[0.9fr_1.1fr]">
-          <div>
-            <div className="text-[11px] font-semibold uppercase tracking-[0.28em] text-[#175cd3]">Who it is for</div>
-            <div className="mt-4 flex flex-wrap gap-2">
-              {buyerSegments.map((item) => (
-                <span key={item} className="rounded-full border border-[#dce5f0] bg-[#f7f9fc] px-3 py-1.5 text-sm text-[#5d6d82]">
-                  {item}
-                </span>
-              ))}
-            </div>
+
+        <section id="products" className="space-y-10">
+          <div className="max-w-3xl">
+            <div className="text-[11px] font-bold uppercase tracking-[0.28em] text-[#175cd3]">Products</div>
+            <h2 className="mt-3 text-3xl font-semibold tracking-[-0.04em] text-[#10233f] sm:text-5xl">Choose the workflow. PrivateDAO handles the complexity.</h2>
           </div>
-          <div className="grid gap-3 sm:grid-cols-2">
-            <article className="enterprise-card rounded-[16px] p-5">
-              <h3 className="text-base font-semibold text-[#10233f]">What stays private</h3>
-              <div className="mt-3 grid gap-2">
-                {privateValues.map((item) => (
-                  <div key={item} className="text-sm text-[#5d6d82]">{item}</div>
-                ))}
-              </div>
-            </article>
-            <article className="enterprise-card rounded-[16px] p-5">
-              <h3 className="text-base font-semibold text-[#10233f]">What becomes verifiable</h3>
-              <div className="mt-3 grid gap-2">
-                {verifiableValues.map((item) => (
-                  <div key={item} className="text-sm text-[#5d6d82]">{item}</div>
-                ))}
-              </div>
-            </article>
+          <div className="grid gap-10 lg:grid-cols-3">
+            {productGroups.map((group) => (
+              <section key={group.eyebrow}>
+                <div className="border-b border-[#dce5f0] pb-3 text-[11px] font-bold uppercase tracking-[0.24em] text-[#175cd3]">{group.eyebrow}</div>
+                <h3 className="mt-4 text-2xl font-semibold tracking-[-0.03em] text-[#10233f]">{group.title}</h3>
+                <div className="mt-5 grid gap-3">
+                  {group.products.map(([title, body, href]) => (
+                    <a key={title} href={href} className="enterprise-card group rounded-[16px] p-5 transition hover:-translate-y-0.5 hover:border-[#175cd3]">
+                      <div className="flex items-start justify-between gap-4"><h4 className="text-lg font-semibold text-[#10233f]">{title}</h4><span className="text-[#175cd3] transition group-hover:translate-x-1" aria-hidden="true">→</span></div>
+                      <p className="mt-2 text-sm leading-7 text-[#5d6d82]">{body}</p>
+                    </a>
+                  ))}
+                </div>
+              </section>
+            ))}
           </div>
         </section>
-        <BusinessValueSurface />
-        <ServiceLauncher compact />
-      </div>
+
+        <section className="grid gap-10 border-y border-[#dce5f0] py-12 lg:grid-cols-[0.8fr_1.2fr] lg:py-16">
+          <div><div className="text-[11px] font-bold uppercase tracking-[0.28em] text-[#175cd3]">Built for organizations</div><h2 className="mt-3 text-3xl font-semibold tracking-[-0.04em] text-[#10233f]">For teams where trust is part of the workflow.</h2></div>
+          <div className="flex flex-wrap content-start gap-2">{audiences.map((audience) => <span key={audience} className="rounded-full border border-[#dce5f0] bg-[#f7f9fc] px-4 py-2 text-sm font-medium text-[#425570]">{audience}</span>)}</div>
+        </section>
+
+        <section className="grid gap-8 lg:grid-cols-2">
+          <div><div className="text-[11px] font-bold uppercase tracking-[0.28em] text-[#175cd3]">How it works</div><h2 className="mt-3 text-3xl font-semibold tracking-[-0.04em] text-[#10233f]">One workflow from private input to trusted outcome.</h2></div>
+          <div className="grid gap-3 sm:grid-cols-2">{["Define the workflow", "Set access and approvals", "Execute privately", "Share the outcome"].map((step, index) => <div key={step} className="flex gap-3 rounded-[16px] border border-[#dce5f0] bg-[#f7f9fc] p-4"><span className="text-sm font-bold text-[#175cd3]">0{index + 1}</span><span className="text-sm font-semibold text-[#10233f]">{step}</span></div>)}</div>
+        </section>
+
+        <section className="rounded-[20px] bg-[#10233f] px-6 py-10 text-white sm:px-10 sm:py-14">
+          <div className="max-w-3xl"><div className="text-[11px] font-bold uppercase tracking-[0.28em] text-[#9fc7ff]">Start a conversation</div><h2 className="mt-3 text-3xl font-semibold tracking-[-0.04em] sm:text-5xl">Need a private workflow built around your organization?</h2><p className="mt-4 max-w-2xl text-base leading-7 text-[#d5e2f3]">Tell us what must stay private, who needs to approve it, and what outcome others need to trust.</p><a href="/contact" className="mt-7 inline-flex h-12 items-center justify-center rounded-full bg-white px-6 text-sm font-semibold text-[#10233f] transition hover:bg-[#eef3f9]">Talk to PrivateDAO</a></div>
+        </section>
+      </main>
     </>
   );
 }

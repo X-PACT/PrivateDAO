@@ -3,13 +3,12 @@ import { ArrowRight, CheckCircle2, ShieldCheck } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
-import { WalletConnectButton } from "@/components/wallet-connect-button";
 import { cn } from "@/lib/utils";
 
 const flow = [
-  ["Decide privately", "Keep sensitive votes, reviews, customer data, and treasury context protected while the process runs."],
-  ["Coordinate securely", "Move work through rooms, approvals, workflows, and treasury requests without scattering evidence."],
-  ["Verify publicly", "Publish proof that the process completed without exposing the private data or internal rules."],
+  ["Keep the details private", "Protect the information your organization should not publish."],
+  ["Move work through control", "Give teams a clear path for review, approval, and execution."],
+  ["Make the outcome trusted", "Share evidence without handing over the underlying sensitive data."],
 ] as const;
 
 export function SimpleHomeHero() {
@@ -18,35 +17,30 @@ export function SimpleHomeHero() {
       <section className="grid items-start gap-8 border-b border-[#dce5f0] pb-10 lg:grid-cols-[1.08fr_0.92fr] lg:gap-12 lg:pb-14">
         <div>
           <div className="flex flex-wrap gap-2">
-            <Badge variant="success">Proof Workflows</Badge>
-            <Badge variant="cyan">Private Governance</Badge>
-            <Badge variant="violet">Treasury Coordination</Badge>
+            <Badge variant="cyan">Private operations</Badge>
+            <Badge variant="default">Private transactions</Badge>
+            <Badge variant="violet">Verification</Badge>
           </div>
           <div className="mt-6 text-[11px] font-semibold uppercase tracking-[0.3em] text-[#175cd3]">
-            Commercial privacy and proof infrastructure
+            PrivateDAO for organizations
           </div>
           <h1 className="mt-4 max-w-4xl text-4xl font-semibold tracking-[-0.05em] text-[#10233f] sm:text-6xl">
             Private decisions. Verifiable outcomes.
           </h1>
           <p className="mt-5 max-w-2xl text-lg leading-8 text-[#5d6d82]">
-            PrivateDAO helps organizations run governance, treasury, and operational workflows with privacy, proof, and
-            audit-ready verification.
+            PrivateDAO helps organizations run sensitive financial and operational workflows with privacy, control, and outcomes others can trust.
           </p>
           <div className="mt-7 flex flex-wrap gap-3">
-            <WalletConnectButton size="lg" variant="default" connectLabel="Connect Wallet" />
             <Link href="#products" className={cn(buttonVariants({ size: "lg" }))}>
-              Explore Products
+              Explore solutions
               <ArrowRight className="h-4 w-4" />
             </Link>
-            <Link href="/pilots" className={cn(buttonVariants({ size: "lg", variant: "outline" }))}>
-              Request Pilot
-            </Link>
-            <Link href="mailto:Fahd.kotb@tuta.io?subject=PrivateDAO%20Enterprise%20Discovery" className={cn(buttonVariants({ size: "lg", variant: "outline" }))}>
-              Book Discovery Call
+            <Link href="/contact" className={cn(buttonVariants({ size: "lg", variant: "outline" }))}>
+              Talk to PrivateDAO
             </Link>
           </div>
           <div className="mt-7 flex flex-wrap gap-x-5 gap-y-2 text-sm text-[#5d6d82]">
-            {["Proof-ready", "Private by default", "Buyer paths", "Pilot-ready"].map((item) => (
+            {["Private by design", "Clear approvals", "Trusted outcomes", "Built for organizations"].map((item) => (
               <div key={item} className="flex items-center gap-2">
                 <CheckCircle2 className="h-4 w-4 text-[#175cd3]" />
                 {item}
