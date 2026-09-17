@@ -73,10 +73,9 @@
     {
       "id": "release-verification-gate",
       "phase": "security-and-release",
-      "status": "blocked_external",
-      "requires": "A healthy Solana Devnet RPC that returns the canonical anchors and governance-mint supply during the complete run",
+      "status": "verified",
       "evidence": ["scripts/verify-all.sh", "package.json", "git status --short --branch"],
-      "validation": "The latest verify-all run stopped at generated-artifact validation because the available Devnet RPCs returned incomplete anchor and token-supply data. Targeted runtime, payment, catalog, secret, and stored Devnet Canary verification pass; a full release PASS is not claimed until a complete live canary is captured."
+      "validation": "Full verify-all passed after a fresh live Devnet canary captured healthy primary and fallback RPCs, all six canonical anchors, and governance-mint supply. Targeted runtime, payment, catalog, secret, and Devnet Canary gates also pass. The canonical worktree is clean and synchronized with the release refs."
     },
     {
       "id": "verification-arbitrum-sepolia",
