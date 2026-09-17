@@ -56,3 +56,30 @@ provider route, or no application binding. A `legacy-provider` row is not
 Kernel evidence, and an `unbound` row must never be advertised as executable.
 The ledger is validated at module load and by the runtime test so a new
 catalog capability cannot be added without an explicit application boundary.
+
+## Testnet Payment Rails
+
+`buildTempoPaymentBatch` builds atomic AlphaUSD transfers with opaque, domain-bound
+TIP-20 memos on chain 42431. `reconcileTempoPayments` requires exact payer, token,
+recipient, memo, amount and count matches in a successful RPC receipt. These are
+public onchain payments; they do not provide confidential payroll settlement.
+
+`buildBaseTestnetDeposit` prepares a canonical Sepolia-to-Base-Sepolia ETH deposit.
+`baseDepositDestinationHash` derives the destination transaction from the official
+portal event. `reconcileBaseDeposit` binds both network IDs, source calldata/value,
+sender, destination receipt hash, recipient and amount. Source confirmation alone
+does not complete a bridge. Receipt inputs must come from authenticated backend
+workflows using chain-ID-checked RPCs, never from untrusted uploaded JSON.
+
+These helpers do not sign or authorize payments. Product policies and approvals
+must run before wallet signing. They are exported integration primitives, not yet
+customer-facing payment actions. Payment memos do not enforce onchain idempotency;
+the owning service must persist its intent and signed transaction before broadcast.
+The E2E runner does this in a private local journal, reuses the same signed bytes
+after uncertain delivery, and allows a new attempt only after a confirmed revert.
+
+Run `node --import tsx scripts/test-payment-rails.mjs` from the repository root.
+Real testnet probes use `scripts/run-payment-rails-e2e.mjs tempo` or `base-bridge`
+with `PDAO_TESTNET_PAYMENTS_EXECUTE=1` and the authorized testnet signing environment.
+Public evidence is stored in `packages/evm-verification/deployments/payment-rail-*.json`.
+The native product matrix remains independent of optional bridge funding routes.

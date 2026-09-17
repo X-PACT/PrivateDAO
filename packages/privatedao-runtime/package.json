@@ -8,5 +8,6 @@
   "types": "./dist/index.d.ts",
   "files": ["dist", "README.md"],
   "scripts": {"build": "tsc -p tsconfig.json"},
-  "devDependencies": {"typescript": "^5.8.3"}
+  "devDependencies": {"typescript": "^5.8.3"},
+  "peerDependencies": {"viem": "^2.53.1"}
 }

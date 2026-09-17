@@ -225,3 +225,5 @@ export {
   validateApplicationBindings,
 } from "./application-bindings.js";
 export type { ApplicationBindingMode, ApplicationCapabilityBinding, ApplicationHttpMethod } from "./application-bindings.js";
+export { buildTempoPaymentBatch, reconcileTempoPayments, buildBaseTestnetDeposit, baseDepositDestinationHash, reconcileBaseDeposit, TEMPO_PAYMENT_CHAIN, TEMPO_PAYMENT_TOKEN, BASE_DEPOSIT_PORTAL } from "./payment-rails.js";
+export type { PaymentLine } from "./payment-rails.js";

@@ -54,6 +54,7 @@ npm run test:runtime >/dev/null
 npm run test:runtime:http >/dev/null
 npm run test:runtime:http-runtime >/dev/null
 npm run test:runtime:payroll >/dev/null
+node --import tsx scripts/test-payment-rails.mjs >/dev/null
 
 echo "[verify-all] checking tracked secret paths"
 npm run verify:tracked-secrets >/dev/null

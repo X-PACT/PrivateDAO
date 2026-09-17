@@ -5,6 +5,20 @@
   "evidenceRule": "Only real network execution can produce testnet_verified, devnet_verified, or mainnet_live.",
   "tasks": [
     {
+      "id": "tempo-atomic-payment-rail",
+      "phase": "payment-rails",
+      "status": "testnet_verified",
+      "evidence": ["packages/evm-verification/deployments/payment-rail-tempo.json", "packages/privatedao-runtime/src/payment-rails.ts", "scripts/test-payment-rails.mjs"],
+      "validation": "Internal test: three AlphaUSD transfers in one Tempo transaction, exact memo/recipient/amount reconciliation 3/3. Public onchain payments; no confidential-settlement or customer adoption claim. Commercial integration remains outstanding."
+    },
+    {
+      "id": "optional-base-testnet-bridge",
+      "phase": "payment-rails",
+      "status": "testnet_verified",
+      "evidence": ["packages/evm-verification/deployments/payment-rail-base-bridge.json", "packages/privatedao-runtime/src/payment-rails.ts"],
+      "validation": "User authorized optional bridges. Canonical portal deposit of 0.001 test ETH: source and derived destination transactions confirmed. An earlier reverted attempt is preserved. This funds Base tests; it does not certify Base products."
+    },
+    {
       "id": "kernel-network-lifecycle",
       "phase": "kernel-foundation",
       "status": "verified",

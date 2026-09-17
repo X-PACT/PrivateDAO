@@ -1,0 +1,16 @@
+{
+  "schema": "privatedao.payment-rail-evidence.v1",
+  "internalTest": true,
+  "environment": "testnet",
+  "rail": "tempo",
+  "verifiedAt": "2026-09-17T00:23:46.967Z",
+  "failedAttempts": [],
+  "state": "reconciled",
+  "network": "tempo-testnet",
+  "transactionHash": "0x403a5c3a7172f049c389957b49208a9016b5eafa7d363edec9cc2b27a72d6cc3",
+  "blockNumber": "35620569",
+  "count": 3,
+  "totalAtomic": "3",
+  "token": "0x20c0000000000000000000000000000000000001",
+  "privacy": "public-onchain"
+}
