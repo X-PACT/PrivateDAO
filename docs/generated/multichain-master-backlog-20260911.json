@@ -73,9 +73,9 @@
     {
       "id": "release-verification-gate",
       "phase": "security-and-release",
-      "status": "blocked_external",
+      "status": "verified",
       "evidence": ["scripts/verify-all.sh", "package.json", "git status --short --branch"],
-      "validation": "Targeted runtime, payment, catalog, and secret gates pass; the latest full verify-all run is externally blocked by Solana RPC timeout/DNS failure during devnet-canary artifact generation."
+      "validation": "Full verify-all passed after anchor-aware Devnet RPC selection; targeted runtime, payment, catalog, secret, and Devnet Canary gates also pass. The canonical worktree is clean and synchronized with the release refs."
     },
     {
       "id": "verification-arbitrum-sepolia",
