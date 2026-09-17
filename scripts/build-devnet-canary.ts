@@ -176,13 +176,6 @@ async function firstCanaryRpc(
   urls: string[],
   anchorSpecs: readonly (readonly [string, string])[],
 ) {
-  let firstHealthy: {
-    url: string;
-    connection: Connection;
-    health: Awaited<ReturnType<typeof measureRpc>>;
-    anchorChecks: AnchorCheck[];
-    tokenSupply: Awaited<ReturnType<typeof readTokenSupply>>;
-  } | null = null;
   for (const url of urls) {
     try {
       const connection = new Connection(url, "confirmed");
@@ -190,13 +183,12 @@ async function firstCanaryRpc(
       const anchorChecks = await Promise.all(anchorSpecs.map(([anchorLabel, address]) => inspectAccount(connection, anchorLabel, address)));
       const tokenSupply = await readTokenSupply(connection, anchorSpecs.find(([anchorLabel]) => anchorLabel === "governance-mint")![1]);
       const result = { url, connection, health, anchorChecks, tokenSupply };
-      if (!firstHealthy) firstHealthy = result;
       if (anchorChecks.every((entry) => entry.exists) && tokenSupply) return result;
     } catch {
       // Continue to the next candidate; no endpoint is trusted on partial health alone.
     }
   }
-  return firstHealthy;
+  return null;
 }
 
 function uniqueRpcUrls(urls: string[]): string[] {
