@@ -14,6 +14,7 @@ export interface ProductDescriptor {
 const solanaDevnet = "solana-devnet" as NetworkId;
 const solanaMainnet = "solana-mainnet-beta" as NetworkId;
 const ethereumSepolia = "ethereum-sepolia" as NetworkId;
+const arbitrumSepolia = "arbitrum-sepolia" as NetworkId;
 const baseSepolia = "base-sepolia" as NetworkId;
 const tempoTestnet = "tempo-testnet" as NetworkId;
 
@@ -40,19 +41,19 @@ export const PRODUCT_CATALOG: readonly ProductDescriptor[] = [
     id: "blind-verification",
     name: "Blind Verification",
     availability: "available",
-    networks: [solanaDevnet, ethereumSepolia, tempoTestnet, baseSepolia],
+    networks: [solanaDevnet, ethereumSepolia, arbitrumSepolia, tempoTestnet, baseSepolia],
     capabilities: [
-      capability("verification.blind.prove", "blind-verification", false, true, [solanaDevnet, ethereumSepolia, tempoTestnet, baseSepolia]),
+      capability("verification.blind.prove", "blind-verification", false, true, [solanaDevnet, ethereumSepolia, arbitrumSepolia, tempoTestnet, baseSepolia]),
     ],
   },
   {
     id: "record-verification",
     name: "Record Verification",
     availability: "available",
-    networks: [solanaDevnet, ethereumSepolia, tempoTestnet, baseSepolia],
+    networks: [solanaDevnet, ethereumSepolia, arbitrumSepolia, tempoTestnet, baseSepolia],
     capabilities: [
-      capability("verification.record.create", "record-verification", false, true, [solanaDevnet, ethereumSepolia, tempoTestnet, baseSepolia]),
-      capability("verification.record.verify", "record-verification", false, true, [solanaDevnet, ethereumSepolia, tempoTestnet, baseSepolia]),
+      capability("verification.record.create", "record-verification", false, true, [solanaDevnet, ethereumSepolia, arbitrumSepolia, tempoTestnet, baseSepolia]),
+      capability("verification.record.verify", "record-verification", false, true, [solanaDevnet, ethereumSepolia, arbitrumSepolia, tempoTestnet, baseSepolia]),
     ],
   },
   {

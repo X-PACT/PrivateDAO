@@ -10,6 +10,7 @@ export const runtimeCatalog = {
       "networks": [
         "solana-devnet",
         "ethereum-sepolia",
+        "arbitrum-sepolia",
         "tempo-testnet",
         "base-sepolia"
       ],
@@ -54,6 +55,23 @@ export const runtimeCatalog = {
                 "ETH"
               ],
               "provider": "evm-ethereum-sepolia"
+            },
+            {
+              "network": "arbitrum-sepolia",
+              "mode": "kernel-gateway",
+              "entrypoint": "kernel://verification.blind.prove",
+              "method": null,
+              "note": "Arbitrum Sepolia Groth16 verifier and blind registry passed proof verification, wrong-chain, altered-proof, expiry, and revocation checks in the committed E2E artifact.",
+              "evidenceStatus": "testnet_verified",
+              "evidence": "testnet-e2e",
+              "supportsExecution": true,
+              "supportsProof": true,
+              "supportsReceipt": true,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-arbitrum-sepolia"
             },
             {
               "network": "tempo-testnet",
@@ -168,13 +186,13 @@ export const runtimeCatalog = {
               "stage": "available",
               "environment": "testnet",
               "chainId": "421614",
-              "declared": false,
-              "mode": "unbound",
-              "evidenceStatus": "planned",
-              "evidence": "none",
-              "executable": false,
-              "supportsProof": false,
-              "supportsReceipt": false,
+              "declared": true,
+              "mode": "kernel-gateway",
+              "evidenceStatus": "testnet_verified",
+              "evidence": "testnet-e2e",
+              "executable": true,
+              "supportsProof": true,
+              "supportsReceipt": true,
               "supportsReconciliation": false,
               "supportedAssets": [
                 "ETH"
@@ -390,6 +408,7 @@ export const runtimeCatalog = {
       "networks": [
         "solana-devnet",
         "ethereum-sepolia",
+        "arbitrum-sepolia",
         "tempo-testnet",
         "base-sepolia"
       ],
@@ -434,6 +453,23 @@ export const runtimeCatalog = {
                 "ETH"
               ],
               "provider": "evm-ethereum-sepolia"
+            },
+            {
+              "network": "arbitrum-sepolia",
+              "mode": "kernel-gateway",
+              "entrypoint": "kernel://verification.record.create",
+              "method": null,
+              "note": "Arbitrum Sepolia record registry passed real anchoring, verification, expiry, and revocation checks in the committed E2E artifact.",
+              "evidenceStatus": "testnet_verified",
+              "evidence": "testnet-e2e",
+              "supportsExecution": true,
+              "supportsProof": false,
+              "supportsReceipt": true,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-arbitrum-sepolia"
             },
             {
               "network": "tempo-testnet",
@@ -548,13 +584,13 @@ export const runtimeCatalog = {
               "stage": "available",
               "environment": "testnet",
               "chainId": "421614",
-              "declared": false,
-              "mode": "unbound",
-              "evidenceStatus": "planned",
-              "evidence": "none",
-              "executable": false,
+              "declared": true,
+              "mode": "kernel-gateway",
+              "evidenceStatus": "testnet_verified",
+              "evidence": "testnet-e2e",
+              "executable": true,
               "supportsProof": false,
-              "supportsReceipt": false,
+              "supportsReceipt": true,
               "supportsReconciliation": false,
               "supportedAssets": [
                 "ETH"
@@ -803,6 +839,23 @@ export const runtimeCatalog = {
               "provider": "evm-ethereum-sepolia"
             },
             {
+              "network": "arbitrum-sepolia",
+              "mode": "kernel-gateway",
+              "entrypoint": "kernel://verification.record.verify",
+              "method": null,
+              "note": "Arbitrum Sepolia record verification is bound to chain ID 421614 and the deployed registry domain.",
+              "evidenceStatus": "testnet_verified",
+              "evidence": "testnet-e2e",
+              "supportsExecution": true,
+              "supportsProof": false,
+              "supportsReceipt": true,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-arbitrum-sepolia"
+            },
+            {
               "network": "tempo-testnet",
               "mode": "kernel-gateway",
               "entrypoint": "kernel://verification.record.verify",
@@ -915,13 +968,13 @@ export const runtimeCatalog = {
               "stage": "available",
               "environment": "testnet",
               "chainId": "421614",
-              "declared": false,
-              "mode": "unbound",
-              "evidenceStatus": "planned",
-              "evidence": "none",
-              "executable": false,
+              "declared": true,
+              "mode": "kernel-gateway",
+              "evidenceStatus": "testnet_verified",
+              "evidence": "testnet-e2e",
+              "executable": true,
               "supportsProof": false,
-              "supportsReceipt": false,
+              "supportsReceipt": true,
               "supportsReconciliation": false,
               "supportedAssets": [
                 "ETH"
@@ -2237,16 +2290,16 @@ export const runtimeCatalog = {
               "chainId": "421614",
               "declared": false,
               "mode": "unbound",
-              "evidenceStatus": "planned",
-              "evidence": "none",
+              "evidenceStatus": "testnet_verified",
+              "evidence": "testnet-e2e",
               "executable": false,
               "supportsProof": false,
-              "supportsReceipt": false,
-              "supportsReconciliation": false,
+              "supportsReceipt": true,
+              "supportsReconciliation": true,
               "supportedAssets": [
                 "ETH"
               ],
-              "provider": "evm-arbitrum-sepolia"
+              "provider": "evm-arbitrum-sepolia-organizational"
             },
             {
               "network": "arbitrum-one",
@@ -2599,16 +2652,16 @@ export const runtimeCatalog = {
               "chainId": "421614",
               "declared": false,
               "mode": "unbound",
-              "evidenceStatus": "planned",
-              "evidence": "none",
+              "evidenceStatus": "testnet_verified",
+              "evidence": "testnet-e2e",
               "executable": false,
               "supportsProof": false,
-              "supportsReceipt": false,
-              "supportsReconciliation": false,
+              "supportsReceipt": true,
+              "supportsReconciliation": true,
               "supportedAssets": [
                 "ETH"
               ],
-              "provider": "evm-arbitrum-sepolia"
+              "provider": "evm-arbitrum-sepolia-organizational"
             },
             {
               "network": "arbitrum-one",
@@ -2961,16 +3014,16 @@ export const runtimeCatalog = {
               "chainId": "421614",
               "declared": false,
               "mode": "unbound",
-              "evidenceStatus": "planned",
-              "evidence": "none",
+              "evidenceStatus": "testnet_verified",
+              "evidence": "testnet-e2e",
               "executable": false,
               "supportsProof": false,
-              "supportsReceipt": false,
-              "supportsReconciliation": false,
+              "supportsReceipt": true,
+              "supportsReconciliation": true,
               "supportedAssets": [
                 "ETH"
               ],
-              "provider": "evm-arbitrum-sepolia"
+              "provider": "evm-arbitrum-sepolia-organizational"
             },
             {
               "network": "arbitrum-one",
@@ -3311,16 +3364,16 @@ export const runtimeCatalog = {
               "chainId": "421614",
               "declared": false,
               "mode": "unbound",
-              "evidenceStatus": "planned",
-              "evidence": "none",
+              "evidenceStatus": "testnet_verified",
+              "evidence": "testnet-e2e",
               "executable": false,
               "supportsProof": false,
-              "supportsReceipt": false,
-              "supportsReconciliation": false,
+              "supportsReceipt": true,
+              "supportsReconciliation": true,
               "supportedAssets": [
                 "ETH"
               ],
-              "provider": "evm-arbitrum-sepolia"
+              "provider": "evm-arbitrum-sepolia-organizational"
             },
             {
               "network": "arbitrum-one",

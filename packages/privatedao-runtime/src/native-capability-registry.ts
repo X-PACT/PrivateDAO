@@ -65,6 +65,18 @@ const BASE_SEPOLIA_EVIDENCE = {
   timestamp: "2026-09-17T00:39:48.896Z",
 } as const;
 
+const ARBITRUM_SEPOLIA_EVIDENCE = {
+  verifier: "0x53aa3e1d6c7a0844c900c5f4e0d4b5967a3367dc",
+  contracts: [
+    "0x53aa3e1d6c7a0844c900c5f4e0d4b5967a3367dc",
+    "0xff7fa49a29a1bbc91c04368f45b0d238f21e0af6",
+    "0x88ef958407ee3929cc23b1737e89f0e8acdf7a57",
+  ],
+  provider: "evm-arbitrum-sepolia",
+  commit: "bf23f95",
+  timestamp: "2026-09-17T07:28:40.938Z",
+} as const;
+
 const AGENT_MAINNET_EVIDENCE = {
   provider: "https://agents.privatedao.org",
   timestamp: "2026-09-11T01:18:16Z",
@@ -111,6 +123,17 @@ const ORGANIZATIONAL_EVIDENCE = {
     assets: ["AlphaUSD"],
     commit: "332565a",
     timestamp: "2026-09-16T22:03:49.724Z",
+  },
+  "arbitrum-sepolia": {
+    provider: "evm-arbitrum-sepolia-organizational",
+    contracts: [
+      "0xbf495e8147ab23bfa2024eae7c0d2f54af40279c",
+      "0xc4d37f8fb01dd8575ed8a5e8432eaa284abc41ec",
+      "0x4dbe25b21607cf04bbf06b9b88927af3e381d373",
+    ],
+    assets: ["ETH"],
+    commit: "bf23f95",
+    timestamp: "2026-09-17T07:23:24.600Z",
   },
 } as const;
 
@@ -169,6 +192,27 @@ function applyBaseSepoliaEvidence(entry: NativeCapabilityEntry): NativeCapabilit
     status: "testnet_verified",
     lastVerifiedCommit: BASE_SEPOLIA_EVIDENCE.commit,
     lastVerifiedTimestamp: BASE_SEPOLIA_EVIDENCE.timestamp,
+    evidence: "testnet-e2e",
+  };
+}
+
+function applyArbitrumSepoliaEvidence(entry: NativeCapabilityEntry): NativeCapabilityEntry {
+  const isBlind = entry.product === "blind-verification" && entry.capability === "verification.blind.prove";
+  const isRecord = entry.product === "record-verification" && ["verification.record.create", "verification.record.verify"].includes(entry.capability);
+  if (entry.network !== "arbitrum-sepolia" || (!isBlind && !isRecord)) return entry;
+  return {
+    ...entry,
+    provider: ARBITRUM_SEPOLIA_EVIDENCE.provider,
+    contracts: ARBITRUM_SEPOLIA_EVIDENCE.contracts,
+    verifier: ARBITRUM_SEPOLIA_EVIDENCE.verifier,
+    walletModel: "provider-wallet",
+    supportsExecution: true,
+    supportsProof: isBlind,
+    supportsReceipt: true,
+    supportsReconciliation: false,
+    status: "testnet_verified",
+    lastVerifiedCommit: ARBITRUM_SEPOLIA_EVIDENCE.commit,
+    lastVerifiedTimestamp: ARBITRUM_SEPOLIA_EVIDENCE.timestamp,
     evidence: "testnet-e2e",
   };
 }
@@ -271,7 +315,7 @@ function applyOrganizationalEvidence(entry: NativeCapabilityEntry): NativeCapabi
 export function buildNativeCapabilityRegistry(): readonly NativeCapabilityEntry[] {
   return PRODUCT_CATALOG.flatMap((product) =>
     product.capabilities.flatMap((capability) =>
-      NETWORK_MATRIX.map((network) => applyOrganizationalEvidence(applyTempoTestnetEvidence(applyPayrollDevnetEvidence(applyAgentMainnetEvidence(applyBaseSepoliaEvidence(applyEthereumSepoliaEvidence({
+      NETWORK_MATRIX.map((network) => applyOrganizationalEvidence(applyTempoTestnetEvidence(applyPayrollDevnetEvidence(applyAgentMainnetEvidence(applyArbitrumSepoliaEvidence(applyBaseSepoliaEvidence(applyEthereumSepoliaEvidence({
         product: product.id,
         capability: capability.id,
         network: network.id,
@@ -296,7 +340,7 @@ export function buildNativeCapabilityRegistry(): readonly NativeCapabilityEntry[
         lastVerifiedCommit: null,
         lastVerifiedTimestamp: null,
         evidence: "none",
-      }))))))) ,
+      })))))))) ,
     ),
   );
 }

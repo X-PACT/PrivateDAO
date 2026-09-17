@@ -1,6 +1,6 @@
 {
   "schema": "privatedao.native-capability-matrix.v1",
-  "generatedAt": "2026-09-17T00:46:45.069Z",
+  "generatedAt": "2026-09-17T07:37:04.696Z",
   "bridgeFree": true,
   "entries": [
     {
@@ -123,28 +123,32 @@
       "capability": "verification.blind.prove",
       "network": "arbitrum-sepolia",
       "networkFamily": "evm",
-      "declared": false,
+      "declared": true,
       "environment": "testnet",
       "chainId": "421614",
       "nativeAsset": "ETH",
       "supportedAssets": [
         "ETH"
       ],
-      "contracts": [],
-      "verifier": null,
+      "contracts": [
+        "0x53aa3e1d6c7a0844c900c5f4e0d4b5967a3367dc",
+        "0xff7fa49a29a1bbc91c04368f45b0d238f21e0af6",
+        "0x88ef958407ee3929cc23b1737e89f0e8acdf7a57"
+      ],
+      "verifier": "0x53aa3e1d6c7a0844c900c5f4e0d4b5967a3367dc",
       "provider": "evm-arbitrum-sepolia",
-      "walletModel": "external-wallet",
-      "supportsExecution": false,
+      "walletModel": "provider-wallet",
+      "supportsExecution": true,
       "supportsPrivateExecution": false,
       "supportsPrivateSettlement": false,
-      "supportsProof": false,
-      "supportsReceipt": false,
+      "supportsProof": true,
+      "supportsReceipt": true,
       "supportsReconciliation": false,
       "supportsMainnet": false,
-      "status": "planned",
-      "lastVerifiedCommit": null,
-      "lastVerifiedTimestamp": null,
-      "evidence": "none"
+      "status": "testnet_verified",
+      "lastVerifiedCommit": "bf23f95",
+      "lastVerifiedTimestamp": "2026-09-17T07:28:40.938Z",
+      "evidence": "testnet-e2e"
     },
     {
       "product": "blind-verification",
@@ -581,28 +585,32 @@
       "capability": "verification.record.create",
       "network": "arbitrum-sepolia",
       "networkFamily": "evm",
-      "declared": false,
+      "declared": true,
       "environment": "testnet",
       "chainId": "421614",
       "nativeAsset": "ETH",
       "supportedAssets": [
         "ETH"
       ],
-      "contracts": [],
-      "verifier": null,
+      "contracts": [
+        "0x53aa3e1d6c7a0844c900c5f4e0d4b5967a3367dc",
+        "0xff7fa49a29a1bbc91c04368f45b0d238f21e0af6",
+        "0x88ef958407ee3929cc23b1737e89f0e8acdf7a57"
+      ],
+      "verifier": "0x53aa3e1d6c7a0844c900c5f4e0d4b5967a3367dc",
       "provider": "evm-arbitrum-sepolia",
-      "walletModel": "external-wallet",
-      "supportsExecution": false,
+      "walletModel": "provider-wallet",
+      "supportsExecution": true,
       "supportsPrivateExecution": false,
       "supportsPrivateSettlement": false,
       "supportsProof": false,
-      "supportsReceipt": false,
+      "supportsReceipt": true,
       "supportsReconciliation": false,
       "supportsMainnet": false,
-      "status": "planned",
-      "lastVerifiedCommit": null,
-      "lastVerifiedTimestamp": null,
-      "evidence": "none"
+      "status": "testnet_verified",
+      "lastVerifiedCommit": "bf23f95",
+      "lastVerifiedTimestamp": "2026-09-17T07:28:40.938Z",
+      "evidence": "testnet-e2e"
     },
     {
       "product": "record-verification",
@@ -1039,28 +1047,32 @@
       "capability": "verification.record.verify",
       "network": "arbitrum-sepolia",
       "networkFamily": "evm",
-      "declared": false,
+      "declared": true,
       "environment": "testnet",
       "chainId": "421614",
       "nativeAsset": "ETH",
       "supportedAssets": [
         "ETH"
       ],
-      "contracts": [],
-      "verifier": null,
+      "contracts": [
+        "0x53aa3e1d6c7a0844c900c5f4e0d4b5967a3367dc",
+        "0xff7fa49a29a1bbc91c04368f45b0d238f21e0af6",
+        "0x88ef958407ee3929cc23b1737e89f0e8acdf7a57"
+      ],
+      "verifier": "0x53aa3e1d6c7a0844c900c5f4e0d4b5967a3367dc",
       "provider": "evm-arbitrum-sepolia",
-      "walletModel": "external-wallet",
-      "supportsExecution": false,
+      "walletModel": "provider-wallet",
+      "supportsExecution": true,
       "supportsPrivateExecution": false,
       "supportsPrivateSettlement": false,
       "supportsProof": false,
-      "supportsReceipt": false,
+      "supportsReceipt": true,
       "supportsReconciliation": false,
       "supportsMainnet": false,
-      "status": "planned",
-      "lastVerifiedCommit": null,
-      "lastVerifiedTimestamp": null,
-      "evidence": "none"
+      "status": "testnet_verified",
+      "lastVerifiedCommit": "bf23f95",
+      "lastVerifiedTimestamp": "2026-09-17T07:28:40.938Z",
+      "evidence": "testnet-e2e"
     },
     {
       "product": "record-verification",
@@ -2855,21 +2867,25 @@
       "supportedAssets": [
         "ETH"
       ],
-      "contracts": [],
+      "contracts": [
+        "0xbf495e8147ab23bfa2024eae7c0d2f54af40279c",
+        "0xc4d37f8fb01dd8575ed8a5e8432eaa284abc41ec",
+        "0x4dbe25b21607cf04bbf06b9b88927af3e381d373"
+      ],
       "verifier": null,
-      "provider": "evm-arbitrum-sepolia",
+      "provider": "evm-arbitrum-sepolia-organizational",
       "walletModel": "external-wallet",
-      "supportsExecution": false,
+      "supportsExecution": true,
       "supportsPrivateExecution": false,
       "supportsPrivateSettlement": false,
       "supportsProof": false,
-      "supportsReceipt": false,
-      "supportsReconciliation": false,
+      "supportsReceipt": true,
+      "supportsReconciliation": true,
       "supportsMainnet": false,
-      "status": "planned",
-      "lastVerifiedCommit": null,
-      "lastVerifiedTimestamp": null,
-      "evidence": "none"
+      "status": "testnet_verified",
+      "lastVerifiedCommit": "bf23f95",
+      "lastVerifiedTimestamp": "2026-09-17T07:23:24.600Z",
+      "evidence": "testnet-e2e"
     },
     {
       "product": "treasury",
@@ -3311,21 +3327,25 @@
       "supportedAssets": [
         "ETH"
       ],
-      "contracts": [],
+      "contracts": [
+        "0xbf495e8147ab23bfa2024eae7c0d2f54af40279c",
+        "0xc4d37f8fb01dd8575ed8a5e8432eaa284abc41ec",
+        "0x4dbe25b21607cf04bbf06b9b88927af3e381d373"
+      ],
       "verifier": null,
-      "provider": "evm-arbitrum-sepolia",
+      "provider": "evm-arbitrum-sepolia-organizational",
       "walletModel": "external-wallet",
-      "supportsExecution": false,
+      "supportsExecution": true,
       "supportsPrivateExecution": false,
       "supportsPrivateSettlement": false,
       "supportsProof": false,
-      "supportsReceipt": false,
-      "supportsReconciliation": false,
+      "supportsReceipt": true,
+      "supportsReconciliation": true,
       "supportsMainnet": false,
-      "status": "planned",
-      "lastVerifiedCommit": null,
-      "lastVerifiedTimestamp": null,
-      "evidence": "none"
+      "status": "testnet_verified",
+      "lastVerifiedCommit": "bf23f95",
+      "lastVerifiedTimestamp": "2026-09-17T07:23:24.600Z",
+      "evidence": "testnet-e2e"
     },
     {
       "product": "governance",
@@ -3767,21 +3787,25 @@
       "supportedAssets": [
         "ETH"
       ],
-      "contracts": [],
+      "contracts": [
+        "0xbf495e8147ab23bfa2024eae7c0d2f54af40279c",
+        "0xc4d37f8fb01dd8575ed8a5e8432eaa284abc41ec",
+        "0x4dbe25b21607cf04bbf06b9b88927af3e381d373"
+      ],
       "verifier": null,
-      "provider": "evm-arbitrum-sepolia",
+      "provider": "evm-arbitrum-sepolia-organizational",
       "walletModel": "external-wallet",
-      "supportsExecution": false,
+      "supportsExecution": true,
       "supportsPrivateExecution": false,
       "supportsPrivateSettlement": false,
       "supportsProof": false,
-      "supportsReceipt": false,
-      "supportsReconciliation": false,
+      "supportsReceipt": true,
+      "supportsReconciliation": true,
       "supportsMainnet": false,
-      "status": "planned",
-      "lastVerifiedCommit": null,
-      "lastVerifiedTimestamp": null,
-      "evidence": "none"
+      "status": "testnet_verified",
+      "lastVerifiedCommit": "bf23f95",
+      "lastVerifiedTimestamp": "2026-09-17T07:23:24.600Z",
+      "evidence": "testnet-e2e"
     },
     {
       "product": "auction",
@@ -4223,21 +4247,25 @@
       "supportedAssets": [
         "ETH"
       ],
-      "contracts": [],
+      "contracts": [
+        "0xbf495e8147ab23bfa2024eae7c0d2f54af40279c",
+        "0xc4d37f8fb01dd8575ed8a5e8432eaa284abc41ec",
+        "0x4dbe25b21607cf04bbf06b9b88927af3e381d373"
+      ],
       "verifier": null,
-      "provider": "evm-arbitrum-sepolia",
+      "provider": "evm-arbitrum-sepolia-organizational",
       "walletModel": "external-wallet",
-      "supportsExecution": false,
+      "supportsExecution": true,
       "supportsPrivateExecution": false,
       "supportsPrivateSettlement": false,
       "supportsProof": false,
-      "supportsReceipt": false,
-      "supportsReconciliation": false,
+      "supportsReceipt": true,
+      "supportsReconciliation": true,
       "supportsMainnet": false,
-      "status": "planned",
-      "lastVerifiedCommit": null,
-      "lastVerifiedTimestamp": null,
-      "evidence": "none"
+      "status": "testnet_verified",
+      "lastVerifiedCommit": "bf23f95",
+      "lastVerifiedTimestamp": "2026-09-17T07:23:24.600Z",
+      "evidence": "testnet-e2e"
     },
     {
       "product": "auction",

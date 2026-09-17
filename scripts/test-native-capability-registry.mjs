@@ -7,7 +7,7 @@ const liveAgents = entries.filter((entry) => entry.status === "mainnet_live" && 
 const verifiedPayroll = entries.filter((entry) => entry.status === "devnet_verified");
 
 assert.equal(entries.length, 192, "unexpected native capability matrix size");
-assert.equal(verified.length, 17, "only the nine verification and eight organizational testnet evidence rows should be verified");
+assert.equal(verified.length, 24, "only the twelve verification and twelve organizational testnet evidence rows should be verified");
 assert.equal(liveAgents.length, 2, "the two live Agent Exchange rows must be runtime-verified");
 assert.equal(verifiedPayroll.length, 3, "only the three Payroll Devnet evidence rows should be verified");
 for (const entry of verifiedPayroll) {
@@ -48,6 +48,9 @@ assert.equal(verified.filter((entry) => entry.provider === "evm-ethereum-sepolia
 assert.equal(verified.filter((entry) => entry.provider === "evm-tempo-testnet-organizational").length, 4, "Tempo organizational evidence must cover treasury, governance, and auction lanes");
 assert.equal(verified.filter((entry) => entry.provider === "evm-base-sepolia").length, 3, "Base Sepolia must have three verified verification rows");
 assert.equal(verified.filter((entry) => entry.provider === "evm-base-sepolia").every((entry) => entry.chainId === "84532"), true);
+assert.equal(verified.filter((entry) => entry.provider === "evm-arbitrum-sepolia").length, 3, "Arbitrum Sepolia must have three verified verification rows");
+assert.equal(verified.filter((entry) => entry.provider === "evm-arbitrum-sepolia-organizational").length, 4, "Arbitrum organizational evidence must cover treasury, governance, and auction lanes");
+assert.equal(verified.filter((entry) => entry.network === "arbitrum-sepolia").every((entry) => entry.chainId === "421614"), true);
 assert.equal(entries.find((entry) => entry.network === "tempo-testnet" && entry.product === "treasury")?.nativeAsset, "USD", "Tempo native asset must match the EVM adapter configuration");
 
 assert.equal(entries.some((entry) => entry.network === "wormhole-integration"), false, "bridge network must not be present");
