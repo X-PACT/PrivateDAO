@@ -1,21 +1,20 @@
 # EVM Testnet Funding Boundary
 
 **Checked:** 2026-09-17
-**Scope:** read-only RPC and deployer-balance checks before native E2E execution
+**Scope:** read-only public-wallet balance and chain-ID checks before native
+E2E execution
 
-The deployer private key was loaded only inside the test process. It was not
-printed, logged, copied, or committed. No transaction was submitted during
-these checks.
+No private key was loaded. No signing or transaction submission occurred.
 
 | Network | Chain ID observed | Native balance | RPC result | Result |
 | --- | ---: | ---: | --- | --- |
-| Base Sepolia | 84532 | 0 ETH | healthy | blocked_external: funding required |
-| Arbitrum Sepolia | 421614 | 0 ETH | healthy | blocked_external: funding required |
-| BNB Testnet | 97 | 0 tBNB | healthy | blocked_external: funding required |
+| Ethereum Sepolia | 11155111 | 0.124755828574594106 ETH | healthy | funded |
+| Base Sepolia | 84532 | 0.008922210582553289 ETH | healthy | underfunded for the 0.01 ETH gate |
+| Arbitrum Sepolia | 421614 | 0.01142287521323 ETH | healthy | funded |
+| BNB Testnet | 97 | 0 tBNB | healthy | cancelled scope |
 | Robinhood Testnet | 46630 | 0 ETH | healthy | blocked_external: funding required |
+| Hyperliquid Testnet | 998 | 0 HYPE | healthy | blocked_external: funding required |
 
-The EVM runner was then invoked for all four networks and stopped before
-deployment at the first zero-balance check. This is not deployment, proof,
-settlement, receipt, or capability-verification evidence. No capability was
-promoted from documentation to `testnet_verified`.
-
+This report is a funding gate only. A funded balance is not deployment, proof,
+settlement, receipt, or capability-verification evidence. No capability is
+promoted to `testnet_verified` by this report alone.
