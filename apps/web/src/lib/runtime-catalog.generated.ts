@@ -10,7 +10,8 @@ export const runtimeCatalog = {
       "networks": [
         "solana-devnet",
         "ethereum-sepolia",
-        "tempo-testnet"
+        "tempo-testnet",
+        "base-sepolia"
       ],
       "capabilities": [
         {
@@ -70,6 +71,23 @@ export const runtimeCatalog = {
                 "AlphaUSD"
               ],
               "provider": "evm-tempo-testnet"
+            },
+            {
+              "network": "base-sepolia",
+              "mode": "kernel-gateway",
+              "entrypoint": "kernel://verification.blind.prove",
+              "method": null,
+              "note": "Base Sepolia Groth16 verifier and blind registry passed real proof, altered-proof, wrong-chain, expiry, revocation, and receipt checks.",
+              "evidenceStatus": "testnet_verified",
+              "evidence": "testnet-e2e",
+              "supportsExecution": true,
+              "supportsProof": true,
+              "supportsReceipt": true,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-base-sepolia"
             }
           ],
           "networkAvailability": [
@@ -222,13 +240,13 @@ export const runtimeCatalog = {
               "stage": "available",
               "environment": "testnet",
               "chainId": "84532",
-              "declared": false,
-              "mode": "unbound",
-              "evidenceStatus": "planned",
-              "evidence": "none",
-              "executable": false,
-              "supportsProof": false,
-              "supportsReceipt": false,
+              "declared": true,
+              "mode": "kernel-gateway",
+              "evidenceStatus": "testnet_verified",
+              "evidence": "testnet-e2e",
+              "executable": true,
+              "supportsProof": true,
+              "supportsReceipt": true,
               "supportsReconciliation": false,
               "supportedAssets": [
                 "ETH"
@@ -372,7 +390,8 @@ export const runtimeCatalog = {
       "networks": [
         "solana-devnet",
         "ethereum-sepolia",
-        "tempo-testnet"
+        "tempo-testnet",
+        "base-sepolia"
       ],
       "capabilities": [
         {
@@ -432,6 +451,23 @@ export const runtimeCatalog = {
                 "AlphaUSD"
               ],
               "provider": "evm-tempo-testnet"
+            },
+            {
+              "network": "base-sepolia",
+              "mode": "kernel-gateway",
+              "entrypoint": "kernel://verification.record.create",
+              "method": null,
+              "note": "Base Sepolia record registry passed real on-chain anchoring, verification, expiry, and revocation checks.",
+              "evidenceStatus": "testnet_verified",
+              "evidence": "testnet-e2e",
+              "supportsExecution": true,
+              "supportsProof": false,
+              "supportsReceipt": true,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-base-sepolia"
             }
           ],
           "networkAvailability": [
@@ -584,13 +620,13 @@ export const runtimeCatalog = {
               "stage": "available",
               "environment": "testnet",
               "chainId": "84532",
-              "declared": false,
-              "mode": "unbound",
-              "evidenceStatus": "planned",
-              "evidence": "none",
-              "executable": false,
+              "declared": true,
+              "mode": "kernel-gateway",
+              "evidenceStatus": "testnet_verified",
+              "evidence": "testnet-e2e",
+              "executable": true,
               "supportsProof": false,
-              "supportsReceipt": false,
+              "supportsReceipt": true,
               "supportsReconciliation": false,
               "supportedAssets": [
                 "ETH"
@@ -782,6 +818,23 @@ export const runtimeCatalog = {
                 "AlphaUSD"
               ],
               "provider": "evm-tempo-testnet"
+            },
+            {
+              "network": "base-sepolia",
+              "mode": "kernel-gateway",
+              "entrypoint": "kernel://verification.record.verify",
+              "method": null,
+              "note": "Base Sepolia record verification is bound to chain ID 84532 and the deployed registry domain.",
+              "evidenceStatus": "testnet_verified",
+              "evidence": "testnet-e2e",
+              "supportsExecution": true,
+              "supportsProof": false,
+              "supportsReceipt": true,
+              "supportsReconciliation": false,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-base-sepolia"
             }
           ],
           "networkAvailability": [
@@ -934,13 +987,13 @@ export const runtimeCatalog = {
               "stage": "available",
               "environment": "testnet",
               "chainId": "84532",
-              "declared": false,
-              "mode": "unbound",
-              "evidenceStatus": "planned",
-              "evidence": "none",
-              "executable": false,
+              "declared": true,
+              "mode": "kernel-gateway",
+              "evidenceStatus": "testnet_verified",
+              "evidence": "testnet-e2e",
+              "executable": true,
               "supportsProof": false,
-              "supportsReceipt": false,
+              "supportsReceipt": true,
               "supportsReconciliation": false,
               "supportedAssets": [
                 "ETH"

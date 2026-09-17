@@ -1,6 +1,6 @@
 {
   "schema": "privatedao.native-capability-matrix.v1",
-  "generatedAt": "2026-09-17T00:42:08.108Z",
+  "generatedAt": "2026-09-17T00:46:45.069Z",
   "bridgeFree": true,
   "entries": [
     {
@@ -258,7 +258,7 @@
       "supportsReconciliation": false,
       "supportsMainnet": false,
       "status": "testnet_verified",
-      "lastVerifiedCommit": "ade7c39",
+      "lastVerifiedCommit": "7dcfce7",
       "lastVerifiedTimestamp": "2026-09-17T00:39:48.896Z",
       "evidence": "testnet-e2e"
     },
@@ -716,7 +716,7 @@
       "supportsReconciliation": false,
       "supportsMainnet": false,
       "status": "testnet_verified",
-      "lastVerifiedCommit": "ade7c39",
+      "lastVerifiedCommit": "7dcfce7",
       "lastVerifiedTimestamp": "2026-09-17T00:39:48.896Z",
       "evidence": "testnet-e2e"
     },
@@ -1174,7 +1174,7 @@
       "supportsReconciliation": false,
       "supportsMainnet": false,
       "status": "testnet_verified",
-      "lastVerifiedCommit": "ade7c39",
+      "lastVerifiedCommit": "7dcfce7",
       "lastVerifiedTimestamp": "2026-09-17T00:39:48.896Z",
       "evidence": "testnet-e2e"
     },

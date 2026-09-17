@@ -61,7 +61,7 @@ const BASE_SEPOLIA_EVIDENCE = {
     "0xa0cbe18d8b8b54befda83f33288347466f2c88b9",
   ],
   provider: "evm-base-sepolia",
-  commit: "ade7c39",
+  commit: "7dcfce7",
   timestamp: "2026-09-17T00:39:48.896Z",
 } as const;
 
