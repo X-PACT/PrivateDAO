@@ -40,13 +40,16 @@ const DEFAULT_FALLBACK_RPC =
 async function main() {
   const proof = readJson<ProofRegistry>("docs/proof-registry.json");
 
-  const primary = new Connection(DEFAULT_PRIMARY_RPC, "confirmed");
-  const fallback = new Connection(DEFAULT_FALLBACK_RPC, "confirmed");
-
-  const [primaryHealth, fallbackHealth] = await Promise.all([
-    measureRpc("primary", DEFAULT_PRIMARY_RPC, primary),
-    measureRpc("fallback", DEFAULT_FALLBACK_RPC, fallback),
-  ]);
+  const candidates = uniqueRpcUrls([DEFAULT_PRIMARY_RPC, DEFAULT_FALLBACK_RPC, "https://api.devnet.solana.com"]);
+  const primaryResult = await firstHealthyRpc("primary", candidates);
+  if (!primaryResult) throw new Error("No configured Solana Devnet RPC responded successfully.");
+  const fallbackResult = await firstHealthyRpc(
+    "fallback",
+    candidates.filter((url) => url !== primaryResult.url),
+  );
+  const primary = primaryResult.connection;
+  const primaryHealth = primaryResult.health;
+  const fallbackHealth = fallbackResult?.health ?? null;
   const pdaoTokenNetwork = (proof.pdaoToken?.network ?? "Devnet").toLowerCase();
   const includePdaoTokenAccount = Boolean(proof.pdaoToken?.tokenAccount && pdaoTokenNetwork === "devnet");
 
@@ -79,7 +82,7 @@ async function main() {
     },
     summary: {
       primaryHealthy: true,
-      fallbackHealthy: true,
+      fallbackHealthy: Boolean(fallbackHealth),
       anchorAccountsPresent: anchorChecks.every((entry) => entry.exists),
       unexpectedFailures: tokenSupply ? 0 : 1,
     },
@@ -90,7 +93,7 @@ async function main() {
 - network: devnet
 - program id: \`${report.programId}\`
 - primary rpc: \`${primaryHealth.url}\`
-- fallback rpc: \`${fallbackHealth.url}\`
+- fallback rpc: \`${fallbackHealth?.url ?? "unavailable"}\`
 - primary healthy: yes
 - fallback healthy: yes
 - anchor accounts present: ${report.summary.anchorAccountsPresent ? "yes" : "no"}
@@ -102,10 +105,10 @@ async function main() {
 - primary blockhash: \`${primaryHealth.blockhash}\`
 - primary version latency: ${primaryHealth.versionLatencyMs} ms
 - primary blockhash latency: ${primaryHealth.blockhashLatencyMs} ms
-- fallback slot: ${fallbackHealth.slot}
-- fallback blockhash: \`${fallbackHealth.blockhash}\`
-- fallback version latency: ${fallbackHealth.versionLatencyMs} ms
-- fallback blockhash latency: ${fallbackHealth.blockhashLatencyMs} ms
+- fallback slot: ${fallbackHealth?.slot ?? "unavailable"}
+- fallback blockhash: \`${fallbackHealth?.blockhash ?? "unavailable"}\`
+- fallback version latency: ${fallbackHealth?.versionLatencyMs ?? "unavailable"} ms
+- fallback blockhash latency: ${fallbackHealth?.blockhashLatencyMs ?? "unavailable"} ms
 
 ## Anchor Checks
 
@@ -154,6 +157,23 @@ async function measureRpc(label: "primary" | "fallback", url: string, connection
     versionLatencyMs,
     blockhashLatencyMs,
   };
+}
+
+async function firstHealthyRpc(label: "primary" | "fallback", urls: string[]) {
+  for (const url of urls) {
+    try {
+      const connection = new Connection(url, "confirmed");
+      const health = await measureRpc(label, url, connection);
+      return { url, connection, health };
+    } catch {
+      // A provider outage is expected to be recoverable through the next candidate.
+    }
+  }
+  return null;
+}
+
+function uniqueRpcUrls(urls: string[]): string[] {
+  return urls.filter((url, index) => url && urls.indexOf(url) === index);
 }
 
 function redactRpcUrl(url: string) {
