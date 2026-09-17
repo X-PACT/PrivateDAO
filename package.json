@@ -371,8 +371,9 @@
     "@solana/spl-token": "^0.4.14",
     "@solana/web3.js": "^1.98.4",
     "ajv": "^8.17.1",
+    "bigint-buffer": "file:vendor/bigint-buffer",
     "dotenv": "^16.4.5",
-    "bigint-buffer": "file:vendor/bigint-buffer"
+    "viem": "2.56.6"
   },
   "devDependencies": {
     "@sqds/multisig": "^2.1.4",
