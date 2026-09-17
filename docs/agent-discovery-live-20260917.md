@@ -54,3 +54,17 @@ external-agent adoption, or revenue.
 
 These protocol checks were performed without credentials and did not create a
 paid job or submit a payment.
+
+## Read-only Service Surfaces
+
+The following unauthenticated GET requests returned HTTP `200`:
+
+- `/api/health`
+- `/api/pricing`
+- `/api/discovery`
+- `/api/registry/search`
+- `/api/treasury/status`
+
+MCP `tools/list` also returned 11 tools, including service discovery,
+verification, paid-job preparation, payment submission, job status, receipt
+retrieval, registry search, and network statistics.
