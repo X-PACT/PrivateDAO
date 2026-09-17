@@ -41,8 +41,9 @@ No Mainnet configuration is accepted by this runner. No public RPC fallback is
 used. No mock receipt or synthetic success path exists.
 
 The generic runner can be selected with `PDAO_EVM_NETWORKS` for Ethereum
-Sepolia, Base Sepolia, Arbitrum Sepolia, BNB Testnet, Robinhood Testnet, or
-Tempo Testnet. Tempo uses the native `viem/tempo` client and AlphaUSD fee
+Sepolia, Base Sepolia, Arbitrum Sepolia, BNB Testnet, Robinhood Testnet,
+Hyperliquid HyperEVM Testnet, or Tempo Testnet. Hyperliquid uses the standard
+EVM runner with HYPE gas on chain 998. Tempo uses the native `viem/tempo` client and AlphaUSD fee
 token, not the standard EVM gas-balance path. Tempo Testnet is only promoted
 after the same contract-write, receipt, proof, expiry, wrong-chain, altered-
 proof, and revocation checks pass on the Tempo chain itself.
@@ -57,7 +58,9 @@ npm run test:evm:organizational
 ```
 
 Supported values are `ethereum-sepolia`, `arbitrum-sepolia`, `bnb-testnet`,
-`base-sepolia`, `robinhood-testnet`, and `tempo-testnet`. Tempo uses the
+`base-sepolia`, `robinhood-testnet`, `hyperliquid-testnet`, and
+`tempo-testnet`. Hyperliquid uses HYPE as the native gas asset on chain 998.
+Tempo uses the
 AlphaUSD TIP-20 token and the tokenized Treasury/Auction contracts because
 Tempo rejects native `msg.value` transfers. The runner requires a funded
 testnet deployer, writes a network-specific evidence file only after all
@@ -85,10 +88,10 @@ verification ID, and validity state. The JSON manifest under
 expected to be the application shell because the verification check runs in
 the browser. No source record or private inputs are returned.
 
-Ethereum Sepolia is therefore application-bound for the two verified
-verification products. Base Sepolia remains unverified until a funded real
-deployment and independent E2E evidence are available. No capability is
-upgraded from documentation alone.
+Ethereum Sepolia and Base Sepolia are application-bound for the two verified
+verification products. Hyperliquid HyperEVM and Robinhood remain unverified
+until funded real deployments and independent E2E evidence are available. No
+capability is upgraded from documentation alone.
 
 Tempo Testnet has a committed `testnet_verified` artifact at
 `deployments/phase-2-e2e-tempo-testnet.json`. The run deployed independent
