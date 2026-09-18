@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { LockKeyhole } from "lucide-react";
 
 import { LanguageSwitcher } from "@/components/language-switcher";
@@ -21,7 +22,7 @@ export function SiteHeader() {
       <div className="mx-auto flex w-full max-w-7xl items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:px-8">
         <Link href="/" className="min-w-0">
           <div className="flex items-center gap-3">
-            <img src="/assets/privatedao-brand-mark-20260918.jpeg" alt="PrivateDAO" width={40} height={40} className="h-10 w-10 rounded-full object-cover ring-1 ring-[#b9d8f2]" />
+            <Image unoptimized src="/assets/privatedao-brand-mark-20260918.jpeg" alt="PrivateDAO" width={40} height={40} className="h-10 w-10 rounded-full object-cover ring-1 ring-[#b9d8f2]" />
             <div className="whitespace-nowrap text-lg font-semibold tracking-[-0.03em] text-[#10233f] sm:text-2xl">
               Private<span className="text-[#175cd3]">DAO</span>
             </div>

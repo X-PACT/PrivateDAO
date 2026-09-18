@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight, CheckCircle2, ShieldCheck } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
@@ -53,7 +54,7 @@ export function SimpleHomeHero() {
           <div className="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full border border-[#b9d8f2]" />
           <div className="pointer-events-none absolute right-4 top-4 h-28 w-28 rounded-full border border-[#f0c9cd]" />
           <div className="relative mb-5 flex items-center gap-3 border-b border-[#dce5f0] pb-5">
-            <img src="/assets/privatedao-brand-mark-20260918.jpeg" alt="PrivateDAO" width={58} height={58} className="h-14 w-14 rounded-full object-cover shadow-[0_10px_26px_rgba(23,92,211,0.18)]" />
+            <Image unoptimized src="/assets/privatedao-brand-mark-20260918.jpeg" alt="PrivateDAO" width={58} height={58} className="h-14 w-14 rounded-full object-cover shadow-[0_10px_26px_rgba(23,92,211,0.18)]" />
             <div>
               <div className="text-lg font-semibold tracking-[-0.03em] text-[#10233f]">Private<span className="text-[#175cd3]">DAO</span></div>
               <div className="mt-1 text-[10px] font-semibold uppercase tracking-[0.22em] text-[#7a8ba0]">Private work. Trusted outcomes.</div>

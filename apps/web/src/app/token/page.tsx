@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight, ExternalLink, LockKeyhole, ShieldCheck } from "lucide-react";
 
 import { OperationsShell } from "@/components/operations-shell";
@@ -88,7 +89,7 @@ export default function TokenPage() {
       >
         <section className="grid gap-5 lg:grid-cols-[0.85fr_1.15fr]">
           <article className="enterprise-card rounded-[24px] p-6 sm:p-8">
-            <div className="flex items-center gap-4"><img src="/assets/token/pdao-token-logo.png" alt="PDAO" width={72} height={72} className="h-16 w-16 rounded-2xl object-cover ring-1 ring-[#b9d8f2]" /><div><div className="text-3xl font-semibold tracking-[-0.04em] text-[#10233f]">PDAO</div><div className="mt-1 text-sm text-[#5d6d82]">PrivateDAO community token</div></div></div>
+            <div className="flex items-center gap-4"><Image unoptimized src="/assets/token/pdao-token-logo.png" alt="PDAO" width={72} height={72} className="h-16 w-16 rounded-2xl object-cover ring-1 ring-[#b9d8f2]" /><div><div className="text-3xl font-semibold tracking-[-0.04em] text-[#10233f]">PDAO</div><div className="mt-1 text-sm text-[#5d6d82]">PrivateDAO community token</div></div></div>
             <p className="mt-6 text-sm leading-7 text-[#5d6d82]">PDAO is connected to the PrivateDAO ecosystem and community. The commercial products are the focus: private payroll, treasury coordination, governance, auctions, and verification.</p>
             <div className="mt-6 flex flex-wrap gap-3"><a href={PUMPFUN_URL} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-full bg-[#175cd3] px-5 py-3 text-sm font-semibold text-white">Open official market <ExternalLink className="h-4 w-4" /></a><a href={STREAMFLOW_URL} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-full border border-[#dce5f0] px-5 py-3 text-sm font-semibold text-[#10233f]"><LockKeyhole className="h-4 w-4 text-[#175cd3]" /> View lock</a></div>
           </article>
