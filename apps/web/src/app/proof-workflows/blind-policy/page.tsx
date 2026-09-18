@@ -28,7 +28,7 @@ const outcomes = [
 const useCases = [
   ["Lending", "Prove underwriting or credit-limit checks happened without exposing earnings or thresholds."],
   ["Compliance", "Prove required checks were completed without exposing documents or review notes."],
-  ["Grants", "Prove eligibility and review policy were followed without exposing reviewer scoring."],
+  ["Business decisions", "Prove a review policy was followed without exposing internal scoring or sensitive case data."],
 ] as const;
 
 const verificationKeyHash = "05aeb7e27479d7f1551b0c2e18134c58f760de43f2ff085a8ea2e82f212209eb";

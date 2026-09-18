@@ -56,19 +56,8 @@ export default function GovernPage() {
       </section>
       <GovernWorkbenchClient />
       <GuidedOperationRail current="review" reviewHref="/intelligence" verifyHref="/proof" />
-      <div className="rounded-[28px] border border-emerald-300/16 bg-emerald-300/[0.08] p-5">
-        <div className="text-[11px] uppercase tracking-[0.28em] text-emerald-100/78">Need test funds?</div>
-        <div className="mt-2 max-w-3xl text-sm leading-7 text-white/70">
-          For the interactive demo, use a funded demo wallet before creating a room, voting, or executing a proposal.
-        </div>
-        <div className="mt-4 flex flex-wrap gap-3">
-          <a className={cn(buttonVariants({ size: "sm" }))} href="https://faucet.solana.com/" rel="noreferrer" target="_blank">
-            Prepare Demo Wallet
-          </a>
-          <Link className={cn(buttonVariants({ size: "sm", variant: "outline" }))} href="/learn">
-            Learn the flow
-          </Link>
-        </div>
+      <div className="enterprise-card rounded-[24px] p-5 text-sm leading-7 text-[#5d6d82]">
+        Start with one decision, invite the people who should be involved, and keep the final outcome clear for everyone who needs to trust it.
       </div>
     </OperationsShell>
   );

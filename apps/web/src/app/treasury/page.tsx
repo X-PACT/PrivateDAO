@@ -59,14 +59,14 @@ export default function TreasuryPage() {
       <div className="rounded-[28px] border border-white/10 bg-white/[0.04] p-5 text-sm leading-7 text-white/68">
         Start with the request, review the risk, and continue to payment only when the right people have approved it.
         <div className="mt-4 flex flex-wrap gap-3">
-          <Link href="/intelligence" className={cn(buttonVariants({ size: "sm" }))}>
-            Open intelligence
+          <Link href="/treasury" className={cn(buttonVariants({ size: "sm" }))}>
+            Review requests
           </Link>
           <Link href="/services/jupiter-treasury-route" className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>
             Open treasury route
           </Link>
-          <Link href="/proof" className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
-            Open proof
+          <Link href="/proof-workflows/blind-policy" className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
+            Verify an outcome
           </Link>
         </div>
       </div>

@@ -51,13 +51,12 @@ export default function AuctionsPage() {
         <div className="text-[11px] uppercase tracking-[0.25em] text-violet-100/70">Outcome assurance</div>
         <h2 className="mt-3 text-2xl font-semibold text-white">Prove the result without revealing the bids.</h2>
         <p className="mt-3 max-w-3xl text-sm leading-7 text-white/64">
-          After settlement, an authorized prover can generate a Groth16 outcome proof bound to the finalized receipt.
-          Anyone can verify the winning outcome and its integrity without seeing bidder amounts or private salts.
+          After the auction closes, the selected outcome can be shared and checked without exposing the offers that were kept private during the process.
         </p>
         <div className="mt-4 flex flex-wrap gap-3 text-xs text-white/52">
-          <span className="rounded-full border border-white/10 px-3 py-2">Finalized receipt binding</span>
-          <span className="rounded-full border border-white/10 px-3 py-2">Private bid witness stays private</span>
-          <span className="rounded-full border border-white/10 px-3 py-2">Public verification endpoint</span>
+          <span className="rounded-full border border-white/10 px-3 py-2">Fair selection</span>
+          <span className="rounded-full border border-white/10 px-3 py-2">Private offers</span>
+          <span className="rounded-full border border-white/10 px-3 py-2">Shareable result</span>
         </div>
       </section>
 
