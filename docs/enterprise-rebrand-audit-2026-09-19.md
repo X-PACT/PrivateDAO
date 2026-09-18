@@ -56,8 +56,8 @@ closure is still missing. No item is marked complete from intent alone.
 | 40 | DONE | Roadmap and investor materials include product and capital-development paths. |
 | 41 | DONE | Commercial pages do not lead with engineering disclaimers. |
 | 42 | PARTIAL | MCP resources exist in developer/runtime material; independent external MCP interoperability is not claimed. |
-| 43 | PARTIAL | Agent discovery and runtime are live; the external `/marketplace` route is 404 and the exchange currently exposes `/connect` plus machine-readable service discovery. |
-| 44 | PARTIAL | Agent Card is live and branded; the external `/connect` UI is a dark developer surface, not yet White/Navy/Cobalt parity with the commercial site. |
+| 43 | PARTIAL | Agent discovery and runtime are live; the external `/marketplace` service catalog is now live with 14 services, while multi-network marketplace execution remains intentionally capability-scoped. |
+| 44 | PARTIAL | Agent Card and the new `/marketplace` UI use a White/Navy/Cobalt commercial surface; `/connect` remains a developer workflow and external registry branding/interoperability still needs independent verification. |
 | 45 | DONE | `X-PACT/PrivateDAO` is the private canonical source repository. |
 | 46 | DONE | Public docs-only repository exists at `X-PACT/PrivateDAO-public`; no source or secrets included. |
 | 47 | DONE | Public repository exposes a safe release representation, not private commit history. |
@@ -87,10 +87,11 @@ closure is still missing. No item is marked complete from intent alone.
    source metadata, image URLs, content types, and live HTML are verified.
 3. `PARTIAL` network and Agent items are intentionally not represented as
    universal mainnet capability claims.
-4. The external Agents service was browser-checked on desktop and mobile:
-   `/connect` returned 200 with no page errors on mobile, while desktop had a
-   single 404 resource response; `/marketplace` returned 404. Its source is
-   outside the canonical web repository, so no speculative edit was made.
+4. The external Agents service was updated independently of the main site and
+   game. `/marketplace` now returns 200 and renders the live service catalog;
+   `/connect`, Agent Card, `/api/services`, `/a2a`, `/mcp`, and `/openapi.json`
+   remain available. Desktop and mobile browser checks for `/marketplace`
+   reported no console errors or failed requests, with 14 service cards.
 
 ## Verification Commands
 
