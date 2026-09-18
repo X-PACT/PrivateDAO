@@ -1,4 +1,5 @@
 "use client";
+/* eslint-disable @next/next/no-img-element -- the footer uses the supplied static brand asset. */
 
 import Link from "next/link";
 import { Mail } from "lucide-react";
@@ -25,7 +26,10 @@ export function SiteFooter() {
     <footer className="border-t border-[#dce5f0] bg-white">
       <div className="mx-auto grid w-full max-w-7xl gap-8 px-4 py-10 text-sm text-[#5d6d82] sm:px-6 lg:grid-cols-[1.25fr_0.75fr_0.75fr_0.75fr] lg:px-8">
         <div>
-          <div className="text-lg font-semibold text-[#10233f]">PrivateDAO</div>
+          <div className="flex items-center gap-3">
+            <img src="/assets/privatedao-brand-mark-20260918.jpeg" alt="PrivateDAO" width={42} height={42} className="h-10 w-10 rounded-full object-cover ring-1 ring-[#b9d8f2]" />
+            <div className="text-lg font-semibold tracking-[-0.03em] text-[#10233f]">Private<span className="text-[#175cd3]">DAO</span></div>
+          </div>
           <p className="mt-3 max-w-xl text-sm leading-7 text-[#5d6d82]">
             PrivateDAO helps organizations keep sensitive work private while making the outcome trusted and shareable.
           </p>

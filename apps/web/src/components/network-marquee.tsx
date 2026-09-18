@@ -24,13 +24,13 @@ function NetworkSet() {
           rel="noreferrer"
           aria-label={name}
           title={name}
-          className="inline-flex h-10 w-14 items-center justify-center rounded-full border border-[#dce5f0] bg-white px-3 transition hover:border-[#175cd3] hover:shadow-[0_4px_14px_rgba(23,92,211,0.12)]"
+          className="inline-flex h-14 w-20 items-center justify-center rounded-[18px] border border-[#dce5f0] bg-white px-4 shadow-[0_4px_16px_rgba(16,35,63,0.04)] transition hover:-translate-y-0.5 hover:border-[#175cd3] hover:shadow-[0_8px_20px_rgba(23,92,211,0.12)]"
         >
           <img
             src={logo}
             alt=""
             aria-hidden="true"
-            className="h-5 w-5 object-contain"
+            className="h-7 w-7 object-contain"
             loading="lazy"
             onError={(event) => {
               event.currentTarget.onerror = null;
@@ -45,7 +45,7 @@ function NetworkSet() {
 
 export function NetworkMarquee() {
   return (
-    <section aria-label="Supported networks" className="border-y border-[#dce5f0] bg-[#fbfcfe] py-3">
+    <section aria-label="Supported networks" className="border-y border-[#dce5f0] bg-[#fbfcfe] py-5">
       <div className="mx-auto flex max-w-7xl items-center gap-4 overflow-hidden px-4 sm:px-6 lg:px-8">
         <div className="hidden shrink-0 text-[10px] font-bold uppercase tracking-[0.2em] text-[#7a8ba0] sm:block">
           Supported networks
