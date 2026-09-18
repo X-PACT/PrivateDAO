@@ -1,9 +1,12 @@
 import fs from "node:fs";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 
-const root = path.resolve(
-  process.env.PRIVATE_DAO_NEXT_DIST_DIR || path.join("apps", "web", ".next"),
-);
+const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+const outRoot = path.join(repoRoot, "apps", "web", "out");
+const nextRoot = path.join(repoRoot, "apps", "web", ".next");
+const defaultRoot = fs.existsSync(outRoot) ? outRoot : nextRoot;
+const root = path.resolve(process.env.PRIVATE_DAO_NEXT_DIST_DIR || defaultRoot);
 const basePath = (process.env.NEXT_PUBLIC_BASE_PATH || "").replace(/\/$/, "");
 
 // Static export does not execute Next middleware. Keep legacy entrypoints

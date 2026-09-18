@@ -30,6 +30,10 @@ case "$MODE" in
     ;;
 esac
 
+# Static export does not run Next middleware. Compact legacy entrypoints in
+# the actual `out/` tree before copying it into the release mirror.
+(cd "$WEB_DIR" && node ../../scripts/compact-commercial-export.mjs)
+
 # Next 16/Turbopack can prerender app-route HTML into `.next/server/app`
 # while omitting some nested static pages from `out/`. The public site is a
 # static mirror, so supplement missing service pages from the prerendered HTML
