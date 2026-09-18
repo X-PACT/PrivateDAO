@@ -57,7 +57,7 @@ closure is still missing. No item is marked complete from intent alone.
 | 41 | DONE | Commercial pages do not lead with engineering disclaimers. |
 | 42 | PARTIAL | MCP resources exist in developer/runtime material; independent external MCP interoperability is not claimed. |
 | 43 | PARTIAL | Agent discovery and runtime are live; the external `/marketplace` service catalog is now live with 14 services, while multi-network marketplace execution remains intentionally capability-scoped. |
-| 44 | PARTIAL | Agent Card and the new `/marketplace` UI use a White/Navy/Cobalt commercial surface; `/connect` remains a developer workflow and external registry branding/interoperability still needs independent verification. |
+| 44 | PARTIAL | Agent Card, `/marketplace`, and `/connect` now use the White/Navy/Cobalt surface; external registry branding/interoperability still needs independent verification. |
 | 45 | DONE | `X-PACT/PrivateDAO` is the private canonical source repository. |
 | 46 | DONE | Public docs-only repository exists at `X-PACT/PrivateDAO-public`; no source or secrets included. |
 | 47 | DONE | Public repository exposes a safe release representation, not private commit history. |
