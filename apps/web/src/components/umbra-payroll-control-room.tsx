@@ -230,12 +230,12 @@ export function UmbraPayrollControlRoom() {
         <div className="space-y-3">
           <div className="rounded-2xl border border-white/12 bg-black/30 p-4">
             <div className="flex items-center justify-between gap-3">
-              <div><div className="text-sm font-medium text-white">Employees and payments</div><p className="mt-1 text-xs text-white/50">Enter gross pay. The demo policy applies 10% tax and 2% deductions before private settlement.</p></div>
+              <div><div className="text-sm font-medium text-white">Employees and payments</div><p className="mt-1 text-xs text-white/50">Enter gross pay. The destination is used only when the approved payout is executed. The demo policy applies 10% tax and 2% deductions.</p></div>
               <button type="button" className="text-xs font-semibold text-cyan-100 hover:text-white" onClick={() => updateSimpleRows([...simpleRows, { recipientAddress: "", grossAmount: "" }])}>Add employee</button>
             </div>
             <div className="mt-4 space-y-3">
               {simpleRows.map((row, index) => <div key={index} className="grid gap-2 sm:grid-cols-[minmax(0,1fr)_120px_auto]">
-                <input aria-label={`Recipient ${index + 1}`} className="min-w-0 rounded-xl border border-white/12 bg-white/[0.04] px-3 py-2 text-sm text-white outline-none" value={row.recipientAddress} onChange={(event) => { const next = simpleRows.slice(); next[index] = { ...row, recipientAddress: event.target.value }; updateSimpleRows(next); }} placeholder="Recipient wallet address" />
+                <input aria-label={`Payment destination ${index + 1}`} className="min-w-0 rounded-xl border border-white/12 bg-white/[0.04] px-3 py-2 text-sm text-white outline-none" value={row.recipientAddress} onChange={(event) => { const next = simpleRows.slice(); next[index] = { ...row, recipientAddress: event.target.value }; updateSimpleRows(next); }} placeholder="Payment destination" />
                 <input aria-label={`Gross pay ${index + 1}`} className="rounded-xl border border-white/12 bg-white/[0.04] px-3 py-2 text-sm text-white outline-none" value={row.grossAmount} onChange={(event) => { const next = simpleRows.slice(); next[index] = { ...row, grossAmount: event.target.value }; updateSimpleRows(next); }} placeholder="Gross pay" inputMode="decimal" />
                 <button type="button" aria-label={`Remove recipient ${index + 1}`} className="rounded-xl border border-white/10 px-3 py-2 text-xs text-white/50 hover:text-white disabled:opacity-30" disabled={simpleRows.length === 1} onClick={() => updateSimpleRows(simpleRows.filter((_, rowIndex) => rowIndex !== index))}>Remove</button>
               </div>)}
