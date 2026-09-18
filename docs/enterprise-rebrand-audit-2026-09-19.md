@@ -92,6 +92,9 @@ closure is still missing. No item is marked complete from intent alone.
    `/connect`, Agent Card, `/api/services`, `/a2a`, `/mcp`, and `/openapi.json`
    remain available. Desktop and mobile browser checks for `/marketplace`
    reported no console errors or failed requests, with 14 service cards.
+5. Live MCP JSON-RPC checks passed for `initialize` and `tools/list`; the
+   service returned 11 tools. Independent third-party MCP client
+   interoperability is still not claimed.
 
 ## Verification Commands
 
