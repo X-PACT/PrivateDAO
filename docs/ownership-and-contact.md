@@ -2,7 +2,7 @@
 
 ## Public Operating Statement
 
-PrivateDAO development is maintained in public through **[X-PACT/PrivateDAO](https://github.com/X-PACT/PrivateDAO)** across product, engineering, operations, and reviewer-facing delivery.
+PrivateDAO development is maintained under the X-PACT GitHub organization through the access-controlled **[X-PACT/PrivateDAO](https://github.com/X-PACT/PrivateDAO)** repository. Public product and reviewer-facing surfaces are published on the official website.
 
 This document exists to keep investor, partner, and operator coordination simple. It describes the practical contact surface for the live Testnet product and the release path toward mainnet publication.
 

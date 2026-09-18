@@ -75,7 +75,7 @@ Compatibility note: historical links stay alive as bridges through the canonical
 
 Technical execution evidence includes the path where a reviewer signs from a Solana Testnet wallet, completes the relevant workflow, and verifies the resulting proof. This is implementation evidence, not a requirement for understanding the commercial products.
 
-The implementation repository is maintained under the X-PACT GitHub organization. Public product copy is intentionally simple; technical evidence, implementation notes, and current network boundaries remain in the repository documentation and machine-readable manifests.
+The implementation repository is maintained under the X-PACT GitHub organization with access controlled through the repository's current visibility and permissions. Public product copy is intentionally simple; technical evidence, implementation notes, and current network boundaries remain in the repository documentation and machine-readable manifests.
 
 
 <p align="center">
@@ -1165,7 +1165,7 @@ Key docs:
 
 ## Operating Contact
 
-PrivateDAO development is maintained in public through **[X-PACT/PrivateDAO](https://github.com/X-PACT/PrivateDAO)**. Use the contact surface below for investment, strategic help, integrations, pilots, or direct operator coordination around the live Testnet product and its path to mainnet release.
+PrivateDAO development is maintained under the X-PACT GitHub organization through the access-controlled **[X-PACT/PrivateDAO](https://github.com/X-PACT/PrivateDAO)** repository. Public product and evidence surfaces remain available on the official website. Use the contact surface below for investment, strategic help, integrations, pilots, or direct operator coordination around the live product.
 
 For investment, strategic help, integrations, pilots, or direct operator coordination:
 

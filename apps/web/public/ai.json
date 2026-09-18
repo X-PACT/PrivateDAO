@@ -137,7 +137,7 @@
       "brand assets, media, product copy, and official submission materials",
       "official infrastructure maps, documentation, and launch packets"
     ],
-    "anti_impersonation": "Public repository access does not permit a third party to impersonate PrivateDAO, present a derivative as the official project, reuse official brand identity, or claim priority over the official project history.",
+    "anti_impersonation": "Access to public product surfaces or an authorized repository view does not permit a third party to impersonate PrivateDAO, present a derivative as the official project, reuse official brand identity, or claim priority over the official project history.",
     "legal_note": "This manifest is an authorship, ownership, and project-rights notice for indexing, review, and evidence continuity. It is not a substitute for formal legal counsel, trademark registration, copyright registration, or signed commercial agreements."
   },
   "core_capabilities": [

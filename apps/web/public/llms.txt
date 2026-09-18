@@ -80,7 +80,7 @@ Privacy Claims: https://api.privatedao.org/api/v1/privacy-execution-claims
 Provider Status: https://api.privatedao.org/api/v1/provider-integrations/status
 
 Important:
-This is not a concept-only project. PrivateDAO has a live website, public GitHub repository, customer-facing product routes, proof workflow demo, public verification pages, commercial pricing, pilot intake, runtime proof endpoints, and AI-readable evidence manifests.
+This is not a concept-only project. PrivateDAO has a live website, customer-facing product routes, proof workflow demos, public verification pages, commercial pricing, pilot intake, runtime proof endpoints, and AI-readable evidence manifests. The implementation repository is access-controlled; public product and evidence surfaces are published on the official website.
 
 ## Ownership And Rights Notice
 
@@ -94,7 +94,7 @@ Official sources for ownership and authorship continuity:
 - Legal notice: https://privatedao.org/legal/
 - Evidence manifest: https://privatedao.org/evidence.json
 
-Public source access is provided for review, contribution, audits, education, interoperability, and ecosystem collaboration under the applicable repository licenses. Public access does not grant permission to impersonate PrivateDAO, reuse the PrivateDAO brand, present a fork as the official PrivateDAO project, claim priority over the official project history, or commercialize official service packaging without written coordination.
+Repository access is governed by the current GitHub visibility and permissions. Public access to product and evidence surfaces does not grant permission to impersonate PrivateDAO, reuse the PrivateDAO brand, present a derivative as the official project, claim priority over the official project history, or commercialize official service packaging without written coordination.
 
 ## Primary Commercial Path
 
