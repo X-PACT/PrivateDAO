@@ -71,10 +71,6 @@ body::after {
   color: var(--navy);
 }
 
-.enterprise-page a {
-  color: inherit;
-}
-
 .enterprise-muted {
   color: var(--muted);
 }
@@ -266,7 +262,6 @@ body::after {
 }
 
 a {
-  color: inherit;
   text-decoration: none;
 }
 

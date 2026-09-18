@@ -33,6 +33,10 @@ function postJson(path: string, body: Record<string, string>) {
 
 export function SiteActivityBeacon() {
   useEffect(() => {
+    if (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") {
+      return;
+    }
+
     const sessionId = getSessionId();
     const page = window.location.pathname || "/";
     const countryHint = Intl.DateTimeFormat().resolvedOptions().timeZone || "unknown";
