@@ -137,7 +137,7 @@ export default function BlindPolicyVerificationPage() {
         <BlindPolicyDemo />
       </section>
 
-      <section className="enterprise-card rounded-[28px] p-5 sm:p-6">
+      <section id="identity-verification" className="enterprise-card rounded-[28px] p-5 sm:p-6">
         <div className="text-[11px] uppercase tracking-[0.25em] text-[#175cd3]">Private Identity Verification</div>
         <h2 className="mt-3 text-2xl font-semibold text-[#10233f]">Prove who you are. Not everything about you.</h2>
         <p className="mt-3 max-w-3xl text-sm leading-7 text-[#5d6d82]">A KYC or KYB provider remains the source of the attestation. PrivateDAO keeps the proof focused on the requirement, its issuer, and whether it is still valid.</p>

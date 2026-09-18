@@ -1,0 +1,526 @@
+{
+  "name": "PrivateDAO",
+  "status": "commercial-live / proof-runtime-active",
+  "category": "commercial-privacy-and-proof-infrastructure",
+  "positioning": "Private decisions. Verifiable outcomes.",
+  "product_thesis": "PrivateDAO helps Web3-native and traditional organizations run sensitive work privately and prove the outcome without exposing the underlying data. Organizations can keep their existing operating model and add Web3 capability where it creates value.",
+  "customer_paths": {
+    "already_in_web3": "Add privacy, organizational controls, confidential workflows, and verifiable outcomes to the wallets, networks, and infrastructure already in use.",
+    "not_in_web3_yet": "Start with familiar organizational workflows and add wallets, networks, digital assets, or verifiable outcomes only where they create business value."
+  },
+  "commercial_product_lines": [
+    {
+      "name": "Proof Workflows",
+      "route": "https://privatedao.org/proof-workflows/",
+      "buyer": "fintechs, lenders, auditors, grant programs, compliance teams, accelerators, and institutions",
+      "purpose": "Prove a process happened correctly without exposing how it works."
+    },
+    {
+      "name": "Private Governance",
+      "route": "https://privatedao.org/govern/",
+      "buyer": "organizations, DAOs, committees, communities, foundations, gaming groups, and teams",
+      "purpose": "Private rooms, private voting, and confidential decisions with verifiable outcomes."
+    },
+    {
+      "name": "Treasury Coordination",
+      "route": "https://privatedao.org/treasury/",
+      "buyer": "organizations with treasury requests, approvals, audit trails, and treasury token coordination",
+      "purpose": "Coordinate treasury actions with approval records and proof trails."
+    },
+    {
+      "name": "Sealed Auctions",
+      "route": "https://privatedao.org/auctions/",
+      "buyer": "grant programs, vendor selection teams, GamingDAO operators, committees, and organizations running sealed allocation processes",
+      "purpose": "Run public or private-room auctions where bidding intent stays hidden until reveal, then publish a public verification package."
+    }
+  ],
+  "not_positioned_as": [
+    "generic payment processor",
+    "prediction market"
+  ],
+  "chain_strategy": "Solana-first execution with capability-gated expansion; network support is only presented as live when the corresponding runtime is verified.",
+  "primary_execution_network": "solana:mainnet-beta",
+  "founder": "Fahd Kotb",
+  "official_owner_operator": "Fahd Kotb / Eslam Kotb",
+  "github_organization": "X-PACT",
+  "website": "https://privatedao.org",
+  "repo": "https://github.com/X-PACT/PrivateDAO",
+  "colosseum": "https://arena.colosseum.org/projects/explore/praivatedao",
+  "superteam": "https://superteam.fun/earn/t/Private-dao-1",
+  "x": "https://x.com/privateDAOOS",
+  "telegram": "https://t.me/privateDAOOS",
+  "discord": "https://discord.gg/dpD5c7Gfcc",
+  "product_overview": "https://privatedao.org/products/",
+  "demo_link": "https://privatedao.org/proof-workflows/demo/",
+  "reviewer_packet": "https://privatedao.org/whitepaper/",
+  "traction_metrics_route": "https://privatedao.org/investors/",
+  "investor_page": "https://privatedao.org/investors/",
+  "pricing": "https://privatedao.org/pricing/",
+  "products": "https://privatedao.org/products/",
+  "sealed_auctions": "https://privatedao.org/auctions/",
+  "payment_gate": "https://privatedao.org/payment-gate/",
+  "pdao_token": "https://privatedao.org/token/",
+  "pdao_token_metadata": "https://privatedao.org/token.json",
+  "enterprise": "https://privatedao.org/enterprise/",
+  "commercial_checkout_status": "https://api.privatedao.org/api/v1/commercial/checkout/status",
+  "payment_gate_status": "https://api.privatedao.org/api/v1/payment-gate/random/status",
+  "payment_gate_prepare": "https://api.privatedao.org/api/v1/payment-gate/random/prepare",
+  "payment_gate_verify": "https://api.privatedao.org/api/v1/payment-gate/random/verify",
+  "pilot_program": "https://privatedao.org/pilots/",
+  "business_model": "https://privatedao.org/business-model/",
+  "coordination_thesis": "https://privatedao.org/thesis/",
+  "repositioning_strategy": "https://privatedao.org/documents/private-dao-repositioning-strategy-2026-06-17/",
+  "commercial_readiness_implementation": "https://privatedao.org/documents/commercial-readiness-implementation-2026-06-17/",
+  "proof_workflows_commercial_product": "https://privatedao.org/documents/proof-workflows-commercial-product-2026-06-17/",
+  "whitepaper": "https://privatedao.org/whitepaper/",
+  "whitepaper_version": "2.0",
+  "ai_guide": "https://privatedao.org/whitepaper/",
+  "ownership_manifest": "https://privatedao.org/ownership.json",
+  "rights_notice": "https://privatedao.org/rights.txt",
+  "legal_notice": "https://privatedao.org/legal/",
+  "proof_center": "https://privatedao.org/proof/?judge=1",
+  "proof_workflows": "https://privatedao.org/proof-workflows/",
+  "blind_policy_verification": "https://privatedao.org/proof-workflows/blind-policy/",
+  "blind_policy_product_status": "https://privatedao.org/api/proof-workflows/blind-policy/status",
+  "blind_policy_product_prove_api": "https://privatedao.org/api/proof-workflows/blind-policy/prove",
+  "blind_policy_product_verify_api": "https://privatedao.org/api/proof-workflows/blind-policy/verify",
+  "credit_decision_verification_pilot": "https://privatedao.org/pilots/credit-decision-verification/",
+  "proof_workflows_demo": "https://privatedao.org/proof-workflows/demo/",
+  "proof_workflow_verification_portal": "https://privatedao.org/proof-workflows/verify/",
+  "proof_workflow_demo_verify_link": "https://privatedao.org/proof-workflows/verify/demo-proof-id/",
+  "blind_policy_demo_verify_link": "https://privatedao.org/proof-workflows/verify/blind-policy-demo/",
+  "blind_policy_status_api": "https://api.privatedao.org/api/v1/proof-workflows/blind-policy/status",
+  "blind_policy_sample_api": "https://api.privatedao.org/api/v1/proof-workflows/blind-policy/sample",
+  "blind_policy_prove_api": "https://api.privatedao.org/api/v1/proof-workflows/blind-policy/prove",
+  "blind_policy_verify_api": "https://api.privatedao.org/api/v1/proof-workflows/blind-policy/verify",
+  "value_route": "https://privatedao.org/value/",
+  "private_rooms": "https://privatedao.org/rooms/",
+  "magicblock_engineering_report": "https://privatedao.org/documents/magicblock-engineering-report-2026-06-11/",
+  "engineering_reports_index": "https://privatedao.org/documents/integration-reports-index-2026-06-11/",
+  "engineering_proof_ledger": "https://privatedao.org/documents/engineering-proof-ledger-2026-06-11/",
+  "engineering_proof_ledger_json": "https://privatedao.org/engineering-proof-ledger.json",
+  "intelligence_engineering_report": "https://privatedao.org/documents/intelligence-provider-engineering-report-2026-06-11/",
+  "privacy_encryption_engineering_report": "https://privatedao.org/documents/privacy-encryption-engineering-report-2026-06-11/",
+  "treasury_asset_oracle_engineering_report": "https://privatedao.org/documents/treasury-asset-oracle-engineering-report-2026-06-11/",
+  "infrastructure_telemetry_engineering_report": "https://privatedao.org/documents/infrastructure-telemetry-engineering-report-2026-06-11/",
+  "magicblock_onchain_proof": "https://api.privatedao.org/api/v1/magicblock/onchain-proof",
+  "magicblock_health": "https://api.privatedao.org/api/v1/magicblock/health",
+  "runtime_proof": "https://api.privatedao.org/api/v1/qvac/runtime-proof",
+  "privacy_execution_claims": "https://api.privatedao.org/api/v1/privacy-execution-claims",
+  "provider_integrations_status": "https://api.privatedao.org/api/v1/provider-integrations/status",
+  "coordination_provider_status": "https://privatedao.org/api/coordination/providers/status",
+  "web_app": true,
+  "concept_only": false,
+  "mock_only_submission": false,
+  "sandbox_boundaries_labelled": true,
+  "ownership_and_rights": {
+    "official_project": true,
+    "authorship": "PrivateDAO, PDAO, the service matrix, privacy execution claims, private-room workflows, public-private-until-reveal voting posture, proof routes, reviewer packets, AI-readable layer, media assets, product packaging, brand identity, and official deployment surfaces are authored and maintained by Fahd Kotb / Eslam Kotb under X-PACT unless a file explicitly states otherwise.",
+    "official_sources": [
+      "https://privatedao.org",
+      "https://github.com/X-PACT/PrivateDAO",
+      "https://privatedao.org/ownership.json",
+      "https://privatedao.org/rights.txt",
+      "https://privatedao.org/legal/",
+      "https://privatedao.org/evidence.json",
+      "https://privatedao.org/llms.txt"
+    ],
+    "protected_materials": [
+      "PrivateDAO name and official project identity",
+      "PDAO token identity and official governance-token context",
+      "official website and deployment surfaces",
+      "official GitHub repository history",
+      "service matrices and privacy execution claim structure",
+      "private rooms and public-private-until-reveal workflow packaging",
+      "proof routes and reviewer evidence packets",
+      "AI-readable manifests and crawler guidance",
+      "brand assets, media, product copy, and official submission materials",
+      "official infrastructure maps, documentation, and launch packets"
+    ],
+    "anti_impersonation": "Public repository access does not permit a third party to impersonate PrivateDAO, present a derivative as the official project, reuse official brand identity, or claim priority over the official project history.",
+    "legal_note": "This manifest is an authorship, ownership, and project-rights notice for indexing, review, and evidence continuity. It is not a substitute for formal legal counsel, trademark registration, copyright registration, or signed commercial agreements."
+  },
+  "core_capabilities": [
+    "private DAO governance",
+    "public-private-until-reveal voting",
+    "ZK commit-reveal voting posture",
+    "confidential treasury coordination",
+    "reviews and approvals",
+    "review committees",
+    "grant, vendor, investment, and internal review workflows",
+    "workflow engine",
+    "standalone Proof Workflows product line",
+    "Groth16 blind policy proofs",
+    "proof center for governance, treasury, review, execution, and audit records",
+    "private rooms and VIP rooms",
+    "transparency reports",
+    "asset context before decisions",
+    "price context before payout or treasury execution",
+    "QVAC local AI governance assistant",
+    "web and Android wallet-first UX",
+    "verifiable Solana Testnet proof routes"
+  ],
+  "primary_product_categories": [
+    {
+      "name": "Financial Operations",
+      "products": ["Confidential Payroll", "Treasury Coordination", "Private Settlement Workflows"],
+      "positioning": "Run sensitive financial work with policy, approval, and a verifiable outcome."
+    },
+    {
+      "name": "Governance and Markets",
+      "products": ["Private Governance", "Confidential Auctions"],
+      "positioning": "Coordinate decisions and commercial intent privately until the result is ready to share."
+    },
+    {
+      "name": "Verification",
+      "products": ["Blind Verification", "Record Verification", "Private Identity Verification"],
+      "positioning": "Prove identity-related requirements, records, or workflow conditions without exposing the source data."
+    },
+    {
+      "name": "Proof Workflows",
+      "positioning": "Prove a process happened correctly without exposing private data, documents, thresholds, formulas, or reviewer notes."
+    },
+    {
+      "name": "Private Governance",
+      "positioning": "Run private rooms, voting, committees, and organizational decisions with verifiable outcomes."
+    },
+    {
+      "name": "Treasury Coordination",
+      "positioning": "Coordinate treasury requests, approvals, spending controls, token context, and audit-ready records."
+    }
+  ],
+  "web3_adoption": {
+    "message": "An organization does not need to become a Web3 or crypto company to use PrivateDAO.",
+    "capability": "Data providers, financial services, institutions, and enterprise platforms can add Web3 coordination and verifiable outcomes behind a familiar workflow.",
+    "products": ["Confidential Payroll", "Treasury Coordination", "Private Governance", "Confidential Auctions", "Blind Verification", "Record Verification"]
+  },
+  "advanced_modules": [
+    "confidential payroll",
+    "confidential payments",
+    "compensation systems",
+    "vesting systems",
+    "settlement workflows",
+    "Android",
+    "judge/reviewer tools",
+    "raw integration reports",
+    "network diagnostics"
+  ],
+  "proof_workflows_product_line": {
+    "name": "Proof Workflows",
+    "positioning": "Prove a process happened correctly without exposing how it works.",
+    "not_a_dao_feature": true,
+    "not_a_voting_feature": true,
+    "target_buyers": [
+      "fintech companies",
+      "lenders",
+      "accelerators",
+      "grant programs",
+      "gaming organizations",
+      "foundations",
+      "enterprises"
+    ],
+    "templates": [
+      "Underwriting",
+      "Compliance Review",
+      "Grant Review",
+      "Treasury Approval",
+      "Vendor Onboarding",
+      "Internal Audit"
+    ],
+    "public_verification_confirms": [
+      "process existed",
+      "process completed",
+      "required approvals happened",
+      "required sequence respected"
+    ],
+    "public_verification_does_not_reveal": [
+      "documents",
+      "thresholds",
+      "calculations",
+      "reviewer notes",
+      "internal methodology"
+    ],
+    "routes": {
+      "dashboard": "https://privatedao.org/proof-workflows/",
+      "blind_policy_verification": "https://privatedao.org/proof-workflows/blind-policy/",
+      "demo": "https://privatedao.org/proof-workflows/demo/",
+      "verification_portal": "https://privatedao.org/proof-workflows/verify/",
+      "demo_verify_link": "https://privatedao.org/proof-workflows/verify/demo-proof-id/",
+      "blind_policy_verify_link": "https://privatedao.org/proof-workflows/verify/blind-policy-demo/",
+      "blind_policy_status_api": "https://api.privatedao.org/api/v1/proof-workflows/blind-policy/status",
+      "blind_policy_sample_api": "https://api.privatedao.org/api/v1/proof-workflows/blind-policy/sample",
+      "blind_policy_prove_api": "https://api.privatedao.org/api/v1/proof-workflows/blind-policy/prove",
+      "blind_policy_verify_api": "https://api.privatedao.org/api/v1/proof-workflows/blind-policy/verify",
+      "status_api": "https://privatedao.org/api/proof-workflows/status",
+      "prepare_api": "https://privatedao.org/api/proof-workflows/prepare",
+      "event_api": "https://privatedao.org/api/proof-workflows/event",
+      "verify_api": "https://privatedao.org/api/proof-workflows/verify"
+    },
+    "pricing": [
+      "Starter",
+      "Professional",
+      "Enterprise"
+    ]
+  },
+  "blind_policy_verification_product": {
+    "name": "Blind Policy Verification",
+    "route": "https://privatedao.org/proof-workflows/blind-policy/",
+    "proof_system": "Groth16",
+    "circuit": "private_dao_blind_policy_overlay",
+    "private_witness_inputs": [
+      "organization key",
+      "subject key",
+      "membership verification",
+      "private records",
+      "liabilities",
+      "risk score",
+      "policy thresholds",
+      "policy salt",
+      "input salt"
+    ],
+    "public_signals": [
+      "policyId",
+      "policyCommitment",
+      "inputCommitment",
+      "satisfiedClaim"
+    ],
+    "customer_promise": "Prove the policy was satisfied without revealing the policy inputs.",
+    "verification_flow": "Private inputs enter the Groth16 witness. Public signals expose only commitments and satisfied claim. The public verifier checks the Groth16 proof and recomputes the proof package hash."
+  },
+  "commercial_readiness": {
+    "primary_cta": "Request Pilot",
+    "secondary_cta": "Open Pricing",
+    "enterprise_cta": "Book Discovery Call",
+    "trial_days": 14,
+    "license_types": [
+      "TRIAL",
+      "COMMUNITY",
+      "PROFESSIONAL",
+      "ORGANIZATION",
+      "ENTERPRISE"
+    ],
+    "plans": [
+      {
+        "licenseType": "COMMUNITY",
+        "price": "Free"
+      },
+      {
+        "licenseType": "PROFESSIONAL",
+        "price": "$99/month"
+      },
+      {
+        "licenseType": "ORGANIZATION",
+        "price": "$499/month"
+      },
+      {
+        "licenseType": "ENTERPRISE",
+        "price": "Custom"
+      }
+    ],
+    "payment_assets": [
+      "USDC_SOL",
+      "USDC_ETH",
+      "SOL",
+      "ETH",
+      "BTC",
+      "WBTC",
+      "ZEC",
+      "USDT",
+      "DAI"
+    ],
+    "treasury_env": [
+      "PD_SOLANA_TREASURY",
+      "PD_ETHEREUM_TREASURY",
+      "PD_BITCOIN_TREASURY",
+      "PD_ZCASH_TREASURY"
+    ],
+    "checkout_api": {
+      "status": "https://privatedao.org/api/commercial/checkout/status",
+      "prepare": "https://privatedao.org/api/commercial/checkout/prepare",
+      "verify": "https://privatedao.org/api/commercial/checkout/verify"
+    },
+    "boundary": "PrivateDAO sells organizational workflows and verifiable outcomes, including Confidential Payroll. Payment rails execute an approved workflow; they do not replace the payroll, policy, approval, or proof product.",
+    "customer_plan_names": [
+      "Starter",
+      "Business",
+      "Enterprise"
+    ],
+    "supported_payment_methods": [
+      "Bank transfer by invoice",
+      "Crypto transfer with receipt and organization license"
+    ],
+    "commercial_checkout_api": {
+      "status": "https://api.privatedao.org/api/v1/commercial/checkout/status",
+      "prepare": "https://api.privatedao.org/api/v1/commercial/checkout/prepare",
+      "verify": "https://api.privatedao.org/api/v1/commercial/checkout/verify"
+    },
+    "license_protection": "Signed organization-bound licenses, feature gates, usage limits, audit logs, and fail-closed paid modules if a license is modified or unverifiable."
+  },
+  "core_integrations": [
+    "Solana",
+    "Anchor",
+    "Token-2022",
+    "ZK commit-reveal",
+    "REFHE",
+    "MagicBlock",
+    "QVAC",
+    "Cloak",
+    "Umbra-compatible private payout boundary",
+    "Streamflow-compatible vesting boundary",
+    "GoldRush/Covalent",
+    "Zerion",
+    "Jupiter",
+    "PUSD",
+    "AUDD",
+    "Torque MCP",
+    "Ika Encrypt",
+    "QuickNode",
+    "Supabase",
+    "AWS hosted API layer",
+    "Pyth-compatible price boundary",
+    "Tokens-compatible asset context boundary"
+  ],
+  "colosseum_resource_alignment": [
+    {
+      "tool": "Phantom Connect",
+      "lane": "wallet onboarding",
+      "status": "candidate integration lane",
+      "docs": "https://docs.phantom.com/phantom-connect"
+    },
+    {
+      "tool": "Squads Multisig / Altitude",
+      "lane": "treasury authority and organizational finance",
+      "status": "candidate integration lane",
+      "docs": "https://squads.xyz/multisig"
+    },
+    {
+      "tool": "Arcium",
+      "lane": "encrypted computation",
+      "status": "research and future confidential workflow lane",
+      "docs": "https://docs.arcium.com/developers"
+    },
+    {
+      "tool": "World ID",
+      "lane": "proof-of-human reviewer and room gating",
+      "status": "optional identity boundary",
+      "docs": "https://docs.world.org/world-id/idkit/integrate"
+    },
+    {
+      "tool": "Vanish",
+      "lane": "private execution and treasury privacy research",
+      "status": "research lane",
+      "docs": "https://core.vanish.trade"
+    },
+    {
+      "tool": "Helius / Triton / FluxRPC",
+      "lane": "RPC redundancy",
+      "status": "runtime resilience planning",
+      "docs": "https://www.helius.dev/pricing"
+    }
+  ],
+  "primary_routes": {
+    "home": "https://privatedao.org/",
+    "products": "https://privatedao.org/products/",
+    "proof_workflows": "https://privatedao.org/proof-workflows/",
+    "proof_workflows_demo": "https://privatedao.org/proof-workflows/demo/",
+    "proof_workflows_verify": "https://privatedao.org/proof-workflows/verify/demo-proof-id/",
+    "governance": "https://privatedao.org/govern/",
+    "treasury": "https://privatedao.org/treasury/",
+    "payment_gate": "https://privatedao.org/payment-gate/",
+    "pricing": "https://privatedao.org/pricing/",
+    "pilots": "https://privatedao.org/pilots/",
+    "contact": "https://privatedao.org/contact/",
+    "security": "https://privatedao.org/security/",
+    "enterprise": "https://privatedao.org/enterprise/"
+  },
+  "service_routes": {
+    "qvac": "https://privatedao.org/services/qvac-sovereign-ai/",
+    "goldrush": "https://privatedao.org/services/goldrush-decision-intelligence/",
+    "jupiter": "https://privatedao.org/services/jupiter-treasury-route/",
+    "pusd": "https://privatedao.org/services/pusd-stablecoin/",
+    "audd": "https://privatedao.org/services/audd-stablecoin/",
+    "torque": "https://privatedao.org/services/torque-growth-loop/",
+    "magicblock": "https://privatedao.org/services/magicblock-private-payments/",
+    "umbra": "https://privatedao.org/services/umbra-confidential-payout/",
+    "cloak": "https://privatedao.org/services/cloak-private-settlement/",
+    "refhe": "https://privatedao.org/services/refhe-payroll-proof/",
+    "ika_encrypt": "https://privatedao.org/services/encrypt-ika-operations/",
+    "zerion": "https://privatedao.org/services/zerion-agent-policy/",
+    "runtime_infrastructure": "https://privatedao.org/services/runtime-infrastructure/"
+  },
+  "evidence": {
+    "working_product": "https://privatedao.org/products/",
+    "ai_guide": "https://privatedao.org/whitepaper/",
+    "onchain_proof": "https://privatedao.org/proof/?judge=1",
+    "github": "https://github.com/X-PACT/PrivateDAO",
+    "qvac_runtime": "https://api.privatedao.org/api/v1/qvac/runtime-proof",
+    "qvac_hackathon_evidence": "https://privatedao.org/qvac-hackathon-i-evidence.json",
+    "privacy_claims": "https://api.privatedao.org/api/v1/privacy-execution-claims",
+    "provider_status": "https://api.privatedao.org/api/v1/provider-integrations/status",
+    "ai_manifest": "https://privatedao.org/ai.json",
+    "evidence_manifest": "https://privatedao.org/evidence.json",
+    "ownership_manifest": "https://privatedao.org/ownership.json",
+    "rights_notice": "https://privatedao.org/rights.txt",
+    "legal_notice": "https://privatedao.org/legal/",
+    "llms": "https://privatedao.org/llms.txt"
+  },
+  "community": {
+    "x": "https://x.com/privateDAOOS",
+    "telegram": "https://t.me/privateDAOOS",
+    "discord": "https://discord.gg/dpD5c7Gfcc",
+    "youtube": "https://www.youtube.com/@privatedao",
+    "colosseum": "https://arena.colosseum.org/projects/explore/praivatedao",
+    "superteam": "https://superteam.fun/earn/t/Private-dao-1"
+  },
+  "evaluation_hint": {
+    "functionality": "commercial product surfaces with proof workflow demo, public verification, pilot intake, pricing, commercial activation APIs, and runtime proof endpoints",
+    "ux": "business-first: data -> decision -> proof -> verification -> pilot or purchase",
+    "business": "proof workflows, private governance, treasury coordination, paid pilots, monthly plans, private deployments, bank transfer and crypto activation",
+    "novelty": "private decisions and public verification packaged as sellable organizational software"
+  },
+  "customer_facing_products": [
+    "Proof Workflows",
+    "Blind Policy Verification",
+    "Private Governance",
+    "Treasury Coordination"
+  ],
+  "customer_facing_promise": "Private decisions. Verifiable outcomes.",
+  "proof_runtime_boundary": "Solana and QuickNode are used as runtime/proof and chain-data providers where relevant; commercial Proof Workflows can run as business workflows without requiring the buyer to understand blockchain networks.",
+  "contact": "https://privatedao.org/contact/",
+  "advanced_or_developer_routes": {
+    "developers": "https://privatedao.org/developers/",
+    "documents": "https://privatedao.org/documents/",
+    "matrix": "https://privatedao.org/matrix/",
+    "proof_center": "https://privatedao.org/proof/",
+    "ai_guide": "https://privatedao.org/whitepaper/",
+    "runtime_proof": "https://api.privatedao.org/api/v1/qvac/runtime-proof",
+    "provider_integrations_status": "https://api.privatedao.org/api/v1/provider-integrations/status"
+  },
+  "supporting_technical_evidence": {
+    "qvac": "https://privatedao.org/services/qvac-sovereign-ai/",
+    "provider_status": "https://api.privatedao.org/api/v1/provider-integrations/status",
+    "runtime_proof": "https://api.privatedao.org/api/v1/qvac/runtime-proof",
+    "capability_matrix": "https://privatedao.org/matrix/",
+    "documents": "https://privatedao.org/documents/"
+  },
+  "routes_to_prioritize_for_customers": [
+    "https://privatedao.org/products/",
+    "https://privatedao.org/proof-workflows/",
+    "https://privatedao.org/proof-workflows/demo/",
+    "https://privatedao.org/govern/",
+    "https://privatedao.org/treasury/",
+    "https://privatedao.org/pricing/",
+    "https://privatedao.org/pilots/",
+    "https://privatedao.org/contact/"
+  ],
+  "routes_to_treat_as_advanced": [
+    "/services/*",
+    "/documents/*",
+    "/matrix/",
+    "/developers/",
+    "/android/",
+    "/judge/",
+    "/proof/",
+    "/api-status/"
+  ]
+}

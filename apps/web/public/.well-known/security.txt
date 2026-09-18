@@ -1,0 +1,3 @@
+Contact: mailto:Fahd.kotb@tuta.io
+Canonical: https://privatedao.org/.well-known/security.txt
+Preferred-Languages: en, ar

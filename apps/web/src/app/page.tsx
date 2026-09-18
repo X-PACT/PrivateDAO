@@ -106,6 +106,28 @@ export default function HomePage() {
 
         <section className="mx-auto w-full max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
           <div className="max-w-3xl">
+            <div className="commercial-eyebrow">Two ways in</div>
+            <h2 className="commercial-section-title mt-4">Meet your organization where it is.</h2>
+            <p className="commercial-section-lead mt-5">PrivateDAO is one infrastructure layer for organizations already operating onchain and organizations adding Web3 capability for the first time.</p>
+          </div>
+          <div className="mt-10 grid gap-5 lg:grid-cols-2">
+            <article className="solution-group">
+              <div className="solution-group-label">Already in Web3?</div>
+              <h3>Add privacy and control to the infrastructure you already use.</h3>
+              <p className="mt-4 max-w-xl text-base leading-7 text-[#52647d]">Keep your existing wallets, networks, policies, and operating model while bringing sensitive payroll, treasury, governance, bids, and records into verifiable workflows.</p>
+              <Link href="/products" className="commercial-text-link mt-6">Explore the product layer <ArrowUpRight className="h-4 w-4" /></Link>
+            </article>
+            <article className="solution-group">
+              <div className="solution-group-label">Not in Web3 yet?</div>
+              <h3>Add Web3 capability without rebuilding around crypto.</h3>
+              <p className="mt-4 max-w-xl text-base leading-7 text-[#52647d]">Start with the workflow your organization already understands. Add wallet signing, network execution, digital assets, or verifiable outcomes only where they create business value.</p>
+              <Link href="/thesis" className="commercial-text-link mt-6">Read the thesis <ArrowUpRight className="h-4 w-4" /></Link>
+            </article>
+          </div>
+        </section>
+
+        <section className="mx-auto w-full max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
+          <div className="max-w-3xl">
             <div className="commercial-eyebrow">What privacy looks like in practice</div>
             <h2 className="commercial-section-title mt-4">Join the digital economy without giving up control.</h2>
             <p className="commercial-section-lead mt-5">PrivateDAO helps an organization use blockchain coordination while keeping its internal decisions, people, and commercial context private. You do not need to become a Web3 or crypto company to add that capability.</p>

@@ -5,7 +5,10 @@ PrivateDAO is commercial privacy and proof infrastructure for organizations.
 Status: Commercial product ecosystem
 Category: Privacy and proof for organizational work
 Positioning: Private decisions. Verifiable outcomes.
-Product Thesis: PrivateDAO helps organizations run sensitive work privately and prove the outcome without exposing the underlying data. An organization does not need to become a Web3 or crypto company to use it; Web3 capability can be added when it creates value.
+Product Thesis: PrivateDAO helps organizations run sensitive work privately and prove the outcome without exposing the underlying data. It serves both Web3-native organizations and established organizations adding Web3 capability without becoming crypto-native.
+Customer Paths:
+- Already in Web3: add privacy, organizational controls, confidential workflows, and verifiable outcomes to the infrastructure and wallets already in use.
+- Not in Web3 yet: start with familiar organizational workflows and add wallets, networks, digital assets, or verifiable outcomes only where they create business value.
 Commercial Product Lines:
 - Financial Operations: Confidential Payroll, Treasury Coordination, and private settlement workflows.
 - Governance and Markets: Private Governance and Confidential Auctions for decisions, procurement, and sealed bids.

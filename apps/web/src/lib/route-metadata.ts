@@ -32,6 +32,9 @@ export function buildRouteMetadata({
     ],
     alternates: {
       canonical: canonicalPath,
+      languages: Object.fromEntries(
+        supportedLocales.map((locale) => [locale.code, `${canonicalPath}?lang=${locale.code}`]),
+      ),
     },
     robots: index
       ? {
@@ -89,6 +92,9 @@ export function buildBrandHomeMetadata(): Metadata {
     keywords: siteKeywords,
     alternates: {
       canonical: "/",
+      languages: Object.fromEntries(
+        supportedLocales.map((locale) => [locale.code, `/?lang=${locale.code}`]),
+      ),
     },
     robots: {
       index: true,

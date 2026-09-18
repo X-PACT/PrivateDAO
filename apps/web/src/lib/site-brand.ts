@@ -3,7 +3,7 @@ import { supportedLocales } from "@/lib/i18n";
 export const siteName = "PrivateDAO";
 export const siteTitle = "PrivateDAO | Private workflows. Trusted outcomes.";
 export const siteDescription =
-  "PrivateDAO helps companies, institutions, governments, and financial teams run sensitive workflows privately while keeping the outcome clear and trusted.";
+  "PrivateDAO helps Web3-native and traditional organizations run sensitive workflows privately while keeping the outcome clear and trusted.";
 export const siteUrl = process.env.NEXT_PUBLIC_LIVE_SITE_URL?.replace(/\/+$/, "") ?? "https://privatedao.org";
 export const defaultOgImage = `${siteUrl}/assets/privatedao-social-card.png`;
 

@@ -98,6 +98,13 @@ export const commercialProductGroups: readonly CommercialProductGroup[] = [
         cta: "Verify a record",
         runtimeProductId: "record-verification",
       },
+      {
+        title: "Private Identity Verification",
+        summary: "Verify an eligibility or business requirement through an issuer attestation without exposing the underlying identity file.",
+        audience: "Compliance teams, marketplaces, institutions, and regulated service providers.",
+        href: "/proof-workflows/blind-policy#identity-verification",
+        cta: "Review identity verification",
+      },
     ],
   },
   {
