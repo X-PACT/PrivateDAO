@@ -5,29 +5,19 @@ import { Mail } from "lucide-react";
 import { communityLinks } from "@/lib/site-data";
 
 const companyLinks = [
-  { href: "/security", label: "Security" },
-  { href: "/compliance", label: "Compliance" },
-  { href: "/pricing", label: "Pricing" },
-  { href: "/enterprise", label: "Enterprise" },
-  { href: "/pilots", label: "Request Pilot" },
   { href: "/contact", label: "Contact" },
+  { href: "/thesis", label: "Thesis" },
+  { href: "/whitepaper", label: "Whitepaper" },
+  { href: "/token", label: "PDAO" },
 ] as const;
 
 const productLinks = [
-  { href: "/products/record-verification", label: "Record Verification" },
-  { href: "/proof-workflows", label: "Proof Workflows" },
-  { href: "/proof-workflows/blind-policy", label: "Blind Verification" },
-  { href: "/govern", label: "Private Governance" },
+  { href: "/payroll", label: "Confidential Payroll" },
   { href: "/treasury", label: "Treasury Coordination" },
-  { href: "/auctions", label: "Sealed Auctions" },
-  { href: "/token", label: "PDAO Ecosystem" },
-] as const;
-
-const developerLinks = [
-  { href: "/developers", label: "Developers" },
-  { href: "/documents", label: "Docs" },
-  { href: "/matrix", label: "Capability Matrix" },
-  { href: "/judge", label: "Evidence" },
+  { href: "/govern", label: "Private Governance" },
+  { href: "/auctions", label: "Confidential Auctions" },
+  { href: "/proof-workflows/blind-policy", label: "Blind Verification" },
+  { href: "/products/record-verification", label: "Record Verification" },
 ] as const;
 
 export function SiteFooter() {
@@ -37,8 +27,7 @@ export function SiteFooter() {
         <div>
           <div className="text-lg font-semibold text-[#10233f]">PrivateDAO</div>
           <p className="mt-3 max-w-xl text-sm leading-7 text-[#5d6d82]">
-            Private decisions. Verifiable outcomes. Proof workflows, private governance, and treasury coordination
-            for organizations that need privacy, accountability, and audit-ready verification.
+            PrivateDAO helps organizations keep sensitive work private while making the outcome trusted and shareable.
           </p>
           <a
             href="/contact"
@@ -73,14 +62,6 @@ export function SiteFooter() {
           ))}
         </nav>
 
-        <nav aria-label="Developer footer links" className="grid gap-2">
-          <div className="mb-2 text-[11px] uppercase tracking-[0.24em] text-[#7a8ba0]">Developers</div>
-          {developerLinks.map((item) => (
-            <Link key={item.href} href={item.href} className="hover:text-[#175cd3]">
-              {item.label}
-            </Link>
-          ))}
-        </nav>
         <nav aria-label="Community footer links" className="grid gap-2">
           <div className="mb-2 text-[11px] uppercase tracking-[0.24em] text-[#7a8ba0]">Community</div>
           {communityLinks.map((item) => (

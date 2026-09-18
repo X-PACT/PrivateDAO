@@ -1,27 +1,30 @@
+/* eslint-disable @next/next/no-img-element -- tiny third-party brand marks stay unoptimized to keep the ticker lightweight. */
+
 const networks = [
-  ["Solana", "https://solana.com/"],
-  ["Ethereum", "https://ethereum.org/"],
-  ["Arbitrum", "https://arbitrum.io/"],
-  ["Base", "https://www.base.org/"],
-  ["Tempo", "https://docs.tempo.xyz/"],
-  ["Zcash", "https://zcash.readthedocs.io/"],
-  ["Hyperliquid", "https://hyperliquid.gitbook.io/hyperliquid-docs/"],
-  ["Robinhood Chain", "https://docs.robinhood.com/chain/"],
+  ["Solana", "https://solana.com/", "https://cdn.simpleicons.org/solana"],
+  ["Ethereum", "https://ethereum.org/", "https://cdn.simpleicons.org/ethereum"],
+  ["Arbitrum", "https://arbitrum.io/", "https://arbitrum.io/favicon.ico"],
+  ["Base", "https://www.base.org/", "https://www.base.org/favicon.ico"],
+  ["Tempo", "https://docs.tempo.xyz/", "https://tempo.xyz/favicon.ico"],
+  ["Zcash", "https://zcash.readthedocs.io/", "https://cdn.simpleicons.org/zcash"],
+  ["Hyperliquid", "https://hyperliquid.gitbook.io/hyperliquid-docs/", "https://app.hyperliquid.xyz/favicon.ico"],
+  ["Robinhood Chain", "https://docs.robinhood.com/chain/", "https://robinhood.com/favicon.ico"],
 ] as const;
 
 function NetworkSet() {
   return (
     <div className="flex shrink-0 items-center gap-3 px-2">
-      {networks.map(([name, href]) => (
+      {networks.map(([name, href, logo]) => (
         <a
           key={name}
           href={href}
           target="_blank"
           rel="noreferrer"
-          className="inline-flex h-10 items-center gap-2 rounded-full border border-[#dce5f0] bg-white px-4 text-sm font-semibold text-[#425570] transition hover:border-[#175cd3] hover:text-[#175cd3]"
+          aria-label={name}
+          title={name}
+          className="inline-flex h-10 w-14 items-center justify-center rounded-full border border-[#dce5f0] bg-white px-3 transition hover:border-[#175cd3] hover:shadow-[0_4px_14px_rgba(23,92,211,0.12)]"
         >
-          <span className="h-2 w-2 rounded-full bg-[#175cd3]" aria-hidden="true" />
-          {name}
+          <img src={logo} alt="" aria-hidden="true" className="h-5 w-5 object-contain" loading="lazy" />
         </a>
       ))}
     </div>

@@ -1,11 +1,11 @@
 import { supportedLocales } from "@/lib/i18n";
 
 export const siteName = "PrivateDAO";
-export const siteTitle = "PrivateDAO - Private Decisions. Verifiable Outcomes.";
+export const siteTitle = "PrivateDAO | Private work. Trusted outcomes.";
 export const siteDescription =
-  "PrivateDAO helps organizations verify sensitive records, govern privately, and coordinate treasury work with evidence others can trust.";
+  "PrivateDAO helps organizations run sensitive payroll, treasury, governance, transaction, and verification workflows with privacy and control.";
 export const siteUrl = process.env.NEXT_PUBLIC_LIVE_SITE_URL?.replace(/\/+$/, "") ?? "https://privatedao.org";
-export const defaultOgImage = `${siteUrl}/assets/privatedao-social-card.png?v=20260820-brand-card`;
+export const defaultOgImage = `${siteUrl}/assets/privatedao-brand-mark-20260918.jpeg`;
 
 export const siteKeywords = [
   "PrivateDAO",
