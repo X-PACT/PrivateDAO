@@ -6,36 +6,15 @@ import { SimpleHomeHero } from "@/components/simple-home-hero";
 import { NetworkMarquee } from "@/components/network-marquee";
 import { OrganizationFitSelector } from "@/components/organization-fit-selector";
 import { buildBrandHomeMetadata } from "@/lib/route-metadata";
+import { primaryCommercialProducts } from "@/lib/commercial-product-map";
 
 export const metadata: Metadata = buildBrandHomeMetadata();
 
-const productGroups = [
-  {
-    eyebrow: "Private Operations",
-    title: "Run sensitive work with control.",
-    products: [
-      ["Confidential Payroll", "Run payroll without exposing employee salaries while preserving evidence of calculation, approval, and settlement.", "/payroll"],
-      ["Treasury Coordination", "Move spending requests through clear budgets, approvals, and accountable execution.", "/treasury"],
-      ["Private Governance", "Make organizational decisions privately while keeping the outcome understandable and accountable.", "/govern"],
-    ],
-  },
-  {
-    eyebrow: "Private Transactions",
-    title: "Coordinate offers without exposing them.",
-    products: [
-      ["Confidential Auctions", "Run sealed procurement and auction workflows where bids stay private until the decision is complete.", "/auctions"],
-      ["Private Settlement Workflows", "Move approved transactions through a controlled workflow with a clear record of what happened.", "/payments"],
-    ],
-  },
-  {
-    eyebrow: "Verification",
-    title: "Prove the result without publishing the source.",
-    products: [
-      ["Blind Verification", "Prove that private conditions were satisfied without disclosing the underlying data.", "/proof-workflows/blind-policy"],
-      ["Record Verification", "Create shareable records that let a third party verify a result without receiving the original private file.", "/products/record-verification"],
-    ],
-  },
-] as const;
+const productGroups = primaryCommercialProducts.map((group) => ({
+  eyebrow: group.title,
+  title: group.summary,
+  products: group.products.map((product) => [product.title, product.summary, product.href] as const),
+}));
 
 const audiences = ["Finance teams", "Web3 organizations", "Institutions", "Treasury committees", "Compliance teams", "Onchain operations"] as const;
 
