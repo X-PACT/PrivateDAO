@@ -15,14 +15,14 @@ const coreRoutes = [
   "/treasury",
   "/govern",
   "/auctions",
+  "/proof-workflows/blind-policy",
+  "/products/record-verification",
   "/agents",
   "/investors",
   "/roadmap",
   "/whitepaper",
   "/token",
   "/thesis",
-  "/developers",
-  "/security",
   "/contact",
   "/legal",
 ] as const;
@@ -39,7 +39,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     url: withCanonicalSlash(path),
     lastModified: now,
     changeFrequency: path === "" ? "daily" : "weekly",
-    priority: path === "" ? 1 : ["/products", "/payroll", "/treasury", "/govern", "/auctions", "/agents", "/pricing"].includes(path) ? 0.9 : 0.7,
+    priority: path === "" ? 1 : ["/products", "/payroll", "/treasury", "/govern", "/auctions", "/proof-workflows/blind-policy", "/products/record-verification", "/agents"].includes(path) ? 0.9 : 0.7,
   }));
 
   return coreEntries;
