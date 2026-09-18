@@ -45,12 +45,6 @@ export const siteSearchItems: SiteSearchItem[] = [
     summary: "Guided onboarding, wallet-first flow, and easiest entry for normal users.",
   },
   {
-    title: "Story Video",
-    href: "/story",
-    category: "Route",
-    summary: "Hosted product reel for judges, users, and sponsors.",
-  },
-  {
     title: "Community",
     href: "/community",
     category: "Route",

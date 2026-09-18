@@ -183,7 +183,7 @@ export function CommunityHub() {
           </CardHeader>
           <CardContent className="grid gap-3">
             <Link href="/story" className={cn(buttonVariants({ size: "sm", variant: "outline" }), "w-full")}>
-              Open story video
+              Open live workflow
             </Link>
             <Link href="/awards" className={cn(buttonVariants({ size: "sm", variant: "secondary" }), "w-full")}>
               Open achievements

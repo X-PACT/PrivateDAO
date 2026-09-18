@@ -312,7 +312,7 @@ const assistantIntents: AssistantIntent[] = [
     relatedRoutes: [
       { label: "Govern", href: "/govern" },
       { label: "Services", href: "/services" },
-      { label: "Story Video", href: "/story" },
+      { label: "Live workflow", href: "/products" },
     ],
     keywords: ["start", "begin", "user", "easy", "onboarding", "consumer", "normal", "first run"],
   },
@@ -586,7 +586,6 @@ const assistantIntents: AssistantIntent[] = [
       { label: "Superteam Earn", href: "https://superteam.fun/earn/t/Private-dao-1" },
       { label: "X", href: "https://x.com/privateDAOOS" },
       { label: "Telegram", href: "https://t.me/Fahdkotb" },
-      { label: "Story Video", href: "/story" },
     ],
     keywords: ["community", "discord", "join", "server", "youtube", "channel", "social", "telegram", "x"],
   },

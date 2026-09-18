@@ -66,7 +66,7 @@ export function CompetitionWorkspace({ workspace }: CompetitionWorkspaceProps) {
               Deck route
             </Link>
             <Link className={cn(buttonVariants({ size: "sm", variant: "outline" }))} href={workspace.videoRoute}>
-              Story video route
+              Live workflow route
             </Link>
           </div>
           <a

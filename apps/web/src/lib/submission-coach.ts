@@ -19,7 +19,7 @@ function scoreTrack(workspace: CompetitionTrackWorkspace) {
   if (workspace.devnetStatus.toLowerCase().includes("live on devnet")) score += 8;
   if (workspace.liveRoute && workspace.judgeRoute && workspace.proofRoute) score += 6;
   if (workspace.recommendedWallet.toLowerCase().includes("solflare")) score += 3;
-  if (workspace.videoRoute === "/story") score += 3;
+  if (workspace.videoRoute === "/products") score += 3;
 
   return Math.min(score, 96);
 }

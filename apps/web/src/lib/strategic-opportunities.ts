@@ -41,7 +41,7 @@ export const strategicOpportunities: StrategicOpportunity[] = [
     summary:
       "The project already has a credible regional proof story thanks to the live product, reviewer packets, and the existing first-place Poland signal.",
     shippedNow:
-      "Awards, story video, reviewer packet flow, and the public root-domain product make the regional grant case legible quickly.",
+      "Awards, live workflow, reviewer packet flow, and the public root-domain product make the product case legible quickly.",
     missingFeature:
       "Regional eligibility and deployment value should stay explicit, and the case should remain framed around ecosystem infrastructure rather than generic overlap.",
     action:

@@ -230,7 +230,7 @@ export const communityLinks = [
   {
     title: "YouTube",
     href: "https://www.youtube.com/@privatedao",
-    summary: "Official PrivateDAO channel for product videos, weekly updates, and public walkthroughs.",
+    summary: "Official PrivateDAO channel for product updates, live examples, and public walkthroughs.",
     cta: "Open channel",
   },
   {
@@ -831,7 +831,7 @@ export const competitionTracks = [
     summary:
       "The app is live and operational already, but this track gets stronger when one concrete partner-facing flow is surfaced around wallet UX, live dApp behavior, and infrastructure.",
     edge: "PrivateDAO already has wallet adapter, operational UI, and live proof surfaces; the highest-value uplift is a tighter partner corridor.",
-    gap: "The strongest version of this submission is the wallet-first corridor, the hosted story video, and the govern flow working together.",
+    gap: "The strongest version of this submission is the wallet-first corridor, the live workflow, and the govern flow working together.",
     action: "Lead with the live app, the story route, and the govern flow as one continuous wallet-first product flow.",
     href: "/services",
     sourceUrl: "https://privatedao.org/govern/",
@@ -873,7 +873,7 @@ export const competitionTracks = [
     summary:
       "The frontend is now much stronger, but this track wants the app to feel intuitive to normal users, not only operators and reviewers.",
     edge: "The new operational shell and corridors already move the project closer to consumer-grade clarity.",
-    gap: "The strongest version of this submission is the buyer journey, the story video, and the govern flow working as one product path.",
+    gap: "The strongest version of this submission is the buyer journey, the live workflow, and the govern flow working as one product path.",
     action: "Lead with the story route, buyer journey, govern flow, and cleaner wallet-first navigation.",
     href: "/govern",
     sourceUrl: "https://privatedao.org/learn/",
@@ -1156,13 +1156,13 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     judgeRoute: "/proof/?judge=1",
     proofRoute: "/documents/reviewer-fast-path",
     deckRoute: "/viewer/investor-pitch-deck",
-    videoRoute: "/story",
+    videoRoute: "/products",
     readmeHref: "https://github.com/X-PACT/PrivateDAO#readme",
     sourceUrl: "https://privatedao.org/start/",
     deliverables: [
       "Lead the first 90 seconds from /start into /govern with a real wallet-first path.",
       "Use /proof/?judge=1, trust package, diagnostics, and services as the second-stage proof of maturity.",
-      "Keep the README, deck, story video, and product learning path perfectly aligned with the live site.",
+      "Keep the README, deck, live workflow, and product learning path perfectly aligned with the live site.",
     ],
     requirements: [
       "A coherent startup-quality product, not a collection of unrelated fragments.",
@@ -1203,12 +1203,12 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     judgeRoute: "/proof/?judge=1",
     proofRoute: "/documents/live-proof-v3",
     deckRoute: "/viewer/investor-pitch-deck",
-    videoRoute: "/story",
+    videoRoute: "/products",
     readmeHref: "https://github.com/X-PACT/PrivateDAO#readme",
     sourceUrl:
       "https://privatedao.org/security/",
     deliverables: [
-      "Use the comprehensive story video as the first-pass product walkthrough for judges.",
+      "Use the live workflow as the first-pass product walkthrough for judges.",
       "Lead the click path from /security to the ZK matrix, confidence engine, and V3 proof packet.",
       "Keep the pitch deck anchored around private governance, confidential payouts, and clear release boundaries.",
     ],
@@ -1241,7 +1241,7 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     winnerAnnouncementBy: "This workspace improves as the live wallet flow becomes faster and clearer.",
     skillsNeeded: ["Frontend", "Backend", "Blockchain"],
     recommendedWallet: "Solflare as the default product wallet, Phantom as the backup judge wallet.",
-    devnetStatus: "Live on Testnet with wallet adapter, govern flow, onboarding, and hosted story video.",
+    devnetStatus: "Live product surface with wallet adapter, governance flow, onboarding, and guided workflow examples.",
     objective:
       "Present PrivateDAO as a wallet-first live dApp with a polished operational UI, clean partner corridor, and concrete usage path.",
     whyUs:
@@ -1251,13 +1251,13 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     judgeRoute: "/proof/?judge=1",
     proofRoute: "/documents/telemetry-export-packet",
     deckRoute: "/viewer/investor-pitch-deck",
-    videoRoute: "/story",
+    videoRoute: "/products",
     readmeHref: "https://github.com/X-PACT/PrivateDAO#readme",
     sourceUrl:
       "https://privatedao.org/govern/",
     deliverables: [
         "Show a wallet-connected path from overview to govern to treasury execution.",
-      "Use the new story video plus the live dApp surface on privatedao.org as the submission core.",
+      "Use the live workflow plus the live product surface on privatedao.org as the submission core.",
       "Show partner-fit corridors for wallet UX, proof, diagnostics, and infrastructure readiness.",
     ],
     requirements: [
@@ -1299,7 +1299,7 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     judgeRoute: "/diagnostics",
     proofRoute: "/documents/frontier-integrations",
     deckRoute: "/viewer/investor-pitch-deck",
-    videoRoute: "/story",
+    videoRoute: "/products",
     readmeHref: "https://github.com/X-PACT/PrivateDAO#readme",
     sourceUrl:
       "https://privatedao.org/services/",
@@ -1316,7 +1316,7 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     winningMoves: [
       "Drive reviewers from /services into /diagnostics and the integration-evidence packet.",
       "Treat Hosted reads as an operator and buyer value layer, not only a backend implementation note.",
-      "Use the story video to explain why faster indexed reads matter for governance products.",
+      "Use the live workflow to explain why faster indexed reads matter for governance products.",
     ],
     sponsorFit: [
       "QuickNode and RPC-credit judges need diagnostics and hosted-read packaging to be visible in-product.",
@@ -1347,14 +1347,14 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     judgeRoute: "/story",
     proofRoute: "/documents/trust-package",
     deckRoute: "/viewer/investor-pitch-deck",
-    videoRoute: "/story",
+    videoRoute: "/products",
     readmeHref: "https://github.com/X-PACT/PrivateDAO#readme",
     sourceUrl:
       "https://privatedao.org/learn/",
     deliverables: [
       "Lead the product walk from the home page into a guided pack selection and then into govern.",
       "Keep labels human-readable and buyer-first on the home, story, services, and documents routes.",
-      "Use the comprehensive story video as the fast first-look asset for non-technical judges.",
+      "Use the live workflow as the fast first-look asset for non-technical judges.",
     ],
     requirements: [
       "Simple first-run onboarding and an obvious action path.",
@@ -1374,7 +1374,7 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     validationSteps: [
       "Run `npm run verify:browser-smoke` after changing onboarding or wallet UX.",
       "Keep `/start/`, `/story/`, and `/govern/` in the submission bundle and README.",
-      "Use the hosted product overview video as the first asset for non-technical judges.",
+      "Use the live product overview as the first asset for non-technical judges.",
     ],
   },
   {
@@ -1395,7 +1395,7 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     judgeRoute: "/learn",
     proofRoute: "/documents/reviewer-fast-path",
     deckRoute: "/viewer/investor-pitch-deck",
-    videoRoute: "/story",
+    videoRoute: "/products",
     readmeHref: "https://github.com/X-PACT/PrivateDAO#readme",
     sourceUrl: "https://privatedao.org/awards/",
     deliverables: [
@@ -1442,7 +1442,7 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     judgeRoute: "/security",
     proofRoute: "/documents/confidential-payout-evidence-packet",
     deckRoute: "/viewer/investor-pitch-deck",
-    videoRoute: "/story",
+    videoRoute: "/products",
     readmeHref: "https://github.com/X-PACT/PrivateDAO#readme",
     sourceUrl: "https://privatedao.org/analytics/",
     deliverables: [
@@ -1479,7 +1479,7 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     winnerAnnouncementBy: "May 25, 2026 according to the live listing.",
     skillsNeeded: ["Frontend", "Backend", "Blockchain"],
     recommendedWallet: "Solflare for polished UX, Phantom for common wallet familiarity.",
-    devnetStatus: "Live on Testnet with reusable operational shell, route-level product surfaces, story video, and root-domain deployment.",
+    devnetStatus: "Live product surface with reusable operational shell, route-level product surfaces, workflow examples, and root-domain deployment.",
     objective:
       "Show professional frontend execution, reusable architecture, strong UX, and end-to-end shipping discipline.",
     whyUs:
@@ -1489,12 +1489,12 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     judgeRoute: "/story",
     proofRoute: "/documents/reviewer-fast-path",
     deckRoute: "/viewer/investor-pitch-deck",
-    videoRoute: "/story",
+    videoRoute: "/products",
     readmeHref: "https://github.com/X-PACT/PrivateDAO#readme",
     sourceUrl: "https://privatedao.org/learn/",
     deliverables: [
       "Use the live site and README to show a polished, reusable frontend system with pre-mainnet operating discipline.",
-      "Keep the new story video tied to the product shell and route structure.",
+      "Keep the live workflow tied to the product shell and route structure.",
       "Show developer discipline through docs, proof, verification gates, and deployment packaging.",
     ],
     requirements: [
@@ -1536,7 +1536,7 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     judgeRoute: "/story",
     proofRoute: "/documents/cryptographic-confidence-engine",
     deckRoute: "/viewer/investor-pitch-deck",
-    videoRoute: "/story",
+    videoRoute: "/products",
     readmeHref: "https://github.com/X-PACT/PrivateDAO#readme",
     sourceUrl: "https://privatedao.org/security/",
     deliverables: [
@@ -1583,7 +1583,7 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     judgeRoute: "/security",
     proofRoute: "/documents/cryptographic-confidence-engine",
     deckRoute: "/viewer/investor-pitch-deck",
-    videoRoute: "/story",
+    videoRoute: "/products",
     readmeHref: "https://github.com/X-PACT/PrivateDAO#readme",
     sourceUrl: "https://privatedao.org/security/",
     deliverables: [
@@ -1630,7 +1630,7 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     judgeRoute: "/diagnostics",
     proofRoute: "/documents/telemetry-export-packet",
     deckRoute: "/viewer/investor-pitch-deck",
-    videoRoute: "/story",
+    videoRoute: "/products",
     readmeHref: "https://github.com/X-PACT/PrivateDAO#readme",
     sourceUrl: "https://privatedao.org/analytics/",
     deliverables: [
@@ -1677,7 +1677,7 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     judgeRoute: "/services",
     proofRoute: "/documents/confidential-payout-evidence-packet",
     deckRoute: "/viewer/investor-pitch-deck",
-    videoRoute: "/story",
+    videoRoute: "/products",
     readmeHref: "https://github.com/X-PACT/PrivateDAO#readme",
     sourceUrl: "https://privatedao.org/services/",
     deliverables: [
@@ -1724,7 +1724,7 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     judgeRoute: "/documents/canonical-custody-proof",
     proofRoute: "/documents/authority-hardening-mainnet",
     deckRoute: "/viewer/investor-pitch-deck",
-    videoRoute: "/story",
+    videoRoute: "/products",
     readmeHref: "https://github.com/X-PACT/PrivateDAO#readme",
     sourceUrl: "https://privatedao.org/trust/",
     deliverables: [
@@ -1771,7 +1771,7 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     judgeRoute: "/judge",
     proofRoute: "/documents/reviewer-fast-path",
     deckRoute: "/documents/capital-readiness-packet",
-    videoRoute: "/story",
+    videoRoute: "/products",
     readmeHref: "https://github.com/X-PACT/PrivateDAO#readme",
     sourceUrl: "https://privatedao.org/awards/",
     deliverables: [
@@ -1818,7 +1818,7 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     judgeRoute: "/trust",
     proofRoute: "/documents/poland-foundation-grant-application-packet",
     deckRoute: "/viewer/investor-pitch-deck",
-    videoRoute: "/story",
+    videoRoute: "/products",
     readmeHref: "https://github.com/X-PACT/PrivateDAO#readme",
     sourceUrl: "https://privatedao.org/documents/solana-developer-tooling-proposal-2026/",
     deliverables: [
@@ -1855,7 +1855,7 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     winnerAnnouncementBy: "Follow the accelerator review window and support timing.",
     skillsNeeded: ["Frontend", "Backend", "Blockchain", "Design", "Product", "Operations"],
     recommendedWallet: "Solflare for the live product flow; capital reviewers care most about coherence, traction posture, and launch discipline.",
-    devnetStatus: "Live on Testnet with root-domain product shell, story video, services packaging, trust packet, and product learning/proof routes already in place.",
+    devnetStatus: "Live product surface with root-domain product shell, services packaging, trust packet, and product learning/proof routes already in place.",
     objective:
       "Show that PrivateDAO is already a coherent product: product shell, revenue rails, trust posture, and a disciplined path to production release.",
     whyUs:
@@ -1865,7 +1865,7 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     judgeRoute: "/story",
     proofRoute: "/documents/startup-accelerator-application-packet",
     deckRoute: "/viewer/investor-pitch-deck",
-    videoRoute: "/story",
+    videoRoute: "/products",
     readmeHref: "https://github.com/X-PACT/PrivateDAO#readme",
     sourceUrl: "https://privatedao.org/documents/capital-readiness-packet/",
     deliverables: [
@@ -2299,7 +2299,7 @@ export const awards = [
 
 export const trustLinks = [
   {
-    title: "Story video",
+    title: "Live workflow",
     summary: "The comprehensive product reel that explains everything PrivateDAO offers and why the project is reviewer-ready.",
     href: "/story",
   },
