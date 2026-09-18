@@ -71,8 +71,13 @@ export default function TreasuryPage() {
         </div>
       </div>
 
-      <TreasuryTable />
-      {featuredProposal ? <TreasuryRiskInline proposal={featuredProposal} /> : null}
+      <details className="enterprise-advanced-details rounded-[24px] border border-[#dce5f0] bg-[#f7f9fc] p-5 sm:p-6">
+        <summary className="cursor-pointer text-sm font-semibold text-[#10233f]">Review operational evidence</summary>
+        <div className="mt-5 space-y-8">
+          <TreasuryTable />
+          {featuredProposal ? <TreasuryRiskInline proposal={featuredProposal} /> : null}
+        </div>
+      </details>
     </OperationsShell>
   );
 }

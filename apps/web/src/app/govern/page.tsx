@@ -54,8 +54,13 @@ export default function GovernPage() {
           </article>
         ))}
       </section>
-      <GovernWorkbenchClient />
-      <GuidedOperationRail current="review" reviewHref="/intelligence" verifyHref="/proof" />
+      <details className="enterprise-advanced-details rounded-[24px] border border-[#dce5f0] bg-[#f7f9fc] p-5 sm:p-6">
+        <summary className="cursor-pointer text-sm font-semibold text-[#10233f]">Open the governance workspace</summary>
+        <div className="mt-5 space-y-8">
+          <GovernWorkbenchClient />
+          <GuidedOperationRail current="review" reviewHref="/intelligence" verifyHref="/proof" />
+        </div>
+      </details>
       <div className="enterprise-card rounded-[24px] p-5 text-sm leading-7 text-[#5d6d82]">
         Start with one decision, invite the people who should be involved, and keep the final outcome clear for everyone who needs to trust it.
       </div>
