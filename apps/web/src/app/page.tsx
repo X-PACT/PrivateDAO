@@ -38,6 +38,12 @@ const productGroups = [
 
 const audiences = ["Finance teams", "Web3 organizations", "Institutions", "Treasury committees", "Compliance teams", "Onchain operations"] as const;
 
+const operatingScale = [
+  ["Small teams", "5-10 people", "Start with one sensitive workflow: payroll, approvals, or a shared treasury decision."],
+  ["Growing organizations", "10+ people", "Bring finance, operations, and leadership into one private process with clear responsibility."],
+  ["Institutions and markets", "Public-scale work", "Coordinate decisions where confidentiality, review, and confidence must exist together."],
+] as const;
+
 export default function HomePage() {
   return (
     <>
@@ -93,6 +99,21 @@ export default function HomePage() {
         <section className="grid gap-10 border-y border-[#dce5f0] py-12 lg:grid-cols-[0.8fr_1.2fr] lg:py-16">
           <div><div className="text-[11px] font-bold uppercase tracking-[0.28em] text-[#175cd3]">Built for organizations</div><h2 className="mt-3 text-3xl font-semibold tracking-[-0.04em] text-[#10233f]">For teams where trust is part of the workflow.</h2></div>
           <div className="flex flex-wrap content-start gap-2">{audiences.map((audience) => <span key={audience} className="rounded-full border border-[#dce5f0] bg-[#f7f9fc] px-4 py-2 text-sm font-medium text-[#425570]">{audience}</span>)}</div>
+        </section>
+
+        <section className="space-y-7">
+          <div className="max-w-3xl">
+            <div className="text-[11px] font-bold uppercase tracking-[0.28em] text-[#175cd3]">Fits the organization you are building</div>
+            <h2 className="mt-3 text-3xl font-semibold tracking-[-0.04em] text-[#10233f] sm:text-5xl">Start small. Grow without giving up privacy.</h2>
+          </div>
+          <div className="grid gap-3 lg:grid-cols-3">
+            {operatingScale.map(([title, scale, body]) => (
+              <article key={title} className="enterprise-card rounded-[16px] p-5">
+                <div className="flex items-center justify-between gap-3"><h3 className="text-lg font-semibold text-[#10233f]">{title}</h3><span className="rounded-full bg-[#edf4ff] px-3 py-1 text-xs font-bold text-[#175cd3]">{scale}</span></div>
+                <p className="mt-3 text-sm leading-7 text-[#5d6d82]">{body}</p>
+              </article>
+            ))}
+          </div>
         </section>
 
         <section className="grid gap-8 lg:grid-cols-2">
