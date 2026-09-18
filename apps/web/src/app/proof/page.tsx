@@ -27,13 +27,13 @@ import { RuntimeEvidenceContinuityPanel } from "@/components/runtime-evidence-co
 import { AuthoritativeExecutionTrail } from "@/components/authoritative-execution-trail";
 import { ExecutionOperationsStrip } from "@/components/execution-operations-strip";
 import { ExecutionCommandSurface } from "@/components/execution-command-surface";
-import { SectionExplainerVideo } from "@/components/post-governance-brander-video";
+import { LiveWorkflowExplainer } from "@/components/live-workflow-explainer";
 import { DevnetExecutionScreenshotsStrip } from "@/components/devnet-execution-screenshots-strip";
 import { SupabaseOperationTimeline } from "@/components/supabase-operation-timeline";
 import { TransparencyReportPreview } from "@/components/transparency-report-preview";
 import { PrivacyProofExplainer } from "@/components/privacy-proof-explainer";
 import { TestnetProofMatrix } from "@/components/testnet-proof-matrix";
-import { VideoCenter } from "@/components/video-center";
+import { LiveWorkflowExample } from "@/components/live-workflow-example";
 import { MagicBlockPrivatePaymentsStatus } from "@/components/magicblock-private-payments-status";
 import { buttonVariants } from "@/components/ui/button";
 import { buildRouteMetadata } from "@/lib/route-metadata";
@@ -209,7 +209,7 @@ export default function ProofPage() {
           ))}
         </div>
       </section>
-      <SectionExplainerVideo variant="proof" compact />
+      <LiveWorkflowExplainer variant="proof" compact />
       <LocalizedRouteSummary routeKey="proof" />
       <ExecutionCommandSurface compact />
       <TransparencyReportPreview />
@@ -218,7 +218,7 @@ export default function ProofPage() {
       />
       <LocalizedProofPrimer />
       <LiveSiteActivityPanel />
-      <VideoCenter compact />
+      <LiveWorkflowExample compact />
       <OperatingJourneyStrip
         snapshot={runtimeSnapshot}
         title="Proof-side operating journey"

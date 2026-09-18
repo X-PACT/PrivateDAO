@@ -9,7 +9,7 @@ import { NormalUserOperationPath } from "@/components/normal-user-operation-path
 import { OperationsShell } from "@/components/operations-shell";
 import { PrivacyPolicySelector } from "@/components/privacy-policy-selector";
 import { ProductCommandCenter } from "@/components/product-command-center";
-import { SectionExplainerVideo } from "@/components/post-governance-brander-video";
+import { LiveWorkflowExplainer } from "@/components/live-workflow-explainer";
 import { buttonVariants } from "@/components/ui/button";
 import { VisitorTestnetFastPath } from "@/components/visitor-testnet-fast-path";
 import { getExecutionSurfaceSnapshot } from "@/lib/devnet-service-metrics";
@@ -40,7 +40,7 @@ export default function StartPage() {
       ]}
     >
       <LocalizedRouteSummary routeKey="start" />
-      <SectionExplainerVideo variant="start" compact />
+      <LiveWorkflowExplainer variant="start" compact />
       <ProductCommandCenter compact />
       <section className="rounded-[30px] border border-cyan-300/18 bg-[radial-gradient(circle_at_16%_0%,rgba(20,241,149,0.18),transparent_32%),radial-gradient(circle_at_90%_0%,rgba(153,69,255,0.18),transparent_34%),linear-gradient(180deg,rgba(7,14,27,0.96),rgba(4,7,16,0.98))] p-5 md:p-6">
         <div className="grid gap-5 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">

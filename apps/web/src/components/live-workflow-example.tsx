@@ -1,12 +1,12 @@
 import Link from "next/link";
 import { ArrowUpRight, CheckCircle2 } from "lucide-react";
 
-type VideoCenterProps = {
+type LiveWorkflowExampleProps = {
   compact?: boolean;
 };
 
 /** The old review videos are retired; the product surface now leads with a live workflow. */
-export function VideoCenter({ compact = false }: VideoCenterProps) {
+export function LiveWorkflowExample({ compact = false }: LiveWorkflowExampleProps) {
   return (
     <section className="enterprise-card rounded-[24px] p-6 sm:p-8">
       <div className="text-[11px] font-bold uppercase tracking-[0.25em] text-[#175cd3]">A live example</div>

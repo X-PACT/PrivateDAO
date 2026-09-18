@@ -3,7 +3,7 @@ import Link from "next/link";
 import { ArrowUpRight, CheckCircle2, FileText, Github, Hash, MessageCircle, Send } from "lucide-react";
 
 import { OperationsShell } from "@/components/operations-shell";
-import { PostGovernanceBranderVideo } from "@/components/post-governance-brander-video";
+import { PostGovernanceLiveWorkflow } from "@/components/live-workflow-explainer";
 import { PrivacyExecutionClaimConsole } from "@/components/privacy-execution-claim-console";
 import { buttonVariants } from "@/components/ui/button";
 import { buildRouteMetadata } from "@/lib/route-metadata";
@@ -169,7 +169,7 @@ export default function ReviewPage() {
         </div>
       </section>
 
-      <PostGovernanceBranderVideo />
+      <PostGovernanceLiveWorkflow />
 
       <section className="rounded-[28px] border border-white/10 bg-white/[0.04] p-5">
         <div className="text-[11px] uppercase tracking-[0.22em] text-white/44">Coordination sources</div>

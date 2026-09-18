@@ -33,7 +33,7 @@ type ExplainerAction = {
   variant?: "primary" | "secondary" | "outline";
 };
 
-export type SectionExplainerVariant =
+export type LiveWorkflowVariant =
   | "post-governance"
   | "start"
   | "treasury"
@@ -46,7 +46,7 @@ export type SectionExplainerVariant =
   | "execute"
   | "proof";
 
-type SectionExplainerConfig = {
+type LiveWorkflowConfig = {
   eyebrow: string;
   title: string;
   description: string;
@@ -54,7 +54,7 @@ type SectionExplainerConfig = {
   actions: readonly ExplainerAction[];
 };
 
-const sectionExplainers: Record<SectionExplainerVariant, SectionExplainerConfig> = {
+const liveWorkflowExamples: Record<LiveWorkflowVariant, LiveWorkflowConfig> = {
   "post-governance": {
     eyebrow: "Brand explainer",
     title: "The simple story: governance passes, then PrivateDAO runs the work.",
@@ -230,13 +230,13 @@ const sectionExplainers: Record<SectionExplainerVariant, SectionExplainerConfig>
   },
 };
 
-type SectionExplainerVideoProps = {
-  variant: SectionExplainerVariant;
+type LiveWorkflowExplainerProps = {
+  variant: LiveWorkflowVariant;
   compact?: boolean;
 };
 
-export function SectionExplainerVideo({ variant, compact = false }: SectionExplainerVideoProps) {
-  const config = sectionExplainers[variant];
+export function LiveWorkflowExplainer({ variant, compact = false }: LiveWorkflowExplainerProps) {
+  const config = liveWorkflowExamples[variant];
 
   return (
     <section className="min-w-0 overflow-hidden rounded-[28px] border border-cyan-300/16 bg-[radial-gradient(circle_at_top_left,rgba(20,241,149,0.12),transparent_34%),radial-gradient(circle_at_100%_0%,rgba(153,69,255,0.16),transparent_32%),rgba(3,8,20,0.94)] p-4 sm:p-5">
@@ -298,10 +298,10 @@ export function SectionExplainerVideo({ variant, compact = false }: SectionExpla
   );
 }
 
-type PostGovernanceBranderVideoProps = {
+type PostGovernanceLiveWorkflowProps = {
   compact?: boolean;
 };
 
-export function PostGovernanceBranderVideo({ compact = false }: PostGovernanceBranderVideoProps) {
-  return <SectionExplainerVideo variant="post-governance" compact={compact} />;
+export function PostGovernanceLiveWorkflow({ compact = false }: PostGovernanceLiveWorkflowProps) {
+  return <LiveWorkflowExplainer variant="post-governance" compact={compact} />;
 }

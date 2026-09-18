@@ -15,7 +15,7 @@ import { ProductCommandCenter } from "@/components/product-command-center";
 import { PlatformCapabilityStack } from "@/components/platform-capability-stack";
 import { SolanaInfrastructureStack } from "@/components/solana-infrastructure-stack";
 import { WalletConnectButton } from "@/components/wallet-connect-button";
-import { VideoCenter } from "@/components/video-center";
+import { LiveWorkflowExample } from "@/components/live-workflow-example";
 import { buttonVariants } from "@/components/ui/button";
 import { getExecutionSurfaceSnapshot } from "@/lib/devnet-service-metrics";
 import { getJudgeRuntimeLogsSnapshot } from "@/lib/judge-runtime-logs";
@@ -314,7 +314,7 @@ export default function LearnPage() {
         </div>
       </div>
       <GettingStartedWorkspace executionSnapshot={executionSnapshot} />
-      <VideoCenter compact />
+      <LiveWorkflowExample compact />
     </OperationsShell>
   );
 }
