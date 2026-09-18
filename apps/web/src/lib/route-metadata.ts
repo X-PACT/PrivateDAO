@@ -9,6 +9,21 @@ type BuildRouteMetadataInput = {
   path: string;
   keywords?: string[];
   index?: boolean;
+  image?: string;
+};
+
+const productOgImages: Record<string, string> = {
+  "/payroll": "/assets/social/payroll.png",
+  "/treasury": "/assets/social/treasury.png",
+  "/govern": "/assets/social/governance.png",
+  "/auctions": "/assets/social/auctions.png",
+  "/proof-workflows": "/assets/social/verification.png",
+  "/proof-workflows/blind-policy": "/assets/social/verification.png",
+  "/products/record-verification": "/assets/record-verification-og.png",
+  "/thesis": "/assets/social/thesis.png",
+  "/whitepaper": "/assets/social/whitepaper.png",
+  "/investors": "/assets/social/investors.png",
+  "/token": "/assets/social/pdao.png",
 };
 
 export function buildRouteMetadata({
@@ -17,11 +32,13 @@ export function buildRouteMetadata({
   path,
   keywords = [],
   index = true,
+  image,
 }: BuildRouteMetadataInput): Metadata {
   const urlPath = path.startsWith("/") ? path : `/${path}`;
   const canonicalPath = urlPath === "/" ? "/" : `${urlPath.replace(/\/+$/, "")}/`;
   const fullTitle = `${title} | ${siteName}`;
   const languageCodes = supportedLocales.map((locale) => locale.code).join(", ");
+  const socialImage = image ?? productOgImages[urlPath] ?? defaultOgImage;
 
   return {
     title: fullTitle,
@@ -53,7 +70,7 @@ export function buildRouteMetadata({
       type: "website",
       images: [
         {
-          url: defaultOgImage,
+          url: socialImage,
           width: 1200,
           height: 630,
           alt: fullTitle,
@@ -64,7 +81,7 @@ export function buildRouteMetadata({
       card: "summary_large_image",
       title: fullTitle,
       description,
-      images: [defaultOgImage],
+      images: [socialImage],
     },
     category: "technology",
     applicationName: siteName,
@@ -72,6 +89,7 @@ export function buildRouteMetadata({
       "content-language": languageCodes,
       "ai-crawl": "allowed",
       "llms-txt": "/llms.txt",
+      "llms-full": "/llms-full.txt",
       "ai-manifest": "/ai.json",
       "evidence-manifest": "/evidence.json",
       "ownership-manifest": "/ownership.json",

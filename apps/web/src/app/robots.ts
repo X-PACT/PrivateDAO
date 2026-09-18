@@ -12,6 +12,7 @@ export default function robots(): MetadataRoute.Robots {
         allow: [
           "/",
           "/llms.txt",
+          "/llms-full.txt",
           "/ai.json",
           "/evidence.json",
           "/ownership.json",

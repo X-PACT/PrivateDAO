@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { CheckCircle2, ExternalLink, Wallet, XCircle } from "lucide-react";
+import { CheckCircle2, Wallet, XCircle } from "lucide-react";
 
 type Eip1193Provider = {
   request(args: { method: string; params?: unknown[] }): Promise<unknown>;

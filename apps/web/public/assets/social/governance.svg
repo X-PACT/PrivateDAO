@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">PrivateDAO Private Governance</title><desc id="desc">Make decisions without exposing every discussion.</desc>
+  <defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#071a36"/><stop offset="1" stop-color="#5b35c9"/></linearGradient></defs>
+  <rect width="1200" height="630" fill="url(#bg)"/><circle cx="1000" cy="90" r="220" fill="#c8a5ff" opacity=".14"/><circle cx="1080" cy="560" r="260" fill="#fff" opacity=".05"/>
+  <path d="M88 112h58c75 0 115 37 115 99 0 64-40 101-115 101h-18v118H88V112zm40 56v90h20c40 0 70-17 70-47 0-29-30-43-70-43h-20z" fill="#fff" opacity=".96"/>
+  <text x="88" y="370" fill="#d9c7ff" font-family="Arial,sans-serif" font-size="24" letter-spacing="5">GOVERNANCE &amp; COORDINATION</text>
+  <text x="88" y="450" fill="#fff" font-family="Arial,sans-serif" font-size="62" font-weight="700">Private Governance</text>
+  <text x="88" y="505" fill="#eee7ff" font-family="Arial,sans-serif" font-size="28">Protect the discussion. Prove the decision.</text>
+  <text x="88" y="575" fill="#fff" font-family="Arial,sans-serif" font-size="25" font-weight="700">PrivateDAO</text>
+</svg>
