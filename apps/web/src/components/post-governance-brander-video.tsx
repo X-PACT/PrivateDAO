@@ -50,7 +50,6 @@ type SectionExplainerConfig = {
   eyebrow: string;
   title: string;
   description: string;
-  asset: string;
   facts: readonly ExplainerFact[];
   actions: readonly ExplainerAction[];
 };
@@ -60,8 +59,7 @@ const sectionExplainers: Record<SectionExplainerVariant, SectionExplainerConfig>
     eyebrow: "Brand explainer",
     title: "The simple story: governance passes, then PrivateDAO runs the work.",
     description:
-      "This short brand video is separate from the live demo. It explains why teams keep Telegram and Discord for conversation, then move review, approval, execution, and audit into a wallet-first Solana Testnet flow.",
-    asset: "private-dao-post-governance-brander",
+      "This live workflow example shows why teams keep conversation where it works, then move review, approval, execution, and audit into one clear operating flow.",
     facts: defaultProofFacts,
     actions: [
       { label: "Run PrivateDAO workflow", href: "/review?claim=metadao-grant-review-workflow#privacy-claim-console", variant: "primary" },
@@ -75,7 +73,6 @@ const sectionExplainers: Record<SectionExplainerVariant, SectionExplainerConfig>
     title: "Start with one wallet, one Testnet path, and one proof trail.",
     description:
       "The start route removes architecture shock. The visitor connects, gets Testnet SOL, runs a governed action, and verifies the receipt without needing a terminal or a separate demo script.",
-    asset: "private-dao-start-explainer",
     facts: [
       { label: "Entry", value: "Connect -> Fund -> Govern -> Verify" },
       { label: "User", value: "No code, no terminal, wallet-first" },
@@ -92,7 +89,6 @@ const sectionExplainers: Record<SectionExplainerVariant, SectionExplainerConfig>
     title: "Treasury work should be private before execution and verifiable after it.",
     description:
       "The treasury route explains budget risk, route quality, stablecoin movement, and governed execution before a signer approves anything from the wallet.",
-    asset: "private-dao-treasury-explainer",
     facts: [
       { label: "Pain", value: "Public wallets expose strategy before action" },
       { label: "Path", value: "Review risk -> Select route -> Execute -> Audit" },
@@ -109,7 +105,6 @@ const sectionExplainers: Record<SectionExplainerVariant, SectionExplainerConfig>
     title: "Payments need privacy for the reason, and proof for the outcome.",
     description:
       "The confidential payments lane turns sensitive payout intent into encrypted metadata, wallet review, settlement receipt, and a verifier-visible proof path.",
-    asset: "private-dao-payments-explainer",
     facts: [
       { label: "Pain", value: "Public payment reasons leak operations" },
       { label: "Path", value: "Encrypt intent -> Sign -> Settle -> Verify" },
@@ -126,7 +121,6 @@ const sectionExplainers: Record<SectionExplainerVariant, SectionExplainerConfig>
     title: "Payroll should not turn every contributor into a public salary row.",
     description:
       "The payroll route explains how a private manifest, wallet-signed rehearsal, settlement receipt, and proof path make compensation easier to operate without exposing sensitive details.",
-    asset: "private-dao-payroll-explainer",
     facts: [
       { label: "Pain", value: "Public payroll creates internal friction" },
       { label: "Path", value: "Encrypt manifest -> Sign payout -> Verify receipt" },
@@ -143,7 +137,6 @@ const sectionExplainers: Record<SectionExplainerVariant, SectionExplainerConfig>
     title: "Security coordination needs privacy before disclosure and proof after response.",
     description:
       "The security route explains incident rooms, emergency governance, custody, timelocks, encrypted execution rails, and public evidence without exposing the sensitive investigation path.",
-    asset: "private-dao-security-explainer",
     facts: [
       { label: "Custody", value: "Squads v4, 2-of-3, 48h timelock" },
       { label: "Response", value: "Incident room -> Emergency approval -> Audit" },
@@ -160,7 +153,6 @@ const sectionExplainers: Record<SectionExplainerVariant, SectionExplainerConfig>
     title: "AI should explain risk before a wallet signs, not decorate the page.",
     description:
       "The intelligence route turns proposal context, treasury risk, RPC quality, operational drift, and continuity memory into a signer-facing review gate.",
-    asset: "private-dao-intelligence-explainer",
     facts: [
       { label: "Pain", value: "Teams sign before understanding operational risk" },
       { label: "Path", value: "Summarize -> Score -> Route -> Approve" },
@@ -177,7 +169,6 @@ const sectionExplainers: Record<SectionExplainerVariant, SectionExplainerConfig>
     title: "The same private operating path should work from a mobile wallet.",
     description:
       "The Android route explains how the APK and live web flow stay aligned: connect, review, sign, and verify with the same Solana Testnet evidence surface.",
-    asset: "private-dao-android-explainer",
     facts: [
       { label: "Mobile", value: "Wallet Adapter-compatible Testnet flow" },
       { label: "Parity", value: "Web proof and Android runtime stay connected" },
@@ -194,7 +185,6 @@ const sectionExplainers: Record<SectionExplainerVariant, SectionExplainerConfig>
     title: "Services are not random integrations; they are operating lanes.",
     description:
       "The services route groups integrations into buyer-readable lanes: governance, treasury, private payments, payroll, intelligence, proof, and hosted read-node operations.",
-    asset: "private-dao-services-explainer",
     facts: [
       { label: "Pain", value: "Tool lists hide the real workflow" },
       { label: "Path", value: "Pick lane -> Prepare claim -> Execute -> Verify" },
@@ -211,7 +201,6 @@ const sectionExplainers: Record<SectionExplainerVariant, SectionExplainerConfig>
     title: "Execution starts only after review, approval, and policy gates are clear.",
     description:
       "The execute route explains what a user is about to sign, why timelock and policy checks matter, and where the final receipt can be verified.",
-    asset: "private-dao-execute-explainer",
     facts: [
       { label: "Sequence", value: "Review -> Sign -> Execute -> Verify" },
       { label: "Guard", value: "Policy, recipient, timelock, and proof checks" },
@@ -228,7 +217,6 @@ const sectionExplainers: Record<SectionExplainerVariant, SectionExplainerConfig>
     title: "Privacy is useful only when the outcome remains verifiable.",
     description:
       "The proof route explains explorer links, API receipts, ZK evidence, custody packets, and reviewer-visible audit trails in one place.",
-    asset: "private-dao-proof-explainer",
     facts: [
       { label: "Evidence", value: "On-chain signatures, receipts, ZK and custody docs" },
       { label: "Audience", value: "User, reviewer, auditor, operator" },
@@ -249,8 +237,6 @@ type SectionExplainerVideoProps = {
 
 export function SectionExplainerVideo({ variant, compact = false }: SectionExplainerVideoProps) {
   const config = sectionExplainers[variant];
-  const poster = `/assets/launch/${config.asset}-poster.png`;
-  const video = `/assets/launch/${config.asset}.mp4`;
 
   return (
     <section className="min-w-0 overflow-hidden rounded-[28px] border border-cyan-300/16 bg-[radial-gradient(circle_at_top_left,rgba(20,241,149,0.12),transparent_34%),radial-gradient(circle_at_100%_0%,rgba(153,69,255,0.16),transparent_32%),rgba(3,8,20,0.94)] p-4 sm:p-5">
@@ -299,15 +285,13 @@ export function SectionExplainerVideo({ variant, compact = false }: SectionExpla
           ) : null}
         </div>
 
-        <div className="min-w-0 rounded-[24px] border border-white/10 bg-black/30 p-2 shadow-2xl shadow-black/30">
-          <video
-            className="aspect-video w-full rounded-[18px] bg-black object-cover"
-            controls
-            playsInline
-            preload="metadata"
-            poster={poster}
-            src={video}
-          />
+        <div className="enterprise-card min-w-0 rounded-[24px] p-5 sm:p-6">
+          <div className="text-[11px] uppercase tracking-[0.24em] text-[#175cd3]">Live workflow example</div>
+          <h3 className="mt-3 text-xl font-semibold text-[#10233f]">Choose the work. Apply the rule. Share the outcome.</h3>
+          <p className="mt-3 text-sm leading-7 text-[#5d6d82]">The buyer sees the business result first; the sensitive source data stays with the organization that owns it.</p>
+          <div className="mt-5 grid gap-3">
+            {["Private inputs stay scoped", "The responsible people approve", "The result can be checked"].map((step) => <div key={step} className="flex items-center gap-2 rounded-2xl border border-[#dce5f0] bg-[#f7f9fc] p-3 text-sm font-semibold text-[#10233f]"><ShieldCheck className="h-4 w-4 shrink-0 text-[#175cd3]" />{step}</div>)}
+          </div>
         </div>
       </div>
     </section>

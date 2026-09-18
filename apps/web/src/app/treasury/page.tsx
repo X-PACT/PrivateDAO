@@ -3,9 +3,6 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
 import { OperationsShell } from "@/components/operations-shell";
-import { TreasuryRiskInline } from "@/components/treasury-risk-inline";
-import { TreasuryTable } from "@/components/treasury-table";
-import { proposalCards } from "@/lib/site-data";
 import { buildRouteMetadata } from "@/lib/route-metadata";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -19,8 +16,6 @@ export const metadata: Metadata = buildRouteMetadata({
 });
 
 export default function TreasuryPage() {
-  const featuredProposal = proposalCards[0] ?? null;
-
   return (
     <OperationsShell
       eyebrow="Treasury"
@@ -71,13 +66,18 @@ export default function TreasuryPage() {
         </div>
       </div>
 
-      <details className="enterprise-advanced-details rounded-[24px] border border-[#dce5f0] bg-[#f7f9fc] p-5 sm:p-6">
-        <summary className="cursor-pointer text-sm font-semibold text-[#10233f]">Review operational evidence</summary>
-        <div className="mt-5 space-y-8">
-          <TreasuryTable />
-          {featuredProposal ? <TreasuryRiskInline proposal={featuredProposal} /> : null}
-        </div>
-      </details>
+      <section className="rounded-[24px] border border-[#dce5f0] bg-[#f7f9fc] p-5 sm:p-6">
+        <div className="text-[11px] font-bold uppercase tracking-[0.24em] text-[#175cd3]">A clear operating path</div>
+        <h2 className="mt-3 text-2xl font-semibold text-[#10233f]">Keep the decision private. Keep the result useful.</h2>
+        <p className="mt-3 max-w-3xl text-sm leading-7 text-[#5d6d82]">
+          Your team sees the request, the policy, the approval, and the outcome in one place. Technical execution and
+          verification details stay behind the workflow for the people who need them.
+        </p>
+        <Link href="/proof-workflows" className={cn(buttonVariants({ size: "sm", variant: "outline" }), "mt-5")}>
+          See verification workflows
+          <ArrowRight className="h-4 w-4" />
+        </Link>
+      </section>
     </OperationsShell>
   );
 }

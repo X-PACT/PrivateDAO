@@ -1,9 +1,9 @@
 import { supportedLocales } from "@/lib/i18n";
 
 export const siteName = "PrivateDAO";
-export const siteTitle = "PrivateDAO | Private work. Trusted outcomes.";
+export const siteTitle = "PrivateDAO | Private workflows. Trusted outcomes.";
 export const siteDescription =
-  "PrivateDAO helps teams, institutions, governments, and financial organizations run sensitive payroll, treasury, governance, transaction, and verification workflows with privacy and control.";
+  "PrivateDAO helps companies, institutions, governments, and financial teams run sensitive workflows privately while keeping the outcome clear and trusted.";
 export const siteUrl = process.env.NEXT_PUBLIC_LIVE_SITE_URL?.replace(/\/+$/, "") ?? "https://privatedao.org";
 export const defaultOgImage = `${siteUrl}/assets/privatedao-brand-mark-20260918.jpeg`;
 
@@ -60,11 +60,6 @@ export function buildWebSiteJsonLd() {
     url: siteUrl,
     inLanguage: supportedLocales.map((locale) => locale.code),
     keywords: siteKeywords,
-    potentialAction: {
-      "@type": "SearchAction",
-      target: `${siteUrl}/search/?q={search_term_string}`,
-      "query-input": "required name=search_term_string",
-    },
   };
 }
 
@@ -79,7 +74,7 @@ export function buildSoftwareApplicationJsonLd() {
     applicationCategory: "Organizational Workflow Verification Software",
     operatingSystem: "Web, Android",
     description:
-      "PrivateDAO helps organizations make private decisions, coordinate treasury actions, and prove operational workflows without exposing sensitive data.",
+      "PrivateDAO helps organizations run sensitive payroll, treasury, governance, transaction, and verification workflows without exposing the data behind them.",
     copyrightYear: 2026,
     copyrightHolder: {
       "@type": "Person",
@@ -96,7 +91,7 @@ export function buildSoftwareApplicationJsonLd() {
     },
     license: "https://github.com/X-PACT/PrivateDAO/blob/main/LICENSE",
     keywords: siteKeywords.join(", "),
-    softwareHelp: `${siteUrl}/learn/`,
+    softwareHelp: `${siteUrl}/whitepaper/`,
     featureList: [
       "Record Verification for critical records and public receipts",
       "Proof Workflows for private claims and approvals",

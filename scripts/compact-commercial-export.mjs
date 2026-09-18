@@ -1,13 +1,20 @@
-import { NextResponse, type NextRequest } from "next/server";
+import fs from "node:fs";
+import path from "node:path";
 
-import { updateSupabaseSession } from "@/lib/supabase/middleware";
+const root = path.resolve(
+  process.env.PRIVATE_DAO_NEXT_DIST_DIR || path.join("apps", "web", ".next"),
+);
+const basePath = (process.env.NEXT_PUBLIC_BASE_PATH || "").replace(/\/$/, "");
 
-const legacyRedirects: Record<string, string> = {
+// Static export does not execute Next middleware. Keep legacy entrypoints
+// compatible by turning them into lightweight redirects after export.
+const redirects = {
+  "/deck": "/investors",
+  "/reviewer": "/investors",
   "/judge": "/whitepaper",
   "/judges": "/whitepaper",
   "/judge-ai": "/whitepaper",
   "/review": "/whitepaper",
-  "/reviewer": "/whitepaper",
   "/awards": "/thesis",
   "/colosseum": "/thesis",
   "/frontier": "/products",
@@ -37,6 +44,7 @@ const legacyRedirects: Record<string, string> = {
   "/execute": "/treasury",
   "/txline-settlement": "/treasury",
   "/services/umbra-private-payments": "/treasury",
+  "/services/umbra-confidential-payout": "/treasury",
   "/services/devnet-billing-rehearsal": "/contact",
   "/about": "/thesis",
   "/business-model": "/thesis",
@@ -55,25 +63,24 @@ const legacyRedirects: Record<string, string> = {
   "/pricing": "/contact",
   "/start": "/products",
   "/story": "/thesis",
+  "/submission": "/products",
   "/trust": "/whitepaper",
   "/try": "/payroll",
   "/value": "/thesis",
 };
 
-export function proxy(request: NextRequest) {
-  const pathname = request.nextUrl.pathname.replace(/\/+$/, "") || "/";
-  const destination = legacyRedirects[pathname];
-  if (destination) {
-    const redirectUrl = request.nextUrl.clone();
-    redirectUrl.pathname = destination;
-    return NextResponse.redirect(redirectUrl, 308);
-  }
-
-  return updateSupabaseSession(request);
+function redirectHtml(destination) {
+  const target = `${basePath}${destination}/`;
+  const escaped = target.replace(/\\/g, "\\\\").replace(/'/g, "\\'");
+  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="robots" content="noindex"><meta http-equiv="refresh" content="0;url=${target}"><link rel="canonical" href="${target}"><title>PrivateDAO</title></head><body><p>PrivateDAO is taking you to the current commercial page.</p><script>location.replace('${escaped}'+location.search+location.hash)</script></body></html>`;
 }
 
-export const config = {
-  matcher: [
-    "/((?!_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico|css|js|map)$).*)",
-  ],
-};
+let compacted = 0;
+for (const [source, destination] of Object.entries(redirects)) {
+  const file = path.join(root, source.replace(/^\//, ""), "index.html");
+  if (!fs.existsSync(file)) continue;
+  fs.writeFileSync(file, redirectHtml(destination));
+  compacted += 1;
+}
+
+console.log(`commercial export surface: compacted ${compacted} legacy entrypoints`);

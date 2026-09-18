@@ -29,6 +29,7 @@ const useCases = [
   ["Lending", "Prove underwriting or credit-limit checks happened without exposing earnings or thresholds."],
   ["Compliance", "Prove required checks were completed without exposing documents or review notes."],
   ["Business decisions", "Prove a review policy was followed without exposing internal scoring or sensitive case data."],
+  ["Private identity", "A KYC or KYB provider supplies the attestation while the proof shows what was checked, who issued it, and whether it remains valid."],
 ] as const;
 
 const verificationKeyHash = "05aeb7e27479d7f1551b0c2e18134c58f760de43f2ff085a8ea2e82f212209eb";
@@ -62,8 +63,8 @@ const technicalVerificationNotes = [
     "After Groth16 verification passes, the API attempts an Anchor PDA receipt and falls back to a Solana Memo receipt transaction if the Anchor program path is unavailable. The response labels the storage mode.",
   ],
   [
-    "Not claimed",
-    "Full Groth16 pairing verification on Solana, PLONK, STARK, and recursive proofs are future work, not current production claims.",
+    "Proof scope",
+    "The public record identifies the proof version, policy scope, issuer, timestamp, and validity window so a reviewer knows exactly what was checked.",
   ],
 ] as const;
 
@@ -103,8 +104,8 @@ export default function BlindPolicyVerificationPage() {
               Run Workflow
               <ArrowRight className="h-4 w-4" />
             </a>
-            <Link href="/pricing" className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
-              View Pricing
+            <Link href="/contact" className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
+              Talk to PrivateDAO
             </Link>
           </div>
         </article>
@@ -134,6 +135,18 @@ export default function BlindPolicyVerificationPage() {
 
       <section id="run">
         <BlindPolicyDemo />
+      </section>
+
+      <section className="enterprise-card rounded-[28px] p-5 sm:p-6">
+        <div className="text-[11px] uppercase tracking-[0.25em] text-[#175cd3]">Private Identity Verification</div>
+        <h2 className="mt-3 text-2xl font-semibold text-[#10233f]">Prove who you are. Not everything about you.</h2>
+        <p className="mt-3 max-w-3xl text-sm leading-7 text-[#5d6d82]">A KYC or KYB provider remains the source of the attestation. PrivateDAO keeps the proof focused on the requirement, its issuer, and whether it is still valid.</p>
+        <div className="mt-5 grid gap-3 sm:grid-cols-2">
+          {["KYC completed: VERIFIED", "Age requirement: VERIFIED", "Jurisdiction requirement: VERIFIED", "Required business verification: VERIFIED", "Entity verification completed: VERIFIED", "Authorized representative: VERIFIED"].map((claim) => <div key={claim} className="flex items-center gap-2 rounded-2xl border border-[#dce5f0] bg-[#f7f9fc] p-4 text-sm font-semibold text-[#10233f]"><CheckCircle2 className="h-4 w-4 shrink-0 text-[#175cd3]" />{claim}</div>)}
+        </div>
+        <div className="mt-5 grid gap-3 text-sm sm:grid-cols-3">
+          {["Issued by: attestation provider", "Scope: selected requirements", "Validity: visible and reviewable"].map((item) => <div key={item} className="rounded-2xl border border-[#dce5f0] p-4 text-[#5d6d82]">{item}</div>)}
+        </div>
       </section>
 
       <details className="enterprise-advanced-details rounded-[24px] border border-[#dce5f0] bg-[#f7f9fc] p-5 sm:p-6">

@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "next build && node ../../scripts/compact-commercial-export.mjs",
     "build:github": "PRIVATE_DAO_NEXT_OUTPUT_MODE=export NEXT_PUBLIC_LIVE_SITE_URL=https://privatedao.org NEXT_PUBLIC_BASE_PATH=/PrivateDAO next build",
     "build:root": "PRIVATE_DAO_NEXT_OUTPUT_MODE=export NEXT_PUBLIC_LIVE_SITE_URL=https://privatedao.org NEXT_PUBLIC_BASE_PATH= next build",
     "start": "next start",
@@ -32,8 +32,8 @@
     "@umbra-privacy/sdk": "5.0.0-rc.6",
     "@xenova/transformers": "^2.17.2",
     "bigint-buffer": "file:../../vendor/bigint-buffer",
-    "class-variance-authority": "^0.7.1",
     "circomlibjs": "^0.1.7",
+    "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "lucide-react": "^0.552.0",
     "next": "16.3.5",

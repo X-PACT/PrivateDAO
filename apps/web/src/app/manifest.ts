@@ -6,7 +6,7 @@ export default function manifest(): MetadataRoute.Manifest {
   return {
     name: "PrivateDAO",
     short_name: "PrivateDAO",
-    description: "Your DAO votes, payroll, and treasury are public. They shouldn't be. Private governance, payroll, and treasury operations on Solana.",
+    description: "PrivateDAO helps organizations keep payroll, treasury, decisions, bids, and records private while making outcomes easier to trust.",
     start_url: "/",
     display: "standalone",
     background_color: "#030510",
@@ -31,7 +31,7 @@ export default function manifest(): MetadataRoute.Manifest {
         sizes: "1200x630",
         type: "image/png",
         form_factor: "wide",
-        label: "PrivateDAO encrypted Solana operations overview",
+        label: "PrivateDAO private organizational workflows",
       },
       {
         src: "/assets/private-dao-product-overview-poster.png",

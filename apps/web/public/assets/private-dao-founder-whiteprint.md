@@ -1,280 +1,146 @@
 # PrivateDAO
 
-## Confidential Coordination Infrastructure for Onchain Organizations
+## Private work should stay private.
 
-Version 2.0
+PrivateDAO is a commercial privacy platform for organizations that need to run sensitive work without losing confidence in the result.
 
-## Abstract
+Salaries, spending decisions, approvals, bids, and internal records should not become public simply because an organization uses blockchain infrastructure.
 
-Onchain organizations have solved ownership.
+PrivateDAO gives organizations a clear path from private input to a verifiable outcome.
 
-They have partially solved governance.
+It is not necessary to become a Web3 or crypto company to use PrivateDAO. An established business can start with payroll, treasury, procurement, governance, or records, then add Web3 capability where a wallet, network, or verifiable settlement creates a real business advantage. A data custodian or service provider can do the same for its own customers.
 
-They have not solved coordination.
+## The problem
 
-Critical organizational activity still happens outside governance systems:
+Organizations rely on sensitive workflows every day:
 
-- Treasury planning
-- Contributor evaluation
-- Reviewer assignment
-- Payroll workflows
-- Sensitive discussions
-- Emergency response
-- Operational approvals
+- Payroll and compensation
+- Treasury requests and approvals
+- Governance and internal decisions
+- Procurement and competitive bids
+- Compliance and operational records
 
-As organizations grow, an increasing percentage of important decisions migrate into private chats, spreadsheets, informal processes, and trusted operators.
+Most tools force an uncomfortable choice. Keep the work private and make the outcome difficult to trust, or publish too much information in order to prove that something happened.
 
-This creates a coordination gap.
+PrivateDAO is built for the space between secrecy and exposure.
 
-Governance becomes visible.
+## The product promise
 
-Operations remain invisible.
+### Privacy without losing proof
 
-PrivateDAO is building a confidential coordination platform for organizations that need private workflows and independently verifiable outcomes.
+Keep sensitive information with the organization that owns it. Give the right people a clear process to review and approve it. Share only the result and evidence that others need to trust.
 
-The objective is not simply enabling voting.
+### Your organization. Your rules.
 
-The objective is enabling organizations to coordinate, approve, execute, audit, and evolve while preserving confidentiality and maintaining verifiability.
+Each workflow can define who prepares it, who reviews it, who approves it, what may be executed, and what an external party may verify.
 
-The platform starts with three clear paths: Verify, Govern, and Coordinate.
+### Infrastructure follows the workflow
 
-The Kernel is the shared foundation beneath them, while customers interact with simple product workflows rather than infrastructure machinery.
+The customer starts with a business task. Wallets, networks, and providers appear only when the workflow needs signing, settlement, or anchoring. The customer experience stays consistent while execution choices remain adaptable in the background.
 
-## The Coordination Problem
+## Products
 
-Most governance systems focus on a single event: a vote.
+### Confidential Payroll
 
-But organizations spend most of their time outside voting.
-
-Before a proposal appears:
-
-- Research happens.
-- Discussions happen.
-- Reviews happen.
-- Treasury analysis happens.
-- Stakeholder alignment happens.
-
-After a proposal passes:
-
-- Execution happens.
-- Resource allocation happens.
-- Reporting happens.
-- Accountability happens.
-
-These operational processes are frequently disconnected from governance systems.
-
-The result is hidden centralization.
-
-Organizations may appear decentralized while depending on invisible coordination structures.
-
-PrivateDAO is designed to make coordination itself a first-class organizational primitive.
-
-## Why Existing Governance Is Not Enough
-
-Current governance tools generally optimize for:
-
-- Proposal creation
-- Voting
-- Result publication
-
-These systems rarely address:
-
-- Confidential operations
-- Treasury workflows
-- Sensitive contributor data
-- Internal organizational processes
-- Private approvals
-- Selective disclosure
-- Recovery procedures
-- Operational continuity
-
-As treasury sizes increase and organizational complexity grows, these missing layers become critical.
-
-The future challenge is not voting.
-
-The future challenge is confidential coordination.
-
-## The PrivateDAO Thesis
-
-Organizations require infrastructure capable of balancing:
-
-- Privacy
-- Accountability
-- Verifiability
-- Operational efficiency
-
-Historically these objectives conflicted.
-
-Privacy reduced transparency.
-
-Transparency reduced confidentiality.
-
-PrivateDAO introduces a framework where organizations can preserve sensitive operational information while still proving that processes occurred correctly.
-
-The goal is selective disclosure rather than complete secrecy or complete transparency.
-
-## Core Principles
-
-### Privacy by Default
-
-Sensitive information should not become public simply because an organization operates onchain.
-
-### Verifiable Execution
-
-Actions should be provably executed according to organizational rules.
-
-### Selective Disclosure
-
-Organizations should reveal outcomes without exposing unnecessary operational details.
-
-### Operational Continuity
-
-Coordination systems must continue functioning during leadership changes, contributor turnover, and periods of organizational stress.
-
-### Composability
-
-PrivateDAO should integrate naturally with the networks and systems each product genuinely needs.
-
-## Architecture Overview
-
-PrivateDAO consists of several coordination layers.
-
-### Governance Layer
-
-Proposal creation, voting mechanisms, quorum enforcement, and approval logic.
-
-### Treasury Layer
-
-Treasury authorization, delegated execution, and operational accountability.
-
-### Coordination Layer
-
-Confidential approvals, reviewer workflows, and contributor coordination.
-
-### Intelligence Layer
-
-Operational visibility, organizational analytics, and governance intelligence.
-
-### Execution Layer
-
-Integration with treasury systems, evidence storage, and certified network providers.
-
-### Kernel Layer
-
-A frozen lifecycle boundary for product invocations, policy, authorization, replay protection, proofs, and evidence.
-
-## Initial Use Cases
-
-### Confidential Governance
-
-Private organizational decisions with verifiable outcomes.
+Prepare payroll, apply tax and deduction policies, route the batch for approval, settle privately, and share a verification result without exposing employee-level data.
 
 ### Treasury Coordination
 
-Managing treasury operations without exposing sensitive strategy.
+Move spending requests through budgets, controls, approvals, execution, and reconciliation while protecting sensitive financial context.
 
-### Reviewer Networks
+### Private Governance
 
-Coordinating reviewers, evaluators, and committees.
+Create decision rooms, manage proposals and roles, keep sensitive intent private when appropriate, and publish an accountable result.
 
-### Contributor Operations
+### Confidential Auctions
 
-Managing contributor activity and accountability workflows.
+Collect sealed offers, protect commercial intent until the agreed close, select the result according to defined rules, and provide evidence of the outcome.
 
-### Grant Committees
+### Blind Verification
 
-Evaluating applications while preserving reviewer independence.
+Prove that defined conditions were satisfied without revealing the source data, internal thresholds, or sensitive policy inputs.
 
-### Emergency Coordination
+### Record Verification
 
-Maintaining operational continuity during crises.
+Create a shareable verification record for an important document, event, or business result without publishing private fields.
 
-## Ecosystem Integration Strategy
+## One operating model
 
-PrivateDAO is designed to integrate with existing infrastructure without exposing provider complexity in the customer experience.
+Every product follows the same simple path:
 
-Examples include:
+1. Choose the workflow.
+2. Define policy and responsibility.
+3. Prepare the sensitive information privately.
+4. Review and approve the action.
+5. Execute through the appropriate provider.
+6. Reconcile what happened.
+7. Share a result or proof with the right audience.
 
-- Phantom for wallet onboarding
-- Squads and Altitude for treasury coordination
-- Arcium for encrypted computation research
-- World ID for proof-of-human coordination
-- Vanish for privacy-preserving execution
-- Helius, Triton, and FluxRPC for infrastructure resilience
+The interface speaks in business outcomes. The underlying system keeps product rules, authorization, execution, receipts, verification, and network providers separate.
 
-PrivateDAO does not attempt to replace ecosystem infrastructure.
+## The PrivateDAO Kernel
 
-It coordinates it.
+The Kernel is the shared operating boundary beneath the products. It provides common handling for:
 
-## Why Now
+- Identity and organization context
+- Policy and authorization
+- Idempotency and replay protection
+- Signing and execution boundaries
+- Receipts and reconciliation
+- Proof and verification status
+- Provider and network capabilities
 
-Several structural shifts are occurring simultaneously.
+Products do not need to expose these implementation details to their users. A network is presented as available only when the relevant product path has a real provider configuration and appropriate evidence.
 
-- Organizations are moving onchain.
-- Treasuries are growing.
-- Global contributor networks are expanding.
-- AI agents are beginning to participate in workflows.
-- Privacy requirements are increasing.
+## Agents and PDAO Worlds
 
-Existing governance systems were not designed for this environment.
+### Agent Marketplace
 
-A new organizational coordination layer is emerging as necessary infrastructure.
+PrivateDAO Agents extend the same trust model to software. Organizations and systems can discover bounded capabilities, request a defined job, and receive a result with a clear receipt. The agent surface remains separate from the enterprise workflow while sharing the same principles of permission, privacy, and verifiability.
 
-PrivateDAO is being built for that future.
+### PDAO Worlds
 
-## Long-Term Vision
+PDAO Worlds is an independent consumer product. It turns privacy, trust, evidence, and coordination into playable experiences for a wider audience. It is part of the ecosystem and brand story, not a replacement for the commercial products.
 
-The long-term vision extends beyond governance.
+## Who it is for
 
-PrivateDAO aims to become the coordination operating layer for onchain organizations.
+PrivateDAO is designed for:
 
-Future organizations will require infrastructure capable of:
+- Small teams starting with one sensitive workflow
+- Growing companies coordinating finance and operations
+- Web3 organizations and DAOs
+- Governments and public institutions
+- Financial and market operations
+- Product teams integrating verification into their own systems
 
-- Coordinating humans
-- Coordinating AI agents
-- Managing treasury operations
-- Preserving confidentiality
-- Maintaining accountability
-- Producing verifiable outcomes
+The first workflow may be payroll, treasury, governance, procurement, or verification. The operating model can expand as the organization grows.
 
-Governance is only the first step toward that future.
+## Commercial principles
 
-The ultimate objective is enabling organizations to operate efficiently without sacrificing either privacy or trust.
+PrivateDAO sells useful workflows and trusted outcomes, not technical complexity.
 
-PrivateDAO starts with Solana where the current execution and anchoring paths are strongest. Cross-network expansion is capability-led: a network is presented as supported only after its provider, wallet, finality, and end-to-end behavior are implemented and tested for the relevant product.
+The public product experience does not require a wallet to understand the value. Wallet connection and network selection appear only when a real operation requires them. Technical resources remain available for builders and reviewers without overwhelming the buyer.
 
-## Kernel and Network Roadmap
+PrivateDAO does not promise token returns, financial performance, or automatic adoption. Product availability and network support are stated according to the implementation and evidence for each workflow.
 
-The frozen PrivateDAO Kernel is the shared foundation for every product. Products request generic capabilities such as identity, policy evaluation, proof generation, evidence storage, signing, execution, and finality. Network-specific providers remain outside product business logic.
+## Growth and investment path
 
-### Current release path
+PrivateDAO is built for a market that includes both Web3-native organizations and businesses that want Web3 capability without a new operating burden.
 
-- Verify records, claims, proofs, and public receipts.
-- Govern private proposals and organizational decisions.
-- Coordinate treasury requests, approvals, and evidence.
-- Certify each product locally before any production cutover.
+The commercial growth path is:
 
-### Network expansion path
+1. Make the core workflows easy to understand, trial, and buy.
+2. Package successful workflows for companies, institutions, data providers, and Web3 operators.
+3. Expand through enterprise partnerships, integrations, and product revenue.
+4. Use strategic Web3 ecosystem capital and broader institutional or technology investment to accelerate distribution, delivery, and product depth.
+5. Extend the same trust model through Agent Marketplace and PDAO Worlds as independent ecosystem products.
 
-- Solana: first execution and anchoring path, supported only where the deployed and tested flow applies.
-- EVM and Stellar: planned provider tracks for products whose identity, signing, execution, or payment needs fit those networks.
-- Bitcoin: evaluate for anchoring or payment use cases rather than copying smart-contract assumptions.
-- Starknet and Polkadot: evaluate for L2 execution and interoperability when a real product dependency exists.
+The thesis is product-led: investment supports repeatable customer outcomes, not a promise of token performance.
 
-No network is marketed as supported because a folder, enum, or mock exists. Support requires implementation, integration, end-to-end evidence, and a release decision.
+## Closing
 
-## Conclusion
+Organizations should be able to protect their working information and still be trusted.
 
-The next generation of organizations will not be limited by ownership systems.
+PrivateDAO makes that practical:
 
-They will be limited by coordination systems.
-
-The organizations that coordinate effectively will outperform those that merely govern effectively.
-
-PrivateDAO exists to provide the infrastructure required for that transition.
-
-Not a governance application.
-
-Not a voting interface.
-
-A confidential coordination layer for the future of onchain organizations.
+> Keep the work private. Prove the outcome.

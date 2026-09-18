@@ -27,13 +27,19 @@ const outcomes = [
   ["Trusted outcomes", "The organization can share the result without handing over every private detail."],
 ] as const;
 
+const adoptionPaths = [
+  ["Stay with the workflow", "A company can use PrivateDAO for payroll, approvals, records, or procurement without becoming a Web3 or crypto company."],
+  ["Add Web3 capability when useful", "A data custodian, service provider, or enterprise platform can add verifiable onchain outcomes without rebuilding its customer experience."],
+  ["Choose the right product", "Payroll, treasury, governance, auctions, and verification each solve a business problem first; infrastructure stays behind the workflow."],
+] as const;
+
 export default function ThesisPage() {
   return (
     <OperationsShell
       eyebrow="The Coordination Thesis"
       title="Organizations should not have to expose their working data to prove that work was done properly."
       description="PrivateDAO gives companies, institutions, governments, and financial teams a simple way to run sensitive workflows with privacy and accountability in the same process."
-      navigationMode="guided"
+      navigationMode="focused"
       badges={[
         { label: "Enterprise privacy", variant: "cyan" },
         { label: "Operational control", variant: "success" },
@@ -65,6 +71,15 @@ export default function ThesisPage() {
         <h2 className="mt-3 max-w-3xl text-2xl font-semibold tracking-[-0.03em] sm:text-4xl">The customer sees a workflow. The complexity stays behind it.</h2>
         <div className="mt-6 grid gap-3 md:grid-cols-3">
           {outcomes.map(([title, body]) => <div key={title} className="rounded-[16px] border border-white/15 bg-white/10 p-4"><div className="font-semibold">{title}</div><p className="mt-2 text-sm leading-6 text-[#d5e2f3]">{body}</p></div>)}
+        </div>
+      </section>
+
+      <section className="enterprise-card rounded-[24px] p-6 sm:p-8">
+        <div className="text-[11px] font-bold uppercase tracking-[0.25em] text-[#175cd3]">A practical path into Web3</div>
+        <h2 className="mt-3 max-w-4xl text-2xl font-semibold tracking-[-0.03em] text-[#10233f] sm:text-4xl">You do not have to become a Web3 company to use Web3 capability.</h2>
+        <p className="mt-4 max-w-4xl text-base leading-8 text-[#5d6d82]">PrivateDAO lets an organization start with a familiar business workflow, then add wallet, network, or verifiable settlement capability only where it creates value.</p>
+        <div className="mt-7 grid gap-3 md:grid-cols-3">
+          {adoptionPaths.map(([title, body], index) => <article key={title} className="rounded-[16px] border border-[#dce5f0] bg-[#f7f9fc] p-5"><div className="text-sm font-bold text-[#175cd3]">0{index + 1}</div><h3 className="mt-3 font-semibold text-[#10233f]">{title}</h3><p className="mt-2 text-sm leading-7 text-[#5d6d82]">{body}</p></article>)}
         </div>
       </section>
 

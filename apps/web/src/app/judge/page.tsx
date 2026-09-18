@@ -17,7 +17,6 @@ import { PlatformCapabilityStack } from "@/components/platform-capability-stack"
 import Link from "next/link";
 import { getJudgeRuntimeLogsSnapshot } from "@/lib/judge-runtime-logs";
 import { buildRouteMetadata } from "@/lib/route-metadata";
-import { storyVideo } from "@/lib/site-data";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -309,8 +308,8 @@ export default function JudgePage() {
             </h2>
             <p className="mt-4 max-w-4xl text-sm leading-7 text-white/66 sm:text-base">
               Most DAOs expose votes, salaries, treasury activity, and internal operations. PrivateDAO enables organizations
-              to operate privately while remaining cryptographically verifiable on Solana. Start with the video, then open
-              any track below to run the live route instead of reading disconnected pages.
+              to operate privately while keeping the outcome verifiable. Start with the live workflow, then open any track
+              below to run the route instead of reading disconnected pages.
             </p>
             <div className="mt-5 grid gap-3 sm:grid-cols-3">
               {[
@@ -351,47 +350,12 @@ export default function JudgePage() {
             </div>
           </div>
 
-          <div className="min-w-0 rounded-[28px] border border-white/10 bg-black/28 p-3">
-            <div className="aspect-video overflow-hidden rounded-[22px] border border-white/10 bg-black shadow-[0_20px_80px_rgba(0,0,0,0.35)]">
-              <iframe
-                className="h-full w-full"
-                src={`${storyVideo.embedHref}?autoplay=1&mute=1&playsinline=1&rel=0&modestbranding=1`}
-                title="PrivateDAO automatic judge demo video"
-                loading="eager"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                referrerPolicy="strict-origin-when-cross-origin"
-                allowFullScreen
-              />
-            </div>
-            <div className="mt-3 flex flex-wrap items-center justify-between gap-3 px-1">
-              <div className="text-xs leading-5 text-white/54">Autoplay is muted by browser policy. Use sound controls if needed.</div>
-              <a href={storyVideo.youtubeHref} target="_blank" rel="noreferrer" className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>
-                Open YouTube
-                <ArrowUpRight className="h-3.5 w-3.5" />
-              </a>
-            </div>
-            <div className="mt-4 rounded-[22px] border border-cyan-300/18 bg-cyan-300/[0.07] p-3">
-              <div className="mb-2 flex flex-wrap items-center justify-between gap-2 px-1">
-                <div>
-                  <div className="text-[10px] uppercase tracking-[0.24em] text-cyan-100/62">New music-backed readiness cut</div>
-                  <div className="mt-1 text-sm font-semibold text-white">3-minute English local render with motivational music</div>
-                </div>
-                <a href="/assets/private-dao-judge-readiness-3min.mp4" className="text-xs font-medium text-cyan-100 hover:text-white">
-                  Open MP4
-                </a>
-              </div>
-              <video
-                className="aspect-video w-full rounded-[18px] border border-white/10 bg-black"
-                controls
-                preload="none"
-                poster="/assets/private-dao-judge-readiness-3min-poster.png"
-              >
-                <source src="/assets/private-dao-judge-readiness-3min.mp4" type="video/mp4" />
-              </video>
-              <p className="mt-2 px-1 text-xs leading-5 text-white/50">
-                Generated from the repo render script with safe text margins and a music bed for judges who need the
-                newest awards, backend rebuild, encryption, intelligence, and launch-gate story in one asset.
-              </p>
+          <div className="min-w-0 rounded-[28px] border border-cyan-300/18 bg-cyan-300/[0.07] p-5">
+            <div className="text-[10px] uppercase tracking-[0.24em] text-cyan-100/62">Live product path</div>
+            <h2 className="mt-3 text-2xl font-semibold text-white">Run the workflow. Then verify the outcome.</h2>
+            <p className="mt-3 text-sm leading-7 text-white/64">The current product experience is designed to be used directly: choose the work, apply the rule, approve it, and inspect the result.</p>
+            <div className="mt-5 grid gap-3">
+              {["Private input", "Policy and approval", "Shareable evidence"].map((step, index) => <div key={step} className="rounded-2xl border border-white/10 bg-black/22 p-4"><div className="text-xs font-semibold text-cyan-100">0{index + 1}</div><div className="mt-1 text-sm font-semibold text-white">{step}</div></div>)}
             </div>
           </div>
         </div>

@@ -183,7 +183,7 @@ export function ConfidentialAuctionWorkbench() {
           <h2 className="mt-3 text-3xl font-semibold tracking-[-0.035em] text-white">Choose a winner without exposing live bids.</h2>
           <p className="mt-3 max-w-2xl text-sm leading-7 text-white/64">Offers stay private while the auction is open. After closing, the result becomes easy to share and verify without asking anyone to connect a wallet.</p>
         </div>
-        <WalletMultiButton className={cn(buttonVariants({ size: "sm" }))} />
+        <WalletMultiButton className={cn(buttonVariants({ size: "sm" }))}>Connect to create an auction</WalletMultiButton>
       </div>
 
       <div className="grid gap-3 sm:grid-cols-3">
@@ -195,7 +195,7 @@ export function ConfidentialAuctionWorkbench() {
         ))}
       </div>
 
-      {!connected ? <div className="rounded-2xl border border-amber-200/20 bg-amber-200/[0.06] p-4 text-sm text-amber-100/80">Connect a Solana wallet to create or join a private auction.</div> : null}
+      {!connected ? <div className="rounded-2xl border border-[#f2dfad] bg-[#fffaf0] p-4 text-sm text-[#7a5b16]">Connect a wallet only when you are ready to create or join the auction. Browsing the workflow does not require one.</div> : null}
 
       <div className="grid gap-4 md:grid-cols-2">
         <label className="grid gap-2 text-sm text-white/70">What are people bidding for?

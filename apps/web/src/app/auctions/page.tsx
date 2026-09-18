@@ -29,16 +29,16 @@ export default function AuctionsPage() {
       ]}
     >
       <section className="grid gap-4 lg:grid-cols-2">
-        <article className="rounded-[28px] border border-red-300/16 bg-red-400/[0.06] p-5 sm:p-6">
-          <div className="text-[11px] uppercase tracking-[0.25em] text-red-100/76">Problem</div>
-          <p className="mt-3 text-sm leading-7 text-white/68">
+        <article className="rounded-[28px] border border-[#f0c9cd] bg-[#fff6f6] p-5 sm:p-6">
+          <div className="text-[11px] font-bold uppercase tracking-[0.25em] text-[#b42318]">Problem</div>
+          <p className="mt-3 text-sm leading-7 text-[#52647d]">
             Normal auctions leak momentum. Bidders can see pressure, infer strategy, and react to public signals before
             the auction is over.
           </p>
         </article>
-        <article className="rounded-[28px] border border-emerald-300/16 bg-emerald-300/[0.06] p-5 sm:p-6">
-          <div className="text-[11px] uppercase tracking-[0.25em] text-emerald-100/76">With PrivateDAO</div>
-          <p className="mt-3 text-sm leading-7 text-white/68">
+        <article className="rounded-[28px] border border-[#c7eadc] bg-[#f3fcf8] p-5 sm:p-6">
+          <div className="text-[11px] font-bold uppercase tracking-[0.25em] text-[#147d5a]">With PrivateDAO</div>
+          <p className="mt-3 text-sm leading-7 text-[#52647d]">
             Bids are committed while the auction is active. The winner and proof are revealed after the bidding window,
             without exposing intent during the process.
           </p>
@@ -67,7 +67,7 @@ export default function AuctionsPage() {
           {[
             ["Budget allocation", "Let decision-makers submit allocation bids without revealing momentum."],
             ["Vendor selection", "Run sealed commercial bidding with proof after selection."],
-            ["GamingDAO", "Run tournaments, item auctions, and reward auctions without early leader pressure."],
+            ["Marketplace buying", "Run commercial buying decisions without revealing the market before the right moment."],
           ].map(([title, copy]) => (
             <div key={title} className="rounded-2xl border border-white/10 bg-black/18 p-4">
               <div className="font-semibold text-white">{title}</div>

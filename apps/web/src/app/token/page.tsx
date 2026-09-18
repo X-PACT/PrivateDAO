@@ -98,7 +98,7 @@ export default function TokenPage() {
           </section>
         </section>
 
-        <section className="rounded-[24px] bg-[#10233f] p-6 text-white sm:p-8">
+        <section className="enterprise-dark-panel rounded-[24px] bg-[#10233f] p-6 text-white sm:p-8">
           <div className="flex items-start gap-3"><ShieldCheck className="mt-1 h-5 w-5 shrink-0 text-[#9fc7ff]" /><div><div className="text-[11px] font-bold uppercase tracking-[0.25em] text-[#9fc7ff]">Keep the distinction clear</div><h2 className="mt-3 text-2xl font-semibold">Products create the value. The token page records the facts.</h2><p className="mt-3 max-w-3xl text-sm leading-7 text-[#d5e2f3]">PDAO does not guarantee price appreciation, profit, liquidity, exchange listings, or investment returns. Use the official links below for independent information.</p></div></div>
         </section>
 

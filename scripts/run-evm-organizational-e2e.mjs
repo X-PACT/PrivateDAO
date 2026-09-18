@@ -30,7 +30,7 @@ const NETWORK_CONFIG = {
   "base-sepolia": { chainId: 84532, rpcEnv: "PDAO_EVM_BASE_SEPOLIA_RPC_URL", currency: { name: "Base Sepolia Ether", symbol: "ETH", decimals: 18 } },
   "robinhood-testnet": { chainId: 46630, rpcEnv: "PDAO_EVM_ROBINHOOD_TESTNET_RPC_URL", currency: { name: "Robinhood Testnet Ether", symbol: "ETH", decimals: 18 } },
   "hyperliquid-testnet": { chainId: 998, rpcEnv: "PDAO_EVM_HYPERLIQUID_TESTNET_RPC_URL", currency: { name: "Hyperliquid Testnet HYPE", symbol: "HYPE", decimals: 18 } },
-  "tempo-testnet": { chainId: 42431, rpcEnv: "PDAO_EVM_TEMPO_TESTNET_RPC_URL", currency: { name: "Tempo Testnet USD", symbol: "USD", decimals: 18 } },
+  "tempo-testnet": { chainId: 42431, rpcEnv: "PDAO_EVM_TEMPO_TESTNET_RPC_URL", currency: { name: "Tempo Testnet pathUSD", symbol: "USD", decimals: 6 } },
 };
 const networkConfig = NETWORK_CONFIG[NETWORK];
 if (!networkConfig) throw new Error(`Unsupported organizational E2E network: ${NETWORK}. Use a configured testnet only.`);
@@ -113,8 +113,11 @@ const expectRevert = async (operation, label) => {
 
 const observedChainId = await publicClient.getChainId();
 assert.equal(observedChainId, CHAIN_ID, "RPC chain mismatch");
-const deployerBalance = await publicClient.getBalance({ address: deployer.address });
-assert.ok(deployerBalance > parseEther("0.01"), `deployer lacks enough native testnet asset for ${NETWORK} E2E`);
+const deployerBalance = tempoTokenMode
+  ? await publicClient.readContract({ address: TEMPO_FEE_TOKEN, abi: erc20Abi, functionName: "balanceOf", args: [deployer.address] })
+  : await publicClient.getBalance({ address: deployer.address });
+const minimumFunding = tempoTokenMode ? parseUnits("2", TEMPO_TOKEN_DECIMALS) : parseEther("0.01");
+assert.ok(deployerBalance > minimumFunding, `deployer lacks enough ${tempoTokenMode ? "Tempo pathUSD" : "native testnet asset"} for ${NETWORK} E2E`);
 
 const deployments = {
   network: NETWORK,

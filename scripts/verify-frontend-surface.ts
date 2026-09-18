@@ -36,8 +36,6 @@ const OLD_TIMELOCK_DOC = path.resolve("docs/timelock-enforcement-proof-2026-05-2
 const OLD_ARENA_SUBMISSION_DOC = path.resolve("docs/arena-frontier-submission-2026-05-23.md");
 const PUBLIC_OPENGRAPH_IMAGE = path.resolve("apps/web/public/opengraph-image.png");
 const PUBLIC_TWITTER_IMAGE = path.resolve("apps/web/public/twitter-image.png");
-const PUBLIC_JUDGE_READINESS_VIDEO = path.resolve("apps/web/public/assets/private-dao-judge-readiness-3min.mp4");
-const PUBLIC_JUDGE_READINESS_POSTER = path.resolve("apps/web/public/assets/private-dao-judge-readiness-3min-poster.png");
 
 function main() {
   const rootIndex = fs.readFileSync(ROOT_INDEX, "utf8");
@@ -82,14 +80,6 @@ function main() {
     throw new Error("public Twitter image is missing at /twitter-image.png");
   }
 
-  if (!fs.existsSync(PUBLIC_JUDGE_READINESS_VIDEO)) {
-    throw new Error("public judge readiness video is missing at /assets/private-dao-judge-readiness-3min.mp4");
-  }
-
-  if (!fs.existsSync(PUBLIC_JUDGE_READINESS_POSTER)) {
-    throw new Error("public judge readiness video poster is missing at /assets/private-dao-judge-readiness-3min-poster.png");
-  }
-
   const opengraphSize = fs.statSync(PUBLIC_OPENGRAPH_IMAGE).size;
   if (opengraphSize < 100_000) {
     throw new Error("public OpenGraph image is unexpectedly small and may render blank in link previews");
@@ -106,7 +96,8 @@ function main() {
     [fs.readFileSync(path.resolve("README.md"), "utf8"), "/documents/site-execution-route-inventory-2026-05-27/", "README is missing the site execution route inventory"],
     [fs.readFileSync(path.resolve("README.md"), "utf8"), "historical links stay alive as bridges", "README is missing historical link preservation language"],
     [fs.readFileSync(path.resolve("README.md"), "utf8"), "signs from a Solana Testnet wallet", "README is missing wallet-first Testnet execution language"],
-    [siteHeader, 'href: "/products"', "site header is missing the Products route"],
+    [siteHeader, 'label: "Use"', "site header is missing the commercial Use menu"],
+    [fs.readFileSync(path.resolve("apps/web/src/app/page.tsx"), "utf8"), 'href="/products"', "home page is missing the commercial solutions route"],
     [siteHeader, 'href: "/payroll"', "site header is missing the Payroll route"],
     [siteHeader, 'href: "/treasury"', "site header is missing the Treasury route"],
     [siteHeader, 'href: "/govern"', "site header is missing the Governance route"],
@@ -153,10 +144,7 @@ function main() {
     [siteFooter, "communityLinks.map", "site footer is missing centralized community link rendering"],
     [judgePage, "2026-05-27T02:25:39Z", "judge route is missing the current Squads proposal 3 timelock release"],
     [judgePage, "Your DAO votes, payroll, and treasury are public", "judge route is missing the simplified product entry"],
-    [judgePage, "PrivateDAO automatic judge demo video", "judge route is missing the embedded judge demo video"],
-    [judgePage, "autoplay=1&mute=1", "judge route is missing muted autoplay video parameters"],
-    [judgePage, "New music-backed readiness cut", "judge route is missing the new music-backed readiness video"],
-    [judgePage, "/assets/private-dao-judge-readiness-3min.mp4", "judge route is missing the hosted readiness MP4"],
+    [judgePage, "Live product path", "judge route is missing the direct workflow example"],
     [judgePage, "Run the track, then verify it", "judge route is missing the track run/proof router"],
     [judgePage, "Encryption status notes", "judge route is missing compact encryption status notes"],
     [judgePage, "Legacy review paths consolidated", "judge route is missing legacy path consolidation"],

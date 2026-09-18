@@ -25,8 +25,8 @@ export type CommercialProductGroup = {
  */
 export const commercialProductGroups: readonly CommercialProductGroup[] = [
   {
-    title: "Private Operations",
-    summary: "Run the sensitive work that keeps an organization moving.",
+    title: "Financial Operations",
+    summary: "Run the money and approval work that keeps an organization moving.",
     icon: WalletCards,
     products: [
       {
@@ -46,31 +46,8 @@ export const commercialProductGroups: readonly CommercialProductGroup[] = [
         runtimeProductId: "treasury",
       },
       {
-        title: "Private Governance",
-        summary: "Create a decision room, keep sensitive intent private, and preserve an accountable result.",
-        audience: "Boards, governments, DAOs, foundations, and communities.",
-        href: "/govern",
-        cta: "Start governance",
-        runtimeProductId: "governance",
-      },
-    ],
-  },
-  {
-    title: "Private Transactions",
-    summary: "Coordinate commercial intent without exposing it too early.",
-    icon: Gavel,
-    products: [
-      {
-        title: "Confidential Auctions",
-        summary: "Collect sealed offers, close the decision fairly, and share an outcome participants can check.",
-        audience: "Procurement teams, marketplaces, DAOs, and agent operators.",
-        href: "/auctions",
-        cta: "Run an auction",
-        runtimeProductId: "auction",
-      },
-      {
         title: "Private Settlement Workflows",
-        summary: "Move an approved transaction through the appropriate execution provider only when the workflow requires it.",
+        summary: "Move an approved transaction through its final private settlement step when the workflow is ready.",
         audience: "Operations teams, financial markets, and organizations with controlled payouts.",
         href: "/payments",
         cta: "Review settlement",
@@ -78,8 +55,31 @@ export const commercialProductGroups: readonly CommercialProductGroup[] = [
     ],
   },
   {
+    title: "Governance & Markets",
+    summary: "Coordinate decisions and commercial intent without exposing it too early.",
+    icon: Gavel,
+    products: [
+      {
+        title: "Private Governance",
+        summary: "Create a decision room, understand participation before, during, and after the proposal, and preserve an accountable result.",
+        audience: "Boards, governments, DAOs, foundations, and communities.",
+        href: "/govern",
+        cta: "Start governance",
+        runtimeProductId: "governance",
+      },
+      {
+        title: "Confidential Auctions",
+        summary: "Collect sealed offers, read decision signals without exposing bids, close fairly, and share an outcome participants can check.",
+        audience: "Procurement teams, marketplaces, DAOs, and agent operators.",
+        href: "/auctions",
+        cta: "Run an auction",
+        runtimeProductId: "auction",
+      },
+    ],
+  },
+  {
     title: "Verification",
-    summary: "Give others confidence without handing over sensitive source data.",
+    summary: "Prove what is true without handing over sensitive source data.",
     icon: ShieldCheck,
     products: [
       {
@@ -102,7 +102,7 @@ export const commercialProductGroups: readonly CommercialProductGroup[] = [
   },
   {
     title: "Ecosystem Products",
-    summary: "Extend the same privacy and evidence model to software and consumer audiences.",
+    summary: "Extend the same trust model to agents and consumer experiences.",
     icon: Bot,
     products: [
       {

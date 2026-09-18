@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowUpRight, Bot, CheckCircle2, Code2, FileCheck2, Radio } from "lucide-react";
+import { ArrowUpRight, Bot, CheckCircle2, FileCheck2, Radio } from "lucide-react";
 
 import { OperationsShell } from "@/components/operations-shell";
 import { buttonVariants } from "@/components/ui/button";
@@ -18,9 +18,9 @@ export const metadata: Metadata = buildRouteMetadata({
 });
 
 const exchangeLinks = [
-  ["Discover services", `${agentExchangeBase}/api/services`, "See available capabilities and service metadata."],
-  ["Connect an agent", `${agentExchangeBase}/connect`, "Start with the shortest developer onboarding path."],
-  ["Machine-readable card", `${agentExchangeBase}/.well-known/agent-card.json`, "Let an autonomous client understand the exchange."],
+  ["Explore services", `${agentExchangeBase}/api/services`, "Find a useful capability for your organization or product."],
+  ["Connect your system", `${agentExchangeBase}/connect`, "Start a guided connection when you are ready to use a service."],
+  ["Check a service", `${agentExchangeBase}/.well-known/agent-card.json`, "Confirm what a service can do before it is used."],
 ] as const;
 
 const operatingLoop = [
@@ -34,12 +34,12 @@ export default function AgentsPage() {
     <OperationsShell
       eyebrow="Agent Marketplace"
       title="Let software find, use, and verify useful services."
-      description="PrivateDAO Agent Exchange gives AI agents a clear path from discovery to a useful result, with machine-readable capabilities and receipts that can be checked later."
+      description="PrivateDAO Agent Exchange gives software teams a clear path from finding a service to receiving a useful result they can check later."
       navigationMode="guided"
       badges={[
-        { label: "Machine-ready discovery", variant: "cyan" },
+        { label: "Live service discovery", variant: "cyan" },
         { label: "Verifiable results", variant: "success" },
-        { label: "Solana Mainnet runtime", variant: "violet" },
+        { label: "Live exchange", variant: "violet" },
       ]}
     >
       <section className="grid gap-4 lg:grid-cols-[1.1fr_0.9fr]">
@@ -89,18 +89,15 @@ export default function AgentsPage() {
         ))}
       </section>
 
-      <section className="rounded-[28px] border border-violet-300/16 bg-violet-300/[0.045] p-5 sm:p-7">
-        <div className="flex items-center gap-3 text-violet-100"><Code2 className="h-5 w-5" /><span className="text-xs font-semibold uppercase tracking-[0.22em]">Built for integration</span></div>
-        <p className="mt-4 max-w-3xl text-sm leading-7 text-white/64">
-          The exchange exposes A2A, MCP, and OpenAPI surfaces so an agent can use the same service catalog from its preferred runtime. Human-readable onboarding stays available when a team needs it.
-        </p>
+      <details className="enterprise-advanced-details rounded-[28px] border border-[#dce5f0] bg-[#f7f9fc] p-5 sm:p-7">
+        <summary className="cursor-pointer text-sm font-semibold text-[#10233f]">Developer resources</summary>
         <div className="mt-5 flex flex-wrap gap-3">
           <a href={`${agentExchangeBase}/a2a`} className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>A2A</a>
           <a href={`${agentExchangeBase}/mcp`} className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>MCP</a>
           <a href={`${agentExchangeBase}/openapi.json`} className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>OpenAPI</a>
           <Link href="/developers" className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>Developer workspace</Link>
         </div>
-      </section>
+      </details>
     </OperationsShell>
   );
 }

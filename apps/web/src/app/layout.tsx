@@ -68,7 +68,7 @@ export const metadata: Metadata = {
     "evidence-manifest": "/evidence.json",
     "ownership-manifest": "/ownership.json",
     "rights-notice": "/rights.txt",
-    "ai-guide": "/judge-ai",
+    "ai-guide": "/whitepaper/",
     "reviewer-entry": "/govern#live-dao",
     "product-surface":
       "PrivateDAO helps organizations keep payroll, treasury, governance, bids, and records private while making outcomes easier to trust.",

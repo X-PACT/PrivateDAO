@@ -59,7 +59,6 @@ type ChromeTranslations = {
   repository: string;
   currentLiveSite: string;
   androidApk: string;
-  storyVideo: string;
   youtube: string;
   discord: string;
   showMoreLinks: string;
@@ -377,7 +376,6 @@ const englishCopy: LocalizedCopy = {
     repository: "Repository",
     currentLiveSite: "Current live site",
     androidApk: "Android APK",
-    storyVideo: "Story video",
     youtube: "YouTube",
     discord: "Discord",
     showMoreLinks: "Show more links",
@@ -1012,7 +1010,6 @@ export const localizedCopy: Record<SupportedLocale, LocalizedCopy> = {
       repository: "المستودع",
       currentLiveSite: "الموقع الحي",
       androidApk: "حزمة أندرويد",
-      storyVideo: "فيديو القصة",
       youtube: "يوتيوب",
       discord: "ديسكورد",
       showMoreLinks: "أظهر المزيد",

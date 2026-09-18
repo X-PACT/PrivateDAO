@@ -1,75 +1,81 @@
 <!-- SPDX-License-Identifier: AGPL-3.0-or-later -->
 # PrivateDAO
 
-> **Open-source review notice:** PrivateDAO keeps its core source open for the hackathon, judging, security review, ecosystem diligence, and official collaboration. Source files under AGPL-3.0-or-later keep the rights and duties of that license. PrivateDAO brand identity, official deployments, product design, media, evidence packets, roadmap language, commercial service packaging, and Whitepaper material are reserved. Open-source forks must respect the applicable license and must not impersonate PrivateDAO, reuse official branding, commercialize PrivateDAO service packages, or present derivative deployments as official without written coordination. See [`NOTICE.md`](NOTICE.md) and [`TERMS_OF_REVIEW.md`](TERMS_OF_REVIEW.md).
+> **Open-source review notice:** PrivateDAO keeps applicable source available for review, contribution, security work, and ecosystem collaboration. Licenses, brand rights, official deployments, and commercial packaging remain governed by [`NOTICE.md`](NOTICE.md) and [`TERMS_OF_REVIEW.md`](TERMS_OF_REVIEW.md).
 
 <p align="center">
   <a href="https://privatedao.org/" target="_blank">
-    <img src="docs/assets/privatedao-sovereign-infrastructure-map.svg" alt="PrivateDAO sovereign infrastructure map" width="920" />
+    <img src="docs/assets/privatedao-sovereign-infrastructure-map.svg" alt="PrivateDAO" width="920" />
   </a>
 </p>
 
 <p align="center">
-  <strong>Private coordination layer for DAOs with public verification on Solana.</strong>
+  <strong>Private decisions. Verifiable outcomes.</strong>
 </p>
 
-Most DAO decisions happen in public before they are ready.
+Your private work should stay private.
 
-Vote counts, percentages, whale wallets, voter identity, payroll context, treasury intent, and internal review momentum can all influence people before the voting period ends. That creates pressure, strategic voting, leaked negotiations, exposed contributors, and decisions that look transparent but are not always independent.
+PrivateDAO helps organizations run payroll, treasury work, governance, procurement, and verification without exposing the sensitive information behind the outcome. Privacy is not only encryption; it is the freedom to make an honest decision and the protection to share only what others need to trust.
 
-PrivateDAO solves that by separating **private coordination** from **public accountability**.
+An organization does not have to become a Web3 or crypto company to use PrivateDAO. It can start with a familiar business workflow, then add wallet, network, settlement, or verifiable Web3 capability where it creates value. Data providers, financial services, institutions, and Web3 operators can all use the same model.
 
-During an active decision, PrivateDAO hides the signals that bias voters: vote counts, percentages, leading side, voter identity, voting intent, sensitive room notes, payout recipients, payroll details, and treasury preparation. After the decision ends, PrivateDAO reveals the final outcome, proof, receipt, audit trail, and execution reference so the organization can stay accountable.
+## Commercial product groups
 
-PrivateDAO is a live Solana Testnet product for private DAO coordination with public verification. A normal visitor opens the browser, understands governance and treasury context, signs from a Solana Testnet wallet, votes without influence while it matters, protects confidential governance and treasury workflows with encryption boundaries, then verifies final outcomes and proofs when transparency counts.
+### Financial Operations
 
-The user-facing flow is intentionally simple:
+- **Confidential Payroll** - prepare payroll, apply tax and deduction policies, approve the batch, settle privately, and share a verified outcome without exposing employee records.
+- **Treasury Coordination** - control spending requests, budgets, approvals, execution, and reconciliation without publishing sensitive financial context.
+- **Private Settlement Workflows** - move an approved operation through the appropriate settlement path and retain a clear result.
+
+### Governance and Markets
+
+- **Private Governance** - use private rooms, proposals, delegation, activity intelligence, and accountable outcomes.
+- **Confidential Auctions** - protect competing bids until the agreed close, then share a fair and checkable result.
+
+### Verification
+
+- **Blind Verification** - prove that a private condition was satisfied without exposing the source data.
+- **Record Verification** - create a shareable receipt for a document, event, or business result without publishing private fields.
+- **Private Identity Verification** - let an attestation provider confirm KYC/KYB requirements such as identity, age, jurisdiction, entity status, or authorized representation while the source file stays private.
+
+### Ecosystem
+
+- **Agent Marketplace** - bounded software capabilities with clear requests and receipts.
+- **PDAO Worlds** - an independent community game that makes privacy, trust, evidence, and coordination memorable.
+
+## One operating model
 
 ```text
-Connect -> Intelligence -> Private Vote -> Reveal -> Verify -> Execute
+Choose the work -> Set the rules -> Run privately -> Approve -> Share the outcome
 ```
 
-PrivateDAO is now organized around six product lines:
+The customer starts with the business problem. Wallets, networks, providers, intelligence, and cryptographic details remain behind the workflow until execution requires them.
 
-1. **Proof Workflows** - underwriting, compliance, grant review, vendor onboarding, and internal approvals where the process must be verifiable without exposing the private policy.
-2. **Private Governance** - rooms, committees, DAO votes, board decisions, and community governance with private coordination during the decision and public proof after reveal.
-3. **Treasury Coordination** - spending requests, treasury-token decisions, grant disbursements, payout review, and audit trails.
-4. **Sealed Auctions** - private-room and public auctions where bid intent stays hidden until the reveal/proof phase.
-5. **TxLINE Match Settlement** - World Cup prediction-market settlement powered by official TxLINE fixture data, private payout-policy proof, and Solana receipt verification.
-6. **Runtime/API Infrastructure** - AWS read-node, public health APIs, Supabase-backed receipts, QuickNode-supported reads, and developer-facing verification endpoints.
+## Recognition
 
-The encryption and privacy posture is practical: commit/reveal voting protects intent during the vote, private rooms protect coordination before execution, encrypted metadata protects sensitive payroll and payout context, and proof reports make the final result verifiable after reveal. The product keeps cryptography behind the workflow instead of forcing normal users to understand provider names before they can act.
+- 1st Place — Superteam Poland
+- 3rd Place — Superteam UAE Frontier Hackathon
 
-Under that simple flow, PrivateDAO owns governance, privacy, coordination, execution, and proof. Infrastructure and intelligence providers stay modular: QuickNode, Supabase, AWS, QVAC, GoldRush/Covalent, Jupiter, PUSD/AUDD, Torque, MagicBlock, Ika/Encrypt, REFHE, Cloak, Umbra-compatible payout boundaries, Streamflow-compatible vesting boundaries, Tokens-compatible asset context, and Pyth-compatible price context are provider rails inside the product path, not separate empty integrations.
+See [`docs/awards.md`](docs/awards.md) for the evidence and links.
 
-The site is being de-duplicated around canonical execution routes so historical links stay alive as bridges instead of becoming empty or competing integration pages.
+## Canonical public surfaces
 
-Primary routes:
+- Website: https://privatedao.org/
+- Products: https://privatedao.org/products/
+- Thesis: https://privatedao.org/thesis/
+- Whitepaper: https://privatedao.org/whitepaper/
+- Investors: https://privatedao.org/investors/
+- PDAO community asset: https://privatedao.org/token/
+- Agent Marketplace: https://agents.privatedao.org/
+- PDAO Worlds: https://game.privatedao.org/game/godot/index.html
+- AI guide: https://privatedao.org/llms.txt
+- Machine-readable manifest: https://privatedao.org/ai.json
 
-- `/products/` - the six product lines and their user-facing entry points.
-- `/value/` - why PrivateDAO exists: public accountability, private coordination, verifiable execution.
-- `/try/` - shortest first-run product path for a normal visitor.
-- `/judge/` - 3-minute reviewer hub with live tracks and proof entry points.
-- `/judge-ai/` - AI-readable judge summary for automated reviewers and evaluation tools.
-- `/proof/` - transparency reports, proof routes, operation receipts, and reviewer packets.
-- `/govern/` - wallet-first DAO, proposal, commit/reveal, finalize, and execute flow.
-- `/rooms/` - private and VIP coordination rooms with invite, proposal, vote, reveal, and proof export.
-- `/intelligence/` - intelligence before signing without exposing hidden vote intent.
-- `/treasury/` - treasury coordination, asset context, route review, and execution proof.
-- `/txline-settlement/` - TxLINE World Cup match settlement product with demo video, official fixture story, private policy proof, and Solana receipt path.
-- `/payroll/` - confidential payroll and payout review paths.
-- `/android/` - mobile wallet-first access to the same product routes.
-- `/services/` - service router for QVAC, GoldRush, Jupiter, PUSD, Torque, MagicBlock, Cloak, Umbra, Ika/Encrypt, REFHE, Zerion, and runtime infrastructure.
-- `/documents/site-execution-route-inventory-2026-05-27/` - canonical route inventory used to prevent duplicate or empty integrations while historical links stay alive as bridges.
+Compatibility note: historical links stay alive as bridges through the canonical site execution route inventory: `/documents/site-execution-route-inventory-2026-05-27/`. The repository keeps the current wallet-signing and Solana Testnet execution evidence in its technical documentation while the public product surface stays commercial.
 
-AI-readable evaluation layer:
+Technical execution evidence includes the path where a reviewer signs from a Solana Testnet wallet, completes the relevant workflow, and verifies the resulting proof. This is implementation evidence, not a requirement for understanding the commercial products.
 
-- `/llms.txt` - primary LLM index for Gemini, Claude, GPT-style agents, Colosseum Copilot, and scrapers.
-- `/ai.json` - machine-readable product, integration, route, and evidence manifest.
-- `/evidence.json` - machine-readable evidence claims proving live website, repo, proof routes, Testnet evidence, QVAC runtime proof, and provider status.
-- `/robots.txt` and `/sitemap.xml` - explicitly expose the AI-readable files, judge routes, proof routes, and core product routes.
-
-Important: PrivateDAO is not a concept-only or mock-only submission. The live site, public GitHub repository, Testnet proof routes, runtime APIs, Android/web UX, and AI-readable manifests are public.
+The implementation repository is maintained under the X-PACT GitHub organization. Public product copy is intentionally simple; technical evidence, implementation notes, and current network boundaries remain in the repository documentation and machine-readable manifests.
 
 
 <p align="center">

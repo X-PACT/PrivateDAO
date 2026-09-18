@@ -15,10 +15,10 @@ import {
 } from "@/lib/i18n";
 
 type I18nContextValue = {
-  /** The selected language remains visible in the switcher. */
+  /** The language selected by the visitor or browser URL. */
   selectedLocale: SupportedLocale;
-  /** Customer-facing copy is intentionally canonical English until all locale surfaces are complete. */
-  locale: typeof defaultLocale;
+  /** Localized copy for the selected browser language. */
+  locale: SupportedLocale;
   setLocale: (locale: SupportedLocale) => void;
   direction: "ltr" | "rtl";
   copy: (typeof localizedCopy)[SupportedLocale];
@@ -65,17 +65,23 @@ function resolveExplicitBrowserLocale(): SupportedLocale {
 }
 
 export function I18nProvider({ children }: I18nProviderProps) {
-  const [selectedLocale, setSelectedLocaleState] = useState<SupportedLocale>(() => {
-    return resolveExplicitBrowserLocale();
-  });
+  // Keep the first render identical on the server and in the browser. The
+  // browser URL/storage preference is applied after hydration to avoid a
+  // translated tree triggering a hydration mismatch.
+  const [selectedLocale, setSelectedLocaleState] = useState<SupportedLocale>(defaultLocale);
 
   useEffect(() => {
-    applyLocaleToDocument(defaultLocale);
+    const browserLocale = resolveExplicitBrowserLocale();
+    setSelectedLocaleState(browserLocale);
+  }, []);
+
+  useEffect(() => {
+    applyLocaleToDocument(selectedLocale);
   }, [selectedLocale]);
 
   const setLocale = (nextLocale: SupportedLocale) => {
     setSelectedLocaleState(nextLocale);
-    applyLocaleToDocument(defaultLocale);
+    applyLocaleToDocument(nextLocale);
     try {
       window.localStorage.setItem(localeStorageKey, nextLocale);
       window.localStorage.setItem(localeExplicitStorageKey, "1");
@@ -85,13 +91,13 @@ export function I18nProvider({ children }: I18nProviderProps) {
   };
 
   const value = useMemo<I18nContextValue>(() => {
-    const definition = getLocaleDefinition(defaultLocale);
+    const definition = getLocaleDefinition(selectedLocale);
     return {
       selectedLocale,
-      locale: defaultLocale,
+      locale: selectedLocale,
       setLocale,
       direction: definition.dir,
-      copy: localizedCopy[defaultLocale],
+      copy: localizedCopy[selectedLocale],
     };
   }, [selectedLocale]);
 

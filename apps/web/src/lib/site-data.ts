@@ -156,19 +156,6 @@ export const frontierOperatingSignals = [
   },
 ];
 
-export const storyVideo = {
-  title: "PrivateDAO Website Demo",
-  summary:
-    "A product-first website demo that shows how a normal user moves through PrivateDAO without code: learn the problem, choose the operating lane, connect a wallet, review the action, sign, and verify the result.",
-  runtime: "YouTube-first website demo · upload-ready MP4 backup",
-  youtubeHref: "https://youtu.be/iFTUe4CTWP0",
-  embedHref: "https://www.youtube.com/embed/iFTUe4CTWP0",
-  mp4Href: "/assets/private-dao-product-overview.mp4",
-  posterHref: "/assets/private-dao-product-overview-poster.png",
-  uploadFile:
-    "/assets/private-dao-product-overview.mp4",
-};
-
 export const walletChoices = [
   {
     name: "Solflare",

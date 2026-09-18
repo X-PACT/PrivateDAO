@@ -8,7 +8,7 @@ import { buildRouteMetadata } from "@/lib/route-metadata";
 import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = buildRouteMetadata({
-  title: "Proof Workflows",
+  title: "Verification",
   description: "Prove a decision was made correctly without exposing the underlying data.",
   path: "/proof-workflows",
   keywords: ["proof workflows", "decision proof", "workflow verification", "private audit trail", "underwriting proof"],
@@ -27,14 +27,15 @@ const afterClick = [
   "Policy applied",
   "Credit limit issued: $2250",
   "Proof generated",
+  "Proof scope and validity shown",
 ] as const;
 
 export default function ProofWorkflowsPage() {
   return (
     <OperationsShell
-      eyebrow="Proof Workflows"
-      title="For organizations that need to prove a process happened correctly without exposing private data."
-      description="Use Proof Workflows for lending, underwriting, compliance reviews, grant reviews, vendor approvals, internal approvals, and audit workflows."
+      eyebrow="Verification"
+      title="Prove the process. Keep the data private."
+      description="Show that the right checks, approvals, and decisions happened without publishing the sensitive records behind them."
       navigationMode="guided"
       badges={[]}
     >
@@ -72,8 +73,8 @@ export default function ProofWorkflowsPage() {
               ))}
             </div>
             <div className="mt-5">
-              <Link href="/pilots" className={cn(buttonVariants({ size: "lg" }))}>
-                Request Pilot
+              <Link href="/contact" className={cn(buttonVariants({ size: "lg" }))}>
+                Talk to PrivateDAO
                 <ArrowRight className="h-4 w-4" />
               </Link>
             </div>
@@ -94,8 +95,8 @@ export default function ProofWorkflowsPage() {
               for auditors after the value is clear.
             </p>
             <div className="mt-4 flex flex-wrap gap-3 text-sm">
-              <Link href="/pilots/credit-decision-verification" className="text-cyan-100 hover:text-white">
-                Run the 60-second demo
+              <Link href="/contact" className="text-cyan-100 hover:text-white">
+                Discuss your workflow
               </Link>
               <Link href="/proof-workflows/blind-policy" className="text-violet-100 hover:text-white">
                 Run blind policy verification
@@ -113,6 +114,7 @@ export default function ProofWorkflowsPage() {
           ["For lenders", "Issue credit limits from private earnings data and prove the process was followed."],
           ["For review teams", "Prove reviews happened without exposing documents, notes, or scoring logic."],
           ["For compliance", "Show that required checks completed without publishing sensitive records."],
+          ["For private identity", "A KYC or KYB provider attests to eligibility, jurisdiction, or authorized representation while the proof shows its issuer, scope, and validity."],
         ].map(([title, copy]) => (
           <article key={title} className="rounded-[24px] border border-white/10 bg-white/[0.035] p-5">
             <h2 className="text-base font-semibold text-white">{title}</h2>

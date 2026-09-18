@@ -30,7 +30,7 @@ export default function ContactPage() {
       eyebrow="Contact"
       title="Tell us what needs to stay private."
       description="PrivateDAO works with teams of five, growing organizations, institutions, governments, and financial operations that need a clearer way to coordinate sensitive work."
-      navigationMode="guided"
+      navigationMode="focused"
       badges={[
         { label: "Teams of five or more", variant: "cyan" },
         { label: "Organizations and markets", variant: "success" },
@@ -66,11 +66,11 @@ export default function ContactPage() {
 
       <section className="enterprise-card rounded-[24px] p-5 sm:p-6">
         <div className="text-[11px] font-bold uppercase tracking-[0.25em] text-[#175cd3]">Official channels</div>
-        <div className="mt-5 grid gap-3 lg:grid-cols-3">
+        <div className="mt-5 grid grid-cols-3 gap-3 sm:grid-cols-6">
           {contacts.map(([label, value, href, Icon]) => (
-            <a key={href} href={href} className="rounded-2xl border border-[#dce5f0] bg-[#f7f9fc] p-4 transition hover:border-[#175cd3]">
-              <div className="flex items-center gap-2 text-sm font-semibold text-[#10233f]"><Icon className="h-4 w-4 text-[#175cd3]" />{label}</div>
-              <div className="mt-2 break-all text-sm text-[#5d6d82]">{value}</div>
+            <a key={href} href={href} title={`${label}: ${value}`} aria-label={`${label}: ${value}`} className="group flex aspect-square items-center justify-center rounded-2xl border border-[#dce5f0] bg-[#f7f9fc] p-4 text-[#175cd3] transition hover:-translate-y-0.5 hover:border-[#175cd3] hover:bg-[#edf4ff]">
+              <Icon className="h-7 w-7 transition group-hover:scale-110" aria-hidden="true" />
+              <span className="sr-only">{label}: {value}</span>
             </a>
           ))}
         </div>
