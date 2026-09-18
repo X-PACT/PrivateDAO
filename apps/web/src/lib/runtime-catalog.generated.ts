@@ -381,9 +381,9 @@ export const runtimeCatalog = {
             },
             {
               "network": "hyperliquid-testnet",
-              "stage": "planned",
+              "stage": "available",
               "environment": "testnet",
-              "chainId": null,
+              "chainId": "998",
               "declared": false,
               "mode": "unbound",
               "evidenceStatus": "planned",
@@ -393,9 +393,9 @@ export const runtimeCatalog = {
               "supportsReceipt": false,
               "supportsReconciliation": false,
               "supportedAssets": [
-                "USDC"
+                "HYPE"
               ],
-              "provider": null
+              "provider": "evm-hyperliquid-testnet"
             }
           ]
         }
@@ -779,9 +779,9 @@ export const runtimeCatalog = {
             },
             {
               "network": "hyperliquid-testnet",
-              "stage": "planned",
+              "stage": "available",
               "environment": "testnet",
-              "chainId": null,
+              "chainId": "998",
               "declared": false,
               "mode": "unbound",
               "evidenceStatus": "planned",
@@ -791,9 +791,9 @@ export const runtimeCatalog = {
               "supportsReceipt": false,
               "supportsReconciliation": false,
               "supportedAssets": [
-                "USDC"
+                "HYPE"
               ],
-              "provider": null
+              "provider": "evm-hyperliquid-testnet"
             }
           ]
         },
@@ -1163,9 +1163,9 @@ export const runtimeCatalog = {
             },
             {
               "network": "hyperliquid-testnet",
-              "stage": "planned",
+              "stage": "available",
               "environment": "testnet",
-              "chainId": null,
+              "chainId": "998",
               "declared": false,
               "mode": "unbound",
               "evidenceStatus": "planned",
@@ -1175,9 +1175,9 @@ export const runtimeCatalog = {
               "supportsReceipt": false,
               "supportsReconciliation": false,
               "supportedAssets": [
-                "USDC"
+                "HYPE"
               ],
-              "provider": null
+              "provider": "evm-hyperliquid-testnet"
             }
           ]
         }
@@ -1489,9 +1489,9 @@ export const runtimeCatalog = {
             },
             {
               "network": "hyperliquid-testnet",
-              "stage": "planned",
+              "stage": "available",
               "environment": "testnet",
-              "chainId": null,
+              "chainId": "998",
               "declared": false,
               "mode": "unbound",
               "evidenceStatus": "planned",
@@ -1501,9 +1501,9 @@ export const runtimeCatalog = {
               "supportsReceipt": false,
               "supportsReconciliation": false,
               "supportedAssets": [
-                "USDC"
+                "HYPE"
               ],
-              "provider": null
+              "provider": "evm-hyperliquid-testnet"
             }
           ]
         },
@@ -1805,9 +1805,9 @@ export const runtimeCatalog = {
             },
             {
               "network": "hyperliquid-testnet",
-              "stage": "planned",
+              "stage": "available",
               "environment": "testnet",
-              "chainId": null,
+              "chainId": "998",
               "declared": false,
               "mode": "unbound",
               "evidenceStatus": "planned",
@@ -1817,9 +1817,9 @@ export const runtimeCatalog = {
               "supportsReceipt": false,
               "supportsReconciliation": false,
               "supportedAssets": [
-                "USDC"
+                "HYPE"
               ],
-              "provider": null
+              "provider": "evm-hyperliquid-testnet"
             }
           ]
         },
@@ -2121,9 +2121,9 @@ export const runtimeCatalog = {
             },
             {
               "network": "hyperliquid-testnet",
-              "stage": "planned",
+              "stage": "available",
               "environment": "testnet",
-              "chainId": null,
+              "chainId": "998",
               "declared": false,
               "mode": "unbound",
               "evidenceStatus": "planned",
@@ -2133,9 +2133,9 @@ export const runtimeCatalog = {
               "supportsReceipt": false,
               "supportsReconciliation": false,
               "supportedAssets": [
-                "USDC"
+                "HYPE"
               ],
-              "provider": null
+              "provider": "evm-hyperliquid-testnet"
             }
           ]
         }
@@ -2483,9 +2483,9 @@ export const runtimeCatalog = {
             },
             {
               "network": "hyperliquid-testnet",
-              "stage": "planned",
+              "stage": "available",
               "environment": "testnet",
-              "chainId": null,
+              "chainId": "998",
               "declared": false,
               "mode": "unbound",
               "evidenceStatus": "planned",
@@ -2495,9 +2495,9 @@ export const runtimeCatalog = {
               "supportsReceipt": false,
               "supportsReconciliation": false,
               "supportedAssets": [
-                "USDC"
+                "HYPE"
               ],
-              "provider": null
+              "provider": "evm-hyperliquid-testnet"
             }
           ]
         }
@@ -2845,9 +2845,9 @@ export const runtimeCatalog = {
             },
             {
               "network": "hyperliquid-testnet",
-              "stage": "planned",
+              "stage": "available",
               "environment": "testnet",
-              "chainId": null,
+              "chainId": "998",
               "declared": false,
               "mode": "unbound",
               "evidenceStatus": "planned",
@@ -2857,9 +2857,9 @@ export const runtimeCatalog = {
               "supportsReceipt": false,
               "supportsReconciliation": false,
               "supportedAssets": [
-                "USDC"
+                "HYPE"
               ],
-              "provider": null
+              "provider": "evm-hyperliquid-testnet"
             }
           ]
         }
@@ -3207,9 +3207,9 @@ export const runtimeCatalog = {
             },
             {
               "network": "hyperliquid-testnet",
-              "stage": "planned",
+              "stage": "available",
               "environment": "testnet",
-              "chainId": null,
+              "chainId": "998",
               "declared": false,
               "mode": "unbound",
               "evidenceStatus": "planned",
@@ -3219,9 +3219,9 @@ export const runtimeCatalog = {
               "supportsReceipt": false,
               "supportsReconciliation": false,
               "supportedAssets": [
-                "USDC"
+                "HYPE"
               ],
-              "provider": null
+              "provider": "evm-hyperliquid-testnet"
             }
           ]
         },
@@ -3557,9 +3557,9 @@ export const runtimeCatalog = {
             },
             {
               "network": "hyperliquid-testnet",
-              "stage": "planned",
+              "stage": "available",
               "environment": "testnet",
-              "chainId": null,
+              "chainId": "998",
               "declared": false,
               "mode": "unbound",
               "evidenceStatus": "planned",
@@ -3569,9 +3569,9 @@ export const runtimeCatalog = {
               "supportsReceipt": false,
               "supportsReconciliation": false,
               "supportedAssets": [
-                "USDC"
+                "HYPE"
               ],
-              "provider": null
+              "provider": "evm-hyperliquid-testnet"
             }
           ]
         }
@@ -3901,9 +3901,9 @@ export const runtimeCatalog = {
             },
             {
               "network": "hyperliquid-testnet",
-              "stage": "planned",
+              "stage": "available",
               "environment": "testnet",
-              "chainId": null,
+              "chainId": "998",
               "declared": false,
               "mode": "unbound",
               "evidenceStatus": "planned",
@@ -3913,9 +3913,9 @@ export const runtimeCatalog = {
               "supportsReceipt": false,
               "supportsReconciliation": false,
               "supportedAssets": [
-                "USDC"
+                "HYPE"
               ],
-              "provider": null
+              "provider": "evm-hyperliquid-testnet"
             }
           ]
         },
@@ -4234,9 +4234,9 @@ export const runtimeCatalog = {
             },
             {
               "network": "hyperliquid-testnet",
-              "stage": "planned",
+              "stage": "available",
               "environment": "testnet",
-              "chainId": null,
+              "chainId": "998",
               "declared": false,
               "mode": "unbound",
               "evidenceStatus": "planned",
@@ -4246,9 +4246,9 @@ export const runtimeCatalog = {
               "supportsReceipt": false,
               "supportsReconciliation": false,
               "supportedAssets": [
-                "USDC"
+                "HYPE"
               ],
-              "provider": null
+              "provider": "evm-hyperliquid-testnet"
             }
           ]
         }
@@ -4389,9 +4389,11 @@ export const runtimeCatalog = {
     {
       "id": "hyperliquid-testnet",
       "label": "Hyperliquid Testnet",
-      "family": "exchange",
-      "stage": "planned",
-      "environment": "testnet"
+      "family": "evm",
+      "stage": "available",
+      "environment": "testnet",
+      "chainId": "998",
+      "adapterId": "evm-hyperliquid-testnet"
     }
   ],
   "paymentRails": [
