@@ -7,10 +7,10 @@ const networks = [
   ["Ethereum", "https://ethereum.org/", "https://cdn.simpleicons.org/ethereum"],
   ["Arbitrum", "https://arbitrum.io/", "https://arbitrum.io/favicon.ico"],
   ["Base", "https://www.base.org/", "https://www.base.org/favicon.ico"],
-  ["Tempo", "https://docs.tempo.xyz/", "https://tempo.xyz/favicon.ico"],
+  ["Tempo", "https://docs.tempo.xyz/", "https://tempo.xyz/favicon.svg"],
   ["Zcash", "https://zcash.readthedocs.io/", "https://cdn.simpleicons.org/zcash"],
-  ["Hyperliquid", "https://hyperliquid.gitbook.io/hyperliquid-docs/", "https://app.hyperliquid.xyz/favicon.ico"],
-  ["Robinhood Chain", "https://docs.robinhood.com/chain/", "https://robinhood.com/favicon.ico"],
+  ["Hyperliquid", "https://hyperliquid.gitbook.io/hyperliquid-docs/", "https://hyperliquid.gitbook.io/hyperliquid-docs/~gitbook/icon?size=small&theme=light"],
+  ["Robinhood Chain", "https://docs.robinhood.com/chain/", "https://cdn.simpleicons.org/robinhood"],
 ] as const;
 
 function NetworkSet() {
@@ -32,9 +32,14 @@ function NetworkSet() {
             aria-hidden="true"
             className="h-7 w-7 object-contain"
             loading="lazy"
+            onLoad={(event) => {
+              if (event.currentTarget.naturalWidth === 0) {
+                event.currentTarget.src = "/assets/brand/privatedao-avatar-128.png";
+              }
+            }}
             onError={(event) => {
               event.currentTarget.onerror = null;
-              event.currentTarget.src = "/assets/brand/privatedao-avatar.svg";
+              event.currentTarget.src = "/assets/brand/privatedao-avatar-128.png";
             }}
           />
         </a>

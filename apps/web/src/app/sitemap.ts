@@ -16,7 +16,6 @@ const coreRoutes = [
   "/govern",
   "/auctions",
   "/agents",
-  "/pricing",
   "/investors",
   "/roadmap",
   "/whitepaper",
