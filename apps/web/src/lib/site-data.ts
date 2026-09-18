@@ -1416,12 +1416,12 @@ export const competitionTrackWorkspaces: CompetitionTrackWorkspace[] = [
     sponsorFit: [
       "Ranger main fit improves when all layers feel integrated: product, proof, trust, commercial, and operational.",
       "PrivateDAO now has enough surface area to read like a pre-mainnet startup, not a single-feature app.",
-      "The route architecture and story video make the startup case visible in under two minutes.",
+      "The route architecture and product story make the startup case visible in under two minutes.",
     ],
     validationSteps: [
       "Run `npm run verify:submission-registry` and `npm run verify:generated-artifacts` before submission freeze.",
       "Keep `/learn`, `/story`, `/dashboard`, `/services`, and `/proof/?judge=1` in the final review packet.",
-      "Use the README, investor deck viewer, and hosted video as one coherent bundle.",
+      "Use the README, investor surface, and product evidence as one coherent bundle.",
     ],
   },
   {

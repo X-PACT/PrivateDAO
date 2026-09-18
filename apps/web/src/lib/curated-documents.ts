@@ -1788,16 +1788,6 @@ const curatedDocuments: CuratedDocument[] = [
     docPath: "docs/colosseum-frontier-2026-operating-brief.md",
     rawHref: `${repositoryBlobBase}/docs/colosseum-frontier-2026-operating-brief.md`,
   },
-  {
-    slug: "product-overview-video",
-    title: "Product Overview Video Package",
-    category: "Strategy",
-    summary: "Canonical brief for the comprehensive product reel that explains everything PrivateDAO offers and why it is positioned to serve the ecosystem well.",
-    audience: "Judges, buyers, operators, content reviewers",
-    boundary: "Video brief and asset package only; it does not change the underlying proof or launch boundary documents.",
-    docPath: "docs/investor-video.md",
-    rawHref: `${repositoryBlobBase}/docs/investor-video.md`,
-  },
 ];
 
 export function getCuratedDocuments() {
