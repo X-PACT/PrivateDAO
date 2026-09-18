@@ -4,11 +4,11 @@ import Link from "next/link";
 import { LockKeyhole } from "lucide-react";
 
 import { LanguageSwitcher } from "@/components/language-switcher";
-import { useI18n } from "@/components/i18n-provider";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 const navItems = [
+  { href: "/products", label: "Solutions" },
   { href: "/thesis", label: "Thesis" },
   { href: "/whitepaper", label: "Whitepaper" },
   { href: "/token", label: "PDAO" },
@@ -16,8 +16,6 @@ const navItems = [
 ] as const;
 
 export function SiteHeader() {
-  const { copy } = useI18n();
-
   return (
     <header className="sticky top-0 z-40 border-b border-[#dce5f0] bg-white/95 backdrop-blur-xl">
       <div className="mx-auto flex w-full max-w-7xl items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:px-8">
@@ -30,7 +28,7 @@ export function SiteHeader() {
           </div>
           <div className="mt-1 hidden items-center gap-2 text-[11px] uppercase tracking-[0.24em] text-[#5d6d82] lg:flex">
             <LockKeyhole className="h-3.5 w-3.5 text-[#175cd3]" />
-            <span>{copy.chrome.createPrivateDaoTagline}</span>
+            <span>Private work. Trusted outcomes.</span>
           </div>
         </Link>
 

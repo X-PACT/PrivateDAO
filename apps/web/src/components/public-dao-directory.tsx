@@ -19,6 +19,11 @@ export function PublicDaoDirectory() {
   const [status, setStatus] = useState<"loading" | "ready" | "error">("loading");
 
   useEffect(() => {
+    if (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") {
+      setStatus("ready");
+      return;
+    }
+
     let cancelled = false;
 
     async function loadDirectory() {

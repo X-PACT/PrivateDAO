@@ -20,6 +20,7 @@ const coreRoutes = [
   "/investors",
   "/roadmap",
   "/whitepaper",
+  "/token",
   "/thesis",
   "/developers",
   "/security",
