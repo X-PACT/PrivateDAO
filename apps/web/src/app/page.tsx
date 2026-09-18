@@ -118,7 +118,7 @@ export default function HomePage() {
 
         <section className="grid gap-8 lg:grid-cols-2">
           <div><div className="text-[11px] font-bold uppercase tracking-[0.28em] text-[#175cd3]">How it works</div><h2 className="mt-3 text-3xl font-semibold tracking-[-0.04em] text-[#10233f]">One workflow from private input to trusted outcome.</h2></div>
-          <div className="grid gap-3 sm:grid-cols-2">{["Define the workflow", "Set access and approvals", "Execute privately", "Share the outcome"].map((step, index) => <div key={step} className="flex gap-3 rounded-[16px] border border-[#dce5f0] bg-[#f7f9fc] p-4"><span className="text-sm font-bold text-[#175cd3]">0{index + 1}</span><span className="text-sm font-semibold text-[#10233f]">{step}</span></div>)}</div>
+          <div className="grid gap-3 sm:grid-cols-2">{["Choose the solution", "Prepare policies and access", "Run the workflow", "Approve when ready", "Share the trusted outcome"].map((step, index) => <div key={step} className="flex gap-3 rounded-[16px] border border-[#dce5f0] bg-[#f7f9fc] p-4"><span className="text-sm font-bold text-[#175cd3]">0{index + 1}</span><span className="text-sm font-semibold text-[#10233f]">{step}</span></div>)}</div>
         </section>
 
         <section className="rounded-[20px] bg-[#10233f] px-6 py-10 text-white sm:px-10 sm:py-14">

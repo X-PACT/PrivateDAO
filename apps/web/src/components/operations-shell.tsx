@@ -69,6 +69,25 @@ export function OperationsShell({ eyebrow, title, description, navigationMode = 
             <img src="/assets/privatedao-brand-mark-20260918.jpeg" alt="" className="relative h-20 w-20 rounded-full object-cover shadow-[0_10px_26px_rgba(23,92,211,0.2)]" />
           </div>
         </div>
+        {!focused ? (
+          <div className="relative mt-8 border-t border-[#dce5f0] pt-5">
+            <div className="mb-3 text-[10px] font-bold uppercase tracking-[0.24em] text-[#7a8ba0]">A simple operating path</div>
+            <div className="grid gap-2 sm:grid-cols-5">
+              {[
+                ["01", "Choose a solution"],
+                ["02", "Set your policies"],
+                ["03", "Run the workflow"],
+                ["04", "Approve the outcome"],
+                ["05", "Share trusted evidence"],
+              ].map(([number, label]) => (
+                <div key={number} className="rounded-[12px] border border-[#dce5f0] bg-[#f7f9fc] px-3 py-3">
+                  <div className="text-[10px] font-bold text-[#175cd3]">{number}</div>
+                  <div className="mt-1 text-xs font-semibold leading-5 text-[#10233f]">{label}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        ) : null}
       </section>
 
       <div className="enterprise-operations-content mt-8 min-w-0 space-y-8">{children}</div>
