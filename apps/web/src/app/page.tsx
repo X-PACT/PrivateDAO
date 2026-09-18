@@ -4,6 +4,7 @@ import { Suspense } from "react";
 import { LegacyEntryBridge } from "@/components/legacy-entry-bridge";
 import { SimpleHomeHero } from "@/components/simple-home-hero";
 import { NetworkMarquee } from "@/components/network-marquee";
+import { OrganizationFitSelector } from "@/components/organization-fit-selector";
 import { buildBrandHomeMetadata } from "@/lib/route-metadata";
 
 export const metadata: Metadata = buildBrandHomeMetadata();
@@ -72,6 +73,8 @@ export default function HomePage() {
             ))}
           </div>
         </section>
+
+        <OrganizationFitSelector />
 
         <section id="products" className="space-y-10">
           <div className="max-w-3xl">
