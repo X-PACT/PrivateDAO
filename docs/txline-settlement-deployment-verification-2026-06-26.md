@@ -20,7 +20,7 @@ TxLINE Match Settlement is now positioned as a World Cup prediction-market settl
 - hidden payout policy remains private
 - the visible result becomes a reviewer-readable proof
 - the receipt path is prepared for Solana verification
-- the page explains the product in investor-simple language within the first screen and the 3-minute video slot
+- the page explains the product in investor-simple language within the first screen and the live workflow route
 
 Primary routes:
 
@@ -46,18 +46,9 @@ Mainnet balance observed during verification:
 
 No mainnet transaction was sent during this verification pass.
 
-## Video Artifact
+## Historical Visual Artifact
 
-Current product video:
-
-- source/output: `apps/web/public/videos/txline-settlement-demo-3min.mp4`
-- poster: `apps/web/public/videos/txline-settlement-demo-poster.png`
-- public mirror path: `/videos/txline-settlement-demo-3min.mp4`
-- format: MP4
-- resolution: 1280x720
-- duration: 88 seconds
-
-The video includes the World Cup hackathon visual, Brazil vs Morocco, fixture `17588386`, the official-source settlement story, private payout-policy proof, and the Solana receipt path.
+The video and poster previously referenced by this deployment note are retired and are not part of the current public product surface. The current review path is the live TxLINE workflow route and its evidence boundary. This document does not claim a current public video asset.
 
 ## Backend And Hosting State
 
@@ -97,7 +88,6 @@ Passed:
   - `Brazil vs Morocco`
   - fixture `17588386`
   - `Mainnet receipt path`
-  - TxLINE video asset path
   - World Cup logo asset path
 - local generated `/products/` checks for the six product lines
 - local Docker edge readiness check with host header
@@ -112,13 +102,13 @@ Browser checks:
 - `/products/` was a service-map bridge in the GitHub repo source; it is now a six-product page.
 - TxLINE UI previously displayed too much session detail; the guest JWT is no longer displayed in the visible UI.
 - the TxLINE settlement story now uses official fixture metadata instead of generic simulated match labels.
-- the generated video was replaced with a World Cup/TxLINE settlement video aligned to the bounty.
+- the former generated video reference was retired from the current commercial surface.
 - the primary-host Caddyfile now has an explicit `www.privatedao.org` permanent redirect block.
 - the live-service verifier no longer requires the currently selected RPC endpoint to equal one hardcoded QuickNode URL; it checks the multi-endpoint pool and provider readiness instead.
 
 ## Release Boundary
 
-This release is suitable for public product review as a TxLINE settlement product surface and video-backed workflow.
+This historical note is retained for provenance only. The current commercial surface is the live TxLINE settlement workflow and its evidence boundaries.
 
 Do not claim final live TxLINE mainnet settlement until:
 
