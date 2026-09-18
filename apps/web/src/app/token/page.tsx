@@ -34,6 +34,12 @@ export const metadata: Metadata = {
     type: "website",
     images: [{ url: `${siteUrl}/assets/token/pdao-token-logo.png`, width: 1024, height: 1024, alt: "PDAO" }],
   },
+  twitter: {
+    card: "summary_large_image",
+    title: "PDAO | PrivateDAO",
+    description: "Official PDAO community token facts and links.",
+    images: [`${siteUrl}/assets/token/pdao-token-logo.png`],
+  },
 };
 
 const tokenJsonLd = {
