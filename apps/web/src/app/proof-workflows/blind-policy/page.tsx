@@ -280,7 +280,7 @@ export default function BlindPolicyVerificationPage() {
             <ArrowRight className="h-4 w-4" />
           </a>
           <Link href="/payment-gate" className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
-            Try Payment Gate
+            Try a sample check
           </Link>
         </div>
       </section>

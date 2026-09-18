@@ -245,19 +245,19 @@ export function BlindPolicyDemo() {
                 <input value={organizationId} onChange={(event) => setOrganizationId(event.target.value)} className="rounded-2xl border border-white/10 bg-black/30 px-3 py-3 text-sm text-white outline-none focus:border-violet-200/60" />
               </label>
               <label className="grid gap-2 text-sm text-white/70">
-                Subject ID
+                Case reference
                 <input value={subjectId} onChange={(event) => setSubjectId(event.target.value)} className="rounded-2xl border border-white/10 bg-black/30 px-3 py-3 text-sm text-white outline-none focus:border-violet-200/60" />
               </label>
               <label className="grid gap-2 text-sm text-white/70">
-                Private record 1
+                Eligibility value
                 <input value={recordOne} onChange={(event) => setRecordOne(event.target.value)} inputMode="decimal" className="rounded-2xl border border-white/10 bg-black/30 px-3 py-3 text-sm text-white outline-none focus:border-violet-200/60" />
               </label>
               <label className="grid gap-2 text-sm text-white/70">
-                Private record 2
+                Capacity value
                 <input value={recordTwo} onChange={(event) => setRecordTwo(event.target.value)} inputMode="decimal" className="rounded-2xl border border-white/10 bg-black/30 px-3 py-3 text-sm text-white outline-none focus:border-violet-200/60" />
               </label>
               <label className="grid gap-2 text-sm text-white/70">
-                Private record 3
+                Outstanding obligations
                 <input value={recordThree} onChange={(event) => setRecordThree(event.target.value)} inputMode="decimal" className="rounded-2xl border border-white/10 bg-black/30 px-3 py-3 text-sm text-white outline-none focus:border-violet-200/60" />
               </label>
               <label className="grid gap-2 text-sm text-white/70">

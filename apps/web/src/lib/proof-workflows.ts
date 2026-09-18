@@ -163,9 +163,9 @@ export const blindPolicyVerificationPricing = [
     price: "$10,000 setup + $3,500/month",
     includes: [
       "1 private policy template",
-      "Groth16 proof generation",
-      "Public verification page",
-      "API status and verification endpoints",
+      "Private proof generation",
+      "Shareable verification page",
+      "Verification status and records",
       "2,500 blind policy proofs/month",
       "Pilot onboarding and policy mapping",
     ],
