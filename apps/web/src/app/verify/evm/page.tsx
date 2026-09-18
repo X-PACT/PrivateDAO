@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { EvmWalletSessionPanel } from "@/components/evm-wallet-session-panel";
 
 type ManifestEntry = {
   network: string;
@@ -64,5 +65,5 @@ export default function EvmVerificationPage() {
     void load();
   }, []);
 
-  return <main className="min-h-screen bg-[#05070b] px-4 py-16 text-white sm:px-6"><div className="mx-auto max-w-2xl rounded-3xl border border-white/10 bg-white/[0.035] p-6 shadow-2xl shadow-cyan-950/20 sm:p-9"><div className="text-xs font-semibold uppercase tracking-[0.24em] text-cyan-200/80">PrivateDAO public verification</div><h1 className="mt-4 text-3xl font-semibold tracking-tight">{state.title || "Checking verification"}</h1><p className="mt-4 text-sm leading-7 text-white/65">{state.message || "Reading the public on-chain record. Private inputs stay private."}</p>{state.details && <dl className="mt-7 grid gap-3 rounded-2xl border border-white/10 bg-black/20 p-4 text-sm sm:grid-cols-2">{Object.entries(state.details).map(([key, value]) => <div key={key}><dt className="text-white/45">{key}</dt><dd className="mt-1 break-all text-white/90">{value}</dd></div>)}</dl>}{state.explorer && <a className="mt-7 inline-flex rounded-xl bg-cyan-300 px-4 py-3 text-sm font-semibold text-slate-950" href={state.explorer} target="_blank" rel="noreferrer">View settlement transaction</a>}</div></main>;
+  return <main className="min-h-screen bg-[#05070b] px-4 py-16 text-white sm:px-6"><div className="mx-auto max-w-2xl rounded-3xl border border-white/10 bg-white/[0.035] p-6 shadow-2xl shadow-cyan-950/20 sm:p-9"><div className="text-xs font-semibold uppercase tracking-[0.24em] text-cyan-200/80">PrivateDAO public verification</div><h1 className="mt-4 text-3xl font-semibold tracking-tight">{state.title || "Checking verification"}</h1><p className="mt-4 text-sm leading-7 text-white/65">{state.message || "Reading the public on-chain record. Private inputs stay private."}</p>{state.details && <dl className="mt-7 grid gap-3 rounded-2xl border border-white/10 bg-black/20 p-4 text-sm sm:grid-cols-2">{Object.entries(state.details).map(([key, value]) => <div key={key}><dt className="text-white/45">{key}</dt><dd className="mt-1 break-all text-white/90">{value}</dd></div>)}</dl>}{state.explorer && <a className="mt-7 inline-flex rounded-xl bg-cyan-300 px-4 py-3 text-sm font-semibold text-slate-950" href={state.explorer} target="_blank" rel="noreferrer">View settlement transaction</a>}{<EvmWalletSessionPanel />}</div></main>;
 }
