@@ -70,9 +70,8 @@ export const metadata: Metadata = {
     "rights-notice": "/rights.txt",
     "ai-guide": "/judge-ai",
     "reviewer-entry": "/govern#live-dao",
-    "wallet-network": "Solana Mainnet",
     "product-surface":
-      "PrivateDAO lets organizations keep decisions, treasury intent, and proof workflows private while producing verifiable receipts.",
+      "PrivateDAO helps organizations keep payroll, treasury, governance, bids, and records private while making outcomes easier to trust.",
   },
 };
 

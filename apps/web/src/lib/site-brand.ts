@@ -3,35 +3,26 @@ import { supportedLocales } from "@/lib/i18n";
 export const siteName = "PrivateDAO";
 export const siteTitle = "PrivateDAO | Private work. Trusted outcomes.";
 export const siteDescription =
-  "PrivateDAO helps organizations run sensitive payroll, treasury, governance, transaction, and verification workflows with privacy and control.";
+  "PrivateDAO helps teams, institutions, governments, and financial organizations run sensitive payroll, treasury, governance, transaction, and verification workflows with privacy and control.";
 export const siteUrl = process.env.NEXT_PUBLIC_LIVE_SITE_URL?.replace(/\/+$/, "") ?? "https://privatedao.org";
 export const defaultOgImage = `${siteUrl}/assets/privatedao-brand-mark-20260918.jpeg`;
 
 export const siteKeywords = [
   "PrivateDAO",
   "Private DAO",
-  "private decision platform",
-  "verifiable records",
-  "proof workflows",
-  "private decisions",
-  "verifiable outcomes",
-  "audit-ready workflow",
+  "confidential payroll",
+  "private treasury",
+  "private governance",
+  "confidential auctions",
+  "blind verification",
+  "record verification",
+  "private organizational workflows",
+  "trusted business outcomes",
+  "enterprise privacy",
+  "secure approvals",
+  "private operations",
   "private governance",
   "treasury coordination",
-  "confidential coordination infrastructure",
-  "public receipt verification",
-  "evidence packages",
-  "policy-based claims",
-  "reviews and approvals",
-  "review committees",
-  "vendor reviews",
-  "confidential treasury",
-  "confidential treasury request",
-  "treasury policy",
-  "API integration",
-  "SDK integration",
-  "organization workflows",
-  "on-chain verification",
   "حوكمة خاصة",
   "تصويت خاص",
   "خزينة مشفرة",
