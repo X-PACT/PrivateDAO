@@ -5,7 +5,7 @@ export const siteTitle = "PrivateDAO | Private workflows. Trusted outcomes.";
 export const siteDescription =
   "PrivateDAO helps companies, institutions, governments, and financial teams run sensitive workflows privately while keeping the outcome clear and trusted.";
 export const siteUrl = process.env.NEXT_PUBLIC_LIVE_SITE_URL?.replace(/\/+$/, "") ?? "https://privatedao.org";
-export const defaultOgImage = `${siteUrl}/assets/privatedao-brand-mark-20260918.jpeg`;
+export const defaultOgImage = `${siteUrl}/assets/privatedao-social-card.png`;
 
 export const siteKeywords = [
   "PrivateDAO",
