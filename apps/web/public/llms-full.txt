@@ -39,6 +39,7 @@ Use the public product pages, proof routes, evidence manifest, and network capab
 ## Official links
 
 - Website: https://privatedao.org/
+- Public product brief: https://github.com/X-PACT/PrivateDAO-public
 - Products: https://privatedao.org/products/
 - Thesis: https://privatedao.org/thesis/
 - Whitepaper: https://privatedao.org/whitepaper/
