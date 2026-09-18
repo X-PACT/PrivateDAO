@@ -85,6 +85,56 @@ body::after {
   box-shadow: 0 12px 32px rgba(16, 35, 63, 0.06);
 }
 
+.enterprise-operations-content {
+  color: var(--navy);
+}
+
+.enterprise-operations-content [class*="border-white"] {
+  border-color: var(--line) !important;
+}
+
+.enterprise-operations-content [class*="bg-white/"] {
+  background: var(--surface) !important;
+}
+
+.enterprise-operations-content [class*="bg-black"],
+.enterprise-operations-content [class*="bg-[#"] {
+  background: var(--surface) !important;
+}
+
+.enterprise-operations-content [class*="bg-[linear-gradient"] {
+  background: #ffffff !important;
+}
+
+.enterprise-operations-content [class*="text-white/"] {
+  color: var(--muted) !important;
+}
+
+.enterprise-operations-content [class~="text-white"] {
+  color: var(--navy) !important;
+}
+
+.enterprise-operations-content [class*="text-cyan-"],
+.enterprise-operations-content [class*="text-emerald-"],
+.enterprise-operations-content [class*="text-violet-"],
+.enterprise-operations-content [class*="text-fuchsia-"] {
+  color: var(--cobalt) !important;
+}
+
+.enterprise-brand-orbit img {
+  animation: enterprise-brand-float 5s ease-in-out infinite;
+}
+
+@keyframes enterprise-brand-float {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-2deg);
+  }
+  50% {
+    transform: translateY(-8px) rotate(2deg);
+  }
+}
+
 .network-marquee {
   mask-image: linear-gradient(90deg, transparent, black 4%, black 96%, transparent);
 }
