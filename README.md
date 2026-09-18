@@ -1,7 +1,7 @@
 <!-- SPDX-License-Identifier: AGPL-3.0-or-later -->
 # PrivateDAO
 
-> **Open-source review notice:** PrivateDAO keeps applicable source available for review, contribution, security work, and ecosystem collaboration. Licenses, brand rights, official deployments, and commercial packaging remain governed by [`NOTICE.md`](NOTICE.md) and [`TERMS_OF_REVIEW.md`](TERMS_OF_REVIEW.md).
+> **Repository access notice:** PrivateDAO source access is governed by the current X-PACT repository visibility and permissions. Licenses, brand rights, official deployments, and commercial packaging remain governed by [`NOTICE.md`](NOTICE.md) and [`TERMS_OF_REVIEW.md`](TERMS_OF_REVIEW.md).
 
 <p align="center">
   <a href="https://privatedao.org/" target="_blank">

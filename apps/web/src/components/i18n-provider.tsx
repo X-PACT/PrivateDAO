@@ -55,7 +55,16 @@ function resolveExplicitBrowserLocale(): SupportedLocale {
     const hasExplicitSelection = window.localStorage.getItem(localeExplicitStorageKey) === "1";
     if (!hasExplicitSelection) {
       window.localStorage.removeItem(localeStorageKey);
-      return defaultLocale;
+      const browserCandidates = [
+        ...(Array.isArray(window.navigator.languages) ? window.navigator.languages : []),
+        window.navigator.language,
+      ]
+        .filter(Boolean)
+        .flatMap((value) => [value.toLowerCase(), value.split("-")[0]?.toLowerCase()])
+        .filter((value): value is string => Boolean(value));
+
+      const browserLocale = browserCandidates.find((value): value is SupportedLocale => isSupportedLocale(value));
+      return browserLocale ?? defaultLocale;
     }
 
     return resolveLocale(window.localStorage.getItem(localeStorageKey));
