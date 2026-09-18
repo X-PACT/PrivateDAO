@@ -56,8 +56,8 @@ closure is still missing. No item is marked complete from intent alone.
 | 40 | DONE | Roadmap and investor materials include product and capital-development paths. |
 | 41 | DONE | Commercial pages do not lead with engineering disclaimers. |
 | 42 | PARTIAL | MCP resources exist in developer/runtime material; independent external MCP interoperability is not claimed. |
-| 43 | PARTIAL | Agent discovery and runtime are live; marketplace visual/product convergence remains an independent surface. |
-| 44 | PARTIAL | Agent Card is live and branded; full visual parity with the commercial site is not verified here. |
+| 43 | PARTIAL | Agent discovery and runtime are live; the external `/marketplace` route is 404 and the exchange currently exposes `/connect` plus machine-readable service discovery. |
+| 44 | PARTIAL | Agent Card is live and branded; the external `/connect` UI is a dark developer surface, not yet White/Navy/Cobalt parity with the commercial site. |
 | 45 | DONE | `X-PACT/PrivateDAO` is the private canonical source repository. |
 | 46 | DONE | Public docs-only repository exists at `X-PACT/PrivateDAO-public`; no source or secrets included. |
 | 47 | DONE | Public repository exposes a safe release representation, not private commit history. |
@@ -87,6 +87,10 @@ closure is still missing. No item is marked complete from intent alone.
    source metadata, image URLs, content types, and live HTML are verified.
 3. `PARTIAL` network and Agent items are intentionally not represented as
    universal mainnet capability claims.
+4. The external Agents service was browser-checked on desktop and mobile:
+   `/connect` returned 200 with no page errors on mobile, while desktop had a
+   single 404 resource response; `/marketplace` returned 404. Its source is
+   outside the canonical web repository, so no speculative edit was made.
 
 ## Verification Commands
 
