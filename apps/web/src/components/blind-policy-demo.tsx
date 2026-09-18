@@ -236,8 +236,8 @@ export function BlindPolicyDemo() {
             </p>
             <div className="mt-4 rounded-2xl border border-cyan-300/18 bg-cyan-300/[0.07] px-4 py-3 text-sm leading-6 text-cyan-50/82">
               {localExecutionMode
-                ? "Local execution active: private inputs, witness generation, and Groth16 proving stay inside this deployment."
-                : "Hosted demo mode: connect this workflow to a customer Private Engine for production private-data processing."}
+                ? "Private processing is active inside this deployment. Only the approved outcome is prepared for sharing."
+                : "Hosted demo mode: connect this workflow to your organization for private-data processing."}
             </div>
             <div className="mt-5 grid gap-3 sm:grid-cols-2">
               <label className="grid gap-2 text-sm text-white/70">
@@ -271,7 +271,7 @@ export function BlindPolicyDemo() {
             </div>
             <button type="button" onClick={runBlindPolicy} disabled={running} className={cn(buttonVariants({ size: "sm" }), "mt-5")}>
               <Play className="h-4 w-4" />
-              {running ? "Running..." : "Run Blind Policy"}
+              {running ? "Running..." : "Run policy check"}
             </button>
           </div>
 
@@ -279,10 +279,10 @@ export function BlindPolicyDemo() {
             {[
               ["1. Create Policy", "The private policy is selected without exposing thresholds."],
               ["2. Execute Workflow", "Sensitive values are entered and evaluated."],
-              ["3. Generate Blind Proof", "Groth16 produces a public proof package."],
-              ["4. Verify", "The verifier recomputes the package and checks the proof."],
-              ["5. Store Receipt", "The proof hash and commitments are written to Solana."],
-              ["6. Open Explorer", "The receipt transaction can be opened by any third party."],
+              ["3. Prepare the outcome", "The private checks are completed without exposing the inputs."],
+              ["4. Confirm", "The result is checked against the agreed policy."],
+              ["5. Issue the record", "A shareable verification record is prepared."],
+              ["6. Share", "The right audience can verify the result without receiving private data."],
             ].map(([label, body], index) => (
               <div key={label} className="grid grid-cols-[auto_1fr] gap-3 rounded-2xl border border-white/10 bg-black/22 p-4">
                 <div className="flex h-8 w-8 items-center justify-center rounded-full border border-violet-200/22 bg-violet-300/[0.1] text-sm text-violet-50">
@@ -321,7 +321,7 @@ export function BlindPolicyDemo() {
             <ShieldCheck className="h-4 w-4" />
             Policy satisfied
           </div>
-          <h2 className="mt-3 text-2xl font-semibold text-white">Blind policy proof issued.</h2>
+          <h2 className="mt-3 text-2xl font-semibold text-white">Verified outcome ready to share.</h2>
           <div className="mt-4 grid gap-3">
             {[
               "Customer or case data was accepted by the workflow.",
@@ -367,7 +367,7 @@ export function BlindPolicyDemo() {
               {showTechnicalDetails ? "Hide technical details" : "Show technical details"}
             </button>
             <button type="button" onClick={storeReceiptOnSolana} disabled={anchoring} className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
-              {anchoring ? "Storing receipt..." : "Store receipt on Solana"}
+              {anchoring ? "Preparing record..." : "Complete verification record"}
             </button>
           </div>
           {onchainReceipt ? (

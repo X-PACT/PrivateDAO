@@ -136,6 +136,9 @@ export default function BlindPolicyVerificationPage() {
         <BlindPolicyDemo />
       </section>
 
+      <details className="enterprise-advanced-details rounded-[24px] border border-[#dce5f0] bg-[#f7f9fc] p-5 sm:p-6">
+        <summary className="cursor-pointer text-sm font-semibold text-[#10233f]">For technical reviewers</summary>
+        <div className="mt-5 space-y-8">
       <section className="rounded-[28px] border border-emerald-300/16 bg-emerald-300/[0.06] p-5 sm:p-6">
         <div className="text-[11px] uppercase tracking-[0.25em] text-emerald-100/76">What is cryptographically real today</div>
         <h2 className="mt-3 text-2xl font-semibold text-white">Groth16 is the live proof system.</h2>
@@ -239,6 +242,9 @@ export default function BlindPolicyVerificationPage() {
           </div>
         </article>
       </section>
+
+      </div>
+      </details>
 
       <section className="rounded-[28px] border border-white/10 bg-white/[0.035] p-5 sm:p-6">
         <div className="text-[11px] uppercase tracking-[0.25em] text-white/42">Use cases</div>
