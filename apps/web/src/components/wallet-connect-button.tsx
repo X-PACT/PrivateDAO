@@ -8,6 +8,7 @@ import { useWalletModal } from "@solana/wallet-adapter-react-ui";
 import { Check, ChevronDown, Copy, ExternalLink, LogOut, QrCode, ShieldCheck, Wallet } from "lucide-react";
 
 import { type ButtonProps, buttonVariants } from "@/components/ui/button";
+import { SOLANA_NETWORK_LABEL } from "@/lib/solana-network";
 import { cn } from "@/lib/utils";
 
 type WalletConnectButtonProps = {
@@ -240,7 +241,7 @@ export function WalletConnectButton({
               Account: <span className="text-white">{connectedAccountLabel}</span>
             </div>
             <div>
-              Network: <span className="text-white">Solana Mainnet</span>
+              Network: <span className="text-white">Solana {SOLANA_NETWORK_LABEL}</span>
             </div>
           </div>
           <button
@@ -282,7 +283,7 @@ export function WalletConnectButton({
             <div className="flex items-start justify-between gap-4">
               <div>
                 <div className="text-[11px] uppercase tracking-[0.24em] text-white/44">Wallet-first connect</div>
-                <h3 className="mt-3 text-2xl font-semibold text-white">Choose a Solana Mainnet wallet</h3>
+                <h3 className="mt-3 text-2xl font-semibold text-white">Choose a supported wallet</h3>
                 <p className="mt-3 text-sm leading-7 text-white/62">
                   Wallets are auto-detected in this browser. Select any detected wallet, open the full Solana wallet modal, or scan the session QR from mobile. The flow is always review first, sign second, verify third.
                 </p>
@@ -306,7 +307,7 @@ export function WalletConnectButton({
                 </div>
                 <div className="mt-3 grid gap-2 text-sm text-white/72 sm:grid-cols-2">
                   <div>1. Pick a wallet or scan the mobile session QR.</div>
-                  <div>2. Confirm the wallet is on Solana Mainnet.</div>
+                  <div>2. Confirm the wallet is on Solana {SOLANA_NETWORK_LABEL}.</div>
                   <div>3. Review DAO action, privacy policy, and proof route.</div>
                   <div>4. Sign, return, and verify the receipt from the app.</div>
                 </div>
@@ -321,12 +322,12 @@ export function WalletConnectButton({
                     PrivateDAO never asks for a seed phrase or private key.
                   </div>
                   <div className="rounded-xl border border-cyan-300/15 bg-cyan-300/[0.07] px-3 py-2">
-                    Wallet warnings should show a normal connection/sign request for this domain and Solana Mainnet.
+                    Wallet warnings should show a normal connection/sign request for this domain and Solana {SOLANA_NETWORK_LABEL}.
                   </div>
                 </div>
                 <div className="mt-3 grid gap-2 text-xs text-white/60 sm:grid-cols-3">
                   <div className="rounded-xl border border-emerald-300/15 bg-emerald-300/[0.08] px-3 py-2">
-                    Active network: <span className="text-white">Solana Mainnet</span>
+                    Active network: <span className="text-white">Solana {SOLANA_NETWORK_LABEL}</span>
                   </div>
                   <div className="rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2">
                     Device mode: <span className="text-white">{isMobileViewport ? "Mobile browser" : "Desktop browser"}</span>
@@ -442,7 +443,7 @@ export function WalletConnectButton({
                 Mobile QR connect
               </div>
               <div className="mt-2 text-sm leading-7 text-white/72">
-                Scan to open this exact PrivateDAO session in a mobile wallet browser, then connect on Solana Mainnet and sign the same review-first flow.
+                Scan to open this exact PrivateDAO session in a mobile wallet browser, then connect on Solana {SOLANA_NETWORK_LABEL} and sign the same review-first flow.
               </div>
               {sessionUrl ? (
                 <div className="mt-3 flex flex-wrap items-center gap-4">
