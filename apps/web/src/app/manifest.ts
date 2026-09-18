@@ -15,12 +15,12 @@ export default function manifest(): MetadataRoute.Manifest {
     orientation: "any",
     icons: [
       {
-        src: "/assets/logo.png",
+        src: "/assets/privatedao-brand-mark-20260918.jpeg",
         sizes: "512x512",
         type: "image/png",
       },
       {
-        src: "/assets/logo.png",
+        src: "/assets/privatedao-brand-mark-20260918.jpeg",
         sizes: "1024x1024",
         type: "image/jpeg",
       },

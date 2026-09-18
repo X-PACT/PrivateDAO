@@ -1,3 +1,5 @@
+"use client";
+
 /* eslint-disable @next/next/no-img-element -- tiny third-party brand marks stay unoptimized to keep the ticker lightweight. */
 
 const networks = [
@@ -24,7 +26,17 @@ function NetworkSet() {
           title={name}
           className="inline-flex h-10 w-14 items-center justify-center rounded-full border border-[#dce5f0] bg-white px-3 transition hover:border-[#175cd3] hover:shadow-[0_4px_14px_rgba(23,92,211,0.12)]"
         >
-          <img src={logo} alt="" aria-hidden="true" className="h-5 w-5 object-contain" loading="lazy" />
+          <img
+            src={logo}
+            alt=""
+            aria-hidden="true"
+            className="h-5 w-5 object-contain"
+            loading="lazy"
+            onError={(event) => {
+              event.currentTarget.onerror = null;
+              event.currentTarget.src = "/assets/brand/privatedao-avatar.svg";
+            }}
+          />
         </a>
       ))}
     </div>

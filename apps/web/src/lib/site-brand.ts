@@ -45,7 +45,7 @@ export function buildOrganizationJsonLd() {
     name: siteName,
     alternateName: ["Private DAO"],
     url: siteUrl,
-    logo: `${siteUrl}/assets/logo.png`,
+    logo: `${siteUrl}/assets/privatedao-brand-mark-20260918.jpeg`,
     sameAs: [
       "https://github.com/X-PACT/PrivateDAO",
       "https://www.youtube.com/@privatedao",

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowUpRight, GitBranch, ShieldCheck } from "lucide-react";
+import { ArrowRight, ShieldCheck } from "lucide-react";
 
 import { OperationsShell } from "@/components/operations-shell";
 import { buttonVariants } from "@/components/ui/button";
@@ -15,97 +15,64 @@ export const metadata: Metadata = buildRouteMetadata({
   keywords: ["PrivateDAO thesis", "coordination thesis", "DAO coordination", "confidential coordination infrastructure"],
 });
 
-const thesisSections = [
-  ["Before governance", "Proposal context, reviewer notes, security concerns, contributor negotiations, and treasury options often move through informal private channels."],
-  ["During governance", "Visible vote counts, whale behavior, and public momentum can influence independent decision making before the voting window ends."],
-  ["After governance", "Execution, payroll, vendor settlement, audit packets, and organizational memory are usually scattered across trusted operators and private spreadsheets."],
+const buyerGroups = [
+  ["Growing teams", "Keep payroll, approvals, and sensitive records controlled as the organization moves beyond a handful of operators."],
+  ["Organizations and markets", "Coordinate treasury decisions, bids, and governance without exposing sensitive intent too early."],
+  ["Public institutions", "Preserve private working information while making the final outcome easier to review and trust."],
 ] as const;
 
-const operatingLayers = [
-  ["Governance", "Vote privately while it matters, reveal transparently when it counts."],
-  ["Treasury", "Coordinate sensitive budget requests and execution receipts without leaking strategy before approval."],
-  ["Payroll", "Route contributor compensation and reward workflows without turning salary coordination into public pressure."],
-  ["Auctions", "Collect private offers, decide fairly, and publish a result that participants can verify."],
-  ["Security", "Coordinate incident response before disclosure while preserving a verifiable final record."],
-  ["Agents", "Let AI-assisted workflows propose, prepare, and summarize decisions without owning authority."],
+const outcomes = [
+  ["Private by default", "Sensitive inputs stay with the people and policies that need them."],
+  ["Clear responsibility", "Approvals and decisions follow an understandable operating path."],
+  ["Trusted outcomes", "The organization can share the result without handing over every private detail."],
 ] as const;
 
 export default function ThesisPage() {
   return (
     <OperationsShell
       eyebrow="The Coordination Thesis"
-      title="The least decentralized part of every DAO is everything before and after the vote."
-      description="PrivateDAO exists because organizations need secure coordination, not only voting. The real infrastructure layer is the confidential path from context to approval to execution to audit."
+      title="Organizations should not have to expose their working data to prove that work was done properly."
+      description="PrivateDAO gives companies, institutions, governments, and financial teams a simple way to run sensitive workflows with privacy and accountability in the same process."
       navigationMode="guided"
       badges={[
-        { label: "Coordination thesis", variant: "cyan" },
-        { label: "Before and after governance", variant: "success" },
-        { label: "Solana organizations", variant: "violet" },
+        { label: "Enterprise privacy", variant: "cyan" },
+        { label: "Operational control", variant: "success" },
+        { label: "Verifiable outcomes", variant: "violet" },
       ]}
     >
-      <section className="rounded-[30px] border border-emerald-300/18 bg-[radial-gradient(circle_at_top_left,rgba(20,241,149,0.16),transparent_34%),linear-gradient(135deg,rgba(7,13,26,0.98),rgba(4,7,18,0.98))] p-5 sm:p-7">
-        <div className="flex items-center gap-3 text-emerald-100">
-          <GitBranch className="h-5 w-5" />
-          <span className="text-[11px] uppercase tracking-[0.28em]">Core thesis</span>
-        </div>
-        <h1 className="mt-4 max-w-5xl text-3xl font-semibold tracking-[-0.045em] text-white sm:text-5xl">
-          Voting is visible. Coordination is where organizations actually break.
-        </h1>
-        <p className="mt-4 max-w-4xl text-base leading-8 text-white/68">
-          Public governance is useful, but the work around it is messy: private context, political pressure, treasury
-          routing, reviewer bias, payroll friction, incident response, and memory loss. PrivateDAO turns that hidden
-          operating layer into a confidential, auditable workflow.
-        </p>
-        <div className="mt-6 flex flex-wrap gap-3">
-          <Link href="/try" className={cn(buttonVariants({ size: "sm" }))}>
-            Try the workflow
-            <ArrowUpRight className="h-4 w-4" />
-          </Link>
-          <Link href="/investors" className={cn(buttonVariants({ size: "sm", variant: "secondary" }))}>
-            Investor overview
-          </Link>
-          <Link href="/investors" className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
-            Investor page
-          </Link>
-        </div>
-      </section>
-
-      <section className="grid gap-4 lg:grid-cols-3">
-        {thesisSections.map(([title, body]) => (
-          <article key={title} className="rounded-[28px] border border-white/10 bg-white/[0.035] p-5 sm:p-6">
-            <h2 className="text-xl font-semibold text-white">{title}</h2>
-            <p className="mt-3 text-sm leading-7 text-white/64">{body}</p>
-          </article>
-        ))}
-      </section>
-
-      <section className="rounded-[28px] border border-cyan-300/16 bg-cyan-300/[0.06] p-5 sm:p-6">
+      <section className="enterprise-card rounded-[24px] p-6 sm:p-8">
         <div className="flex items-start gap-3">
-          <ShieldCheck className="mt-1 h-5 w-5 shrink-0 text-cyan-100" />
+          <ShieldCheck className="mt-1 h-5 w-5 shrink-0 text-[#175cd3]" />
           <div>
-            <h2 className="text-2xl font-semibold text-white">Public accountability. Private coordination.</h2>
-            <p className="mt-3 max-w-4xl text-sm leading-7 text-white/66">
-              PrivateDAO does not argue that organizations should hide final outcomes. It argues that people should be
-              able to coordinate, review, and vote independently before the outcome is ready to be revealed.
-            </p>
+            <div className="text-[11px] font-bold uppercase tracking-[0.25em] text-[#175cd3]">Why this matters</div>
+            <h2 className="mt-3 max-w-4xl text-2xl font-semibold tracking-[-0.03em] text-[#10233f] sm:text-4xl">Privacy is not the opposite of accountability.</h2>
+            <p className="mt-4 max-w-4xl text-base leading-8 text-[#5d6d82]">It is the operating condition that lets people make honest decisions, protect commercial information, and still give the right audience confidence in the result.</p>
           </div>
         </div>
       </section>
 
-      <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-        {operatingLayers.map(([title, body]) => (
-          <article key={title} className="rounded-[24px] border border-white/10 bg-black/24 p-5">
-            <div className="text-lg font-semibold text-white">{title}</div>
-            <p className="mt-3 text-sm leading-7 text-white/62">{body}</p>
+      <section className="grid gap-4 lg:grid-cols-3">
+        {buyerGroups.map(([title, body]) => (
+          <article key={title} className="enterprise-card rounded-[20px] p-5 sm:p-6">
+            <h2 className="text-xl font-semibold text-[#10233f]">{title}</h2>
+            <p className="mt-3 text-sm leading-7 text-[#5d6d82]">{body}</p>
           </article>
         ))}
       </section>
 
-      <section className="rounded-[28px] border border-violet-300/16 bg-violet-300/[0.06] p-5 sm:p-6">
-        <div className="text-[11px] uppercase tracking-[0.25em] text-violet-100/76">Infrastructure claim</div>
-        <p className="mt-3 text-2xl font-semibold tracking-[-0.03em] text-white">
-          PrivateDAO is the coordination layer for organizations that need privacy before execution and proof after execution.
-        </p>
+      <section className="rounded-[24px] bg-[#10233f] p-6 text-white sm:p-8">
+        <div className="text-[11px] font-bold uppercase tracking-[0.25em] text-[#9fc7ff]">What changes</div>
+        <h2 className="mt-3 max-w-3xl text-2xl font-semibold tracking-[-0.03em] sm:text-4xl">The customer sees a workflow. The complexity stays behind it.</h2>
+        <div className="mt-6 grid gap-3 md:grid-cols-3">
+          {outcomes.map(([title, body]) => <div key={title} className="rounded-[16px] border border-white/15 bg-white/10 p-4"><div className="font-semibold">{title}</div><p className="mt-2 text-sm leading-6 text-[#d5e2f3]">{body}</p></div>)}
+        </div>
+      </section>
+
+      <section className="enterprise-card rounded-[24px] p-6 sm:p-8">
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <div><div className="text-[11px] font-bold uppercase tracking-[0.25em] text-[#175cd3]">Start with one workflow</div><h2 className="mt-3 text-2xl font-semibold text-[#10233f]">See where privacy creates the most value for your organization.</h2></div>
+          <Link href="/contact" className={cn(buttonVariants({ size: "sm" }))}>Talk to PrivateDAO <ArrowRight className="h-4 w-4" /></Link>
+        </div>
       </section>
     </OperationsShell>
   );

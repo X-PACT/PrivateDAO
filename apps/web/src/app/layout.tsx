@@ -30,13 +30,13 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/",
   },
-  applicationName: siteName,
-  icons: {
-    icon: [
-      { url: "/assets/logo.png", type: "image/jpeg" },
+    applicationName: siteName,
+    icons: {
+      icon: [
+      { url: "/assets/privatedao-brand-mark-20260918.jpeg", type: "image/jpeg" },
       { url: "/favicon.ico", type: "image/x-icon" },
-    ],
-    apple: [{ url: "/assets/logo.png", type: "image/jpeg" }],
+      ],
+    apple: [{ url: "/assets/privatedao-brand-mark-20260918.jpeg", type: "image/jpeg" }],
   },
   category: "technology",
   openGraph: {

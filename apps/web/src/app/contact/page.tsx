@@ -10,128 +10,69 @@ import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = buildRouteMetadata({
   title: "Contact",
-  description:
-    "Contact PrivateDAO for proof workflow pilots, private governance, treasury coordination, bank transfer invoices, crypto activation, and enterprise deployments.",
+  description: "Talk to PrivateDAO about keeping sensitive organizational work private and trusted.",
   path: "/contact",
-  keywords: ["PrivateDAO contact", "PrivateDAO pilot", "PrivateDAO pricing", "PrivateDAO enterprise"],
+  keywords: ["PrivateDAO contact", "private workflow", "enterprise privacy"],
 });
 
 const contacts = [
-  {
-    label: "Telegram",
-    value: "@privateDAOOS",
-    href: "https://t.me/privateDAOOS",
-    icon: Send,
-  },
-  {
-    label: "Founder Telegram",
-    value: "@Fahdkotb",
-    href: "https://t.me/Fahdkotb",
-    icon: Send,
-  },
-  {
-    label: "X",
-    value: "@privateDAOOS",
-    href: "https://x.com/privateDAOOS",
-    icon: ArrowRight,
-  },
-  {
-    label: "Verified PDAO holders",
-    value: "Private community",
-    href: VERIFIED_PDAO_HOLDERS_URL,
-    icon: Send,
-  },
-  {
-    label: "Primary email",
-    value: "Fahd.kotb@tuta.io",
-    href: "mailto:Fahd.kotb@tuta.io?subject=PrivateDAO%20commercial%20pilot",
-    icon: Mail,
-  },
-  {
-    label: "Business email",
-    value: "Fahdkotb.8888@gmail.com",
-    href: "mailto:Fahdkotb.8888@gmail.com?subject=PrivateDAO%20commercial%20pilot",
-    icon: Mail,
-  },
-  {
-    label: "Security / enterprise",
-    value: "I.Kotb@proton.me",
-    href: "mailto:I.Kotb@proton.me?subject=PrivateDAO%20enterprise%20or%20security",
-    icon: Mail,
-  },
+  ["Telegram", "@privateDAOOS", "https://t.me/privateDAOOS", Send],
+  ["Founder Telegram", "@Fahdkotb", "https://t.me/Fahdkotb", Send],
+  ["X", "@privateDAOOS", "https://x.com/privateDAOOS", ArrowRight],
+  ["PDAO community", "Verified holders", VERIFIED_PDAO_HOLDERS_URL, Send],
+  ["Commercial email", "Fahd.kotb@tuta.io", "mailto:Fahd.kotb@tuta.io?subject=PrivateDAO%20commercial%20conversation", Mail],
+  ["Enterprise email", "I.Kotb@proton.me", "mailto:I.Kotb@proton.me?subject=PrivateDAO%20enterprise%20conversation", Mail],
 ] as const;
 
 export default function ContactPage() {
   return (
     <OperationsShell
       eyebrow="Contact"
-      title="Start a pilot, activate a plan, or request a private deployment."
-      description="Use this page for proof workflow pilots, private governance rooms, treasury coordination, bank transfer invoices, crypto activation, and enterprise deployments."
+      title="Tell us what needs to stay private."
+      description="PrivateDAO works with teams of five, growing organizations, institutions, governments, and financial operations that need a clearer way to coordinate sensitive work."
       navigationMode="guided"
       badges={[
-        { label: "Bank transfer", variant: "cyan" },
-        { label: "Crypto activation", variant: "success" },
-        { label: "Enterprise deployment", variant: "violet" },
+        { label: "Teams of five or more", variant: "cyan" },
+        { label: "Organizations and markets", variant: "success" },
+        { label: "Private deployment", variant: "violet" },
       ]}
     >
       <section className="grid gap-4 lg:grid-cols-3">
         {[
-          ["Request Pilot", "Map one real workflow, room, or treasury approval path and prove it with a public verification package.", "/pilots"],
-          ["View Pricing", "Choose Starter, Business, Enterprise, fixed-scope pilot, or paid add-ons for intelligence and proof capacity.", "/pricing"],
-          ["Security", "Review the encryption, data isolation, audit trail, infrastructure, and verification model before procurement.", "/security"],
+          ["Payroll and people", "Keep salary information private while giving the people who need to approve and review it a clear path.", "/payroll"],
+          ["Treasury and decisions", "Coordinate spending, governance, and approvals without publishing sensitive intent too early.", "/treasury"],
+          ["Bids and evidence", "Run private offers or create a shareable verification outcome without exposing the original record.", "/auctions"],
         ].map(([title, body, href]) => (
-          <Link key={title} href={href} className="rounded-[28px] border border-white/10 bg-white/[0.035] p-5 transition hover:border-cyan-200/35 hover:bg-cyan-300/[0.05]">
-            <div className="text-base font-semibold text-white">{title}</div>
-            <p className="mt-3 text-sm leading-7 text-white/62">{body}</p>
-            <span className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-cyan-100">
-              Open <ArrowRight className="h-4 w-4" />
-            </span>
+          <Link key={title} href={href} className="enterprise-card rounded-[20px] p-5 transition hover:-translate-y-0.5 hover:border-[#175cd3]">
+            <div className="text-base font-semibold text-[#10233f]">{title}</div>
+            <p className="mt-3 text-sm leading-7 text-[#5d6d82]">{body}</p>
+            <span className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-[#175cd3]">Open <ArrowRight className="h-4 w-4" /></span>
           </Link>
         ))}
       </section>
 
-      <section className="rounded-[28px] border border-emerald-300/16 bg-emerald-300/[0.06] p-5 sm:p-6">
-        <div className="text-[11px] uppercase tracking-[0.25em] text-emerald-100/76">Payment paths</div>
-        <h2 className="mt-3 text-2xl font-semibold text-white">Bank transfer and crypto activation are both supported.</h2>
+      <section className="enterprise-card rounded-[24px] p-6 sm:p-8">
+        <div className="text-[11px] font-bold uppercase tracking-[0.25em] text-[#175cd3]">A simple first conversation</div>
+        <h2 className="mt-3 text-2xl font-semibold text-[#10233f]">Bring one workflow. We will help you map the right private process.</h2>
         <div className="mt-5 grid gap-3 lg:grid-cols-2">
-          <div className="rounded-2xl border border-white/10 bg-black/22 p-4">
-            <div className="text-sm font-semibold text-white">Bank transfer</div>
-            <p className="mt-2 text-sm leading-6 text-white/62">
-              Request an invoice and bank transfer instructions for pilots, monthly plans, or private deployment.
-            </p>
-          </div>
-          <div className="rounded-2xl border border-white/10 bg-black/22 p-4">
-            <div className="text-sm font-semibold text-white">Crypto transfer</div>
-            <p className="mt-2 text-sm leading-6 text-white/62">
-              Activate from the pricing page using USDC, SOL, ETH, BTC, WBTC, ZEC, USDT, or DAI, then submit the transaction hash.
-            </p>
-          </div>
+          <div className="rounded-2xl border border-[#dce5f0] bg-[#f7f9fc] p-4"><div className="text-sm font-semibold text-[#10233f]">What should stay private?</div><p className="mt-2 text-sm leading-6 text-[#5d6d82]">Payroll, treasury intent, bids, member decisions, or records that should not become public.</p></div>
+          <div className="rounded-2xl border border-[#dce5f0] bg-[#f7f9fc] p-4"><div className="text-sm font-semibold text-[#10233f]">Who needs confidence in the result?</div><p className="mt-2 text-sm leading-6 text-[#5d6d82]">Your team, an auditor, a board, a partner, a regulator, or a wider community.</p></div>
         </div>
         <div className="mt-5 flex flex-wrap gap-3">
-          <Link href="/pricing#commercial-checkout" className={cn(buttonVariants({ size: "sm" }))}>
-            Open Activation
-          </Link>
-          <a href="mailto:Fahd.kotb@tuta.io?subject=PrivateDAO%20bank%20transfer%20invoice" className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
-            Request Invoice
-          </a>
+          <a href="mailto:Fahd.kotb@tuta.io?subject=PrivateDAO%20commercial%20conversation" className={cn(buttonVariants({ size: "sm" }))}>Email PrivateDAO</a>
+          <Link href="/thesis" className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>Read the thesis</Link>
         </div>
       </section>
 
-      <section className="rounded-[28px] border border-white/10 bg-white/[0.035] p-5 sm:p-6">
-        <div className="text-[11px] uppercase tracking-[0.25em] text-white/44">Official channels</div>
+      <section className="enterprise-card rounded-[24px] p-5 sm:p-6">
+        <div className="text-[11px] font-bold uppercase tracking-[0.25em] text-[#175cd3]">Official channels</div>
         <div className="mt-5 grid gap-3 lg:grid-cols-3">
-          {contacts.map((contact) => {
-            const Icon = contact.icon;
-            return (
-              <a key={contact.href} href={contact.href} className="rounded-2xl border border-white/10 bg-black/22 p-4 transition hover:border-cyan-200/35">
-                <div className="flex items-center gap-2 text-sm font-semibold text-white">
-                  <Icon className="h-4 w-4 text-cyan-100" />
-                  {contact.label}
-                </div>
-                <div className="mt-2 break-all text-sm text-white/62">{contact.value}</div>
-              </a>
-            );
-          })}
+          {contacts.map(([label, value, href, Icon]) => (
+            <a key={href} href={href} className="rounded-2xl border border-[#dce5f0] bg-[#f7f9fc] p-4 transition hover:border-[#175cd3]">
+              <div className="flex items-center gap-2 text-sm font-semibold text-[#10233f]"><Icon className="h-4 w-4 text-[#175cd3]" />{label}</div>
+              <div className="mt-2 break-all text-sm text-[#5d6d82]">{value}</div>
+            </a>
+          ))}
         </div>
       </section>
     </OperationsShell>
