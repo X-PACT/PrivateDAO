@@ -1,60 +1,29 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, Bot, CheckCircle2, Gamepad2, ShieldCheck } from "lucide-react";
+import { ArrowRight, Bot, CheckCircle2, Gamepad2 } from "lucide-react";
 
 import { OperationsShell } from "@/components/operations-shell";
-import { buttonVariants } from "@/components/ui/button";
 import { buildRouteMetadata } from "@/lib/route-metadata";
-import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = buildRouteMetadata({
   title: "PrivateDAO Roadmap",
-  description: "The PrivateDAO product roadmap: commercial workflows, agent marketplace, and PDAO Worlds.",
+  description: "The PrivateDAO roadmap across commercial workflows, agents, and PDAO Worlds.",
   path: "/roadmap",
-  keywords: ["PrivateDAO roadmap", "agent marketplace", "PDAO Worlds", "commercial privacy products"],
+  keywords: ["PrivateDAO roadmap", "Agent Marketplace", "PDAO Worlds", "commercial privacy products"],
 });
 
-const milestones = [
-  ["Available now", "Customer-ready entry points for payroll, treasury coordination, private governance, sealed auctions, Blind Verification, and Record Verification."],
-  ["Network expansion", "Agent Exchange discovery, provider onboarding, machine-readable pricing, receipts, and agent-to-agent service delivery."],
-  ["Consumer layer", "PDAO Worlds as a playable, independent game product that introduces privacy, proof, and coordination to a wider audience."],
-  ["Scale with evidence", "Repeatable pilots, usage metering, provider reputation, and infrastructure improvements driven by real customer activity."],
-] as const;
-
-const principles = [
-  "Every release keeps the customer outcome ahead of the implementation detail.",
-  "Private inputs remain protected while outcomes stay verifiable.",
-  "Agents and game users are measured separately from internal tests and demos.",
-  "New rails are added only when they improve a live product workflow.",
+const phases = [
+  ["Now", "Make private workflows easy to buy and easy to understand: payroll, treasury, governance, auctions, and verification."],
+  ["Next", "Expand repeatable organization workflows, agent services, receipts, and provider coverage behind the same customer experience."],
+  ["Beyond", "Grow PDAO Worlds as an independent consumer product that makes privacy, proof, and coordination memorable."],
 ] as const;
 
 export default function RoadmapPage() {
   return (
-    <OperationsShell
-      eyebrow="Roadmap"
-      title="A commercial path from trusted workflows to a wider network."
-      description="PrivateDAO grows around products customers can understand today, then expands through agents, providers, and PDAO Worlds without hiding the evidence behind the progress."
-      navigationMode="guided"
-      badges={[{ label: "Product roadmap", variant: "cyan" }, { label: "Commercial focus", variant: "success" }, { label: "Evidence-led", variant: "violet" }]}
-    >
-      <section className="grid gap-4 lg:grid-cols-2">
-        {milestones.map(([title, body], index) => (
-          <article key={title} className={cn("rounded-[28px] border p-5 sm:p-6", index === 0 ? "border-emerald-300/22 bg-emerald-300/[0.06]" : index === 1 ? "border-cyan-300/18 bg-cyan-300/[0.05]" : index === 2 ? "border-violet-300/20 bg-violet-300/[0.06]" : "border-white/10 bg-white/[0.035]") }>
-            <div className="flex items-start gap-3"><CheckCircle2 className="mt-1 h-5 w-5 shrink-0 text-cyan-100" /><div><h2 className="text-xl font-semibold text-white">{title}</h2><p className="mt-3 text-sm leading-7 text-white/65">{body}</p></div></div>
-          </article>
-        ))}
-      </section>
-
-      <section className="grid gap-4 md:grid-cols-2">
-        <Link href="/agents/" className="rounded-[28px] border border-cyan-300/18 bg-cyan-300/[0.05] p-5 transition hover:border-cyan-200/35 sm:p-6">
-          <Bot className="h-6 w-6 text-cyan-100" /><h2 className="mt-4 text-2xl font-semibold text-white">Agent Exchange</h2><p className="mt-3 text-sm leading-7 text-white/65">A machine-native marketplace for discovery, service procurement, payment, and verifiable results.</p><span className="mt-5 inline-flex text-sm font-semibold text-cyan-100">Explore Agents <ArrowRight className="ml-2 h-4 w-4" /></span>
-        </Link>
-        <a href="https://game.privatedao.org/game/godot/index.html" className="rounded-[28px] border border-violet-300/18 bg-violet-300/[0.05] p-5 transition hover:border-violet-200/35 sm:p-6">
-          <Gamepad2 className="h-6 w-6 text-violet-100" /><h2 className="mt-4 text-2xl font-semibold text-white">PDAO Worlds</h2><p className="mt-3 text-sm leading-7 text-white/65">A consumer game layer that turns trust, privacy, verification, and coordination into playable experiences.</p><span className="mt-5 inline-flex text-sm font-semibold text-violet-100">Play PDAO Worlds <ArrowRight className="ml-2 h-4 w-4" /></span>
-        </a>
-      </section>
-
-      <section className="rounded-[28px] border border-white/10 bg-white/[0.035] p-5 sm:p-6"><div className="flex items-start gap-3"><ShieldCheck className="mt-1 h-5 w-5 shrink-0 text-emerald-100" /><div><h2 className="text-2xl font-semibold text-white">Release discipline</h2><div className="mt-4 grid gap-2">{principles.map((item) => <div key={item} className="rounded-2xl border border-white/8 bg-black/20 px-4 py-3 text-sm leading-6 text-white/65">{item}</div>)}</div></div></div><Link href="/investors/" className={cn(buttonVariants({ size: "sm" }), "mt-6")}>View Investors <ArrowRight className="h-4 w-4" /></Link></section>
+    <OperationsShell eyebrow="Roadmap" title="A focused path from private work to a broader ecosystem." description="PrivateDAO grows by strengthening the products customers can use today, then extending the same operating model to agents and PDAO Worlds." navigationMode="focused" badges={[{ label: "Product-led", variant: "cyan" }, { label: "Evidence-first", variant: "success" }, { label: "Expandable", variant: "violet" }]}>
+      <section className="grid gap-4 lg:grid-cols-3">{phases.map(([title, body], index) => <article key={title} className="enterprise-card rounded-[18px] p-5 sm:p-6"><div className="flex items-center gap-3"><span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#edf4ff] text-sm font-bold text-[#175cd3]">0{index + 1}</span><h2 className="text-xl font-semibold text-[#10233f]">{title}</h2></div><p className="mt-5 text-sm leading-7 text-[#5d6d82]">{body}</p></article>)}</section>
+      <section className="grid gap-4 sm:grid-cols-2"><Link href="/agents" className="enterprise-card group rounded-[20px] p-6 transition hover:-translate-y-0.5 hover:border-[#175cd3]"><Bot className="h-6 w-6 text-[#175cd3]" /><h2 className="mt-4 text-2xl font-semibold text-[#10233f]">Agent Marketplace</h2><p className="mt-3 text-sm leading-7 text-[#5d6d82]">Discover specialized services, run bounded jobs, and receive a clear result through a machine-ready PrivateDAO surface.</p><span className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-[#175cd3]">Explore Agents <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" /></span></Link><a href="https://game.privatedao.org/game/godot/index.html" className="enterprise-card group rounded-[20px] p-6 transition hover:-translate-y-0.5 hover:border-[#175cd3]"><Gamepad2 className="h-6 w-6 text-[#175cd3]" /><h2 className="mt-4 text-2xl font-semibold text-[#10233f]">PDAO Worlds</h2><p className="mt-3 text-sm leading-7 text-[#5d6d82]">An independent game product where privacy, trust, evidence, and coordination become part of the story and play.</p><span className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-[#175cd3]">Play PDAO Worlds <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" /></span></a></section>
+      <section className="rounded-[20px] border border-[#dce5f0] bg-[#f7f9fc] p-6"><div className="flex gap-3"><CheckCircle2 className="mt-1 h-5 w-5 shrink-0 text-[#175cd3]" /><div><h2 className="text-xl font-semibold text-[#10233f]">The rule for every phase</h2><p className="mt-2 text-sm leading-7 text-[#5d6d82]">New infrastructure is added only when it improves a real customer workflow. The public experience stays commercial; technical details remain available to builders and reviewers where needed.</p></div></div></section>
     </OperationsShell>
   );
 }

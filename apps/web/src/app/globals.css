@@ -117,6 +117,15 @@ body::after {
   color: var(--cobalt) !important;
 }
 
+.enterprise-operations-content .enterprise-dark-panel {
+  background: var(--navy) !important;
+  color: #ffffff !important;
+}
+
+.enterprise-operations-content .enterprise-dark-panel [class~="text-white"] {
+  color: #ffffff !important;
+}
+
 .enterprise-brand-orbit img {
   animation: enterprise-brand-float 5s ease-in-out infinite;
 }
