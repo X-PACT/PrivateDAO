@@ -5,6 +5,7 @@ import { ArrowRight } from "lucide-react";
 import { OperationsShell } from "@/components/operations-shell";
 import { buildRouteMetadata } from "@/lib/route-metadata";
 import { commercialProductGroups, developerCommercialProducts, ecosystemCommercialProducts, primaryCommercialProducts, type CommercialProduct } from "@/lib/commercial-product-map";
+import { isRuntimeProductAvailable } from "@/lib/runtime-catalog";
 
 export const metadata: Metadata = buildRouteMetadata({
   title: "Solutions",
@@ -14,7 +15,12 @@ export const metadata: Metadata = buildRouteMetadata({
 });
 
 function ProductLink({ product }: { product: CommercialProduct }) {
-  const content = <><div className="flex items-start justify-between gap-3"><h3 className="text-base font-semibold text-[#10233f]">{product.title}</h3><ArrowRight className="mt-0.5 h-4 w-4 shrink-0 text-[#175cd3]" /></div><p className="mt-2 text-sm leading-6 text-[#5d6d82]">{product.summary}</p><p className="mt-3 text-xs font-medium text-[#7a8ba0]">For {product.audience.toLowerCase()}</p></>;
+  const status = product.runtimeProductId
+    ? isRuntimeProductAvailable(product.runtimeProductId)
+      ? "Ready to explore"
+      : "Guided setup"
+    : null;
+  const content = <><div className="flex items-start justify-between gap-3"><h3 className="text-base font-semibold text-[#10233f]">{product.title}</h3><ArrowRight className="mt-0.5 h-4 w-4 shrink-0 text-[#175cd3]" /></div><p className="mt-2 text-sm leading-6 text-[#5d6d82]">{product.summary}</p><div className="mt-3 flex flex-wrap items-center gap-2"><p className="text-xs font-medium text-[#7a8ba0]">For {product.audience.toLowerCase()}</p>{status ? <span className="rounded-full bg-[#edf4ff] px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.12em] text-[#175cd3]">{status}</span> : null}</div></>;
   const className = "group rounded-[16px] border border-[#dce5f0] bg-[#f7f9fc] p-4 transition hover:-translate-y-0.5 hover:border-[#175cd3]";
   if (product.href.startsWith("http")) return <a href={product.href} target="_blank" rel="noreferrer" className={className}>{content}</a>;
   return <Link href={product.href} className={className}>{content}</Link>;
