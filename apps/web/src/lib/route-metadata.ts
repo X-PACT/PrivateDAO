@@ -145,6 +145,7 @@ export function buildBrandHomeMetadata(): Metadata {
       "content-language": languageCodes,
       "ai-crawl": "allowed",
       "llms-txt": "/llms.txt",
+      "llms-full": "/llms-full.txt",
       "ai-manifest": "/ai.json",
       "evidence-manifest": "/evidence.json",
       "ownership-manifest": "/ownership.json",

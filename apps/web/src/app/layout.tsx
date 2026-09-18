@@ -29,6 +29,9 @@ export const metadata: Metadata = {
   metadataBase: new URL(`${siteUrl}/`),
   alternates: {
     canonical: "/",
+    languages: Object.fromEntries(
+      supportedLocales.map((locale) => [locale.code, `/?lang=${locale.code}`]),
+    ),
   },
     applicationName: siteName,
     icons: {
@@ -64,6 +67,7 @@ export const metadata: Metadata = {
     "content-language": supportedLocales.map((locale) => locale.code).join(", "),
     "ai-crawl": "allowed",
     "llms-txt": "/llms.txt",
+    "llms-full": "/llms-full.txt",
     "ai-manifest": "/ai.json",
     "evidence-manifest": "/evidence.json",
     "ownership-manifest": "/ownership.json",
