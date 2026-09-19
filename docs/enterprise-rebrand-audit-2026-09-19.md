@@ -95,6 +95,11 @@ closure is still missing. No item is marked complete from intent alone.
 5. Live MCP JSON-RPC checks passed for `initialize` and `tools/list`; the
    service returned 11 tools. Independent third-party MCP client
    interoperability is still not claimed.
+6. The release-gate browser pass covered 12 commercial routes at desktop and
+   mobile sizes (24 cases). All returned HTTP 200 with no Console errors or
+   5xx responses; one transient `ERR_NETWORK_CHANGED` during the first pass
+   was isolated and the affected Treasury page passed on retry. The desktop
+   homepage was also visually inspected after the pass.
 
 ## Verification Commands
 
