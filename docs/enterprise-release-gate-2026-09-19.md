@@ -2,12 +2,12 @@
 
 Date: 2026-09-19
 Branch: `rebrand/enterprise-white`
-Latest audited commit: `fd37fdb8b`
+Latest audited commit: `c971b740f`
 
 ## Verified
 
-- `npm run release:verify`: all 14 suites passed, including the independent
-  MCP client check.
+- `npm run release:verify`: all 15 suites passed, including the independent
+  MCP client and social-preview checks.
 - Commercial browser pass: 12 routes x 2 viewports = 24 cases.
 - Desktop and mobile routes returned HTTP 200.
 - No Console errors or HTTP 5xx responses in the release-gate pass.
@@ -15,6 +15,7 @@ Latest audited commit: `fd37fdb8b`
 - Homepage was visually inspected at desktop size.
 - `https://agents.privatedao.org/marketplace` and `/connect` passed desktop/mobile browser checks.
 - Agent Card, `/api/services`, `/a2a`, `/mcp`, and `/openapi.json` returned 200.
+- `/documents/` now exposes only current product/company links; historical document URLs remain explicit archive bridges.
 - MCP JSON-RPC `initialize` and `tools/list` passed; 11 tools were returned.
 - `https://privatedao.org/`, `/game/`, and `https://game.privatedao.org/game/godot/index.html` returned 200 after the Agents-only deployment.
 - Tempo Testnet Phase 2 evidence was published and its Record and Blind verification links returned 200 and `Status VALID` in an independent browser session.

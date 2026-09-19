@@ -74,7 +74,7 @@ closure is still missing. No item is marked complete from intent alone.
 | 58 | DONE | A repeatable live crawler check covers 13 commercial routes with Telegram, X, Discord, and LinkedIn User-Agents (52 page checks), required Open Graph/Twitter/canonical metadata, 10 reachable OG image URLs, and cache validators. Platform-internal cache refresh remains external to source verification and is not claimed. |
 | 59 | DONE | Release verification and live route checks preserve backend, Agents, verification, and game surfaces. |
 | 60 | DONE | `scripts/test-commercial-claims.mjs` checks the Web2/Web3 positioning, rejects unverified return/audit/certification/Solana-only claims, and protects the clean documents index from retired packet copy. |
-| 61 | DONE | Lint, typecheck, build, 14-suite release verification, browser, responsive, and route checks pass. |
+| 61 | DONE | Lint, typecheck, build, 15-suite release verification, browser, responsive, and route checks pass. |
 | 62 | DONE | Production smoke checks pass for home, products, verification, Agents, runtime catalog, and game after r36. |
 | 63 | DONE | The live visitor-facing message is private organizational work with verifiable outcomes. |
 
