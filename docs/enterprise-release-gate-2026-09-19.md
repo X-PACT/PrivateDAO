@@ -2,7 +2,7 @@
 
 Date: 2026-09-19
 Branch: `rebrand/enterprise-white`
-Latest audited commit: `f5eb39638`
+Latest audited commit: `fd37fdb8b`
 
 ## Verified
 
@@ -45,6 +45,7 @@ Latest audited commit: `f5eb39638`
 - r37 aligned `llms.txt`, `ai.json`, and SoftwareApplication metadata with the evidence-gated multi-network posture, removing the stale Solana-only alternate name and mainnet execution wording. The release passed typecheck and all 14 suites, was hash-checked and atomically swapped, and live discovery/product routes returned HTTP 200. The rollback copy is retained at `/home/ec2-user/PrivateDAO/deploy/primary-host/volumes/site.rollback-r37-20260919041510`.
 - r38 unified the remaining public operational email references on `fahd@privatedao.org`. The release passed typecheck, all 14 suites, static export checks, and external smoke checks for the homepage, Contact, security contact, game, and Agent Card routes. Only the website edge container was restarted; the previous site was retained as `/home/ec2-user/PrivateDAO/deploy/primary-host/volumes/site.rollback-email-20260919073000`.
 - r39 exposed a compact language selector in the mobile header. The release passed typecheck, lint, all 14 suites, production export/bundle checks, and public HTTP smoke checks; the website edge container was restarted only after the staged bundle passed validation. The rollback copy is retained at `/home/ec2-user/PrivateDAO/deploy/primary-host/volumes/site.rollback-r39-20260919075000`.
+- r40 aligned `llms.txt` and `ai.json` with the commercial positioning: workflow-first UX, enterprise Web3/private-work language, and evidence-gated network discovery. The release passed typecheck, all 14 suites, JSON validation, hash checks, and live discovery/product smoke checks. Only the website edge container was restarted; the rollback copy is retained at `/home/ec2-user/PrivateDAO/deploy/primary-host/volumes/site.rollback-fd37fdb8-20260919`.
 
 ## Explicitly Not Claimed
 

@@ -3,7 +3,7 @@
 Date: 2026-09-19  
 Branch: `rebrand/enterprise-white`  
 Production: `https://privatedao.org/`  
-Latest release: `f5eb39638` (website release r39)
+Latest release: `fd37fdb8b` (website release r40)
 
 This audit records the current evidence-backed state of the 63-point
 Enterprise Rebrand brief. `DONE` means verified in the source or live
@@ -175,6 +175,10 @@ closure is still missing. No item is marked complete from intent alone.
 24. r39 exposed a compact mobile language control. Local Chromium checks at
     320px, 390px, and 1440px found the control visible, no horizontal overflow,
     and no console errors; public HTTP smoke checks passed after deployment.
+25. r40 aligned AI discovery with the commercial positioning: workflow-first
+    UX, evidence-gated network language, and enterprise Web3/private-work
+    search concepts. The bundle was hash-checked, atomically swapped, and the
+    website edge container restarted without touching the game or backend.
 
 ## Verification Commands
 
