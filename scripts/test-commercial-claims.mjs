@@ -8,6 +8,7 @@ const commercialSources = [
   "apps/web/src/lib/site-brand.ts",
   "apps/web/src/lib/commercial-product-map.ts",
 ];
+const documentsIndexPath = "apps/web/src/app/documents/page.tsx";
 
 const requiredClaims = [
   ["Web3-native entry path", "Already in Web3?"],
@@ -34,6 +35,7 @@ const sources = Object.fromEntries(
   await Promise.all(commercialSources.map(async (relative) => [relative, await readFile(resolve(root, relative), "utf8")])),
 );
 const allCommercialCopy = Object.values(sources).join("\n");
+const documentsIndex = await readFile(resolve(root, documentsIndexPath), "utf8");
 
 for (const [label, phrase] of requiredClaims) {
   assert(allCommercialCopy.includes(phrase), `Missing commercial claim: ${label}`);
@@ -45,4 +47,6 @@ for (const [relative, content] of Object.entries(sources)) {
   }
 }
 
-console.log(`Commercial claim audit: PASS (${commercialSources.length} source surfaces checked)`);
+assert(!/grant\s+material|reviewer\s+packet|historical\s+packet/i.test(documentsIndex), "Documents index contains retired packet copy");
+
+console.log(`Commercial claim audit: PASS (${commercialSources.length + 1} source surfaces checked)`);

@@ -7,7 +7,7 @@ import { buildRouteMetadata } from "@/lib/route-metadata";
 export const metadata: Metadata = buildRouteMetadata({
   title: "Evidence & Resources",
   description:
-    "Current public product, verification, and architecture resources from PrivateDAO. Older internal and historical packets are not presented as current product truth.",
+    "Current public product, verification, and architecture resources from PrivateDAO.",
   path: "/documents",
   keywords: ["PrivateDAO evidence", "verification", "whitepaper", "product resources"],
 });
