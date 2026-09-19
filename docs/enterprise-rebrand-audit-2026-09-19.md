@@ -114,10 +114,11 @@ closure is still missing. No item is marked complete from intent alone.
    Tempo Testnet with HTTP 200 and matching chain IDs. This verifies provider
    reachability only; it does not upgrade any product from planned to live
    execution.
-10. The write-capable EVM Phase 2 runner was inspected but not executed in
-   this session because its required deployer key and per-network RPC
-   environment variables are absent. No transaction was attempted and no
-   fabricated E2E result was recorded.
+10. The write-capable EVM Phase 2 runner completed a real Ethereum Sepolia
+   testnet E2E using the deployer key from the local secret vault without
+   exposing it. The resulting verifier, registry, anchor, rejection, expiry,
+   and revocation evidence is recorded below. Other EVM networks remain
+   unexecuted write paths until independently funded and tested.
 11. The independently deployed Agent Exchange Lambda source is now tracked in
    `integrations/agent-exchange-lambda/`, excluding `node_modules` and
    secrets. Its handler passes syntax and secret-pattern checks, and the full
@@ -127,7 +128,11 @@ closure is still missing. No item is marked complete from intent alone.
    anchors; wrong-chain, altered-proof, expiry, and revocation assertions.
    The resulting public links were opened in a separate browser session and
    both returned `verified` with `Status VALID`.
-13. The public EVM verifier had a real static-host fallback bug: a missing
+13. A fresh Tempo Testnet Phase 2 E2E also completed with real testnet writes
+   on chain 42431: verifier, Blind Registry, and Record Registry deployment;
+   all rejection, expiry, and revocation assertions passed. The public Tempo
+   artifact is now included with the release evidence.
+14. The public EVM verifier had a real static-host fallback bug: a missing
    manifest path returned HTML with HTTP 200 and was parsed as JSON. The client
    now validates content type and manifest shape before accepting a candidate.
    The fix and fresh Ethereum artifact were deployed atomically as r23; the
