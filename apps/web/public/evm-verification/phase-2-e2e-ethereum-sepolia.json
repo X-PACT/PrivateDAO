@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-11T20:16:41.513Z",
+  "generatedAt": "2026-09-19T00:17:05.130Z",
   "status": "testnet_verified",
   "scope": [
     "ethereum-sepolia"
@@ -26,22 +26,22 @@
         }
       },
       "record": {
-        "txHash": "0xd74ccddcf93acc5a727ac68aab7129a951f4ceefe1648be10beab20eebe322a2",
-        "blockNumber": "11684185",
-        "verificationId": "0x7d2b5d9e33dfe96d58edf4d9edf52d80968bbf052629d2166843a0278002ae05",
-        "explorerUrl": "https://sepolia.etherscan.io/tx/0xd74ccddcf93acc5a727ac68aab7129a951f4ceefe1648be10beab20eebe322a2"
+        "txHash": "0x1cbac7555d723770516870c416f347eeb3f1cee2298de4bd9170bf1672b64b8f",
+        "blockNumber": "11734131",
+        "verificationId": "0xf61dac1391b8be2b5eda2e19d0fc49d946dd94ecf840220907d47275b8de0269",
+        "explorerUrl": "https://sepolia.etherscan.io/tx/0x1cbac7555d723770516870c416f347eeb3f1cee2298de4bd9170bf1672b64b8f"
       },
       "blind": {
-        "txHash": "0x4a968ef0846e66ff8137151f5838b7b9da5696c27ec64877b42e93b8d0589837",
-        "blockNumber": "11684188",
-        "verificationId": "0x2d5b94c5aa432591dc5603dae331da3f6884c2489d77850d2784f70d376cca2b",
-        "explorerUrl": "https://sepolia.etherscan.io/tx/0x4a968ef0846e66ff8137151f5838b7b9da5696c27ec64877b42e93b8d0589837"
+        "txHash": "0x6435bbd67bda89bb3bc63f6ca0d53824192fc8ed8fac44245a9300b9a8ae0dac",
+        "blockNumber": "11734132",
+        "verificationId": "0x71e6288eb2d5c73e3333290bc2fbfcf9743d61008023d9761cc043440b28168d",
+        "explorerUrl": "https://sepolia.etherscan.io/tx/0x6435bbd67bda89bb3bc63f6ca0d53824192fc8ed8fac44245a9300b9a8ae0dac"
       },
       "revocation": {
-        "recordTxHash": "0x0eb45a52a0eca77ab281ee8f969a7e8be190b92b5528884eae938a004c716acc",
-        "blindTxHash": "0xfe3ce1e0d609b088dff5764af60ca8a1ecb15ce148c7a3e2248010cf9886ef5f",
-        "disposableRecordVerificationId": "0x14afb18c77a4bf774bd4ae4fa45f2cfe7f4064750d8082f810595eef0f605947",
-        "disposableBlindVerificationId": "0xc8585e7e72b68bb8fb0db1864c84546e0505545ca3a95f9b7965b59c8243344e"
+        "recordTxHash": "0x4bf4275841801c03d182b441b2f0302ba11bd7444cab7c8558a4ce34fab77670",
+        "blindTxHash": "0x530ea4aeef658141c27449f8388182875329e43e8013218e55a8f6bc01993def",
+        "disposableRecordVerificationId": "0x097a4722fdecc405c31ed48dbb3bcf7be1f326f8433c0247aa4be700177c8ac4",
+        "disposableBlindVerificationId": "0x25d59d439d33f5cf2ed7a357d27286693db321d9cc1f40eb60dc77a666e2429d"
       },
       "checks": {
         "recordVerified": true,
@@ -54,8 +54,8 @@
         "blindProofRevoked": true
       },
       "links": {
-        "record": "https://privatedao.org/verify/evm?network=ethereum-sepolia&type=record&id=0x7d2b5d9e33dfe96d58edf4d9edf52d80968bbf052629d2166843a0278002ae05",
-        "blind": "https://privatedao.org/verify/evm?network=ethereum-sepolia&type=blind&id=0x2d5b94c5aa432591dc5603dae331da3f6884c2489d77850d2784f70d376cca2b"
+        "record": "https://privatedao.org/verify/evm?network=ethereum-sepolia&type=record&id=0xf61dac1391b8be2b5eda2e19d0fc49d946dd94ecf840220907d47275b8de0269",
+        "blind": "https://privatedao.org/verify/evm?network=ethereum-sepolia&type=blind&id=0x71e6288eb2d5c73e3333290bc2fbfcf9743d61008023d9761cc043440b28168d"
       }
     }
   ]
