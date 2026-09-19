@@ -109,6 +109,11 @@ closure is still missing. No item is marked complete from intent alone.
    and public token metadata; GitHub Secret Scanning is disabled for the
    private repository, so this is evidence, not a substitute for a full
    historical secret scan.
+9. The read-only EVM RPC probe passed for Ethereum Sepolia, Arbitrum Sepolia,
+   BNB Testnet, Base Sepolia, Robinhood Testnet, Hyperliquid Testnet, and
+   Tempo Testnet with HTTP 200 and matching chain IDs. This verifies provider
+   reachability only; it does not upgrade any product from planned to live
+   execution.
 
 ## Verification Commands
 
