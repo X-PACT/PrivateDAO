@@ -2,7 +2,7 @@
 
 Date: 2026-09-19
 Branch: `rebrand/enterprise-white`
-Latest audited commit: `f1959be`
+Latest audited commit: `6362215`
 
 ## Verified
 
@@ -16,6 +16,7 @@ Latest audited commit: `f1959be`
 - Agent Card, `/api/services`, `/a2a`, `/mcp`, and `/openapi.json` returned 200.
 - MCP JSON-RPC `initialize` and `tools/list` passed; 11 tools were returned.
 - `https://privatedao.org/`, `/game/`, and `https://game.privatedao.org/game/godot/index.html` returned 200 after the Agents-only deployment.
+- Tempo Testnet Phase 2 evidence was published and its Record and Blind verification links returned 200 and `Status VALID` in an independent browser session.
 
 ## Explicitly Not Claimed
 
@@ -28,22 +29,21 @@ Latest audited commit: `f1959be`
 
 ## Production Safety Gate
 
-The main website cutover has not been executed in this release cycle. The current
-site remains the rollback baseline. The game and its separate host/service remain
-outside the website cutover.
+The main website cutover was completed as an atomic website-volume swap r24. The
+previous site is retained at `/home/ec2-user/PrivateDAO/deploy/primary-host/volumes/site.previous-20260919-r24`.
+The game and its separate host/service remained outside the website cutover.
 
 Before a future cutover:
 
 1. Build and run the release verification suites from the canonical commit.
 2. Run the desktop/mobile browser pass and inspect the homepage and product pages.
 3. Record the active site directory and current container list on EC2.
-4. Copy the active site to a versioned rollback directory.
-5. Perform an atomic directory swap only for the website volume.
-6. Restart only the website edge process if the bind mount requires it.
-7. Verify the homepage, all commercial routes, Agent Card, and `/game/`.
+4. Copy the active site to a versioned rollback directory. Completed for r24.
+5. Perform an atomic directory swap only for the website volume. Completed for r24.
+6. Restart only the website edge process if the bind mount requires it. Completed for r24.
+7. Verify the homepage, commercial routes, Agent Card, EVM links, and `/game/`. Completed for r24 smoke coverage.
 8. Keep the rollback directory until the post-release observation window ends.
 9. Do not remove containers or game services as part of the website cutover.
 
 If any post-swap check fails, restore the versioned site directory and restart
 only the website edge process. Do not restart or replace the game services.
-

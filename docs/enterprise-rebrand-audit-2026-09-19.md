@@ -135,7 +135,8 @@ closure is still missing. No item is marked complete from intent alone.
 14. The public EVM verifier had a real static-host fallback bug: a missing
    manifest path returned HTML with HTTP 200 and was parsed as JSON. The client
    now validates content type and manifest shape before accepting a candidate.
-   The fix and fresh Ethereum artifact were deployed atomically as r23; the
+   The fix and fresh Ethereum and Tempo artifacts were deployed atomically as
+   r24; the
    main site, Agents service, and game remained healthy.
 
 ## Verification Commands
