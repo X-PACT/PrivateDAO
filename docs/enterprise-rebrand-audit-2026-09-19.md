@@ -61,7 +61,7 @@ closure is still missing. No item is marked complete from intent alone.
 | 45 | DONE | `X-PACT/PrivateDAO` is the private canonical source repository. |
 | 46 | DONE | Public docs-only repository exists at `X-PACT/PrivateDAO-public`; no source or secrets included. |
 | 47 | DONE | Public repository exposes a safe release representation, not private commit history. |
-| 48 | PARTIAL | A full high-confidence scan of 7,531 objects reachable from the three canonical local refs found zero signatures, including the APK and PTAU artifacts; remote archived-branch history remains outside the local refs and GitHub Secret Scanning is disabled. |
+| 48 | DONE | A full high-confidence scan of 238,650 objects reachable from all 23 local refs, including fetched remote/dependabot branches and 52 large blobs, found zero credential signatures; assignment-pattern matches resolved to example configuration/public values only. |
 | 49 | DONE | Public product brief contains mission, products, links, boundaries, and recognition. |
 | 50 | DONE | Superteam Poland and Superteam UAE recognition are linked in public materials. |
 | 51 | DONE | Founder and ownership information are present in public discovery materials. |
@@ -156,10 +156,11 @@ closure is still missing. No item is marked complete from intent alone.
 19. The independent MCP client check passed against the public Agent Exchange
    endpoint: protocol negotiation, 11-tool discovery, and 14-service
    read-only discovery all succeeded.
-20. The read-only Git history scan covered 7,531 reachable objects across the
-   three canonical refs, including the two large artifacts, and found zero
-   high-confidence credential signatures. The result and exact boundary are
-   recorded in `docs/git-history-secret-scan-20260919.md`.
+20. The read-only Git history scan covered 238,650 reachable objects across
+    all 23 local refs, including fetched remote/dependabot branches and 52
+    large blobs, and found zero high-confidence credential signatures. The
+    result and exact boundary are recorded in
+    `docs/git-history-secret-scan-20260919.md`.
 21. A real Arbitrum Sepolia organizational E2E completed on chain 421614 using
    the funded testnet deployer: Treasury executed, Governance passed, and the
    sealed Auction settled. The deployment artifact records 17 confirmed

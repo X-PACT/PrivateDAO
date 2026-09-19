@@ -24,7 +24,7 @@ Latest audited commit: `fd37fdb8b`
 - A fresh Chromium desktop pass returned HTTP 200 with no console errors or failed requests for `/`, `/documents/`, and `/game/`.
 - The r28 correction replaced only `/documents/index.html` after the full bundle was rejected by the server's full disk; the active site directory was verified intact before the narrow replacement.
 - The live `/documents/` body was checked for stale grant text and returned none; the rollback copy is retained beside the active file.
-- A read-only high-confidence scan of all 23 remote branch heads found no credential signatures; historical commit scanning remains intentionally unclaimed.
+- A read-only high-confidence scan of all 23 local refs and 190,894 reachable blobs found no credential signatures, including the 52 large blobs; only example configuration/public-value assignment matches remained.
 - Metadata smoke test passed for 12 primary routes: all returned HTTP 200 with title, description, canonical, page-specific OG image, and OG image HTTP 200.
 - `commercial-claims` is now a release suite; it checks five commercial source surfaces for required Web2/Web3 and privacy language, rejects unverified commercial claims, and protects the documents index from retired packet copy. The complete release gate passed 13/13 suites.
 - r29 was deployed atomically after the claim gate passed; live Chromium verified `/`, `/documents/`, and `/game/` with HTTP 200 and no console or failed-request errors.
