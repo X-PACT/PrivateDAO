@@ -13,6 +13,7 @@ const suites = [
   ["capability-matrix", ["npm", "run", "verify:native-capability-matrix"]],
   ["application-bindings", ["npm", "run", "verify:application-bindings"]],
   ["tracked-secrets", ["npm", "run", "verify:tracked-secrets"]],
+  ["agent-mcp", ["npm", "run", "test:agent-mcp"]],
   ["commercial-claims", ["node", "scripts/test-commercial-claims.mjs"]],
   ["commercial", ["node", "scripts/test-commercial-lifecycle.mjs"]],
 ];

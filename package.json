@@ -72,6 +72,7 @@
     "test:payroll:devnet:e2e": "node --experimental-strip-types scripts/record-payroll-devnet-e2e.mjs",
     "probe:magicblock-private-payments": "node scripts/probe-magicblock-private-payments.mjs",
     "probe:agent-discovery": "node scripts/probe-agent-discovery.mjs",
+    "test:agent-mcp": "node scripts/test-agent-mcp-client.mjs",
     "build:solrouter-encrypted-ai-evidence": "node scripts/generate-solrouter-encrypted-ai-evidence.mjs",
     "verify:supabase-receipts": "node scripts/verify-supabase-receipts.mjs",
     "test": "bash scripts/run-local-anchor-suite.sh all",

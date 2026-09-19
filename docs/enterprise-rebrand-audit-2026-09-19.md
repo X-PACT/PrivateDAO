@@ -55,7 +55,7 @@ closure is still missing. No item is marked complete from intent alone.
 | 39 | DONE | Whitepaper route is live; `/documents/` is now a small commercial resource index and does not present historical packets, reviewer drafts, grant material, or testnet evidence as current product claims. |
 | 40 | DONE | Roadmap and investor materials include product and capital-development paths. |
 | 41 | DONE | Commercial pages do not lead with engineering disclaimers. |
-| 42 | PARTIAL | MCP resources exist in developer/runtime material; independent external MCP interoperability is not claimed. |
+| 42 | PARTIAL | A standalone public HTTP MCP client now passes initialize, tools/list, and read-only service discovery; compatibility with every third-party MCP SDK is still not claimed. |
 | 43 | PARTIAL | Agent discovery and runtime are live; the external `/marketplace` service catalog is now live with 14 services, while multi-network marketplace execution remains intentionally capability-scoped. |
 | 44 | PARTIAL | Agent Card, `/marketplace`, and `/connect` now use the White/Navy/Cobalt surface; external registry branding/interoperability still needs independent verification. |
 | 45 | DONE | `X-PACT/PrivateDAO` is the private canonical source repository. |
@@ -152,6 +152,9 @@ closure is still missing. No item is marked complete from intent alone.
 18. r33 unified public contact actions and AI/security discovery references on
    `fahd@privatedao.org`; the live Contact, security, and game routes were
    checked after deployment.
+19. The independent MCP client check passed against the public Agent Exchange
+   endpoint: protocol negotiation, 11-tool discovery, and 14-service
+   read-only discovery all succeeded.
 
 ## Verification Commands
 
