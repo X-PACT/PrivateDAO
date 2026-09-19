@@ -68,7 +68,7 @@ export function buildSoftwareApplicationJsonLd() {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
     name: siteName,
-    alternateName: ["Private DAO", "PrivateDAO Solana"],
+    alternateName: ["Private DAO"],
     url: siteUrl,
     codeRepository: "https://github.com/X-PACT/PrivateDAO",
     applicationCategory: "Organizational Workflow Verification Software",

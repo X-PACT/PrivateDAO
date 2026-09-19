@@ -38,8 +38,8 @@
     "generic payment processor",
     "prediction market"
   ],
-  "chain_strategy": "Solana-first execution with capability-gated expansion; network support is only presented as live when the corresponding runtime is verified.",
-  "primary_execution_network": "solana:mainnet-beta",
+  "chain_strategy": "Capability-gated and evidence-first execution; a network is presented as live for a product only when the corresponding runtime and verification evidence are available.",
+  "primary_execution_network": "solana:testnet",
   "founder": "Fahd Kotb",
   "official_owner_operator": "Fahd Kotb / Eslam Kotb",
   "github_organization": "X-PACT",

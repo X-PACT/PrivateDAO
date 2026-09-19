@@ -14,7 +14,7 @@ Commercial Product Lines:
 - Governance and Markets: Private Governance and Confidential Auctions for decisions, procurement, and sealed bids.
 - Verification: Blind Verification, Record Verification, and Private Identity Verification through attestation providers.
 - Ecosystem: Agent Marketplace and PDAO Worlds as independent ecosystem products.
-Chain Strategy: Solana-first. Cross-chain expansion is planned only after real operating use and proof on Solana.
+Chain Strategy: Capability-gated and evidence-first. A network is presented as live for a product only after the corresponding runtime and verification evidence are available; the workflow remains independent of the underlying network.
 Founder: Fahd Kotb
 Official Owner / Operator: Fahd Kotb / Eslam Kotb (X-PACT)
 Website: https://privatedao.org
