@@ -1,4 +1,4 @@
-Contact: mailto:Fahd.kotb@tuta.io
+Contact: mailto:fahd@privatedao.org
 Policy: https://privatedao.org/security/
 Preferred-Languages: en, ar
 Canonical: https://privatedao.org/.well-known/security.txt

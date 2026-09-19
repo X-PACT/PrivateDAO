@@ -42,9 +42,9 @@ The work demonstrates:
 
 PrivateDAO development is maintained in public through **[X-PACT/PrivateDAO](https://github.com/X-PACT/PrivateDAO)**. Use the contact surface below for investment, strategic help, integrations, pilots, or operator coordination around the live product.
 
-- Primary email: [fahd.kotb@tuta.io](mailto:fahd.kotb@tuta.io)
-- Operations email: [i.kotb@proton.me](mailto:i.kotb@proton.me)
-- Additional contact: [eslamkotb.369@gmail.com](mailto:eslamkotb.369@gmail.com)
+- Primary email: [fahd@privatedao.org](mailto:fahd@privatedao.org)
+- Operations email: [fahd@privatedao.org](mailto:fahd@privatedao.org)
+- Additional contact: [fahd@privatedao.org](mailto:fahd@privatedao.org)
 - WhatsApp: [+20 112 403 0209](https://wa.me/201124030209)
 - Telegram: [@Fahdkotb](https://t.me/Fahdkotb)
 - Discord: [PrivateDAO community server](https://discord.gg/GjJykUtTTt)

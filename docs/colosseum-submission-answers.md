@@ -106,7 +106,7 @@ Suggested details:
 
 ## Contact
 
-- Email: `fahd.kotb@tuta.io`
-- Email: `i.kotb@proton.me`
+- Email: `fahd@privatedao.org`
+- Email: `fahd@privatedao.org`
 - Telegram: `@Fahdkotb`
 - X: `@privateDAOOS`

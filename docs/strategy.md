@@ -92,10 +92,10 @@ This framing matters strategically. It means the repository is already demonstra
 
 **Owner:** Fahd Kotb
 
-- eslamkotb.369@gmail.com
-- eslamkotb.fmt@gmail.com
-- fahd.kotb@tuta.io
-- i.kotb@proton.me
+- fahd@privatedao.org
+- fahd@privatedao.org
+- fahd@privatedao.org
+- fahd@privatedao.org
 - WhatsApp: 00201124030209
 - WhatsApp: 00201070004967
 - X: https://x.com/privateDAOOS

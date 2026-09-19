@@ -86,7 +86,7 @@ const contactLinks = [
   { label: "Telegram", href: "https://t.me/privateDAOOS" },
   { label: "Founder Telegram", href: "https://t.me/Fahdkotb" },
   { label: "X", href: "https://x.com/privateDAOOS" },
-  { label: "Email", href: "mailto:Fahd.kotb@tuta.io?subject=PrivateDAO%20commercial%20activation" },
+  { label: "Email", href: "mailto:fahd@privatedao.org?subject=PrivateDAO%20commercial%20activation" },
 ] as const;
 
 export function CommercialCheckout() {
@@ -241,7 +241,7 @@ export function CommercialCheckout() {
           {loading === "prepare" ? "Preparing..." : "Prepare checkout"}
           <ArrowRight className="h-4 w-4" />
         </button>
-        <a href="mailto:Fahd.kotb@tuta.io?subject=PrivateDAO%20bank%20transfer%20invoice" className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
+        <a href="mailto:fahd@privatedao.org?subject=PrivateDAO%20bank%20transfer%20invoice" className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>
           Request bank invoice
         </a>
       </div>

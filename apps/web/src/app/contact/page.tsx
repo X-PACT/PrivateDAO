@@ -20,8 +20,7 @@ const contacts = [
   ["Founder Telegram", "@Fahdkotb", "https://t.me/Fahdkotb", Send],
   ["X", "@privateDAOOS", "https://x.com/privateDAOOS", ArrowRight],
   ["PDAO community", "Verified holders", VERIFIED_PDAO_HOLDERS_URL, Send],
-  ["Commercial email", "Fahd.kotb@tuta.io", "mailto:Fahd.kotb@tuta.io?subject=PrivateDAO%20commercial%20conversation", Mail],
-  ["Enterprise email", "I.Kotb@proton.me", "mailto:I.Kotb@proton.me?subject=PrivateDAO%20enterprise%20conversation", Mail],
+  ["Official email", "fahd@privatedao.org", "mailto:fahd@privatedao.org?subject=PrivateDAO%20conversation", Mail],
 ] as const;
 
 export default function ContactPage() {
@@ -59,7 +58,7 @@ export default function ContactPage() {
           <div className="rounded-2xl border border-[#dce5f0] bg-[#f7f9fc] p-4"><div className="text-sm font-semibold text-[#10233f]">Who needs confidence in the result?</div><p className="mt-2 text-sm leading-6 text-[#5d6d82]">Your team, an auditor, a board, a partner, a regulator, or a wider community.</p></div>
         </div>
         <div className="mt-5 flex flex-wrap gap-3">
-          <a href="mailto:Fahd.kotb@tuta.io?subject=PrivateDAO%20commercial%20conversation" className={cn(buttonVariants({ size: "sm" }))}>Email PrivateDAO</a>
+          <a href="mailto:fahd@privatedao.org?subject=PrivateDAO%20commercial%20conversation" className={cn(buttonVariants({ size: "sm" }))}>Email PrivateDAO</a>
           <Link href="/thesis" className={cn(buttonVariants({ size: "sm", variant: "outline" }))}>Read the thesis</Link>
         </div>
       </section>

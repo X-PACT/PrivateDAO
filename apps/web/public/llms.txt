@@ -185,7 +185,7 @@ Commercial CTAs:
 
 - Start Free Trial: https://privatedao.org/pricing/#commercial-checkout
 - Request Pilot: https://privatedao.org/pilots/
-- Book Discovery Call: mailto:Fahd.kotb@tuta.io?subject=PrivateDAO%20Enterprise%20Discovery
+- Book Discovery Call: mailto:fahd@privatedao.org?subject=PrivateDAO%20Enterprise%20Discovery
 
 License types:
 
