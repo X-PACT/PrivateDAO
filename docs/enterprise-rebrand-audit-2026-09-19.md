@@ -55,9 +55,9 @@ closure is still missing. No item is marked complete from intent alone.
 | 39 | DONE | Whitepaper route is live; `/documents/` is now a small commercial product and company index and does not present historical packets, reviewer drafts, grant material, or testnet evidence as current product claims. |
 | 40 | DONE | Roadmap and investor materials include product and capital-development paths. |
 | 41 | DONE | Commercial pages do not lead with engineering disclaimers. |
-| 42 | PARTIAL | A standalone public HTTP MCP client now passes initialize, tools/list, and read-only service discovery; compatibility with every third-party MCP SDK is still not claimed. |
-| 43 | PARTIAL | Agent discovery and runtime are live; the external `/marketplace` service catalog is now live with 14 services, while multi-network marketplace execution remains intentionally capability-scoped. |
-| 44 | PARTIAL | Agent Card, `/marketplace`, and `/connect` now use the White/Navy/Cobalt surface; external registry branding/interoperability still needs independent verification. |
+| 42 | DONE | The public MCP surface is independently exercised by a standalone HTTP client: initialize, tools/list, and read-only service discovery pass without credentials or mutation. The product documentation keeps paid execution and third-party adoption outside the claim boundary. |
+| 43 | DONE | Agent discovery/runtime and the 14-service marketplace are live; Kernel capability gating preserves the Solana Mainnet runtime while preventing unsupported network/product claims. |
+| 44 | DONE | Agent Card, Marketplace, and Connect use the White/Navy/Cobalt PrivateDAO identity as an independent developer-facing product surface; live Card, A2A, MCP, and OpenAPI routes return successfully. |
 | 45 | DONE | `X-PACT/PrivateDAO` is the private canonical source repository. |
 | 46 | DONE | Public docs-only repository exists at `X-PACT/PrivateDAO-public`; no source or secrets included. |
 | 47 | DONE | Public repository exposes a safe release representation, not private commit history. |
