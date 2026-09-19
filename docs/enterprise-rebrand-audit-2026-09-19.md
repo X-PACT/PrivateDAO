@@ -61,7 +61,7 @@ closure is still missing. No item is marked complete from intent alone.
 | 45 | DONE | `X-PACT/PrivateDAO` is the private canonical source repository. |
 | 46 | DONE | Public docs-only repository exists at `X-PACT/PrivateDAO-public`; no source or secrets included. |
 | 47 | DONE | Public repository exposes a safe release representation, not private commit history. |
-| 48 | PARTIAL | Historical branches remain private; a full branch-by-branch secret/IP audit is still separate work. |
+| 48 | PARTIAL | All 23 remote branch heads passed a high-confidence secret scan; full historical commit/IP audit remains separate work, so archived branches remain private. |
 | 49 | DONE | Public product brief contains mission, products, links, boundaries, and recognition. |
 | 50 | DONE | Superteam Poland and Superteam UAE recognition are linked in public materials. |
 | 51 | DONE | Founder and ownership information are present in public discovery materials. |
@@ -100,15 +100,11 @@ closure is still missing. No item is marked complete from intent alone.
    5xx responses; one transient `ERR_NETWORK_CHANGED` during the first pass
    was isolated and the affected Treasury page passed on retry. The desktop
    homepage was also visually inspected after the pass.
-7. The three locally available branch heads were scanned for common secret
-   signatures with no credential value detected; the remote repository still
-   has additional Dependabot branch refs that were not fetched or made public,
-   so the historical branch/IP audit remains Partial.
-8. GitHub remote branch-tip trees were inspected by filename only across 23
-   branch refs. Matches were limited to `.env.example`, verification scripts,
-   and public token metadata; GitHub Secret Scanning is disabled for the
-   private repository, so this is evidence, not a substitute for a full
-   historical secret scan.
+7. All 23 remote branch heads were fetched read-only and scanned with
+   high-confidence credential signatures while excluding documentation,
+   examples, fixtures, and tests. No branch head produced a hit. GitHub Secret
+   Scanning is disabled for the private repository, and historical commits
+   have not been fully scanned, so the branch/IP audit remains Partial.
 9. The read-only EVM RPC probe passed for Ethereum Sepolia, Arbitrum Sepolia,
    BNB Testnet, Base Sepolia, Robinhood Testnet, Hyperliquid Testnet, and
    Tempo Testnet with HTTP 200 and matching chain IDs. This verifies provider
