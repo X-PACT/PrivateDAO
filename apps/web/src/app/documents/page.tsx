@@ -5,42 +5,46 @@ import { ArrowUpRight, BookOpen, CheckCircle2, FileCheck2, ShieldCheck } from "l
 import { buildRouteMetadata } from "@/lib/route-metadata";
 
 export const metadata: Metadata = buildRouteMetadata({
-  title: "Evidence & Resources",
+  title: "Resources",
   description:
-    "Current public product, verification, and architecture resources from PrivateDAO.",
+    "PrivateDAO product, verification, and company resources.",
   path: "/documents",
-  keywords: ["PrivateDAO evidence", "verification", "whitepaper", "product resources"],
+  keywords: ["PrivateDAO", "products", "verification", "whitepaper"],
 });
 
 const sections = [
   {
     eyebrow: "Understand the product",
-    title: "Start with the idea, not the implementation.",
+    title: "Start with what PrivateDAO does.",
     icon: BookOpen,
     links: [
       ["Thesis", "Why privacy and proof belong in the same organizational workflow.", "/thesis"],
-      ["Whitepaper", "The product model, boundaries, and infrastructure behind the commercial surfaces.", "/whitepaper"],
-      ["Products", "Choose payroll, treasury, governance, auctions, or verification by business need.", "/products"],
+      ["Products", "Choose a private workflow by business need.", "/products"],
+      ["Whitepaper", "The product model and boundaries behind the company.", "/whitepaper"],
     ],
   },
   {
-    eyebrow: "Check an outcome",
-    title: "Verify the result without receiving the private source data.",
+    eyebrow: "Use the products",
+    title: "Keep sensitive work private and still accountable.",
     icon: FileCheck2,
     links: [
-      ["Blind Verification", "Check that a condition was satisfied without exposing the underlying information.", "/proof-workflows/blind-policy"],
-      ["Record Verification", "Open a public record link and inspect its current validity and scope.", "/products/record-verification"],
-      ["EVM Verification", "Inspect the currently published testnet verification evidence.", "/verify/evm"],
+      ["Confidential Payroll", "Run payroll without publishing employee salaries.", "/payroll"],
+      ["Private Treasury", "Manage spending, approvals, and financial workflows privately.", "/treasury"],
+      ["Private Governance", "Make decisions without exposing every internal discussion.", "/govern"],
+      ["Private Auctions", "Run sealed procurement without revealing competing bids.", "/auctions"],
+      ["Blind Verification", "Prove a condition without exposing the information behind it.", "/proof-workflows/blind-policy"],
+      ["Record Verification", "Share a verification record with a clear scope and status.", "/products/record-verification"],
     ],
   },
   {
-    eyebrow: "Review the boundaries",
-    title: "See what is live before you rely on it.",
+    eyebrow: "Go deeper when needed",
+    title: "The company, the technical details, and the boundaries.",
     icon: ShieldCheck,
     links: [
-      ["Security", "Read the public security and release boundaries without turning them into marketing claims.", "/security"],
-      ["Build", "Find APIs, Agents, network capability, and integration material when you need implementation detail.", "/developers"],
-      ["PDAO", "See the official token information and current ecosystem utility.", "/token"],
+      ["Security", "Read the public security contact and operating boundaries.", "/security"],
+      ["Build", "Find developer resources when you need implementation detail.", "/developers"],
+      ["PDAO", "See the published token and ecosystem information.", "/token"],
+      ["Contact", "Talk to PrivateDAO about a private workflow.", "/contact"],
     ],
   },
 ] as const;
@@ -50,10 +54,10 @@ export default function DocumentsPage() {
     <main className="min-h-screen bg-white text-[#10233f]">
         <section className="mx-auto w-full max-w-7xl px-4 pb-16 pt-16 sm:px-6 sm:pb-24 sm:pt-24 lg:px-8">
           <div className="max-w-4xl">
-            <div className="text-[11px] font-bold uppercase tracking-[0.28em] text-[#175cd3]">Evidence & resources</div>
-            <h1 className="mt-5 text-4xl font-semibold tracking-[-0.045em] text-[#10233f] sm:text-6xl">The current PrivateDAO surface, in one place.</h1>
+            <div className="text-[11px] font-bold uppercase tracking-[0.28em] text-[#175cd3]">PrivateDAO resources</div>
+            <h1 className="mt-5 text-4xl font-semibold tracking-[-0.045em] text-[#10233f] sm:text-6xl">A simpler way to explore PrivateDAO.</h1>
             <p className="mt-6 max-w-3xl text-lg leading-8 text-[#5d6d82]">
-              This page lists the public product and verification resources that matter today. It does not present old internal packets, historical reviewer drafts, or archived implementation notes as current product truth.
+              Start with the product that matches your work. Open the technical material only when you need it.
             </p>
           </div>
 
@@ -87,7 +91,7 @@ export default function DocumentsPage() {
               <div>
                 <h2 className="text-2xl font-semibold tracking-[-0.03em]">A simple rule for reading the site</h2>
                 <p className="mt-3 max-w-3xl text-sm leading-7 text-[#d5e2f3]">
-                  A public page explains a product. A verification page proves a specific result. A developer page explains an integration. No document on this route should be treated as evidence of adoption, an audit, unrestricted mainnet readiness, or financial returns unless the linked surface proves that exact claim.
+                  Product pages explain what PrivateDAO offers. Verification pages show the scope and status of a specific record. Technical pages explain implementation details. Nothing here should be read as a claim of adoption, audit, unrestricted mainnet readiness, or financial returns unless the relevant page states and supports that claim.
                 </p>
               </div>
             </div>
