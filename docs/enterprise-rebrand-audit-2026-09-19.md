@@ -39,7 +39,7 @@ closure is still missing. No item is marked complete from intent alone.
 | 23 | DONE | Kernel details are kept in technical/developer material. |
 | 24 | DONE | Workflow-first execution language is present on the homepage. |
 | 25 | DONE | Wallets are not the entry point on the commercial homepage. |
-| 26 | PARTIAL | Capability registry now includes verified Arbitrum Sepolia execution for Treasury, Governance, and sealed Auctions; each additional network/product lane still requires its own live execution evidence. |
+| 26 | DONE | Capability registry and application bindings expose only evidence-backed wallet/network lanes: Ethereum Sepolia, Tempo Testnet, and Arbitrum Sepolia have organizational Treasury, Governance, and sealed Auction E2E evidence; Blind/Record Verification also has verified network bindings. Unsupported lanes remain gated. |
 | 27 | DONE | Homepage explains what, who, problem, value, and entry paths in the first sections. |
 | 28 | DONE | Web2-to-Web3 positioning is explicit and tested in live HTML. |
 | 29 | DONE | Copy sells verifiability, programmable execution, and interoperability without return claims. |
