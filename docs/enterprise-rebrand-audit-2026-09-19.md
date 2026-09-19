@@ -73,7 +73,7 @@ closure is still missing. No item is marked complete from intent alone.
 | 57 | DONE | Social cards use the shared White / Navy / Cobalt visual system and page-specific artwork. |
 | 58 | PARTIAL | Live browser metadata and image URLs are verified across 12 routes; external platform cache refresh cannot be proven from this environment. |
 | 59 | DONE | Release verification and live route checks preserve backend, Agents, verification, and game surfaces. |
-| 60 | DONE | `scripts/test-commercial-claims.mjs` now checks the Web2/Web3 positioning and rejects unverified return, audit, certification, and Solana-only claims. |
+| 60 | DONE | `scripts/test-commercial-claims.mjs` checks the Web2/Web3 positioning, rejects unverified return/audit/certification/Solana-only claims, and protects the clean documents index from retired packet copy. |
 | 61 | DONE | Lint, typecheck, build, 13-suite release verification, browser, responsive, and route checks pass. |
 | 62 | DONE | Production smoke checks pass for home, products, verification, Agents, and game. |
 | 63 | DONE | The live visitor-facing message is private organizational work with verifiable outcomes. |

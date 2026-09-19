@@ -25,7 +25,8 @@ Latest audited commit: `cc3842e`
 - The live `/documents/` body was checked for stale grant text and returned none; the rollback copy is retained beside the active file.
 - A read-only high-confidence scan of all 23 remote branch heads found no credential signatures; historical commit scanning remains intentionally unclaimed.
 - Metadata smoke test passed for 12 primary routes: all returned HTTP 200 with title, description, canonical, page-specific OG image, and OG image HTTP 200.
-- `commercial-claims` is now a release suite; it checks four commercial source surfaces for required Web2/Web3 and privacy language and rejects unverified commercial claims. The complete release gate passed 13/13 suites.
+- `commercial-claims` is now a release suite; it checks five commercial source surfaces for required Web2/Web3 and privacy language, rejects unverified commercial claims, and protects the documents index from retired packet copy. The complete release gate passed 13/13 suites.
+- r29 was deployed atomically after the claim gate passed; live Chromium verified `/`, `/documents/`, and `/game/` with HTTP 200 and no console or failed-request errors.
 - To recover deployment headroom, only obsolete website rollback directories r19-r25 were removed from EC2. The active site and rollback directories r26/r27 were retained, and home/documents/game returned HTTP 200 afterward.
 
 ## Explicitly Not Claimed
