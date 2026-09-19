@@ -119,9 +119,19 @@ closure is still missing. No item is marked complete from intent alone.
    environment variables are absent. No transaction was attempted and no
    fabricated E2E result was recorded.
 11. The independently deployed Agent Exchange Lambda source is now tracked in
-    `integrations/agent-exchange-lambda/`, excluding `node_modules` and
-    secrets. Its handler passes syntax and secret-pattern checks, and the full
-    release verification suite remains green after adding the source.
+   `integrations/agent-exchange-lambda/`, excluding `node_modules` and
+   secrets. Its handler passes syntax and secret-pattern checks, and the full
+   release verification suite remains green after adding the source.
+12. A fresh Ethereum Sepolia Phase 2 E2E completed with real testnet writes:
+   verifier, Blind Registry, and Record Registry deployment; record and blind
+   anchors; wrong-chain, altered-proof, expiry, and revocation assertions.
+   The resulting public links were opened in a separate browser session and
+   both returned `verified` with `Status VALID`.
+13. The public EVM verifier had a real static-host fallback bug: a missing
+   manifest path returned HTML with HTTP 200 and was parsed as JSON. The client
+   now validates content type and manifest shape before accepting a candidate.
+   The fix and fresh Ethereum artifact were deployed atomically as r23; the
+   main site, Agents service, and game remained healthy.
 
 ## Verification Commands
 
