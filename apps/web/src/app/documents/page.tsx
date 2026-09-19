@@ -1,147 +1,98 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { ArrowUpRight, BookOpen, CheckCircle2, FileCheck2, ShieldCheck } from "lucide-react";
 
-import { CanonicalCustodyProofSurface } from "@/components/canonical-custody-proof-surface";
-import { CustodyTruthQuickActions } from "@/components/custody-truth-quick-actions";
-import { DataCorridorQuickLinks } from "@/components/data-corridor-quick-links";
-import { DocumentLibrary } from "@/components/document-library";
-import { CustodyTrustContinuity } from "@/components/custody-trust-continuity";
-import { EcosystemFocusAlignmentStrip } from "@/components/ecosystem-focus-alignment-strip";
-import { OperationsShell } from "@/components/operations-shell";
-import { PdaoTokenStrategyStrip } from "@/components/pdao-token-strategy-strip";
-import { ReadNodeHostReadinessStrip } from "@/components/read-node-host-readiness-strip";
-import { ReviewerTelemetryTruthStrip } from "@/components/reviewer-telemetry-truth-strip";
-import { TreasuryReviewerGradeStrip } from "@/components/treasury-reviewer-grade-strip";
-import { getCuratedDocumentsBySlugs, getIndexableCuratedDocuments } from "@/lib/curated-documents";
 import { buildRouteMetadata } from "@/lib/route-metadata";
-import { buttonVariants } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
-
-const PRIORITY_TRUTH_SURFACE_SLUGS = [
-  "agentic-treasury-micropayment-rail",
-  "canonical-custody-proof",
-  "custody-proof-reviewer-packet",
-  "treasury-reviewer-packet",
-  "launch-trust-packet",
-];
 
 export const metadata: Metadata = buildRouteMetadata({
-  title: "Curated Documents",
+  title: "Evidence & Resources",
   description:
-    "Curated trust, verification, and launch documents available inside the product documentation surface for fast verification and deeper technical review.",
+    "Current public product, verification, and architecture resources from PrivateDAO. Older internal and historical packets are not presented as current product truth.",
   path: "/documents",
-  keywords: ["documents", "trust package", "verification packet", "audit packet"],
+  keywords: ["PrivateDAO evidence", "verification", "whitepaper", "product resources"],
 });
 
-export default function DocumentsPage() {
-  const documents = getIndexableCuratedDocuments();
-  const priorityTruthSurfaces = getCuratedDocumentsBySlugs(PRIORITY_TRUTH_SURFACE_SLUGS);
-  const prioritySlugs = new Set(priorityTruthSurfaces.map((document) => document.slug));
-  const remainingDocuments = documents.filter((document) => !prioritySlugs.has(document.slug));
+const sections = [
+  {
+    eyebrow: "Understand the product",
+    title: "Start with the idea, not the implementation.",
+    icon: BookOpen,
+    links: [
+      ["Thesis", "Why privacy and proof belong in the same organizational workflow.", "/thesis"],
+      ["Whitepaper", "The product model, boundaries, and infrastructure behind the commercial surfaces.", "/whitepaper"],
+      ["Products", "Choose payroll, treasury, governance, auctions, or verification by business need.", "/products"],
+    ],
+  },
+  {
+    eyebrow: "Check an outcome",
+    title: "Verify the result without receiving the private source data.",
+    icon: FileCheck2,
+    links: [
+      ["Blind Verification", "Check that a condition was satisfied without exposing the underlying information.", "/proof-workflows/blind-policy"],
+      ["Record Verification", "Open a public record link and inspect its current validity and scope.", "/products/record-verification"],
+      ["EVM Verification", "Inspect the currently published testnet verification evidence.", "/verify/evm"],
+    ],
+  },
+  {
+    eyebrow: "Review the boundaries",
+    title: "See what is live before you rely on it.",
+    icon: ShieldCheck,
+    links: [
+      ["Security", "Read the public security and release boundaries without turning them into marketing claims.", "/security"],
+      ["Build", "Find APIs, Agents, network capability, and integration material when you need implementation detail.", "/developers"],
+      ["PDAO", "See the official token information and current ecosystem utility.", "/token"],
+    ],
+  },
+] as const;
 
+export default function DocumentsPage() {
   return (
-    <OperationsShell
-      eyebrow="Document library"
-      title="Trust, verification, and launch documents inside the product documentation surface"
-      description="This is the curated document layer for the highest-value trust and verification surfaces. It behaves like a real product documentation center while keeping source files one click away."
-      badges={[
-        { label: "Documents", variant: "cyan" },
-        { label: "Curated in-app library", variant: "violet" },
-        { label: "Source file included", variant: "success" },
-      ]}
-    >
-      <div>
-        <ReviewerTelemetryTruthStrip
-          title="Telemetry fast path"
-          description="Surface freshness, indexed proposal scale, finalized governance and confidential counts, and the direct telemetry packet route before the rest of the document center."
-        />
-      </div>
-      <div>
-        <CustodyTruthQuickActions
-          title="Custody truth quick actions"
-          description="Operator fast path into the custody truth surfaces: custody packet, canonical proof, intake shape, and the product application route."
-        />
-      </div>
-      <div>
-        <TreasuryReviewerGradeStrip
-          context="documents"
-          description="Open the treasury story as one operator-grade packet from the document center: sender checklist, linked rails, truth surfaces, payments fit, and release-readiness visibility."
-        />
-      </div>
-      <div>
-        <PdaoTokenStrategyStrip context="documents" />
-      </div>
-      <div>
-        <DataCorridorQuickLinks
-          title="Telemetry fast path"
-          description="Open the telemetry packet, diagnostics, analytics, and hosted-read proof directly from the document center when you are validating runtime, RPC, or data-side readiness."
-        />
-      </div>
-      <div>
-        <ReadNodeHostReadinessStrip context="documents" />
-      </div>
-      <div>
-        <EcosystemFocusAlignmentStrip
-          title="Ecosystem focus alignment for grants and partners"
-          description="Use this packet layer when a partner wants to see how PrivateDAO maps to decentralisation, censorship resistance, DAO tooling, education, developer tooling, payments, and selective cause-driven use cases."
-        />
-      </div>
-      <div className="rounded-3xl border border-cyan-300/16 bg-cyan-300/[0.05] p-5">
-        <div className="text-[11px] uppercase tracking-[0.3em] text-cyan-200/78">Fast path strip</div>
-        <div className="mt-3 max-w-3xl text-sm leading-7 text-white/60">
-          Start from `/documents` and reach operating truth, treasury rails, the right packet, and the strongest product route in two clicks instead of scanning the full library.
-        </div>
-        <div className="mt-5 grid gap-3 md:grid-cols-3">
-          <Link href="/documents/agentic-treasury-micropayment-rail" className={cn(buttonVariants({ variant: "secondary" }), "justify-between")}>
-            Open micropayment rail
-          </Link>
-          <Link href="/documents/payments-reviewer-fast-path" className={cn(buttonVariants({ variant: "secondary" }), "justify-between")}>
-            Open payments fast path
-          </Link>
-          <Link href="/documents/privacy-and-encryption-proof-guide" className={cn(buttonVariants({ variant: "secondary" }), "justify-between")}>
-            Open privacy proof guide
-          </Link>
-          <Link href="/documents/canonical-custody-proof" className={cn(buttonVariants({ variant: "secondary" }), "justify-between")}>
-            Open truth
-          </Link>
-          <Link href="/documents/treasury-reviewer-packet" className={cn(buttonVariants({ variant: "outline" }), "justify-between")}>
-            Open treasury packet
-          </Link>
-          <Link href="/documents/reviewer-fast-path" className={cn(buttonVariants({ variant: "outline" }), "justify-between")}>
-            Open fast path
-          </Link>
-          <Link href="/learn" className={cn(buttonVariants({ variant: "outline" }), "justify-between")}>
-            Open plain-language guide
-          </Link>
-        </div>
-        <div className="mt-4 text-sm leading-7 text-white/56">
-          The fast path here now includes a payments verification lane explicitly: treasury packet, canonical custody proof, services payments rail, and command-center payout path stay one layer away instead of being reconstructed from separate results.
-        </div>
-      </div>
-      <div>
-        <CanonicalCustodyProofSurface mode="documents" />
-      </div>
-      <div>
-        <CustodyTrustContinuity mode="documents" />
-      </div>
-      <div id="priority-truth-surfaces">
-        <div className="mb-5">
-          <div className="text-[11px] uppercase tracking-[0.3em] text-cyan-200/76">Priority truth surfaces</div>
-          <div className="mt-3 max-w-3xl text-sm leading-7 text-white/60">
-            Open these documents first if you entered from `/documents`. They establish the operating truth first: the new agentic micropayment rail, canonical custody proof, the custody packet, the treasury packet, and the launch trust packet.
+    <main className="min-h-screen bg-white text-[#10233f]">
+        <section className="mx-auto w-full max-w-7xl px-4 pb-16 pt-16 sm:px-6 sm:pb-24 sm:pt-24 lg:px-8">
+          <div className="max-w-4xl">
+            <div className="text-[11px] font-bold uppercase tracking-[0.28em] text-[#175cd3]">Evidence & resources</div>
+            <h1 className="mt-5 text-4xl font-semibold tracking-[-0.045em] text-[#10233f] sm:text-6xl">The current PrivateDAO surface, in one place.</h1>
+            <p className="mt-6 max-w-3xl text-lg leading-8 text-[#5d6d82]">
+              This page lists the public product and verification resources that matter today. It does not present old internal packets, grant material, historical reviewer drafts, or archived implementation notes as current product truth.
+            </p>
           </div>
-        </div>
-        <DocumentLibrary documents={priorityTruthSurfaces} />
-      </div>
-      <div>
-        <div className="mb-5">
-          <div className="text-[11px] uppercase tracking-[0.3em] text-white/46">Public document set</div>
-          <div className="mt-3 max-w-3xl text-sm leading-7 text-white/56">
-            The public document center stays focused on the highest-value trust, proof, runtime, and funding packets so search engines and first-time visitors land on the clearest evidence first.
+
+          <div className="mt-12 grid gap-5 lg:grid-cols-3">
+            {sections.map((section) => {
+              const Icon = section.icon;
+              return (
+                <section key={section.title} className="rounded-[24px] border border-[#dce5f0] bg-[#f8fbff] p-6 shadow-[0_18px_55px_rgba(16,35,63,0.06)] sm:p-7">
+                  <Icon className="h-6 w-6 text-[#175cd3]" aria-hidden="true" />
+                  <div className="mt-6 text-[11px] font-bold uppercase tracking-[0.23em] text-[#175cd3]">{section.eyebrow}</div>
+                  <h2 className="mt-3 text-2xl font-semibold tracking-[-0.03em] text-[#10233f]">{section.title}</h2>
+                  <div className="mt-7 grid gap-3">
+                    {section.links.map(([label, description, href]) => (
+                      <Link key={href} href={href} className="group rounded-[16px] border border-[#dce5f0] bg-white p-4 transition hover:border-[#8bb7ed] hover:shadow-sm">
+                        <div className="flex items-center justify-between gap-3">
+                          <span className="font-semibold text-[#10233f]">{label}</span>
+                          <ArrowUpRight className="h-4 w-4 shrink-0 text-[#175cd3] transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" aria-hidden="true" />
+                        </div>
+                        <p className="mt-2 text-sm leading-6 text-[#5d6d82]">{description}</p>
+                      </Link>
+                    ))}
+                  </div>
+                </section>
+              );
+            })}
           </div>
-        </div>
-        <DocumentLibrary documents={remainingDocuments} />
-      </div>
-    </OperationsShell>
+
+          <section className="mt-6 rounded-[24px] bg-[#10233f] p-6 text-white sm:p-8">
+            <div className="flex items-start gap-4">
+              <CheckCircle2 className="mt-1 h-5 w-5 shrink-0 text-[#57d6ed]" aria-hidden="true" />
+              <div>
+                <h2 className="text-2xl font-semibold tracking-[-0.03em]">A simple rule for reading the site</h2>
+                <p className="mt-3 max-w-3xl text-sm leading-7 text-[#d5e2f3]">
+                  A public page explains a product. A verification page proves a specific result. A developer page explains an integration. No document on this route should be treated as evidence of adoption, an audit, unrestricted mainnet readiness, or financial returns unless the linked surface proves that exact claim.
+                </p>
+              </div>
+            </div>
+          </section>
+        </section>
+    </main>
   );
 }
