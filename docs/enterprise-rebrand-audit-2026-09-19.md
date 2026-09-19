@@ -3,7 +3,7 @@
 Date: 2026-09-19  
 Branch: `rebrand/enterprise-white`  
 Production: `https://privatedao.org/`  
-Latest release: `256248485` (website release r35)
+Latest release: `6ad9bcae2` (website release r36)
 
 This audit records the current evidence-backed state of the 63-point
 Enterprise Rebrand brief. `DONE` means verified in the source or live
@@ -39,7 +39,7 @@ closure is still missing. No item is marked complete from intent alone.
 | 23 | DONE | Kernel details are kept in technical/developer material. |
 | 24 | DONE | Workflow-first execution language is present on the homepage. |
 | 25 | DONE | Wallets are not the entry point on the commercial homepage. |
-| 26 | PARTIAL | Capability registry exists; each additional network still requires its own live execution evidence. |
+| 26 | PARTIAL | Capability registry now includes verified Arbitrum Sepolia execution for Treasury, Governance, and sealed Auctions; each additional network/product lane still requires its own live execution evidence. |
 | 27 | DONE | Homepage explains what, who, problem, value, and entry paths in the first sections. |
 | 28 | DONE | Web2-to-Web3 positioning is explicit and tested in live HTML. |
 | 29 | DONE | Copy sells verifiability, programmable execution, and interoperability without return claims. |
@@ -74,8 +74,8 @@ closure is still missing. No item is marked complete from intent alone.
 | 58 | PARTIAL | Live browser metadata and image URLs are verified across 12 routes; external platform cache refresh cannot be proven from this environment. |
 | 59 | DONE | Release verification and live route checks preserve backend, Agents, verification, and game surfaces. |
 | 60 | DONE | `scripts/test-commercial-claims.mjs` checks the Web2/Web3 positioning, rejects unverified return/audit/certification/Solana-only claims, and protects the clean documents index from retired packet copy. |
-| 61 | DONE | Lint, typecheck, build, 13-suite release verification, browser, responsive, and route checks pass. |
-| 62 | DONE | Production smoke checks pass for home, products, verification, Agents, and game. |
+| 61 | DONE | Lint, typecheck, build, 14-suite release verification, browser, responsive, and route checks pass. |
+| 62 | DONE | Production smoke checks pass for home, products, verification, Agents, runtime catalog, and game after r36. |
 | 63 | DONE | The live visitor-facing message is private organizational work with verifiable outcomes. |
 
 ## Current External Boundaries
@@ -160,6 +160,11 @@ closure is still missing. No item is marked complete from intent alone.
    three canonical refs, including the two large artifacts, and found zero
    high-confidence credential signatures. The result and exact boundary are
    recorded in `docs/git-history-secret-scan-20260919.md`.
+21. A real Arbitrum Sepolia organizational E2E completed on chain 421614 using
+    the funded testnet deployer: Treasury executed, Governance passed, and the
+    sealed Auction settled. The deployment artifact records 17 confirmed
+    successful transaction receipts across contract deployment and lifecycle
+    actions. This is testnet evidence only; it does not claim Mainnet support.
 
 ## Verification Commands
 

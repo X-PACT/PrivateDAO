@@ -2,7 +2,7 @@
 
 Date: 2026-09-19
 Branch: `rebrand/enterprise-white`
-Latest audited commit: `256248485`
+Latest audited commit: `6ad9bcae2`
 
 ## Verified
 
@@ -41,6 +41,7 @@ Latest audited commit: `256248485`
 - To recover deployment headroom, only obsolete website rollback directories r19-r25 were removed from EC2. The active site and rollback directories r26/r27 were retained, and home/documents/game returned HTTP 200 afterward.
 - r34 replaced only the commercial website volume after the official information index was simplified again. The active site was staged, hash-checked, atomically swapped, and rolled back once when an internal redirect check was too strict; the corrected swap passed `/`, `/documents/`, and `/game/`. Only the website edge container was restarted. Rollback directories r32, r33, and r34 remain; obsolete r26-r31 copies were removed to recover disk space.
 - r35 removed archived `/documents/<slug>` destinations from the public site search index while preserving their archive bridge URLs. The release passed the 14-suite gate, was staged and atomically swapped, and live checks confirmed `/`, `/documents/`, `/search/`, and `/game/` at HTTP 200 with the main product routes still available.
+- r36 added verified Arbitrum Sepolia organizational E2E evidence for Treasury, Governance, and sealed Auctions. The release passed all 14 verification suites, was staged with matching hashes, atomically swapped, and live checks confirmed the commercial routes, `/verify/*`, `/game/`, and the runtime catalog. Only the website edge container was restarted; the rollback copy is retained at `/home/ec2-user/PrivateDAO/deploy/primary-host/volumes/site.rollback-r36-20260919040827`.
 
 ## Explicitly Not Claimed
 
@@ -54,8 +55,9 @@ Latest audited commit: `256248485`
 ## Production Safety Gate
 
 The main website cutover was completed as an atomic website-volume swap r24, and
-the latest public-search correction was deployed as r35. The previous r35
-site is retained at `/home/ec2-user/PrivateDAO/deploy/primary-host/volumes/site.previous-20260919-r35`.
+the latest runtime-catalog and capability release was deployed as r36. The
+r36 rollback copy is retained at
+`/home/ec2-user/PrivateDAO/deploy/primary-host/volumes/site.rollback-r36-20260919040827`.
 The game and its separate host/service remained outside the website cutover.
 
 Before a future cutover:
@@ -63,10 +65,10 @@ Before a future cutover:
 1. Build and run the release verification suites from the canonical commit.
 2. Run the desktop/mobile browser pass and inspect the homepage and product pages.
 3. Record the active site directory and current container list on EC2.
-4. Copy the active site to a versioned rollback directory. Completed for r24, r26, r33, r34, and r35.
-5. Perform an atomic directory swap only for the website volume. Completed for r24, r26, r34, and r35.
-6. Restart only the website edge process if the bind mount requires it. Completed for r24, r26, r34, and r35.
-7. Verify the homepage, commercial routes, Agent Card, EVM links, `/documents/`, `/search/`, and `/game/`. Completed for r35 smoke coverage.
+4. Copy the active site to a versioned rollback directory. Completed for r24, r26, r33, r34, r35, and r36.
+5. Perform an atomic directory swap only for the website volume. Completed for r24, r26, r34, r35, and r36.
+6. Restart only the website edge process if the bind mount requires it. Completed for r24, r26, r34, r35, and r36.
+7. Verify the homepage, commercial routes, Agent Card, EVM links, `/documents/`, `/search/`, and `/game/`. Completed for r36 smoke coverage.
 8. Keep the rollback directory until the post-release observation window ends.
 9. Do not remove containers or game services as part of the website cutover.
 
