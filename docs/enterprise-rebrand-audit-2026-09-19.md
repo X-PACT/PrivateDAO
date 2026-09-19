@@ -3,7 +3,7 @@
 Date: 2026-09-19  
 Branch: `rebrand/enterprise-white`  
 Production: `https://privatedao.org/`  
-Latest release: `1ea9a9528` (website release r38)
+Latest release: `f5eb39638` (website release r39)
 
 This audit records the current evidence-backed state of the 63-point
 Enterprise Rebrand brief. `DONE` means verified in the source or live
@@ -172,6 +172,9 @@ closure is still missing. No item is marked complete from intent alone.
 23. r38 unified the remaining public operational email references on
     `fahd@privatedao.org`; external smoke checks returned HTTP 200 for the
     homepage, Contact, security contact, game, and Agent Card routes.
+24. r39 exposed a compact mobile language control. Local Chromium checks at
+    320px, 390px, and 1440px found the control visible, no horizontal overflow,
+    and no console errors; public HTTP smoke checks passed after deployment.
 
 ## Verification Commands
 
