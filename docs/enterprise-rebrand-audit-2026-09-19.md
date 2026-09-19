@@ -3,7 +3,7 @@
 Date: 2026-09-19  
 Branch: `rebrand/enterprise-white`  
 Production: `https://privatedao.org/`  
-Latest release: `cc3842e`
+Latest release: `d30f707`
 
 This audit records the current evidence-backed state of the 63-point
 Enterprise Rebrand brief. `DONE` means verified in the source or live
@@ -52,7 +52,7 @@ closure is still missing. No item is marked complete from intent alone.
 | 36 | DONE | PDAO is presented as a community asset with factual utility boundaries. |
 | 37 | DONE | PDAO Worlds remains an independent ecosystem product and live route; its separate Mini App brand assets are restored and browser-verified. |
 | 38 | DONE | Thesis route is rewritten around privacy and proof in plain language. |
-| 39 | DONE | Whitepaper route is live; `/documents/` now exposes only current product, verification, and boundary resources instead of the historical packet library. The r28 live copy contains no stale grant reference. |
+| 39 | DONE | Whitepaper route is live; `/documents/` is now a small commercial resource index and does not present historical packets, reviewer drafts, grant material, or testnet evidence as current product claims. |
 | 40 | DONE | Roadmap and investor materials include product and capital-development paths. |
 | 41 | DONE | Commercial pages do not lead with engineering disclaimers. |
 | 42 | PARTIAL | MCP resources exist in developer/runtime material; independent external MCP interoperability is not claimed. |
@@ -67,7 +67,7 @@ closure is still missing. No item is marked complete from intent alone.
 | 51 | DONE | Founder and ownership information are present in public discovery materials. |
 | 52 | DONE | `llms.txt`, `llms-full.txt`, `ai.json`, and ownership resources are live. |
 | 53 | DONE | Semantic product/privacy/Web3 terms are present without keyword stuffing on the homepage. |
-| 54 | DONE | robots, sitemap, security, JSON-LD, Agent Card, and canonical resources are present. |
+| 54 | DONE | robots, sitemap, RFC 9116 security contact files, JSON-LD, Agent Card, and canonical resources are present. |
 | 55 | DONE | Locale alternates are emitted in route metadata and root metadata. |
 | 56 | DONE | Twelve primary routes emit distinct titles, descriptions, canonicals, and valid OG images; product cards are not generic. |
 | 57 | DONE | Social cards use the shared White / Navy / Cobalt visual system and page-specific artwork. |
@@ -142,9 +142,11 @@ closure is still missing. No item is marked complete from intent alone.
    r24; the current evidence-index correction was deployed atomically as r26; the
    main site, Agents service, and game remained healthy.
 15. The previous `/documents/` index was an outdated reviewer packet library.
-   It was replaced with a small current evidence surface, checked at desktop
-   and mobile sizes, with one header, no old grant/reviewer copy, and no
-   console or server errors.
+   It was replaced with a small commercial resource index. The r31 live body
+   contains product navigation only and no reviewer, grant, or testnet-
+   evidence copy.
+16. r30 added `/security.txt` and `/.well-known/security.txt`; both return
+   HTTP 200 with `text/plain` content from the production host.
 
 ## Verification Commands
 
