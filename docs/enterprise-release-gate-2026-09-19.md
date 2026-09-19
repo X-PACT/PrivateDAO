@@ -2,7 +2,7 @@
 
 Date: 2026-09-19
 Branch: `rebrand/enterprise-white`
-Latest audited commit: `e12183d`
+Latest audited commit: `37ee9a7`
 
 ## Verified
 
@@ -18,6 +18,9 @@ Latest audited commit: `e12183d`
 - `https://privatedao.org/`, `/game/`, and `https://game.privatedao.org/game/godot/index.html` returned 200 after the Agents-only deployment.
 - Tempo Testnet Phase 2 evidence was published and its Record and Blind verification links returned 200 and `Status VALID` in an independent browser session.
 - `/documents/` was replaced with the current evidence index; r26 passed desktop/mobile browser checks with one header, no old reviewer/grant copy, no console errors, and HTTP 200.
+- Website release r27 was deployed atomically with the prior site retained for rollback.
+- The separate Mini App service received only the missing `privatedao_logo.jpg` and `privatedao_icon.png` assets; no game code or game service was restarted.
+- A fresh Chromium desktop pass returned HTTP 200 with no console errors or failed requests for `/`, `/documents/`, and `/game/`.
 
 ## Explicitly Not Claimed
 

@@ -3,7 +3,7 @@
 Date: 2026-09-19  
 Branch: `rebrand/enterprise-white`  
 Production: `https://privatedao.org/`  
-Latest release: `e12183d`
+Latest release: `37ee9a7`
 
 This audit records the current evidence-backed state of the 63-point
 Enterprise Rebrand brief. `DONE` means verified in the source or live
@@ -50,7 +50,7 @@ closure is still missing. No item is marked complete from intent alone.
 | 34 | DONE | Contact route provides direct email and official social actions. |
 | 35 | DONE | Telegram is kept in community context rather than enterprise navigation. |
 | 36 | DONE | PDAO is presented as a community asset with factual utility boundaries. |
-| 37 | DONE | PDAO Worlds remains an independent ecosystem product and live route. |
+| 37 | DONE | PDAO Worlds remains an independent ecosystem product and live route; its separate Mini App brand assets are restored and browser-verified. |
 | 38 | DONE | Thesis route is rewritten around privacy and proof in plain language. |
 | 39 | DONE | Whitepaper route is live; `/documents/` now exposes only current product, verification, and boundary resources instead of the historical packet library. |
 | 40 | DONE | Roadmap and investor materials include product and capital-development paths. |
