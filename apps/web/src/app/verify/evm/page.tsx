@@ -42,13 +42,18 @@ export default function EvmVerificationPage() {
         const id = params.get("id") || "";
         if (!rpcByNetwork[network] || !/^(record|blind)$/.test(type) || !/^0x[0-9a-fA-F]{64}$/.test(id)) throw new Error("This verification link is invalid or incomplete.");
         const manifestNames = ["phase-2-e2e.json", `phase-2-e2e-${network}.json`];
-        let manifestResponse: Response | undefined;
+        let manifest: Manifest | undefined;
         for (const name of manifestNames) {
           const candidate = await fetch(`/evm-verification/${name}`, { cache: "no-store" });
-          if (candidate.ok) { manifestResponse = candidate; break; }
+          if (!candidate.ok || !candidate.headers.get("content-type")?.includes("application/json")) continue;
+          try {
+            const parsed = await candidate.json() as Manifest;
+            if (Array.isArray(parsed.networks)) { manifest = parsed; break; }
+          } catch {
+            continue;
+          }
         }
-        if (!manifestResponse) throw new Error("Verification manifest unavailable");
-        const manifest = await manifestResponse.json() as Manifest;
+        if (!manifest) throw new Error("Verification manifest unavailable");
         const entry = manifest.networks.find((item) => item.network === network);
         if (!entry) throw new Error("This network is not currently published for verification.");
         const address = type === "record" ? entry.contracts.record.address : entry.contracts.blind.address;
