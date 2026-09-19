@@ -114,6 +114,10 @@ closure is still missing. No item is marked complete from intent alone.
    Tempo Testnet with HTTP 200 and matching chain IDs. This verifies provider
    reachability only; it does not upgrade any product from planned to live
    execution.
+10. The write-capable EVM Phase 2 runner was inspected but not executed in
+    this session because its required deployer key and per-network RPC
+    environment variables are absent. No transaction was attempted and no
+    fabricated E2E result was recorded.
 
 ## Verification Commands
 
