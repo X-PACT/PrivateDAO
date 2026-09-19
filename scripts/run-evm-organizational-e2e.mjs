@@ -60,6 +60,8 @@ const transport = http(rpcUrl, {
   retryCount: Number(process.env.PDAO_EVM_RPC_RETRY_COUNT || 0),
   retryDelay: 1_000,
 });
+const writeGasLimit = BigInt(process.env.PDAO_EVM_WRITE_GAS_LIMIT || "200000");
+if (writeGasLimit < 50_000n || writeGasLimit > 2_000_000n) throw new Error("PDAO_EVM_WRITE_GAS_LIMIT must be between 50000 and 2000000.");
 const deployerTempoClient = NETWORK === "tempo-testnet"
   ? createTempoClient({ account: deployer, chain: tempoModerato.extend({ feeToken: TEMPO_FEE_TOKEN }), transport })
   : null;
@@ -96,6 +98,14 @@ const auctionBytecode = `0x${(await readFile(path.join(PACKAGE, `artifacts/${tem
 
 const runId = `${Date.now()}-${process.pid}`;
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+async function waitForChainTimestamp(target) {
+  for (let attempt = 0; attempt < 180; attempt += 1) {
+    const block = await publicClient.getBlock({ blockTag: "latest" });
+    if (block.timestamp >= target) return;
+    await sleep(1_000);
+  }
+  throw new Error("chain timestamp did not reach the requested test window");
+}
 const nonceCache = new Map();
 async function takeNonce(account) {
   const address = account.address;
@@ -120,7 +130,7 @@ const tx = async (hash) => {
   return receipt;
 };
 const write = async (wallet, address, abi, functionName, args = [], value) => {
-  const hash = await wallet.writeContract({ address, abi, functionName, args, nonce: await takeNonce(wallet.account), ...(value === undefined ? {} : { value }), ...(await feeOverrides()) });
+  const hash = await wallet.writeContract({ address, abi, functionName, args, gas: writeGasLimit, nonce: await takeNonce(wallet.account), ...(value === undefined ? {} : { value }), ...(await feeOverrides()) });
   await tx(hash);
   return hash;
 };
@@ -191,27 +201,40 @@ for (let attempt = 0; attempt < 20; attempt += 1) {
 }
 assert.equal(Number(approvedPayment[3]), 2, "approved payment was not visible before execution");
 const executedHash = await write(deployerWallet, treasury.address, treasuryAbi, "executePayment", [paymentId]);
-const payment = await publicClient.readContract({ address: treasury.address, abi: treasuryAbi, functionName: "payments", args: [paymentId] });
-assert.equal(Number(payment[3]), 3, "treasury payment was not executed");
+let payment;
+for (let attempt = 0; attempt < 90; attempt += 1) {
+  payment = await publicClient.readContract({ address: treasury.address, abi: treasuryAbi, functionName: "payments", args: [paymentId] });
+  if (Number(payment[3]) === 3) break;
+  await sleep(1_000);
+}
+assert.equal(Number(payment[3]), 3, "treasury payment was not executed after receipt confirmation");
 deployments.evidence.treasury = { checkerFundingHash, treasuryApprovalHash, treasuryFundingHash, requestedHash, approvedHash, executedHash, paymentId, status: "executed" };
 
 const governance = await deploy(deployerWallet, governanceAbi, governanceBytecode, []);
 deployments.contracts.governance = governance;
 const proposalId = keccak256(`0x${Buffer.from(`proposal:${runId}`).toString("hex")}`);
 const actionHash = keccak256(`0x${Buffer.from(`action:${runId}`).toString("hex")}`);
-const now = Math.floor(Date.now() / 1000);
-const commitEnd = BigInt(now + 120);
-const revealEnd = BigInt(now + 300);
+const now = (await publicClient.getBlock({ blockTag: "latest" })).timestamp;
+const governanceCommitSeconds = Number(process.env.PDAO_EVM_GOVERNANCE_COMMIT_SECONDS || "120");
+const governanceRevealSeconds = Number(process.env.PDAO_EVM_GOVERNANCE_REVEAL_SECONDS || "300");
+if (!Number.isInteger(governanceCommitSeconds) || !Number.isInteger(governanceRevealSeconds) || governanceCommitSeconds < 5 || governanceRevealSeconds <= governanceCommitSeconds) throw new Error("Invalid governance test windows.");
+const commitEnd = now + BigInt(governanceCommitSeconds);
+const revealEnd = now + BigInt(governanceRevealSeconds);
 const proposalHash = await write(deployerWallet, governance.address, governanceAbi, "createProposal", [proposalId, actionHash, commitEnd, revealEnd, 1n]);
 const voteSalt = keccak256(`0x${Buffer.from(`vote-salt:${runId}`).toString("hex")}`);
 const voteCommitment = keccak256(encodeAbiParameters([{ type: "bytes32" }, { type: "address" }, { type: "bool" }, { type: "bytes32" }], [proposalId, deployer.address, true, voteSalt]));
 const voteCommitHash = await write(deployerWallet, governance.address, governanceAbi, "commitVote", [proposalId, voteCommitment]);
 await expectRevert(() => write(deployerWallet, governance.address, governanceAbi, "revealVote", [proposalId, true, voteSalt]), "early governance reveal");
-await sleep(130_000);
+await waitForChainTimestamp(commitEnd + 1n);
 const voteRevealHash = await write(deployerWallet, governance.address, governanceAbi, "revealVote", [proposalId, true, voteSalt]);
-await sleep(190_000);
+await waitForChainTimestamp(revealEnd + 1n);
 const proposalFinalizeHash = await write(deployerWallet, governance.address, governanceAbi, "finalizeProposal", [proposalId]);
-const proposal = await publicClient.readContract({ address: governance.address, abi: governanceAbi, functionName: "proposals", args: [proposalId] });
+let proposal;
+for (let attempt = 0; attempt < 90; attempt += 1) {
+  proposal = await publicClient.readContract({ address: governance.address, abi: governanceAbi, functionName: "proposals", args: [proposalId] });
+  if (Number(proposal[7]) === 2) break;
+  await sleep(1_000);
+}
 assert.equal(Number(proposal[7]), 2, "governance proposal did not pass");
 deployments.evidence.governance = { proposalHash, voteCommitHash, voteRevealHash, proposalFinalizeHash, proposalId, status: "passed" };
 
@@ -220,24 +243,29 @@ deployments.contracts.auction = auction;
 const auctionId = keccak256(`0x${Buffer.from(`auction:${runId}`).toString("hex")}`);
 const bidAmount = tempoTokenMode ? parseUnits("0.2", TEMPO_TOKEN_DECIMALS) : parseEther("0.0002");
 const escrow = tempoTokenMode ? parseUnits("0.3", TEMPO_TOKEN_DECIMALS) : parseEther("0.0003");
-const auctionNow = Math.floor(Date.now() / 1000);
-const biddingEnd = BigInt(auctionNow + 120);
-const auctionRevealEnd = BigInt(auctionNow + 300);
+const auctionNow = (await publicClient.getBlock({ blockTag: "latest" })).timestamp;
+const biddingEnd = auctionNow + BigInt(governanceCommitSeconds);
+const auctionRevealEnd = auctionNow + BigInt(governanceRevealSeconds);
 const auctionCreateHash = await write(deployerWallet, auction.address, auctionAbi, "createAuction", [auctionId, deployer.address, biddingEnd, auctionRevealEnd]);
 const bidSalt = keccak256(`0x${Buffer.from(`bid-salt:${runId}`).toString("hex")}`);
 const bidCommitment = keccak256(encodeAbiParameters([{ type: "bytes32" }, { type: "address" }, { type: "uint256" }, { type: "bytes32" }], [auctionId, checker.address, bidAmount, bidSalt]));
 const bidApprovalHash = tempoTokenMode ? await write(checkerWallet, TEMPO_FEE_TOKEN, erc20Abi, "approve", [auction.address, escrow]) : null;
 const bidCommitHash = tempoTokenMode
   ? await write(checkerWallet, auction.address, auctionAbi, "commitBid", [auctionId, bidCommitment, escrow])
-  : await checkerWallet.writeContract({ address: auction.address, abi: auctionAbi, functionName: "commitBid", args: [auctionId, bidCommitment], value: escrow, nonce: await takeNonce(checkerWallet.account), ...(await feeOverrides()) });
+  : await checkerWallet.writeContract({ address: auction.address, abi: auctionAbi, functionName: "commitBid", args: [auctionId, bidCommitment], value: escrow, gas: writeGasLimit, nonce: await takeNonce(checkerWallet.account), ...(await feeOverrides()) });
 if (!tempoTokenMode) await tx(bidCommitHash);
 await expectRevert(() => checkerWallet.writeContract({ address: auction.address, abi: auctionAbi, functionName: "revealBid", args: [auctionId, bidAmount + 1n, bidSalt] }), "altered auction reveal");
-await sleep(130_000);
+await waitForChainTimestamp(biddingEnd + 1n);
 const bidRevealHash = await write(checkerWallet, auction.address, auctionAbi, "revealBid", [auctionId, bidAmount, bidSalt]);
-await sleep(190_000);
+await waitForChainTimestamp(auctionRevealEnd + 1n);
 const auctionFinalizeHash = await write(deployerWallet, auction.address, auctionAbi, "finalizeAuction", [auctionId]);
 const auctionSettleHash = await write(deployerWallet, auction.address, auctionAbi, "settleAuction", [auctionId]);
-const auctionState = await publicClient.readContract({ address: auction.address, abi: auctionAbi, functionName: "auctions", args: [auctionId] });
+let auctionState;
+for (let attempt = 0; attempt < 90; attempt += 1) {
+  auctionState = await publicClient.readContract({ address: auction.address, abi: auctionAbi, functionName: "auctions", args: [auctionId] });
+  if (Number(auctionState[5]) === 3) break;
+  await sleep(1_000);
+}
 assert.equal(Number(auctionState[5]), 3, "auction was not settled");
 deployments.evidence.auction = { bidApprovalHash, auctionCreateHash, bidCommitHash, bidRevealHash, auctionFinalizeHash, auctionSettleHash, auctionId, status: "settled" };
 

@@ -1,0 +1,55 @@
+{
+  "network": "base-sepolia",
+  "chainId": 84532,
+  "environment": "testnet",
+  "deployer": "0x1c3D6757651B617D7e5c08aE6F7a7F65eEafD75F",
+  "checker": "0xf9b215af2Aeb8112BA6a8919B26cE91542cdf190",
+  "createdAt": "2026-09-19T10:54:55.002Z",
+  "contracts": {
+    "treasury": {
+      "address": "0x01171b634188ef23a8b5f407906823b0d234a515",
+      "hash": "0xce7428c7bb5fbee633bea3a401344a5587a2624933f1d5298fd06fa2aeb6a0b5",
+      "blockNumber": "47023506"
+    },
+    "governance": {
+      "address": "0x5eaa9c97997cd3fea4c8e885b87e1feb1f456f3e",
+      "hash": "0x1c14eebdcb3b3196bba5ceb90cc3534a52545b1896a6a65cec5991721d8bbc58",
+      "blockNumber": "47023512"
+    },
+    "auction": {
+      "address": "0x231dc0b48b60fac8b000874f1825a3d6e24065e8",
+      "hash": "0x968886c1e82dde80b3b1e72e1046e8d886756c7accc0c112f940c190fe04fd42",
+      "blockNumber": "47023638"
+    }
+  },
+  "evidence": {
+    "treasury": {
+      "checkerFundingHash": "0x3b019a0d8e1d83ec8eb1a8faaf62042bd00318cf4b1c38534a6922f2045cf4ca",
+      "treasuryApprovalHash": null,
+      "treasuryFundingHash": "0xabf5e8ca648de9a472ff7c6f767283e31b078cb7bda8c9740af136a92abc8112",
+      "requestedHash": "0x6a45eb602f46d752d193ceb81eba06b8c9e20c2bdcd7eaadd7092c7464da8d6d",
+      "approvedHash": "0x9a2db255f2ad4c784922bce78ec29020e92a003fd68832376e4c2260ed5ccf43",
+      "executedHash": "0x86ee8ca5da961459a014eaf59b5e0a934c4995e5dc2aea729901ee15eb273773",
+      "paymentId": "0xcc5ef9064d02af857373445a160686f5b995b09f6610ac4ee769cd50ed2276e8",
+      "status": "executed"
+    },
+    "governance": {
+      "proposalHash": "0x7c1f8d95e3ee04f2f1f57e8ca4c8f117a78f6a902dbae0e5ff6c0de6c7b29153",
+      "voteCommitHash": "0x5f000d10495bd7ec22a79377b365b2df68bdbcf83ac6ce63c55607e6229fa003",
+      "voteRevealHash": "0x67c7e2b1712c5217c936dd89aa382c5c6d2b7a7d912bbf5db7771a401c46a699",
+      "proposalFinalizeHash": "0x7f648ca878bc3eb4f06811e17059b509aa916c752346b3a8fd233f12609abfcd",
+      "proposalId": "0x33522dc75e9dc1fa0713d16ae303443a0080a39da00a757410c1f97083414dd4",
+      "status": "passed"
+    },
+    "auction": {
+      "bidApprovalHash": null,
+      "auctionCreateHash": "0xee77ad99dd216e6e5ed9eaac7ba61bd5dba6e86dc94bfc549d50dff2e00f3352",
+      "bidCommitHash": "0xc0ea7de24093dc4fbae6f92ca9f21a65d5a4fd12d74fb1f1a970b2eb6c899d1f",
+      "bidRevealHash": "0x6cd433076b70922294d477bf58973e0ee77b9edcfd3617eae8c268b73315cf4f",
+      "auctionFinalizeHash": "0xd1d8279959192b0e2b8023656e0356a91f5fa82302040e52fed277fa86112df6",
+      "auctionSettleHash": "0x60fdbd8d14c564b5d021ef85a1d56d13d14d814538a59b3c7498651037869065",
+      "auctionId": "0x745e4930dd2ddaa41425b7f4a3a7ebd19bcea90afe536b8963fa97f97b015994",
+      "status": "settled"
+    }
+  }
+}

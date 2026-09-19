@@ -3,21 +3,15 @@
   "internalTest": true,
   "environment": "testnet",
   "rail": "base-bridge",
-  "verifiedAt": "2026-09-17T00:33:42.002Z",
-  "failedAttempts": [
-    {
-      "hash": "0x40536825b2197fb298349184459617101bd21c0c6538076cc6dd906b025ded8a",
-      "block": "11720184",
-      "status": "reverted"
-    }
-  ],
+  "verifiedAt": "2026-09-19T10:53:24.987Z",
+  "failedAttempts": [],
   "state": "destination_confirmed",
   "sourceChainId": 11155111,
   "destinationChainId": 84532,
-  "sourceHash": "0x30b52eda45b84ef82f1c56313e1e654b5451b26bcd274df53d88f9654670ff87",
-  "destinationHash": "0xa2fcd10c8f234dcabc002d2efaf762db788d11db695f94ec2524aa5486d7fb80",
-  "sourceBlock": "11720215",
-  "destinationBlock": "46918323",
-  "amountWei": "1000000000000000",
+  "sourceHash": "0xfe09fb15cebcd0691a59f9fc202f0983abd98447b809fa1b96fdd631a8249ada",
+  "destinationHash": "0x0a8d1b9abe2623eb5f1cea713406a831b790dc2e7b5b1bbf085fccffab864a2c",
+  "sourceBlock": "11737198",
+  "destinationBlock": "47023456",
+  "amountWei": "10000000000000000",
   "portal": "0x49f53e41452c74589e85ca1677426ba426459e85"
 }
