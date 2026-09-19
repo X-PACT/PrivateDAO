@@ -105,6 +105,10 @@ closure is still missing. No item is marked complete from intent alone.
    examples, fixtures, and tests. No branch head produced a hit. GitHub Secret
    Scanning is disabled for the private repository, and historical commits
    have not been fully scanned, so the branch/IP audit remains Partial.
+8. The local canonical history (376 reachable commits) was additionally
+   checked with the same high-confidence signatures and produced zero matching
+   commits. A complete remote-history scan was not completed because the full
+   mirror exceeded 500 MB before analysis; no public branch exposure was made.
 9. The read-only EVM RPC probe passed for Ethereum Sepolia, Arbitrum Sepolia,
    BNB Testnet, Base Sepolia, Robinhood Testnet, Hyperliquid Testnet, and
    Tempo Testnet with HTTP 200 and matching chain IDs. This verifies provider
