@@ -3,7 +3,7 @@
 Date: 2026-09-19  
 Branch: `rebrand/enterprise-white`  
 Production: `https://privatedao.org/`  
-Latest release: `7843478b4` (website release r34)
+Latest release: `256248485` (website release r35)
 
 This audit records the current evidence-backed state of the 63-point
 Enterprise Rebrand brief. `DONE` means verified in the source or live
@@ -142,9 +142,10 @@ closure is still missing. No item is marked complete from intent alone.
    r24; the current evidence-index correction was deployed atomically as r26; the
    main site, Agents service, and game remained healthy.
 15. The previous `/documents/` index was an outdated reviewer packet library.
-   It was replaced with a small commercial product and company index. The r34
+   It was replaced with a small commercial product and company index. The r35
    live body contains only current product/company navigation and no reviewer,
-   grant, or testnet-evidence copy.
+   grant, or testnet-evidence copy; public search no longer returns archived
+   document destinations.
 16. r30 added `/security.txt` and `/.well-known/security.txt`; both return
    HTTP 200 with `text/plain` content from the production host.
 17. r32 stopped direct legacy document routes from rendering old document
