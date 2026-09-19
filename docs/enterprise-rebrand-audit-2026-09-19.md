@@ -3,7 +3,7 @@
 Date: 2026-09-19  
 Branch: `rebrand/enterprise-white`  
 Production: `https://privatedao.org/`  
-Latest release: `6ad9bcae2` (website release r36)
+Latest release: `14a893f28` (website release r37)
 
 This audit records the current evidence-backed state of the 63-point
 Enterprise Rebrand brief. `DONE` means verified in the source or live
@@ -67,7 +67,7 @@ closure is still missing. No item is marked complete from intent alone.
 | 51 | DONE | Founder and ownership information are present in public discovery materials. |
 | 52 | DONE | `llms.txt`, `llms-full.txt`, `ai.json`, and ownership resources are live. |
 | 53 | DONE | Semantic product/privacy/Web3 terms are present without keyword stuffing on the homepage. |
-| 54 | DONE | robots, sitemap, RFC 9116 security contact files, JSON-LD, Agent Card, and canonical resources are present. |
+| 54 | DONE | robots, sitemap, RFC 9116 security contact files, JSON-LD, Agent Card, canonical resources, and evidence-gated network discovery metadata are present. |
 | 55 | DONE | Locale alternates are emitted in route metadata and root metadata. |
 | 56 | DONE | Twelve primary routes emit distinct titles, descriptions, canonicals, and valid OG images; product cards are not generic. |
 | 57 | DONE | Social cards use the shared White / Navy / Cobalt visual system and page-specific artwork. |
@@ -161,10 +161,14 @@ closure is still missing. No item is marked complete from intent alone.
    high-confidence credential signatures. The result and exact boundary are
    recorded in `docs/git-history-secret-scan-20260919.md`.
 21. A real Arbitrum Sepolia organizational E2E completed on chain 421614 using
-    the funded testnet deployer: Treasury executed, Governance passed, and the
-    sealed Auction settled. The deployment artifact records 17 confirmed
-    successful transaction receipts across contract deployment and lifecycle
-    actions. This is testnet evidence only; it does not claim Mainnet support.
+   the funded testnet deployer: Treasury executed, Governance passed, and the
+   sealed Auction settled. The deployment artifact records 17 confirmed
+   successful transaction receipts across contract deployment and lifecycle
+   actions. This is testnet evidence only; it does not claim Mainnet support.
+22. r37 live discovery checks returned HTTP 200 for `llms.txt`, `llms-full.txt`,
+   and `ai.json`; their network language is capability-gated and evidence-first,
+   and the stale `PrivateDAO Solana` alternate name is absent from the live
+   homepage metadata.
 
 ## Verification Commands
 
