@@ -109,6 +109,9 @@ closure is still missing. No item is marked complete from intent alone.
    checked with the same high-confidence signatures and produced zero matching
    commits. A complete remote-history scan was not completed because the full
    mirror exceeded 500 MB before analysis; no public branch exposure was made.
+9. GitHub Secret Scanning was queried through the authenticated repository
+   API and is disabled for `X-PACT/PrivateDAO` (HTTP 404). It was not enabled
+   or changed automatically because that is a repository-policy decision.
 9. The read-only EVM RPC probe passed for Ethereum Sepolia, Arbitrum Sepolia,
    BNB Testnet, Base Sepolia, Robinhood Testnet, Hyperliquid Testnet, and
    Tempo Testnet with HTTP 200 and matching chain IDs. This verifies provider
