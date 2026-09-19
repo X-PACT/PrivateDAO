@@ -186,6 +186,7 @@ async function main() {
     const result = await deposit(RECIPIENTS[index], "So11111111111111111111111111111111111111112", NET_BASE_UNITS, { optionalData });
     const signature = String(result.queueSignature || result.signatures?.[0] || "");
     if (!signature) throw new Error(`Umbra returned no signature for payout ${index + 1}.`);
+    console.error(JSON.stringify({ stage: "settlement-submitted", index: index + 1, signature }));
     await finalized(connection, signature);
     const settlement = await api("/payroll", { method: "POST", headers: bearer, body: json({ action: "settlement", batchId, itemId: item.item_id, idempotencyKey: `script-${item.item_id}`, state: "CONFIRMED", txSignature: signature, optionalDataHex: binding }) });
     settlements.push({ payoutId: item.payout_id, recipient: RECIPIENTS[index], signature, state: settlement.settlement.state });
