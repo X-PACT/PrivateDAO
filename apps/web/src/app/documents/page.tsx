@@ -53,7 +53,7 @@ export default function DocumentsPage() {
             <div className="text-[11px] font-bold uppercase tracking-[0.28em] text-[#175cd3]">Evidence & resources</div>
             <h1 className="mt-5 text-4xl font-semibold tracking-[-0.045em] text-[#10233f] sm:text-6xl">The current PrivateDAO surface, in one place.</h1>
             <p className="mt-6 max-w-3xl text-lg leading-8 text-[#5d6d82]">
-              This page lists the public product and verification resources that matter today. It does not present old internal packets, grant material, historical reviewer drafts, or archived implementation notes as current product truth.
+              This page lists the public product and verification resources that matter today. It does not present old internal packets, historical reviewer drafts, or archived implementation notes as current product truth.
             </p>
           </div>
 
