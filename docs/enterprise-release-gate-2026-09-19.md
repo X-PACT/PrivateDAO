@@ -2,7 +2,7 @@
 
 Date: 2026-09-19
 Branch: `rebrand/enterprise-white`
-Latest audited commit: `14a893f28`
+Latest audited commit: `1ea9a9528`
 
 ## Verified
 
@@ -43,6 +43,7 @@ Latest audited commit: `14a893f28`
 - r35 removed archived `/documents/<slug>` destinations from the public site search index while preserving their archive bridge URLs. The release passed the 14-suite gate, was staged and atomically swapped, and live checks confirmed `/`, `/documents/`, `/search/`, and `/game/` at HTTP 200 with the main product routes still available.
 - r36 added verified Arbitrum Sepolia organizational E2E evidence for Treasury, Governance, and sealed Auctions. The release passed all 14 verification suites, was staged with matching hashes, atomically swapped, and live checks confirmed the commercial routes, `/verify/*`, `/game/`, and the runtime catalog. Only the website edge container was restarted; the rollback copy is retained at `/home/ec2-user/PrivateDAO/deploy/primary-host/volumes/site.rollback-r36-20260919040827`.
 - r37 aligned `llms.txt`, `ai.json`, and SoftwareApplication metadata with the evidence-gated multi-network posture, removing the stale Solana-only alternate name and mainnet execution wording. The release passed typecheck and all 14 suites, was hash-checked and atomically swapped, and live discovery/product routes returned HTTP 200. The rollback copy is retained at `/home/ec2-user/PrivateDAO/deploy/primary-host/volumes/site.rollback-r37-20260919041510`.
+- r38 unified the remaining public operational email references on `fahd@privatedao.org`. The release passed typecheck, all 14 suites, static export checks, and external smoke checks for the homepage, Contact, security contact, game, and Agent Card routes. Only the website edge container was restarted; the previous site was retained as `/home/ec2-user/PrivateDAO/deploy/primary-host/volumes/site.rollback-email-20260919073000`.
 
 ## Explicitly Not Claimed
 
@@ -56,9 +57,9 @@ Latest audited commit: `14a893f28`
 ## Production Safety Gate
 
 The main website cutover was completed as an atomic website-volume swap r24, and
-the latest evidence-gated discovery release was deployed as r37. The r37
+the latest contact/discovery release was deployed as r38. The r38
 rollback copy is retained at
-`/home/ec2-user/PrivateDAO/deploy/primary-host/volumes/site.rollback-r37-20260919041510`.
+`/home/ec2-user/PrivateDAO/deploy/primary-host/volumes/site.rollback-email-20260919073000`.
 The game and its separate host/service remained outside the website cutover.
 
 Before a future cutover:
@@ -66,10 +67,10 @@ Before a future cutover:
 1. Build and run the release verification suites from the canonical commit.
 2. Run the desktop/mobile browser pass and inspect the homepage and product pages.
 3. Record the active site directory and current container list on EC2.
-4. Copy the active site to a versioned rollback directory. Completed for r24, r26, r33, r34, r35, r36, and r37.
-5. Perform an atomic directory swap only for the website volume. Completed for r24, r26, r34, r35, r36, and r37.
-6. Restart only the website edge process if the bind mount requires it. Completed for r24, r26, r34, r35, r36, and r37.
-7. Verify the homepage, commercial routes, Agent Card, EVM links, `/documents/`, `/search/`, discovery files, and `/game/`. Completed for r37 smoke coverage.
+4. Copy the active site to a versioned rollback directory. Completed for r24, r26, r33, r34, r35, r36, r37, and r38.
+5. Perform an atomic directory swap only for the website volume. Completed for r24, r26, r34, r35, r36, r37, and r38.
+6. Restart only the website edge process if the bind mount requires it. Completed for r24, r26, r34, r35, r36, r37, and r38.
+7. Verify the homepage, commercial routes, Agent Card, EVM links, `/documents/`, `/search/`, discovery files, and `/game/`. Completed for r38 smoke coverage.
 8. Keep the rollback directory until the post-release observation window ends.
 9. Do not remove containers or game services as part of the website cutover.
 

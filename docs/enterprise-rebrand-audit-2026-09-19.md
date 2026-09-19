@@ -3,7 +3,7 @@
 Date: 2026-09-19  
 Branch: `rebrand/enterprise-white`  
 Production: `https://privatedao.org/`  
-Latest release: `14a893f28` (website release r37)
+Latest release: `1ea9a9528` (website release r38)
 
 This audit records the current evidence-backed state of the 63-point
 Enterprise Rebrand brief. `DONE` means verified in the source or live
@@ -169,6 +169,9 @@ closure is still missing. No item is marked complete from intent alone.
    and `ai.json`; their network language is capability-gated and evidence-first,
    and the stale `PrivateDAO Solana` alternate name is absent from the live
    homepage metadata.
+23. r38 unified the remaining public operational email references on
+    `fahd@privatedao.org`; external smoke checks returned HTTP 200 for the
+    homepage, Contact, security contact, game, and Agent Card routes.
 
 ## Verification Commands
 
