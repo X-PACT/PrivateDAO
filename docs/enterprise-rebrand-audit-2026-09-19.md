@@ -14,7 +14,7 @@ closure is still missing. No item is marked complete from intent alone.
 
 | # | Status | Evidence / boundary |
 |---:|:---:|---|
-| 1 | DONE | Route metadata and product-specific OG assets; live HTTP checks pass. |
+| 1 | DONE | Twelve primary commercial/document routes were browser-checked; each has title, description, canonical, route-specific OG image, and an image URL returning HTTP 200. |
 | 2 | DONE | Stale TxLINE public media references removed; legacy material remains archive-only. |
 | 3 | DONE | Homepage leads with private organizational work, not a Solana-only message. |
 | 4 | DONE | Homepage explains privacy as private work with verifiable outcomes. |
@@ -69,9 +69,9 @@ closure is still missing. No item is marked complete from intent alone.
 | 53 | DONE | Semantic product/privacy/Web3 terms are present without keyword stuffing on the homepage. |
 | 54 | DONE | robots, sitemap, security, JSON-LD, Agent Card, and canonical resources are present. |
 | 55 | DONE | Locale alternates are emitted in route metadata and root metadata. |
-| 56 | DONE | Product routes emit distinct titles, descriptions, canonicals, and OG images. |
-| 57 | DONE | Social cards use the shared White / Navy / Cobalt visual system. |
-| 58 | PARTIAL | HTTP and browser metadata/assets are verified; external platform cache refresh cannot be proven from this environment. |
+| 56 | DONE | Twelve primary routes emit distinct titles, descriptions, canonicals, and valid OG images; product cards are not generic. |
+| 57 | DONE | Social cards use the shared White / Navy / Cobalt visual system and page-specific artwork. |
+| 58 | PARTIAL | Live browser metadata and image URLs are verified across 12 routes; external platform cache refresh cannot be proven from this environment. |
 | 59 | DONE | Release verification and live route checks preserve backend, Agents, verification, and game surfaces. |
 | 60 | DONE | Claim audit is represented by commercial copy boundaries and release verification. |
 | 61 | DONE | Lint, typecheck, build, release verification, browser, responsive, and route checks pass. |

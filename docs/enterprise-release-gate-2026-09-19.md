@@ -24,6 +24,7 @@ Latest audited commit: `cc3842e`
 - The r28 correction replaced only `/documents/index.html` after the full bundle was rejected by the server's full disk; the active site directory was verified intact before the narrow replacement.
 - The live `/documents/` body was checked for stale grant text and returned none; the rollback copy is retained beside the active file.
 - A read-only high-confidence scan of all 23 remote branch heads found no credential signatures; historical commit scanning remains intentionally unclaimed.
+- Metadata smoke test passed for 12 primary routes: all returned HTTP 200 with title, description, canonical, page-specific OG image, and OG image HTTP 200.
 - To recover deployment headroom, only obsolete website rollback directories r19-r25 were removed from EC2. The active site and rollback directories r26/r27 were retained, and home/documents/game returned HTTP 200 afterward.
 
 ## Explicitly Not Claimed
