@@ -115,9 +115,13 @@ closure is still missing. No item is marked complete from intent alone.
    reachability only; it does not upgrade any product from planned to live
    execution.
 10. The write-capable EVM Phase 2 runner was inspected but not executed in
-    this session because its required deployer key and per-network RPC
-    environment variables are absent. No transaction was attempted and no
-    fabricated E2E result was recorded.
+   this session because its required deployer key and per-network RPC
+   environment variables are absent. No transaction was attempted and no
+   fabricated E2E result was recorded.
+11. The independently deployed Agent Exchange Lambda source is now tracked in
+    `integrations/agent-exchange-lambda/`, excluding `node_modules` and
+    secrets. Its handler passes syntax and secret-pattern checks, and the full
+    release verification suite remains green after adding the source.
 
 ## Verification Commands
 
