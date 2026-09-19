@@ -2,7 +2,7 @@
 
 Date: 2026-09-19
 Branch: `rebrand/enterprise-white`
-Latest audited commit: `37ee9a7`
+Latest audited commit: `cc3842e`
 
 ## Verified
 
@@ -21,6 +21,8 @@ Latest audited commit: `37ee9a7`
 - Website release r27 was deployed atomically with the prior site retained for rollback.
 - The separate Mini App service received only the missing `privatedao_logo.jpg` and `privatedao_icon.png` assets; no game code or game service was restarted.
 - A fresh Chromium desktop pass returned HTTP 200 with no console errors or failed requests for `/`, `/documents/`, and `/game/`.
+- The r28 correction replaced only `/documents/index.html` after the full bundle was rejected by the server's full disk; the active site directory was verified intact before the narrow replacement.
+- The live `/documents/` body was checked for stale grant text and returned none; the rollback copy is retained beside the active file.
 
 ## Explicitly Not Claimed
 
