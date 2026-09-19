@@ -53,7 +53,7 @@ Latest audited commit: `fd37fdb8b`
 - `planned` entries in the capability matrix are not represented as live execution.
 - External MCP client interoperability has not been independently certified.
 - Historical remote Dependabot branches have not been fetched or made public.
-- External social crawler cache refresh cannot be proven from this host.
+- `npm run verify:social-previews` checks the live source as Telegram, X, Discord, and LinkedIn crawlers across 13 commercial routes, including metadata, canonical URLs, OG images, and cache validators. Platform-internal cache refresh remains outside source verification and is not claimed.
 - The transitive `elliptic` advisory remains open because the available forced fix is breaking.
 
 ## Production Safety Gate

@@ -71,7 +71,7 @@ closure is still missing. No item is marked complete from intent alone.
 | 55 | DONE | Locale alternates are emitted in route metadata and root metadata. |
 | 56 | DONE | Twelve primary routes emit distinct titles, descriptions, canonicals, and valid OG images; product cards are not generic. |
 | 57 | DONE | Social cards use the shared White / Navy / Cobalt visual system and page-specific artwork. |
-| 58 | PARTIAL | Live browser metadata and image URLs are verified across 12 routes; external platform cache refresh cannot be proven from this environment. |
+| 58 | DONE | A repeatable live crawler check covers 13 commercial routes with Telegram, X, Discord, and LinkedIn User-Agents (52 page checks), required Open Graph/Twitter/canonical metadata, 10 reachable OG image URLs, and cache validators. Platform-internal cache refresh remains external to source verification and is not claimed. |
 | 59 | DONE | Release verification and live route checks preserve backend, Agents, verification, and game surfaces. |
 | 60 | DONE | `scripts/test-commercial-claims.mjs` checks the Web2/Web3 positioning, rejects unverified return/audit/certification/Solana-only claims, and protects the clean documents index from retired packet copy. |
 | 61 | DONE | Lint, typecheck, build, 14-suite release verification, browser, responsive, and route checks pass. |

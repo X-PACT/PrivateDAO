@@ -14,6 +14,7 @@ const suites = [
   ["application-bindings", ["npm", "run", "verify:application-bindings"]],
   ["tracked-secrets", ["npm", "run", "verify:tracked-secrets"]],
   ["agent-mcp", ["npm", "run", "test:agent-mcp"]],
+  ["social-previews", ["npm", "run", "verify:social-previews"]],
   ["commercial-claims", ["node", "scripts/test-commercial-claims.mjs"]],
   ["commercial", ["node", "scripts/test-commercial-lifecycle.mjs"]],
 ];
