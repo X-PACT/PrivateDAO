@@ -53,7 +53,13 @@ const rpcTimeoutMs = Number(process.env.PDAO_EVM_RPC_TIMEOUT_MS || 120_000);
 if (!Number.isInteger(rpcTimeoutMs) || rpcTimeoutMs < 10_000 || rpcTimeoutMs > 300_000) {
   throw new Error("PDAO_EVM_RPC_TIMEOUT_MS must be an integer between 10000 and 300000.");
 }
-const transport = http(rpcUrl, { timeout: rpcTimeoutMs, retryCount: 3, retryDelay: 1_000 });
+const transport = http(rpcUrl, {
+  timeout: rpcTimeoutMs,
+  // A lost response must not cause viem to replay a side-effecting transaction.
+  // Callers can opt into read retries explicitly, but writes stay single-submit.
+  retryCount: Number(process.env.PDAO_EVM_RPC_RETRY_COUNT || 0),
+  retryDelay: 1_000,
+});
 const deployerTempoClient = NETWORK === "tempo-testnet"
   ? createTempoClient({ account: deployer, chain: tempoModerato.extend({ feeToken: TEMPO_FEE_TOKEN }), transport })
   : null;
@@ -90,18 +96,36 @@ const auctionBytecode = `0x${(await readFile(path.join(PACKAGE, `artifacts/${tem
 
 const runId = `${Date.now()}-${process.pid}`;
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+const nonceCache = new Map();
+async function takeNonce(account) {
+  const address = account.address;
+  if (!nonceCache.has(address)) {
+    nonceCache.set(address, await publicClient.getTransactionCount({ address, blockTag: "pending" }));
+  }
+  const nonce = nonceCache.get(address);
+  nonceCache.set(address, nonce + 1);
+  return nonce;
+}
+async function feeOverrides() {
+  const multiplier = Number(process.env.PDAO_EVM_FEE_MULTIPLIER || "1");
+  if (!Number.isFinite(multiplier) || multiplier < 1) throw new Error("PDAO_EVM_FEE_MULTIPLIER must be at least 1.");
+  if (multiplier === 1) return {};
+  const gasPrice = await publicClient.getGasPrice();
+  const scaled = BigInt(Math.ceil(multiplier * 1000)) * gasPrice / 1000n;
+  return { maxFeePerGas: scaled, maxPriorityFeePerGas: gasPrice };
+}
 const tx = async (hash) => {
   const receipt = await publicClient.waitForTransactionReceipt({ hash });
   assert.equal(receipt.status, "success", `transaction reverted: ${hash}`);
   return receipt;
 };
 const write = async (wallet, address, abi, functionName, args = [], value) => {
-  const hash = await wallet.writeContract({ address, abi, functionName, args, ...(value === undefined ? {} : { value }) });
+  const hash = await wallet.writeContract({ address, abi, functionName, args, nonce: await takeNonce(wallet.account), ...(value === undefined ? {} : { value }), ...(await feeOverrides()) });
   await tx(hash);
   return hash;
 };
 const deploy = async (wallet, abi, bytecode, args) => {
-  const hash = await wallet.deployContract({ abi, bytecode, args });
+  const hash = await wallet.deployContract({ abi, bytecode, args, nonce: await takeNonce(wallet.account), ...(await feeOverrides()) });
   const receipt = await tx(hash);
   assert.ok(receipt.contractAddress, `deployment has no contract address: ${hash}`);
   return { address: receipt.contractAddress, hash, blockNumber: receipt.blockNumber.toString() };
@@ -116,7 +140,9 @@ assert.equal(observedChainId, CHAIN_ID, "RPC chain mismatch");
 const deployerBalance = tempoTokenMode
   ? await publicClient.readContract({ address: TEMPO_FEE_TOKEN, abi: erc20Abi, functionName: "balanceOf", args: [deployer.address] })
   : await publicClient.getBalance({ address: deployer.address });
-const minimumFunding = tempoTokenMode ? parseUnits("2", TEMPO_TOKEN_DECIMALS) : parseEther("0.01");
+const minimumFunding = tempoTokenMode
+  ? parseUnits(process.env.PDAO_EVM_MINIMUM_FUNDING || "2", TEMPO_TOKEN_DECIMALS)
+  : parseEther(process.env.PDAO_EVM_MINIMUM_FUNDING || "0.01");
 assert.ok(deployerBalance > minimumFunding, `deployer lacks enough ${tempoTokenMode ? "Tempo pathUSD" : "native testnet asset"} for ${NETWORK} E2E`);
 
 const deployments = {
@@ -132,7 +158,7 @@ const deployments = {
 
 const checkerFundingHash = tempoTokenMode
   ? await write(deployerWallet, TEMPO_FEE_TOKEN, erc20Abi, "transfer", [checker.address, parseUnits("10", TEMPO_TOKEN_DECIMALS)])
-  : await deployerWallet.sendTransaction({ to: checker.address, value: parseEther("0.002") });
+  : await deployerWallet.sendTransaction({ to: checker.address, value: parseEther("0.002"), nonce: await takeNonce(deployerWallet.account), ...(await feeOverrides()) });
 if (!tempoTokenMode) await tx(checkerFundingHash);
 
 const treasury = await deploy(deployerWallet, treasuryAbi, treasuryBytecode, tempoTokenMode ? [checker.address, TEMPO_FEE_TOKEN] : [checker.address]);
@@ -141,7 +167,7 @@ const treasuryAmount = tempoTokenMode ? parseUnits("1", TEMPO_TOKEN_DECIMALS) : 
 const treasuryApprovalHash = tempoTokenMode ? await write(deployerWallet, TEMPO_FEE_TOKEN, erc20Abi, "approve", [treasury.address, treasuryAmount]) : null;
 const treasuryFundingHash = tempoTokenMode
   ? await write(deployerWallet, treasury.address, treasuryAbi, "deposit", [treasuryAmount])
-  : await deployerWallet.sendTransaction({ to: treasury.address, value: treasuryAmount, gas: 100_000n });
+  : await deployerWallet.sendTransaction({ to: treasury.address, value: treasuryAmount, gas: 100_000n, nonce: await takeNonce(deployerWallet.account), ...(await feeOverrides()) });
 if (!tempoTokenMode) await tx(treasuryFundingHash);
 const budgetId = keccak256(`0x${Buffer.from(`budget:${runId}`).toString("hex")}`);
 const paymentId = keccak256(`0x${Buffer.from(`payment:${runId}`).toString("hex")}`);
@@ -203,7 +229,7 @@ const bidCommitment = keccak256(encodeAbiParameters([{ type: "bytes32" }, { type
 const bidApprovalHash = tempoTokenMode ? await write(checkerWallet, TEMPO_FEE_TOKEN, erc20Abi, "approve", [auction.address, escrow]) : null;
 const bidCommitHash = tempoTokenMode
   ? await write(checkerWallet, auction.address, auctionAbi, "commitBid", [auctionId, bidCommitment, escrow])
-  : await checkerWallet.writeContract({ address: auction.address, abi: auctionAbi, functionName: "commitBid", args: [auctionId, bidCommitment], value: escrow });
+  : await checkerWallet.writeContract({ address: auction.address, abi: auctionAbi, functionName: "commitBid", args: [auctionId, bidCommitment], value: escrow, nonce: await takeNonce(checkerWallet.account), ...(await feeOverrides()) });
 if (!tempoTokenMode) await tx(bidCommitHash);
 await expectRevert(() => checkerWallet.writeContract({ address: auction.address, abi: auctionAbi, functionName: "revealBid", args: [auctionId, bidAmount + 1n, bidSalt] }), "altered auction reveal");
 await sleep(130_000);
