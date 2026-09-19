@@ -35,6 +35,9 @@ Latest audited commit: `02bf97a`
 - The independent MCP client check passed against `agents.privatedao.org`:
   JSON-RPC initialize, 11-tool discovery, and read-only service discovery
   returned successfully.
+- The read-only reachable-object history scan found zero high-confidence
+  credential signatures across 7,531 objects; remote branch history remains a
+  documented boundary rather than an unverified claim.
 - To recover deployment headroom, only obsolete website rollback directories r19-r25 were removed from EC2. The active site and rollback directories r26/r27 were retained, and home/documents/game returned HTTP 200 afterward.
 
 ## Explicitly Not Claimed
