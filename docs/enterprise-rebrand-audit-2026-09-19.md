@@ -100,6 +100,10 @@ closure is still missing. No item is marked complete from intent alone.
    5xx responses; one transient `ERR_NETWORK_CHANGED` during the first pass
    was isolated and the affected Treasury page passed on retry. The desktop
    homepage was also visually inspected after the pass.
+7. The three locally available branch heads were scanned for common secret
+   signatures with no credential value detected; the remote repository still
+   has additional Dependabot branch refs that were not fetched or made public,
+   so the historical branch/IP audit remains Partial.
 
 ## Verification Commands
 
