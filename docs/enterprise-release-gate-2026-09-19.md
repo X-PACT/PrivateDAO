@@ -2,7 +2,7 @@
 
 Date: 2026-09-19
 Branch: `rebrand/enterprise-white`
-Latest audited commit: `d30f707`
+Latest audited commit: `02bf97a`
 
 ## Verified
 
@@ -29,6 +29,8 @@ Latest audited commit: `d30f707`
 - r29 was deployed atomically after the claim gate passed; live Chromium verified `/`, `/documents/`, and `/game/` with HTTP 200 and no console or failed-request errors.
 - r30 added RFC 9116 security contact files at `/security.txt` and `/.well-known/security.txt`.
 - r31 replaced the documents index with the simplified commercial resource page. The active site, homepage, and game route returned HTTP 200 after the swap; only the website edge container was restarted.
+- r32 archived direct legacy document routes behind a continuity page; old document copy is no longer rendered as current product evidence.
+- r33 unified public contact actions, security contact files, and AI discovery email references on `fahd@privatedao.org`; the homepage, contact page, security files, and game route returned HTTP 200 after the swap.
 - To recover deployment headroom, only obsolete website rollback directories r19-r25 were removed from EC2. The active site and rollback directories r26/r27 were retained, and home/documents/game returned HTTP 200 afterward.
 
 ## Explicitly Not Claimed

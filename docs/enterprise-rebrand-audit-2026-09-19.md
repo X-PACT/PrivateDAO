@@ -3,7 +3,7 @@
 Date: 2026-09-19  
 Branch: `rebrand/enterprise-white`  
 Production: `https://privatedao.org/`  
-Latest release: `d30f707`
+Latest release: `02bf97a`
 
 This audit records the current evidence-backed state of the 63-point
 Enterprise Rebrand brief. `DONE` means verified in the source or live
@@ -147,6 +147,11 @@ closure is still missing. No item is marked complete from intent alone.
    evidence copy.
 16. r30 added `/security.txt` and `/.well-known/security.txt`; both return
    HTTP 200 with `text/plain` content from the production host.
+17. r32 stopped direct legacy document routes from rendering old document
+   copy and preserved those URLs as archive bridges.
+18. r33 unified public contact actions and AI/security discovery references on
+   `fahd@privatedao.org`; the live Contact, security, and game routes were
+   checked after deployment.
 
 ## Verification Commands
 
