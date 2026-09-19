@@ -158,8 +158,8 @@
     "asset context before decisions",
     "price context before payout or treasury execution",
     "QVAC local AI governance assistant",
-    "web and Android wallet-first UX",
-    "verifiable Solana Testnet proof routes"
+    "web and Android workflow-first UX with wallet signing only when required",
+    "evidence-gated network proof routes, including verified Solana Testnet paths"
   ],
   "primary_product_categories": [
     {
