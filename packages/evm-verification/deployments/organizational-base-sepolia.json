@@ -3,52 +3,52 @@
   "chainId": 84532,
   "environment": "testnet",
   "deployer": "0x1c3D6757651B617D7e5c08aE6F7a7F65eEafD75F",
-  "checker": "0xf9b215af2Aeb8112BA6a8919B26cE91542cdf190",
-  "createdAt": "2026-09-19T10:54:55.002Z",
+  "checker": "0xA86c81E83C88d4C2249241aba99Cc52a73EE2Cf7",
+  "createdAt": "2026-09-19T13:20:48.792Z",
   "contracts": {
     "treasury": {
-      "address": "0x01171b634188ef23a8b5f407906823b0d234a515",
-      "hash": "0xce7428c7bb5fbee633bea3a401344a5587a2624933f1d5298fd06fa2aeb6a0b5",
-      "blockNumber": "47023506"
+      "address": "0xf053303014cbf6233d8b9bf38679a30706069216",
+      "hash": "0x163c1151d9589b7d920ebfed5363aa243d963df802ffc39f0ba279584b079ea1",
+      "blockNumber": "47027882"
     },
     "governance": {
-      "address": "0x5eaa9c97997cd3fea4c8e885b87e1feb1f456f3e",
-      "hash": "0x1c14eebdcb3b3196bba5ceb90cc3534a52545b1896a6a65cec5991721d8bbc58",
-      "blockNumber": "47023512"
+      "address": "0x9887bcfe7daad364202d5d3102de180c389ecb20",
+      "hash": "0x34bfd0f01cde213620bfc76c0e557402abf1869e8fa20600f748aa4fcc1f524f",
+      "blockNumber": "47027887"
     },
     "auction": {
-      "address": "0x231dc0b48b60fac8b000874f1825a3d6e24065e8",
-      "hash": "0x968886c1e82dde80b3b1e72e1046e8d886756c7accc0c112f940c190fe04fd42",
-      "blockNumber": "47023638"
+      "address": "0xcfb3e7af09f206614cf7a3cf8a93f92379c1c374",
+      "hash": "0xd6461b3ad4f0cf89a784630622914ef2e27b87926ce87be5fc09417172906659",
+      "blockNumber": "47028012"
     }
   },
   "evidence": {
     "treasury": {
-      "checkerFundingHash": "0x3b019a0d8e1d83ec8eb1a8faaf62042bd00318cf4b1c38534a6922f2045cf4ca",
+      "checkerFundingHash": "0x6c540d792d65ce13dca4b015b0853601a28370b2a7b4ef57d583c3d928eb49f3",
       "treasuryApprovalHash": null,
-      "treasuryFundingHash": "0xabf5e8ca648de9a472ff7c6f767283e31b078cb7bda8c9740af136a92abc8112",
-      "requestedHash": "0x6a45eb602f46d752d193ceb81eba06b8c9e20c2bdcd7eaadd7092c7464da8d6d",
-      "approvedHash": "0x9a2db255f2ad4c784922bce78ec29020e92a003fd68832376e4c2260ed5ccf43",
-      "executedHash": "0x86ee8ca5da961459a014eaf59b5e0a934c4995e5dc2aea729901ee15eb273773",
-      "paymentId": "0xcc5ef9064d02af857373445a160686f5b995b09f6610ac4ee769cd50ed2276e8",
+      "treasuryFundingHash": "0x21fb6694d795b7f5fa10a52497a89b59b2706f71a1d44c52892eb3f4719b3817",
+      "requestedHash": "0xafed7c30b50fdbd3f3d7eee4e03a4ba3f3757c0bfaf0568380dcbf06b97c0527",
+      "approvedHash": "0xb18416e512c303f64d33955ca6343f4de805046030e598f25bf99edbbf042e7b",
+      "executedHash": "0x5eee192c4af62410015d2492b9a7ef7c7d81f3e914be41ab00ac28adb8adada8",
+      "paymentId": "0x11359ad89ca2b4b91aadfc65c562c32710d74010641bcac8d8001ac83d8a873d",
       "status": "executed"
     },
     "governance": {
-      "proposalHash": "0x7c1f8d95e3ee04f2f1f57e8ca4c8f117a78f6a902dbae0e5ff6c0de6c7b29153",
-      "voteCommitHash": "0x5f000d10495bd7ec22a79377b365b2df68bdbcf83ac6ce63c55607e6229fa003",
-      "voteRevealHash": "0x67c7e2b1712c5217c936dd89aa382c5c6d2b7a7d912bbf5db7771a401c46a699",
-      "proposalFinalizeHash": "0x7f648ca878bc3eb4f06811e17059b509aa916c752346b3a8fd233f12609abfcd",
-      "proposalId": "0x33522dc75e9dc1fa0713d16ae303443a0080a39da00a757410c1f97083414dd4",
+      "proposalHash": "0xe359621295de970a763999ae549de50f24718adf9a1cb0d82d113c0b9d62be14",
+      "voteCommitHash": "0x26bf9a34c74adc02d74dbc3d8d9db09946769d0ae0c85b28ccd4a2bd7c54b1c8",
+      "voteRevealHash": "0x0195aca1b0206efd55e492bba54558ca131a3ace4b574abd59eea8763c40e7c8",
+      "proposalFinalizeHash": "0x98df5049029710d3291742452007c037f3ad696eb2a8333a81686baa73d180f4",
+      "proposalId": "0x1f3459a21a359afa52613dcb9b42d6eec7428b8b0c1f0536c3ef728c55199c9c",
       "status": "passed"
     },
     "auction": {
       "bidApprovalHash": null,
-      "auctionCreateHash": "0xee77ad99dd216e6e5ed9eaac7ba61bd5dba6e86dc94bfc549d50dff2e00f3352",
-      "bidCommitHash": "0xc0ea7de24093dc4fbae6f92ca9f21a65d5a4fd12d74fb1f1a970b2eb6c899d1f",
-      "bidRevealHash": "0x6cd433076b70922294d477bf58973e0ee77b9edcfd3617eae8c268b73315cf4f",
-      "auctionFinalizeHash": "0xd1d8279959192b0e2b8023656e0356a91f5fa82302040e52fed277fa86112df6",
-      "auctionSettleHash": "0x60fdbd8d14c564b5d021ef85a1d56d13d14d814538a59b3c7498651037869065",
-      "auctionId": "0x745e4930dd2ddaa41425b7f4a3a7ebd19bcea90afe536b8963fa97f97b015994",
+      "auctionCreateHash": "0x0c4ae2c0bbb0e16d8af33e38b93beab4d9697b761a5e663a75d23492190a980c",
+      "bidCommitHash": "0x1957207a3da60f0e4c384f0e6c69e482c0fbff106453cfd32f8ba574b68a6c66",
+      "bidRevealHash": "0x24ef25a0d6c5893ae47f84e28c96bac3c5feb7451e86fe5abb209e759c65cd22",
+      "auctionFinalizeHash": "0xc762200a7bf2b1eadc3aff3b5853855319e000aa71d069652852acb484b6b4d3",
+      "auctionSettleHash": "0x1f01d7cf49375513a159f1bd0b8ca53f35a6e4c1a023f1721cc2709c36fdb173",
+      "auctionId": "0x594ac2181899aceeaca8bacdd532a45307a26c812ecc603ce88619c955767bce",
       "status": "settled"
     }
   }
