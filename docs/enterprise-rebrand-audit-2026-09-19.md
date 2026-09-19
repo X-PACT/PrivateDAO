@@ -104,6 +104,11 @@ closure is still missing. No item is marked complete from intent alone.
    signatures with no credential value detected; the remote repository still
    has additional Dependabot branch refs that were not fetched or made public,
    so the historical branch/IP audit remains Partial.
+8. GitHub remote branch-tip trees were inspected by filename only across 23
+   branch refs. Matches were limited to `.env.example`, verification scripts,
+   and public token metadata; GitHub Secret Scanning is disabled for the
+   private repository, so this is evidence, not a substitute for a full
+   historical secret scan.
 
 ## Verification Commands
 
