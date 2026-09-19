@@ -2,7 +2,7 @@
 
 Date: 2026-09-19
 Branch: `rebrand/enterprise-white`
-Latest audited commit: `02bf97a`
+Latest audited commit: `7843478b4`
 
 ## Verified
 
@@ -18,7 +18,7 @@ Latest audited commit: `02bf97a`
 - MCP JSON-RPC `initialize` and `tools/list` passed; 11 tools were returned.
 - `https://privatedao.org/`, `/game/`, and `https://game.privatedao.org/game/godot/index.html` returned 200 after the Agents-only deployment.
 - Tempo Testnet Phase 2 evidence was published and its Record and Blind verification links returned 200 and `Status VALID` in an independent browser session.
-- `/documents/` is a small commercial resource index; r31 passed live checks with no reviewer/grant/testnet-evidence language, no console errors, and HTTP 200.
+- `/documents/` is a small commercial product and company index; r34 passed live checks with no reviewer/grant/testnet-evidence language, no console errors observed in the available runtime checks, and HTTP 200.
 - Website release r27 was deployed atomically with the prior site retained for rollback.
 - The separate Mini App service received only the missing `privatedao_logo.jpg` and `privatedao_icon.png` assets; no game code or game service was restarted.
 - A fresh Chromium desktop pass returned HTTP 200 with no console errors or failed requests for `/`, `/documents/`, and `/game/`.
@@ -39,6 +39,7 @@ Latest audited commit: `02bf97a`
   credential signatures across 7,531 objects; remote branch history remains a
   documented boundary rather than an unverified claim.
 - To recover deployment headroom, only obsolete website rollback directories r19-r25 were removed from EC2. The active site and rollback directories r26/r27 were retained, and home/documents/game returned HTTP 200 afterward.
+- r34 replaced only the commercial website volume after the official information index was simplified again. The active site was staged, hash-checked, atomically swapped, and rolled back once when an internal redirect check was too strict; the corrected swap passed `/`, `/documents/`, and `/game/`. Only the website edge container was restarted. Rollback directories r32, r33, and r34 remain; obsolete r26-r31 copies were removed to recover disk space.
 
 ## Explicitly Not Claimed
 
@@ -52,8 +53,8 @@ Latest audited commit: `02bf97a`
 ## Production Safety Gate
 
 The main website cutover was completed as an atomic website-volume swap r24, and
-the `/documents/` correction was deployed as r26. The previous r26 site is
-retained at `/home/ec2-user/PrivateDAO/deploy/primary-host/volumes/site.previous-20260919-r26`.
+the latest commercial index correction was deployed as r34. The previous r34
+site is retained at `/home/ec2-user/PrivateDAO/deploy/primary-host/volumes/site.previous-20260919-r34`.
 The game and its separate host/service remained outside the website cutover.
 
 Before a future cutover:
@@ -61,10 +62,10 @@ Before a future cutover:
 1. Build and run the release verification suites from the canonical commit.
 2. Run the desktop/mobile browser pass and inspect the homepage and product pages.
 3. Record the active site directory and current container list on EC2.
-4. Copy the active site to a versioned rollback directory. Completed for r24 and r26.
-5. Perform an atomic directory swap only for the website volume. Completed for r24 and r26.
-6. Restart only the website edge process if the bind mount requires it. Completed for r24 and r26.
-7. Verify the homepage, commercial routes, Agent Card, EVM links, `/documents/`, and `/game/`. Completed for r26 smoke coverage.
+4. Copy the active site to a versioned rollback directory. Completed for r24, r26, r33, and r34.
+5. Perform an atomic directory swap only for the website volume. Completed for r24, r26, and r34.
+6. Restart only the website edge process if the bind mount requires it. Completed for r24, r26, and r34.
+7. Verify the homepage, commercial routes, Agent Card, EVM links, `/documents/`, and `/game/`. Completed for r34 smoke coverage.
 8. Keep the rollback directory until the post-release observation window ends.
 9. Do not remove containers or game services as part of the website cutover.
 
