@@ -136,8 +136,12 @@ closure is still missing. No item is marked complete from intent alone.
    manifest path returned HTML with HTTP 200 and was parsed as JSON. The client
    now validates content type and manifest shape before accepting a candidate.
    The fix and fresh Ethereum and Tempo artifacts were deployed atomically as
-   r24; the
+   r24; the current evidence-index correction was deployed atomically as r26; the
    main site, Agents service, and game remained healthy.
+15. The previous `/documents/` index was an outdated reviewer packet library.
+   It was replaced with a small current evidence surface, checked at desktop
+   and mobile sizes, with one header, no old grant/reviewer copy, and no
+   console or server errors.
 
 ## Verification Commands
 
