@@ -71,28 +71,28 @@ export const PRODUCT_CATALOG: readonly ProductDescriptor[] = [
     id: "treasury",
     name: "Private Treasury",
     availability: "available",
-    networks: [solanaDevnet, ethereumSepolia, tempoTestnet],
-    capabilities: [capability("treasury.policy.check", "treasury", false, true, [solanaDevnet, ethereumSepolia, tempoTestnet])],
+    networks: [solanaDevnet, ethereumSepolia, arbitrumSepolia, tempoTestnet],
+    capabilities: [capability("treasury.policy.check", "treasury", false, true, [solanaDevnet, ethereumSepolia, arbitrumSepolia, tempoTestnet])],
   },
   {
     id: "governance",
     name: "Private Governance",
     availability: "available",
-    networks: [solanaDevnet, ethereumSepolia, tempoTestnet],
-    capabilities: [capability("governance.proposal.execute", "governance", true, true, [solanaDevnet, ethereumSepolia, tempoTestnet])],
+    networks: [solanaDevnet, ethereumSepolia, arbitrumSepolia, tempoTestnet],
+    capabilities: [capability("governance.proposal.execute", "governance", true, true, [solanaDevnet, ethereumSepolia, arbitrumSepolia, tempoTestnet])],
   },
   {
     id: "auction",
     name: "Private Auctions",
     availability: "available",
-    networks: [solanaDevnet, ethereumSepolia, tempoTestnet],
+    networks: [solanaDevnet, ethereumSepolia, arbitrumSepolia, tempoTestnet],
     capabilities: [
       // The current endpoint issues commitments/proof data off-chain; it does
       // not submit the financial bid transaction.
-      capability("auction.bid.commit", "auction", false, true, [solanaDevnet, ethereumSepolia, tempoTestnet]),
+      capability("auction.bid.commit", "auction", false, true, [solanaDevnet, ethereumSepolia, arbitrumSepolia, tempoTestnet]),
       // The current Kernel action proves an already-bound outcome. It does
       // not submit the financial settlement transaction.
-      capability("auction.settle", "auction", false, true, [solanaDevnet, ethereumSepolia, tempoTestnet]),
+      capability("auction.settle", "auction", false, true, [solanaDevnet, ethereumSepolia, arbitrumSepolia, tempoTestnet]),
     ],
   },
   {

@@ -1,6 +1,6 @@
 {
   "schema": "privatedao.native-capability-matrix.v1",
-  "generatedAt": "2026-09-17T09:58:53.932Z",
+  "generatedAt": "2026-09-19T03:54:04.023Z",
   "bridgeFree": true,
   "entries": [
     {
@@ -2860,7 +2860,7 @@
       "capability": "treasury.policy.check",
       "network": "arbitrum-sepolia",
       "networkFamily": "evm",
-      "declared": false,
+      "declared": true,
       "environment": "testnet",
       "chainId": "421614",
       "nativeAsset": "ETH",
@@ -3320,7 +3320,7 @@
       "capability": "governance.proposal.execute",
       "network": "arbitrum-sepolia",
       "networkFamily": "evm",
-      "declared": false,
+      "declared": true,
       "environment": "testnet",
       "chainId": "421614",
       "nativeAsset": "ETH",
@@ -3780,7 +3780,7 @@
       "capability": "auction.bid.commit",
       "network": "arbitrum-sepolia",
       "networkFamily": "evm",
-      "declared": false,
+      "declared": true,
       "environment": "testnet",
       "chainId": "421614",
       "nativeAsset": "ETH",
@@ -4240,7 +4240,7 @@
       "capability": "auction.settle",
       "network": "arbitrum-sepolia",
       "networkFamily": "evm",
-      "declared": false,
+      "declared": true,
       "environment": "testnet",
       "chainId": "421614",
       "nativeAsset": "ETH",
