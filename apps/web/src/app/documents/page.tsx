@@ -5,8 +5,8 @@ import { ArrowUpRight, BriefcaseBusiness, FileText, LockKeyhole, Mail } from "lu
 import { buildRouteMetadata } from "@/lib/route-metadata";
 
 export const metadata: Metadata = buildRouteMetadata({
-  title: "PrivateDAO | Official information",
-  description: "The official PrivateDAO product, company, and public information index.",
+  title: "PrivateDAO | Current resources",
+  description: "Current PrivateDAO product and company links. Historical materials are not current product documentation.",
   path: "/documents",
   keywords: ["PrivateDAO", "products", "whitepaper", "contact", "PDAO"],
 });
@@ -45,12 +45,12 @@ export default function DocumentsPage() {
       <section className="mx-auto w-full max-w-6xl px-4 pb-20 pt-16 sm:px-6 sm:pb-28 sm:pt-24 lg:px-8">
         <div className="max-w-3xl">
           <div className="text-[11px] font-bold uppercase tracking-[0.28em] text-[#1769e8]">PrivateDAO</div>
-          <h1 className="mt-5 text-4xl font-semibold tracking-[-0.05em] sm:text-6xl">Private work. Clear outcomes.</h1>
-          <p className="mt-6 max-w-2xl text-lg leading-8 text-[#5d6d82]">This is the official index for PrivateDAO products and company information. Start with the business problem, then go deeper only when you need to.</p>
+          <h1 className="mt-5 text-4xl font-semibold tracking-[-0.05em] sm:text-6xl">Current product resources.</h1>
+          <p className="mt-6 max-w-2xl text-lg leading-8 text-[#5d6d82]">Use these links for the current PrivateDAO product and company surfaces. Historical documents are retained for URL continuity only and are not current product, security, adoption, or financial evidence.</p>
         </div>
 
         <section className="mt-14" aria-labelledby="products-heading">
-          <div className="flex items-center gap-3"><BriefcaseBusiness className="h-5 w-5 text-[#1769e8]" aria-hidden="true" /><h2 id="products-heading" className="text-2xl font-semibold tracking-[-0.035em]">Products</h2></div>
+          <div className="flex items-center gap-3"><BriefcaseBusiness className="h-5 w-5 text-[#1769e8]" aria-hidden="true" /><h2 id="products-heading" className="text-2xl font-semibold tracking-[-0.035em]">Current products</h2></div>
           <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {productLinks.map(([label, description, href]) => <LinkCard key={href} label={label} description={description} href={href} />)}
           </div>
