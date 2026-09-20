@@ -1432,8 +1432,18 @@ async function mcpHttp(url, request, sessionId = null) {
   const text = await response.text();
   let payload;
   try { payload = JSON.parse(text); }
-  catch { throw new Error(`MCP endpoint returned non-JSON HTTP ${response.status}`); }
-  if (!response.ok) throw new Error(`MCP endpoint returned HTTP ${response.status}`);
+  catch {
+    const error = new Error(`MCP endpoint returned non-JSON HTTP ${response.status}`);
+    error.statusCode = 502;
+    error.upstreamStatus = response.status;
+    throw error;
+  }
+  if (!response.ok) {
+    const error = new Error(`MCP endpoint returned HTTP ${response.status}`);
+    error.statusCode = 502;
+    error.upstreamStatus = response.status;
+    throw error;
+  }
   if (payload.error) throw new Error(`MCP ${payload.error.code || "error"}: ${payload.error.message || "request failed"}`);
   return { payload, sessionId: response.headers.get("mcp-session-id") || sessionId };
 }
@@ -1893,6 +1903,28 @@ async function handle(e) {
     const item = await (await store()).get("Registry", agent[1]);
     return item ? json(item) : json({ error: "not_found" }, 404);
   }
+  const agentRefresh = path.match(/^\/api\/registry\/agents\/([^/]+)\/refresh$/);
+  if (method === "POST" && agentRefresh) {
+    const item = await (await store()).get("Registry", agentRefresh[1]);
+    if (!item || item.protocol !== "MCP") return json({ error: "mcp_agent_not_found" }, 404);
+    try {
+      return json(await registerMcp({
+        name: item.name,
+        mcpUrl: item.endpoint,
+        allowedTools: item.allowed_tools,
+        tags: item.tags,
+      }));
+    } catch (error) {
+      const unavailable = await registerMcp({
+        name: item.name,
+        mcpUrl: item.endpoint,
+        allowedTools: [],
+        tags: item.tags,
+        persistUnavailable: true,
+      });
+      return json(unavailable, error.statusCode || 503);
+    }
+  }
   if (method === "POST" && path === "/api/agents/invoke")
     return json(await invokeAgent(body));
   if (method === "POST" && path === "/a2a") {
@@ -1947,6 +1979,21 @@ async function mcp(request) {
         capabilities: { tools: {} },
       },
     });
+  const schemas = {
+    register_agent: {
+      type: "object",
+      additionalProperties: false,
+      properties: {
+        name: { type: "string", maxLength: 200 },
+        protocol: { type: "string", enum: ["MCP"] },
+        mcpUrl: { type: "string", format: "uri", description: "Public HTTPS MCP endpoint" },
+        allowedTools: { type: "array", items: { type: "string", maxLength: 120 }, maxItems: 64 },
+        tags: { type: "array", items: { type: "string", maxLength: 64 }, maxItems: 16 },
+        persistUnavailable: { type: "boolean", description: "Persist Unavailable after a failed health check; never marks it connected" },
+      },
+      required: ["mcpUrl"],
+    },
+  };
   const tools = [
     "pdao_services",
     "verify_basic",
@@ -1962,53 +2009,61 @@ async function mcp(request) {
   ].map((name) => ({
     name,
     description: `PrivateDAO ${name}`,
-    inputSchema: { type: "object", additionalProperties: false },
+    inputSchema: schemas[name] || { type: "object", additionalProperties: false },
   }));
   if (request.method === "tools/list")
     return json({ jsonrpc: "2.0", id, result: { tools } });
   if (request.method === "tools/call") {
     const name = request.params?.name,
       a = request.params?.arguments || {};
-    let result;
-    if (name === "pdao_services") result = { services: SERVICES };
-    else if (name === "verify_basic")
-      result = await executeService("verify.basic", a);
-    else if (name === "create_paid_job") {
-      try {
-        result = await createJob(a.service_id, a.input || {}, false);
-      } catch (error) {
-        if (error.statusCode === 402)
-          result = {
-            status: "awaiting_payment",
-            payment_intent: error.payment_intent,
-          };
-        else throw error;
-      }
-    } else if (name === "job_status")
-      result = await (await store()).get("Jobs", a.job_id);
-    else if (name === "get_receipt")
-      result = await (await store()).get("Receipts", a.receipt_id);
-    else if (name === "search_agents")
-      result = { agents: await (await store()).list("Registry") };
-    else if (name === "agent_match")
-      result = await executeService("agent.match", a);
-    else if (name === "logistics_request") result = await requestLogistics(a);
-    else if (name === "network_stats") result = await networkStats(config);
-    else if (name === "register_agent") result = await register(a);
-    else if (name === "submit_payment")
-      result = {
-        status: "use_http_payment_endpoint",
-        required: ["job_id", "signature"],
-      };
-    else throw new Error("unknown MCP tool");
-    return json({
-      jsonrpc: "2.0",
-      id,
-      result: {
-        content: [{ type: "text", text: JSON.stringify(result) }],
-        structuredContent: result,
-      },
-    });
+    try {
+      let result;
+      if (name === "pdao_services") result = { services: SERVICES };
+      else if (name === "verify_basic")
+        result = await executeService("verify.basic", a);
+      else if (name === "create_paid_job") {
+        try {
+          result = await createJob(a.service_id, a.input || {}, false);
+        } catch (error) {
+          if (error.statusCode === 402)
+            result = {
+              status: "awaiting_payment",
+              payment_intent: error.payment_intent,
+            };
+          else throw error;
+        }
+      } else if (name === "job_status")
+        result = await (await store()).get("Jobs", a.job_id);
+      else if (name === "get_receipt")
+        result = await (await store()).get("Receipts", a.receipt_id);
+      else if (name === "search_agents")
+        result = { agents: await (await store()).list("Registry") };
+      else if (name === "agent_match")
+        result = await executeService("agent.match", a);
+      else if (name === "logistics_request") result = await requestLogistics(a);
+      else if (name === "network_stats") result = await networkStats(config);
+      else if (name === "register_agent") result = await register(a);
+      else if (name === "submit_payment")
+        result = {
+          status: "use_http_payment_endpoint",
+          required: ["job_id", "signature"],
+        };
+      else throw Object.assign(new Error("unknown MCP tool"), { statusCode: 400 });
+      return json({
+        jsonrpc: "2.0",
+        id,
+        result: {
+          content: [{ type: "text", text: JSON.stringify(result) }],
+          structuredContent: result,
+        },
+      });
+    } catch (error) {
+      return json({
+        jsonrpc: "2.0",
+        id,
+        error: { code: error.statusCode === 502 ? -32002 : -32000, message: error.message },
+      }, error.statusCode || 400);
+    }
   }
   return json(
     {
@@ -2029,6 +2084,16 @@ export async function handler(event) {
     delete headers["Content-Length"];
     return { ...response, headers, body: "" };
   } catch (error) {
+    console.error(JSON.stringify({
+      event: "request_failed",
+      requestId: event?.requestContext?.requestId || event?.requestContext?.http?.requestId || null,
+      method: methodOf(event),
+      path: pathOf(event),
+      status: error.statusCode || 400,
+      error: error.name || "Error",
+      message: String(error.message || "request failed").slice(0, 240),
+      upstreamStatus: error.upstreamStatus || null,
+    }));
     return errorResponse(error);
   }
 }
