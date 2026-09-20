@@ -171,6 +171,10 @@ function openapi() {
       },
       "/api/revenue": { get: { operationId: "revenueSummary" } },
       "/api/treasury/status": { get: { operationId: "treasuryStatus" } },
+      "/receipts/{receiptId}": { get: { operationId: "humanReceipt" } },
+      "/verify/receipt/{receiptId}": { get: { operationId: "verifyHumanReceipt" } },
+      "/jobs/{jobId}": { get: { operationId: "humanJobReceipt" } },
+      ...Object.fromEntries(SERVICES.map((service) => [servicePath(service.id), { get: { operationId: `service_${service.id.replaceAll(".", "_")}` } }])),
     },
   };
 }
@@ -183,6 +187,8 @@ function acquisition() {
   const services = SERVICES.map((service) => ({
     ...service,
     free: service.access === "free",
+    status: capabilityStatus(service.id),
+    publicUrl: `https://${config.domain}${servicePath(service.id)}`,
     paymentAssets: service.price ? ["USDC"] : [],
     receipt: `https://${config.domain}/api/receipts/{receiptId}`,
   }));
@@ -265,6 +271,7 @@ function connectPage() {
     "<style>:root{--ink:#081b33;--muted:#52657c;--line:#dbe5f0;--blue:#1769e0;--pale:#f5f9ff}*{box-sizing:border-box}body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,sans-serif;max-width:1040px;margin:0 auto;padding:28px 24px 64px;background:#fff;color:var(--ink);line-height:1.55}a{color:var(--blue);font-weight:700}h1{font-size:clamp(2.8rem,7vw,5.4rem);letter-spacing:-.055em;line-height:.98;max-width:760px;margin:16px 0 20px}.lead{color:var(--muted);font-size:1.14rem;max-width:700px}.muted{color:var(--muted)}.top{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-bottom:72px}.brand{color:var(--ink);text-decoration:none;font-weight:800}.nav{display:flex;gap:18px;font-size:.9rem}.nav a{color:var(--muted)}.eyebrow{color:var(--blue);font-size:.75rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase}.flow{display:flex;flex-wrap:wrap;gap:8px;margin:24px 0 38px}.flow span{border:1px solid var(--line);border-radius:999px;padding:9px 13px;background:var(--pale);font-size:.9rem;font-weight:700}.section{border-top:1px solid var(--line);padding-top:24px;margin-top:36px}.section h2{font-size:1.3rem}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}.grid section{border:1px solid var(--line);border-radius:16px;padding:18px;background:#fff;box-shadow:0 10px 28px rgba(14,42,78,.05)}.grid section b{color:var(--blue)}pre{overflow:auto;background:#f5f9ff;border:1px solid var(--line);border-radius:14px;padding:16px;color:#102745;font-size:13px}footer{border-top:1px solid var(--line);margin-top:42px;padding-top:18px;font-size:.9rem}@media(max-width:700px){body{padding:20px 16px 44px}.top{margin-bottom:48px}.nav{gap:10px;font-size:.78rem}h1{font-size:clamp(3rem,15vw,5rem)}} </style></head><body>",
     "<header class=\"top\"><a class=\"brand\" href=\"/marketplace\">PrivateDAO Agent Exchange</a><nav class=\"nav\"><a href=\"/marketplace\">Marketplace</a><a href=\"/.well-known/agent-card.json\">Agent Card</a></nav></header><div class=\"eyebrow\">Developer access</div><h1>Connect your agent.<br><span>Verify the result.</span></h1><p class=\"lead\">Discover PrivateDAO services, run a free check, pay only when a paid result is useful, and receive a verifiable receipt.</p>",
     "<div class=\"flow\"><span>Discover</span><span>Create job</span><span>Pay</span><span>Get result</span><span>Verify receipt</span></div>",
+    `<section class="section"><h2>Fastest onboarding</h2><p class="muted">Copy the machine endpoint you need, then run the free verification example below. No dashboard or account is required.</p><div class="grid"><section><b>Agent Card</b><p><button class="copy" data-copy="https://${config.domain}/.well-known/agent-card.json">Copy endpoint</button></p></section><section><b>OpenAPI</b><p><button class="copy" data-copy="https://${config.domain}/openapi.json">Copy endpoint</button></p></section><section><b>MCP</b><p><button class="copy" data-copy='{"mcpServers":{"privatedao-agents":{"url":"https://${config.domain}/mcp"}}}'>Copy MCP config</button></p></section></div><script>document.querySelectorAll(".copy").forEach(function(button){button.addEventListener("click",async function(){try{await navigator.clipboard.writeText(button.dataset.copy);const old=button.textContent;button.textContent="Copied";setTimeout(function(){button.textContent=old},1400)}catch(_){button.textContent="Select and copy manually"}})});</script></section>`,
     "<section class=\"section\"><h2>Fastest start: curl</h2><pre>curl https://agents.privatedao.org/.well-known/agent-card.json\ncurl https://agents.privatedao.org/api/services\ncurl -X POST https://agents.privatedao.org/api/jobs -H 'content-type: application/json' -d '{\"service_id\":\"verify.basic\",\"input\":{\"mint\":\"YOUR_SOLANA_MINT\"}}'</pre></section>",
     "<h2>TypeScript</h2><pre>import { PrivateDAOAgentExchange } from \"@privatedao/agent-exchange\";\nconst pdao = new PrivateDAOAgentExchange();\nawait pdao.discover();\nconst job = await pdao.verifyBasic({ mint: \"YOUR_SOLANA_MINT\" });\nconsole.log(job);</pre>",
     "<h2>Python</h2><pre>from privatedao_agent_exchange import PrivateDAOAgentExchange\npdao = PrivateDAOAgentExchange()\npdao.discover()\njob = pdao.verify_basic({\"mint\": \"YOUR_SOLANA_MINT\"})\nprint(job)</pre>",
@@ -272,7 +279,7 @@ function connectPage() {
     "<div class=\"grid\"><section><b>Free entry</b><p>verify.basic<br>receipt.verify</p></section><section><b>Paid intelligence</b><p>verify.deep<br>token.intelligence<br>risk.score<br>wallet.intelligence</p></section><section><b>Agent logistics</b><p>agent.match<br>/api/logistics/request<br>/api/marketplace/listings</p></section></div>",
     "<p class=\"muted\">Production network: Solana Mainnet. <a href=\"/marketplace\">Browse services</a> · <a href=\"/.well-known/agent-card.json\">Agent Card</a> · <a href=\"/openapi.json\">OpenAPI</a> · <a href=\"/mcp\">MCP</a></p></body></html>",
   ];
-  return lines.join("");
+  return injectLanguageWidget(lines.join(""));
 }
 function escapeHtml(value) {
   return String(value)
@@ -282,14 +289,60 @@ function escapeHtml(value) {
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#39;");
 }
+function servicePath(serviceId) {
+  return `/services/${encodeURIComponent(serviceId.replaceAll(".", "-"))}`;
+}
+function capabilityStatus(serviceId) {
+  // Only the free verification path has a recorded production smoke result.
+  // Other catalog entries remain implementation-level until an execution
+  // record proves their production path independently.
+  return serviceId === "verify.basic" ? "Mainnet Live" : "Implementation";
+}
+function serviceExample(service) {
+  if (service.input.includes("mint")) return { mint: "YOUR_SOLANA_MINT" };
+  if (service.input.includes("wallet")) return { wallet: "YOUR_SOLANA_WALLET" };
+  if (service.input.includes("program")) return { program: "YOUR_SOLANA_PROGRAM" };
+  if (service.input.includes("receipt")) return { receipt: {}, expected_hash: "OPTIONAL_RECEIPT_HASH" };
+  if (service.input.includes("capabilities")) return { capabilities: ["verification"] };
+  if (service.input.includes("Agent Card")) return { campaignId: "YOUR_CAMPAIGN_ID", destination: "https://example.com/agent" };
+  if (service.input.includes("structured")) return { evidence: { claim: "example" } };
+  return { record: { claim: "example" } };
+}
+function languageWidget() {
+  return `<button id="pdao-language-toggle" type="button" title="Change language" aria-label="Change language">🌐 <span>العربية</span></button><style>#pdao-language-toggle{position:fixed;right:18px;bottom:18px;z-index:20;border:1px solid #dbe5ef;border-radius:999px;background:#fff;color:#071a32;padding:9px 13px;box-shadow:0 8px 24px rgba(7,26,50,.12);font:700 12px system-ui;cursor:pointer}#pdao-language-toggle:hover{border-color:#1769e0;color:#1769e0}</style><script>(function(){const button=document.getElementById("pdao-language-toggle");if(!button)return;const pairs={"Marketplace":"السوق","Build":"التكامل","Agent Card":"بطاقة الوكيل","Connect an agent":"اربط وكيلًا","Browse capabilities":"استعرض القدرات","Explore services":"استعرض الخدمات","Try verification":"جرّب التحقق","PrivateDAO Agents":"وكلاء PrivateDAO","OpenAPI":"OpenAPI","MCP":"MCP","A2A":"A2A"};let arabic=false;button.addEventListener("click",function(){arabic=!arabic;document.documentElement.lang=arabic?"ar":"en";document.documentElement.dir=arabic?"rtl":"ltr";document.querySelectorAll("body *").forEach(function(el){if(el.tagName==="SCRIPT"||el.tagName==="STYLE"||el.children.length||el.childNodes.length!==1)return;const node=el.firstChild;if(node.nodeType!==3)return;const value=node.nodeValue.trim();if(!value)return;if(!el.dataset.pdaoEn)el.dataset.pdaoEn=value;node.nodeValue=arabic?(pairs[value]||value):el.dataset.pdaoEn;});button.querySelector("span").textContent=arabic?"English":"العربية";});})();</script>`;
+}
+function injectLanguageWidget(html) {
+  return html.replace("</body>", `${languageWidget()}</body>`);
+}
+function serviceDetailPage(service) {
+  const status = capabilityStatus(service.id);
+  const example = JSON.stringify({ service_id: service.id, input: serviceExample(service) }, null, 2);
+  const network = status === "Mainnet Live" ? "Solana Mainnet" : "Solana Mainnet path implemented; independent production execution evidence is not yet published";
+  return injectLanguageWidget(`<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${escapeHtml(service.title)} | PrivateDAO Agents</title><meta name="description" content="${escapeHtml(service.output)} through the PrivateDAO Agent Exchange."><link rel="canonical" href="https://${config.domain}${servicePath(service.id)}"><meta property="og:title" content="${escapeHtml(service.title)} | PrivateDAO Agents"><meta property="og:description" content="${escapeHtml(service.output)} through the PrivateDAO Agent Exchange."><meta property="og:url" content="https://${config.domain}${servicePath(service.id)}"><style>:root{--ink:#071a32;--muted:#52657b;--line:#dbe5ef;--blue:#1769e0;--pale:#f5f9ff}*{box-sizing:border-box}body{margin:0;background:#fff;color:var(--ink);font-family:Inter,system-ui,sans-serif;line-height:1.55}main{max-width:1000px;margin:auto;padding:26px 24px 72px}header{display:flex;justify-content:space-between;gap:20px;padding-bottom:70px}.brand,a{color:var(--blue);font-weight:750;text-decoration:none}.brand{color:var(--ink);font-weight:850}.nav{display:flex;gap:18px;color:var(--muted);font-size:.9rem}.nav a{color:var(--muted)}.eyebrow{color:var(--blue);font-size:.72rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase}h1{font-size:clamp(2.7rem,7vw,5.8rem);line-height:.95;letter-spacing:-.06em;max-width:760px;margin:14px 0 18px}.lead{max-width:700px;color:var(--muted);font-size:1.15rem}.meta{display:flex;flex-wrap:wrap;gap:9px;margin:26px 0}.pill{border:1px solid var(--line);border-radius:999px;padding:8px 12px;background:var(--pale);font-size:.86rem;font-weight:700}.live{color:#087f5b}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:42px}.panel{border:1px solid var(--line);border-radius:16px;padding:20px;box-shadow:0 10px 25px rgba(14,42,78,.05)}.panel h2{margin-top:0;font-size:1.2rem}.muted{color:var(--muted)}pre{overflow:auto;background:#f5f9ff;border:1px solid var(--line);border-radius:12px;padding:14px;font-size:12px}.button{display:inline-flex;background:var(--ink);color:#fff;border-radius:999px;padding:12px 18px;margin-top:18px}@media(max-width:700px){main{padding:20px 16px 56px}header{padding-bottom:45px}.nav{gap:10px;font-size:.78rem}.grid{grid-template-columns:1fr}h1{font-size:clamp(3rem,15vw,5.4rem)}}</style></head><body><main><header><a class="brand" href="/">PrivateDAO Agents</a><nav class="nav"><a href="/marketplace">Marketplace</a><a href="/connect">Build</a><a href="/.well-known/agent-card.json">Agent Card</a></nav></header><p class="eyebrow">Service capability</p><h1>${escapeHtml(service.title)}</h1><p class="lead">${escapeHtml(service.output)}. Use the service through a structured request and receive a receipt for the completed result.</p><div class="meta"><span class="pill ${status === "Mainnet Live" ? "live" : ""}">${escapeHtml(status)}</span><span class="pill">${escapeHtml(service.access === "free" ? "Free" : `${service.price} ${service.currency}`)}</span><span class="pill">${escapeHtml(network)}</span></div><div class="grid"><section class="panel"><h2>What you provide</h2><p>${escapeHtml(service.input)}</p><h2>What happens</h2><p class="muted">PrivateDAO validates the request, runs the capability within its execution boundary, and returns a machine-readable result with a receipt when completed.</p></section><section class="panel"><h2>What you receive</h2><p>${escapeHtml(service.output)}</p><p class="muted">No claim is made beyond the evidence available for this capability and network.</p></section></div><section class="panel" style="margin-top:14px"><h2>API example</h2><pre>${escapeHtml(`curl -X POST https://${config.domain}/api/jobs -H 'content-type: application/json' -d '${example.replaceAll("'", "\\'")}'`)}</pre><a class="button" href="/connect#${escapeHtml(service.id)}">Run this service <span aria-hidden="true">→</span></a></section></main></body></html>`);
+}
+function publicReceiptPage(receipt, verified = false) {
+  const rows = [
+    ["Receipt ID", receipt.receipt_id],
+    ["Service", receipt.service],
+    ["Status", receipt.status],
+    ["Created", receipt.created_at],
+    ["Completed", receipt.completed_at],
+    ["Network", receipt.network],
+    ["Receipt digest", receipt.receipt_id],
+    ["Evidence hash", receipt.evidence_hash],
+    ...(receipt.payment_signature ? [["Payment reference", receipt.payment_signature]] : []),
+  ].filter(([, value]) => value != null);
+  const details = rows.map(([label, value]) => `<div class="row"><dt>${escapeHtml(label)}</dt><dd>${escapeHtml(value)}</dd></div>`).join("");
+  return injectLanguageWidget(`<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${verified ? "Verified receipt" : "Receipt"} | PrivateDAO Agents</title><meta name="description" content="Publicly inspectable PrivateDAO Agent Exchange receipt."><link rel="canonical" href="https://${config.domain}/verify/receipt/${encodeURIComponent(receipt.receipt_id)}"><style>:root{--ink:#071a32;--muted:#52657b;--line:#dbe5ef;--blue:#1769e0;--pale:#f5f9ff;--green:#087f5b}*{box-sizing:border-box}body{margin:0;background:#fff;color:var(--ink);font-family:Inter,system-ui,sans-serif;line-height:1.55}main{max-width:860px;margin:auto;padding:28px 24px 72px}header{display:flex;justify-content:space-between;padding-bottom:76px}.brand{color:var(--ink);font-weight:850;text-decoration:none}.nav{display:flex;gap:18px}.nav a,a{color:var(--blue);font-weight:750;text-decoration:none}.eyebrow{color:var(--blue);font-size:.72rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase}h1{font-size:clamp(2.7rem,7vw,5.5rem);line-height:.95;letter-spacing:-.06em;margin:14px 0}.verified{display:inline-flex;border:1px solid #a9decf;border-radius:999px;background:#effbf7;color:var(--green);padding:8px 13px;font-weight:800}.panel{margin-top:32px;border:1px solid var(--line);border-radius:16px;padding:20px;box-shadow:0 10px 25px rgba(14,42,78,.05)}dl{margin:0}.row{display:grid;grid-template-columns:180px 1fr;gap:20px;border-bottom:1px solid var(--line);padding:13px 0}.row:last-child{border-bottom:0}.row dt{font-weight:750;color:var(--muted)}.row dd{margin:0;overflow-wrap:anywhere;font-family:ui-monospace,monospace;font-size:.84rem}.actions{display:flex;gap:14px;flex-wrap:wrap;margin-top:22px}.button{display:inline-flex;background:var(--ink);color:#fff;border-radius:999px;padding:12px 18px}.muted{color:var(--muted)}@media(max-width:650px){main{padding:20px 16px 56px}header{padding-bottom:45px}.nav{gap:10px;font-size:.8rem}.row{grid-template-columns:1fr;gap:4px}}</style></head><body><main><header><a class="brand" href="/">PrivateDAO Agents</a><nav class="nav"><a href="/marketplace">Marketplace</a><a href="/connect">Build</a></nav></header><p class="eyebrow">Public evidence</p><h1>${verified ? "Receipt verified." : "Job receipt."}</h1><span class="verified">✓ ${escapeHtml(receipt.status || "VERIFIED")}</span><section class="panel"><dl>${details}</dl></section><p class="muted">This page exposes receipt metadata and hashes only. It does not expose submitted inputs, private witnesses, secrets or confidential workflow data.</p><div class="actions"><a class="button" href="/verify/receipt/${encodeURIComponent(receipt.receipt_id)}">Verify receipt</a><a href="/api/receipts/${encodeURIComponent(receipt.receipt_id)}">View machine receipt</a></div></main></body></html>`);
+}
 function marketplacePage() {
   const cards = SERVICES.map((service) => {
     const price = service.access === "free" ? "Free to try" : `${service.price} ${service.currency}`;
     return `<article class="card"><div class="tag">${escapeHtml(service.access)}</div><h2>${escapeHtml(service.title)}</h2><p>${escapeHtml(service.output)}.</p><dl><div><dt>Input</dt><dd>${escapeHtml(service.input)}</dd></div><div><dt>Price</dt><dd>${escapeHtml(price)}</dd></div></dl><a class="action" href="/connect">Use this service <span aria-hidden="true">→</span></a></article>`;
   }).join("");
-  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" href="data:,"><title>Agent Marketplace | PrivateDAO</title><meta name="description" content="Discover PrivateDAO services for verification, evidence and agent workflows."><style>
+  return injectLanguageWidget(`<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" href="data:,"><title>Agent Marketplace | PrivateDAO</title><meta name="description" content="Discover PrivateDAO services for verification, evidence and agent workflows."><style>
 :root{color-scheme:light;--ink:#081b33;--muted:#52657c;--line:#dbe5f0;--blue:#1769e0;--pale:#f5f9ff}*{box-sizing:border-box}body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,sans-serif;color:var(--ink);background:#fff;line-height:1.5}main{max-width:1180px;margin:0 auto;padding:28px 24px 72px}header{display:flex;align-items:center;justify-content:space-between;gap:20px;padding-bottom:76px}header a{color:var(--ink);text-decoration:none;font-weight:700}.brand{display:flex;align-items:center;gap:10px}.mark{width:28px;height:28px;border:2px solid var(--blue);border-radius:9px;display:grid;place-items:center;color:var(--blue);font-weight:900}.nav{display:flex;gap:18px;color:var(--muted);font-size:.93rem}.nav a{color:var(--muted)}.eyebrow{color:var(--blue);font-size:.76rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase}h1{font-size:clamp(2.8rem,7vw,5.8rem);line-height:.98;letter-spacing:-.055em;max-width:820px;margin:16px 0 22px}h1 span{color:var(--blue)}.intro{max-width:660px;color:var(--muted);font-size:1.15rem}.hero{display:flex;justify-content:space-between;gap:40px;align-items:end;margin-bottom:62px}.hero-copy{flex:1}.hero-note{max-width:280px;border-left:3px solid var(--blue);padding:6px 0 6px 18px;color:var(--muted)}.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}.button,.action{display:inline-flex;align-items:center;justify-content:space-between;gap:14px;border-radius:999px;padding:12px 18px;text-decoration:none;font-weight:750}.button{background:var(--ink);color:#fff}.button.alt{background:var(--pale);color:var(--ink);border:1px solid var(--line)}.section-head{display:flex;justify-content:space-between;align-items:end;gap:20px;margin:0 0 18px}.section-head p{color:var(--muted);margin:0}.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.card{border:1px solid var(--line);border-radius:18px;padding:22px;background:#fff;min-height:260px;display:flex;flex-direction:column;box-shadow:0 10px 30px rgba(14,42,78,.05)}.card:hover{border-color:#9ebeea;box-shadow:0 16px 34px rgba(14,42,78,.1)}.tag{color:var(--blue);font-size:.72rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase}.card h2{font-size:1.24rem;margin:10px 0 8px}.card p{color:var(--muted);margin:0 0 18px}.card dl{border-top:1px solid var(--line);margin:0;padding-top:12px;display:grid;gap:8px;color:var(--muted);font-size:.88rem}.card dl div{display:flex;justify-content:space-between;gap:12px}.card dt{font-weight:700}.card dd{margin:0;text-align:right}.action{margin-top:auto;padding:10px 0 0;color:var(--blue)}footer{border-top:1px solid var(--line);margin-top:58px;padding-top:20px;color:var(--muted);font-size:.9rem;display:flex;justify-content:space-between;gap:20px}footer a{color:var(--blue)}@media(max-width:760px){main{padding:20px 16px 48px}header{padding-bottom:48px}.nav{gap:10px;font-size:.8rem}.hero{display:block}.hero-note{margin-top:28px}.grid{grid-template-columns:1fr}h1{font-size:clamp(3rem,16vw,5rem)}footer{display:block}footer p{margin:6px 0}}
-</style></head><body><main><header><a class="brand" href="/"><span class="mark">P</span><span>PrivateDAO</span></a><nav class="nav" aria-label="Primary"><a href="/connect">Build with agents</a><a href="/.well-known/agent-card.json">Agent Card</a><a href="https://privatedao.org" rel="noreferrer">PrivateDAO</a></nav></header><section class="hero"><div class="hero-copy"><div class="eyebrow">PrivateDAO Agent Exchange</div><h1>Services for agents.<br><span>Evidence for decisions.</span></h1><p class="intro">Discover machine-native services for verification, intelligence and agent workflows. Start with a free check, then pay only for the result you need.</p><div class="actions"><a class="button" href="/connect">Connect an agent <span aria-hidden="true">→</span></a><a class="button alt" href="/api/services">View service API <span aria-hidden="true">↗</span></a></div></div><p class="hero-note">Solana Mainnet execution<br>Finalized receipts<br>Quote-first payments</p></section><section><div class="section-head"><div><div class="eyebrow">Service catalog</div><h2>Choose a capability</h2></div><p>Every completed job returns a verifiable receipt.</p></div><div class="grid">${cards}</div></section><footer><span>PrivateDAO Agent Exchange</span><span><a href="/openapi.json">OpenAPI</a> · <a href="/mcp">MCP</a> · <a href="/a2a">A2A</a></span></footer></main></body></html>`;
+</style></head><body><main><header><a class="brand" href="/"><span class="mark">P</span><span>PrivateDAO</span></a><nav class="nav" aria-label="Primary"><a href="/connect">Build with agents</a><a href="/.well-known/agent-card.json">Agent Card</a><a href="https://privatedao.org" rel="noreferrer">PrivateDAO</a></nav></header><section class="hero"><div class="hero-copy"><div class="eyebrow">PrivateDAO Agent Exchange</div><h1>Services for agents.<br><span>Evidence for decisions.</span></h1><p class="intro">Discover machine-native services for verification, intelligence and agent workflows. Start with a free check, then pay only for the result you need.</p><div class="actions"><a class="button" href="/connect">Connect an agent <span aria-hidden="true">→</span></a><a class="button alt" href="/api/services">View service API <span aria-hidden="true">↗</span></a></div></div><p class="hero-note">Solana Mainnet execution<br>Finalized receipts<br>Quote-first payments</p></section><section><div class="section-head"><div><div class="eyebrow">Service catalog</div><h2>Choose a capability</h2></div><p>Every completed job returns a verifiable receipt.</p></div><div class="grid">${cards}</div></section><footer><span>PrivateDAO Agent Exchange</span><span><a href="/openapi.json">OpenAPI</a> · <a href="/mcp">MCP</a> · <a href="/a2a">A2A</a></span></footer></main></body></html>`);
 }
 function agentHomePage() {
   const free = SERVICES.filter((service) => service.access === "free");
@@ -1050,6 +1103,9 @@ async function completeJob(job, result, payment) {
     network: "solana-mainnet-beta",
     status: "VERIFIED",
   };
+  receipt.public_url = `https://${config.domain}/receipts/${encodeURIComponent(receipt.receipt_id)}`;
+  receipt.verification_url = `https://${config.domain}/verify/receipt/${encodeURIComponent(receipt.receipt_id)}`;
+  receipt.job_url = `https://${config.domain}/jobs/${encodeURIComponent(job.id)}`;
   await (await store()).put("Receipts", receipt.receipt_id, receipt, true);
   await recordRevenue(job, payment);
   job.status = "completed";
@@ -1214,13 +1270,36 @@ async function handle(e) {
     trackFunnel("marketplace_view");
     return { statusCode: 200, headers: { "content-type": "text/html; charset=utf-8", "cache-control": "no-store" }, body: marketplacePage() };
   }
+  const servicePage = path.match(/^\/services\/([^/]+)$/);
+  if (method === "GET" && servicePage) {
+    const serviceId = decodeURIComponent(servicePage[1]).replaceAll("-", ".");
+    const service = serviceById(serviceId);
+    if (!service) return json({ error: "not_found" }, 404);
+    trackFunnel("service_detail_view", { service: service.id });
+    return { statusCode: 200, headers: { "content-type": "text/html; charset=utf-8", "cache-control": "no-store" }, body: serviceDetailPage(service) };
+  }
+  const humanReceipt = path.match(/^\/(receipts|verify\/receipt)\/([^/]+)$/);
+  if (method === "GET" && humanReceipt) {
+    const receipt = await (await store()).get("Receipts", decodeURIComponent(humanReceipt[2]));
+    if (!receipt) return json({ error: "not_found" }, 404);
+    return { statusCode: 200, headers: { "content-type": "text/html; charset=utf-8", "cache-control": "no-store" }, body: publicReceiptPage(receipt, humanReceipt[1] === "verify/receipt") };
+  }
+  const humanJob = path.match(/^\/jobs\/([^/]+)$/);
+  if (method === "GET" && humanJob) {
+    const job = await (await store()).get("Jobs", decodeURIComponent(humanJob[1]));
+    if (!job) return json({ error: "not_found" }, 404);
+    if (!job.receipt_id) return json({ job_id: job.id, status: job.status, message: "receipt is not available yet" }, 202);
+    const receipt = await (await store()).get("Receipts", job.receipt_id);
+    if (!receipt) return json({ error: "receipt_not_found" }, 404);
+    return { statusCode: 200, headers: { "content-type": "text/html; charset=utf-8", "cache-control": "no-store" }, body: publicReceiptPage(receipt) };
+  }
   if (method === "GET" && ["/agent-registry/register", "/register/8004"].includes(path)) {
     const page = registryRegistrationPage();
     return { statusCode: 200, headers: { "content-type": "text/html; charset=utf-8", "cache-control": "no-store", "content-security-policy": `default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'nonce-${page.nonce}' https://esm.sh https://cdn.jsdelivr.net; connect-src 'self' https://agents.privatedao.org https://api.mainnet-beta.solana.com; frame-ancestors 'none'` }, body: page.body };
   }
   if (method === "GET" && path === "/") {
     trackFunnel("human_home_view");
-    return { statusCode: 200, headers: { "content-type": "text/html; charset=utf-8", "cache-control": "no-store" }, body: agentHomePage() };
+    return { statusCode: 200, headers: { "content-type": "text/html; charset=utf-8", "cache-control": "no-store" }, body: injectLanguageWidget(agentHomePage()) };
   }
   if (method === "GET" && path === "/api/health") {
     const stats =
@@ -1282,6 +1361,8 @@ async function handle(e) {
       services: SERVICES.map((service) => ({
         ...service,
         free: service.access === "free",
+        status: capabilityStatus(service.id),
+        public_url: `https://${config.domain}${servicePath(service.id)}`,
       })),
       payment: {
         network: "solana-mainnet-beta",
