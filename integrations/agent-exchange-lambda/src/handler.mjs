@@ -46,6 +46,8 @@ function trackFunnel(event, details = {}) {
     outcome: details.outcome || null,
     durationMs: Number.isFinite(details.durationMs) ? details.durationMs : null,
     providerCalls: Number.isFinite(details.providerCalls) ? details.providerCalls : null,
+    cacheHits: Number.isFinite(details.cacheHits) ? details.cacheHits : null,
+    cacheMisses: Number.isFinite(details.cacheMisses) ? details.cacheMisses : null,
     createdAt: now(),
   };
   void store()
@@ -1113,6 +1115,20 @@ async function executeService(id, input) {
   throw new Error("service implementation unavailable");
 }
 
+async function executeMeasuredService(id, input) {
+  const before = evmRuntimeStats();
+  const result = await executeService(id, input);
+  const after = evmRuntimeStats();
+  return {
+    result,
+    telemetry: {
+      providerCalls: Math.max(0, after.calls - before.calls),
+      cacheHits: Math.max(0, after.cache_hits - before.cache_hits),
+      cacheMisses: Math.max(0, after.cache_misses - before.cache_misses),
+    },
+  };
+}
+
 async function createJob(serviceId, input, admin = false, currency = "USDC", metadata = {}) {
   const service = serviceById(serviceId);
   if (!service) throw new Error("unknown service");
@@ -1174,11 +1190,11 @@ async function createJob(serviceId, input, admin = false, currency = "USDC", met
   }
   job.execution_started_at = now();
   await (await store()).put("Jobs", job.id, job);
-  const result = await executeService(serviceId, input);
-  return await completeJob(job, result, null);
+  const execution = await executeMeasuredService(serviceId, input);
+  return await completeJob(job, execution.result, null, execution.telemetry);
 }
 
-async function completeJob(job, result, payment) {
+async function completeJob(job, result, payment, telemetry = {}) {
   if (job.status === "completed" && job.receipt_id) {
     const existingReceipt = await (await store()).get(
       "Receipts",
@@ -1203,7 +1219,11 @@ async function completeJob(job, result, payment) {
     targetNetwork: job.execution_input?.network || enrichedResult?.network,
     outcome: "success",
     durationMs: Number.isFinite(executionMs) ? executionMs : null,
-    providerCalls: Number.isFinite(enrichedResult?.provider_calls) ? enrichedResult.provider_calls : null,
+    providerCalls: Number.isFinite(telemetry.providerCalls)
+      ? telemetry.providerCalls
+      : Number.isFinite(enrichedResult?.provider_calls) ? enrichedResult.provider_calls : null,
+    cacheHits: telemetry.cacheHits,
+    cacheMisses: telemetry.cacheMisses,
   });
   const payload = {
     job_id: job.id,
@@ -1316,12 +1336,12 @@ async function submitPayment(jobId, body) {
   }
   job.execution_started_at = now();
   await storage.put("Jobs", job.id, job);
-  const result = await executeService(job.service_id, body.input || job.execution_input || {});
-  return completeJob(job, result, {
+  const execution = await executeMeasuredService(job.service_id, body.input || job.execution_input || {});
+  return completeJob(job, execution.result, {
     signature: body.signature,
     currency: quote.currency,
     amount: quote.amount,
-  });
+  }, execution.telemetry);
 }
 
 async function register(body) {
