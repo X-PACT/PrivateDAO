@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { createServer } from "node:http";
-import { executeEvmService, evmRpcUrl } from "../src/evm.mjs";
+import { executeEvmService, evmRpcUrl, evmRuntimeStats } from "../src/evm.mjs";
 import { swapQuote, simulateSolanaTransaction } from "../src/solana.mjs";
 import { enforceRateLimit, resetRuntimeControls } from "../src/runtime-controls.mjs";
 
@@ -32,9 +32,14 @@ test("EVM services are read-only and use the configured provider", async () => {
     network: "ethereum-mainnet",
     transaction: { to: "0x0000000000000000000000000000000000000001", data: "0x" },
   });
+  await executeEvmService(config, "token.intelligence", {
+    network: "ethereum-mainnet",
+    asset: "0x0000000000000000000000000000000000000001",
+  });
   assert.equal(token.contract_present, true);
   assert.equal(simulation.would_broadcast, false);
   assert.equal(simulation.estimated_gas, "0x5208");
+  assert.ok(evmRuntimeStats().cache_hits > 0);
   server.close();
 });
 
