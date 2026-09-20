@@ -1,6 +1,6 @@
 import { digest } from "./canonical.mjs";
 import { evmNetwork, executeEvmService, evmRead } from "./evm.mjs";
-import { mintEvidence, readRpc } from "./solana.mjs";
+import { mintEvidence, readRpc, simulateSolanaTransaction } from "./solana.mjs";
 import { runIntelInference } from "./intel.mjs";
 
 const solanaAddress = /^[1-9A-HJ-NP-Za-km-z]{32,88}$/;
@@ -134,6 +134,32 @@ export async function explainContract(config, input = {}) {
 
 export async function explainTransaction(config, input = {}) {
   const network = networkOf(input);
+  if (network === "solana-mainnet-beta" && (input.unsignedTransaction || input.serializedTransaction)) {
+    const simulation = await simulateSolanaTransaction(config, {
+      transaction: input.unsignedTransaction || input.serializedTransaction,
+    });
+    return sourceFacts(network, simulation.provider_class, {
+      pre_sign: true,
+      simulated: true,
+      would_broadcast: false,
+      error: simulation.err,
+      logs: simulation.logs,
+      units_consumed: simulation.units_consumed,
+      observed_at: simulation.observed_at,
+    });
+  }
+  if (network !== "solana-mainnet-beta" && input.transaction && typeof input.transaction === "object") {
+    const simulation = await executeEvmService(config, "transaction.simulate", { network, transaction: input.transaction });
+    return sourceFacts(network, simulation.provider_class, {
+      pre_sign: true,
+      simulated: true,
+      would_broadcast: false,
+      error: null,
+      return_data: simulation.return_data,
+      estimated_gas: simulation.estimated_gas,
+      observed_at: simulation.observed_at,
+    });
+  }
   const hash = String(input.hash || input.signature || input.transaction || "");
   if (network === "solana-mainnet-beta") {
     if (!solanaAddress.test(hash)) throw new Error("valid Solana transaction signature is required");

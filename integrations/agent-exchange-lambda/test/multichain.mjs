@@ -4,7 +4,7 @@ import { createServer } from "node:http";
 import { executeEvmService, evmRpcUrl, evmRuntimeStats } from "../src/evm.mjs";
 import { swapQuote, simulateSolanaTransaction } from "../src/solana.mjs";
 import { enforceRateLimit, resetRuntimeControls } from "../src/runtime-controls.mjs";
-import { researchAsset, researchReport } from "../src/intelligence.mjs";
+import { researchAsset, researchReport, explainTransaction } from "../src/intelligence.mjs";
 
 test("EVM services are read-only and use the configured provider", async () => {
   const server = createServer(async (request, response) => {
@@ -52,6 +52,12 @@ test("EVM services are read-only and use the configured provider", async () => {
   });
   assert.equal(report.inference.status, "not_configured");
   assert.match(report.report_hash, /^[a-f0-9]{64}$/);
+  const explained = await explainTransaction(config, {
+    network: "ethereum-mainnet",
+    transaction: { to: "0x0000000000000000000000000000000000000001", data: "0x" },
+  });
+  assert.equal(explained.facts.pre_sign, true);
+  assert.equal(explained.facts.would_broadcast, false);
   server.close();
 });
 
