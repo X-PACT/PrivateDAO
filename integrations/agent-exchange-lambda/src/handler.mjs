@@ -1418,6 +1418,7 @@ async function mcpHttp(url, request, sessionId = null) {
     "content-type": "application/json",
     accept: "application/json, text/event-stream",
     "MCP-Protocol-Version": "2025-06-18",
+    "user-agent": "PrivateDAO-Agent-Exchange/1.0 (+https://privatedao.org)",
   };
   if (sessionId) headers["Mcp-Session-Id"] = sessionId;
   const response = await fetch(url, {
