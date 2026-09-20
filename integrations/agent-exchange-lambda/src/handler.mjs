@@ -1649,10 +1649,11 @@ async function completeJob(job, result, payment, telemetry = {}) {
   const enrichedResult = recommendations.length
     ? { ...result, recommended_next_services: recommendations }
     : result;
+  const targetNetwork = normalizeNetworkId(job.execution_input?.network || enrichedResult?.network || "solana-mainnet-beta");
   const executionMs = Date.now() - Date.parse(job.execution_started_at || job.created_at);
   trackFunnel("service_completed", {
     service: job.service_id,
-    targetNetwork: job.execution_input?.network || enrichedResult?.network,
+    targetNetwork,
     outcome: "success",
     durationMs: Number.isFinite(executionMs) ? executionMs : null,
     providerCalls: Number.isFinite(telemetry.providerCalls)
@@ -1679,7 +1680,7 @@ async function completeJob(job, result, payment, telemetry = {}) {
     treasury: config.treasury,
     network: "solana-mainnet-beta",
     payment_network: "solana-mainnet-beta",
-    target_network: job.execution_input?.network || enrichedResult?.network || "solana-mainnet-beta",
+    target_network: targetNetwork,
     status: "VERIFIED",
   };
   receipt.public_url = `https://${config.domain}/receipts/${encodeURIComponent(receipt.receipt_id)}`;
