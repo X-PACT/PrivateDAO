@@ -691,6 +691,7 @@ async function partnershipQuote(campaign) {
   const expiresAt = new Date(Date.now() + 30 * 60 * 1000);
   const quote = {
     quote_id: `pq_${randomUUID()}`,
+    payment_type: "featured_partnership",
     partnership_id: campaign.id,
     amount: Number(campaign.price_usd),
     amountAtomic: Math.round(Number(campaign.price_usd) * 1e6),
@@ -713,7 +714,7 @@ async function partnershipPaymentIntent(id) {
   if (!campaign || campaign.type !== "featured_partner") throw Object.assign(new Error("partnership not found"), { statusCode: 404 });
   if (campaign.payment_status === "paid") return { campaignId: id, status: "paid", campaign };
   const quote = await partnershipQuote(campaign);
-  return { campaignId: id, status: "awaiting_payment", amount: quote.amount.toFixed(6), amountBaseUnits: String(quote.amountAtomic), currency: quote.currency, network: quote.network, mint: quote.mint, treasuryOwner: quote.treasuryOwner, treasuryTokenAccount: quote.treasuryTokenAccount, paymentReference: quote.paymentReference, quoteId: quote.quote_id, expiresAt: quote.expires_at, paymentUrl: `https://${config.domain}/partners/${encodeURIComponent(id)}/pay` };
+  return { campaignId: id, paymentType: "featured_partnership", status: "awaiting_payment", amount: quote.amount.toFixed(6), amountBaseUnits: String(quote.amountAtomic), currency: quote.currency, network: quote.network, mint: quote.mint, treasuryOwner: quote.treasuryOwner, treasuryTokenAccount: quote.treasuryTokenAccount, paymentReference: quote.paymentReference, quoteId: quote.quote_id, expiresAt: quote.expires_at, paymentUrl: `https://${config.domain}/partners/${encodeURIComponent(id)}/pay` };
 }
 async function buildPartnershipPaymentTransaction(id, payerText, sourceTokenAccountText = "") {
   if (!/^[1-9A-HJ-NP-Za-km-z]{32,44}$/.test(payerText || "")) throw Object.assign(new Error("valid payer wallet is required"), { statusCode: 400 });
@@ -754,7 +755,7 @@ async function submitPartnershipPayment(id, body) {
   const paymentId = `payment_${body.signature}`;
   const existing = await storage.get("Payments", paymentId);
   if (existing && existing.partnership_id !== id) throw Object.assign(new Error("payment signature was already used"), { statusCode: 402 });
-  if (!existing) await storage.put("Payments", paymentId, { id: paymentId, signature: body.signature, partnership_id: id, payer_wallet: payerWallet, amount: quote.amount, asset: quote.currency, network: quote.network, consumed_at: now() }, true);
+  if (!existing) await storage.put("Payments", paymentId, { id: paymentId, signature: body.signature, payment_type: "featured_partnership", partnership_id: id, payer_wallet: payerWallet, amount: quote.amount, asset: quote.currency, network: quote.network, consumed_at: now() }, true);
   const next = { ...campaign, payment_status: "paid", campaign_status: new Date(campaign.start_at) <= new Date() ? "active" : "scheduled", payment_signature: body.signature, payer_wallet: payerWallet, paid_amount: quote.amount, paid_at: now(), payment_network: quote.network, payment_asset: quote.currency, updated_at: now() };
   await storage.put("Campaigns", id, next);
   return { status: next.campaign_status, campaign: next, payment: { signature: body.signature, block_time: payment.blockTime, network: quote.network, asset: quote.currency } };
