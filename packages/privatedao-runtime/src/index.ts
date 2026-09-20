@@ -197,6 +197,23 @@ export type {
 } from "./payroll.js";
 export { registerCatalogCapabilities } from "./product-registry.js";
 export { ProductExecutionGateway } from "./product-gateway.js";
+export {
+  EntraIdentityError,
+  EntraTenantAuthorizer,
+  EntraTokenVerifier,
+  MapTenantMembershipStore,
+} from "./identity/entra.js";
+export type {
+  EnterprisePrincipal,
+  EnterpriseRole,
+  EntraIdentityConfig,
+  TenantMembership,
+  TenantMembershipStore,
+} from "./identity/entra.js";
+export { AzureKeyVaultSecretProvider, EnvironmentSecretProvider, createSecretProvider } from "./azure/secrets.js";
+export type { SecretProvider } from "./azure/secrets.js";
+export { initializeAzureMonitor, SafeKernelTelemetry } from "./azure/monitor.js";
+export type { AzureMonitorOptions } from "./azure/monitor.js";
 export { createPrivateDaoRuntime } from "./runtime.js";
 export type { PrivateDaoRuntime } from "./runtime.js";
 export { PayrollCalculationProvider } from "./payroll-provider.js";

@@ -1,6 +1,6 @@
 # Microsoft Integration Audit and Design
 
-Status: Phase 1 audit and design complete. No Azure resources have been created and no production infrastructure has been changed.
+Status: Phase 2 local integration boundary implemented. No Azure resources have been created and no production infrastructure has been changed.
 
 ## Current architecture
 
@@ -29,6 +29,14 @@ The relevant implementation is in `packages/privatedao-runtime/src/`:
 - `zcash-network.ts` provides a separate UTXO boundary.
 
 Microsoft integration must enter before the product gateway and must never bypass the Kernel.
+
+The local implementation is now available through:
+
+- `packages/privatedao-runtime/src/identity/entra.ts` for Entra JWT validation, tenant membership lookup, and role authorization.
+- `packages/privatedao-runtime/src/azure/secrets.ts` for environment fallback and managed-identity Key Vault access.
+- `packages/privatedao-runtime/src/azure/monitor.ts` for optional Azure Monitor OpenTelemetry initialization and privacy-safe Kernel lifecycle spans.
+
+These modules fail closed when identity configuration, tenant mapping, or required roles are missing. They do not create a wallet, sign a transaction, or grant execution authority from authentication alone.
 
 ## Identity and authorization audit
 
@@ -123,4 +131,6 @@ The following are not currently evidenced and must not be claimed:
 
 Fahd must approve the Azure subscription/region and cost boundary, Entra tenant mode and redirect URLs, the first Testnet/Devnet product/network, Key Vault ownership and rotation policy, telemetry retention, and any future Marketplace commercial/legal claims.
 
-Until that approval exists, this document is the implementation boundary: audit and design only.
+The local identity boundary test is `npm run test:azure:identity`. It uses no network, Azure account, or secret. The Azure deployment template is `deploy/azure/payroll-container-app.bicep`; it is reviewable infrastructure code only and has not been applied.
+
+The remaining external gates are Entra App Registration, a durable tenant-membership store wired to the Payroll database, a built/scanned image, Azure subscription/resource-group approval, and a real Testnet E2E run. Until those gates are completed, no Microsoft integration or Marketplace readiness claim is made.
