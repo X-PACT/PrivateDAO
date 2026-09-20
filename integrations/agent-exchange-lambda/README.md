@@ -41,7 +41,17 @@ configured securely.
 The current payment rail remains Solana Mainnet USDC. A requested EVM target
 network does not move the payment rail: paid jobs quote and verify payment on
 Solana, then execute the read-only target service. EVM transaction simulation
-and Jupiter swap quotes never sign or broadcast transactions.
+and Jupiter swap quotes never sign or broadcast transactions. Solana
+transaction simulation uses `simulateTransaction` with signature verification
+disabled; it returns simulation logs and compute usage only.
+
+Alchemy Data APIs are used opportunistically behind the EVM provider boundary
+for token metadata and wallet token balances. If a Data API method is not
+available, the service returns the bounded standard-RPC evidence instead of
+inventing a value. Contract-code and `eth_call` metadata reads use a short
+in-memory TTL cache; wallet balances and other mutable user data are never
+shared through that cache. Runtime rate limits and sanitized provider metrics
+are enforced server-side.
 
 Agent #1471 metadata remains the canonical Solana identity. Its existing IPFS
 URI and owner are preserved; no duplicate registration is created during
