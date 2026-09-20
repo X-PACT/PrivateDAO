@@ -115,6 +115,30 @@ The external MCP audit also verified:
 - Direct provider/service calls also normalize EVM aliases such as `base:mainnet` to `base-mainnet`.
 - Transaction simulation schemas reject transaction hashes/signatures before payment and require unsigned transaction data.
 
+### 2026-09-20 production service matrix
+
+An independent external HTTP client exercised the production job endpoint with
+valid read-only inputs for every priority service and every currently enabled
+target network. The expected result before payment was returned consistently:
+
+| Target network | Services checked | Result | Payment rail |
+|---|---|---|---|
+| Solana Mainnet | token intelligence, wallet intelligence, risk score, transaction simulation, swap quote, market snapshot | HTTP 402 `payment_required` with a target-network-bound quote | Solana Mainnet USDC |
+| Ethereum Mainnet | token intelligence, wallet intelligence, risk score, transaction simulation, market snapshot | HTTP 402 `payment_required` with a target-network-bound quote | Solana Mainnet USDC |
+| Base Mainnet | token intelligence, wallet intelligence, risk score, transaction simulation, market snapshot | HTTP 402 `payment_required` with a target-network-bound quote | Solana Mainnet USDC |
+| Arbitrum One | token intelligence, wallet intelligence, risk score, transaction simulation, market snapshot | HTTP 402 `payment_required` with a target-network-bound quote | Solana Mainnet USDC |
+
+Observed RPC evidence in the same run:
+
+- Solana: `mainnet-beta`, Alchemy, latest blockhash available, `rpc_healthy`.
+- Ethereum: chain ID `0x1`, Alchemy, `rpc_healthy`.
+- Base: chain ID `0x2105`, Alchemy, `rpc_healthy`.
+- Arbitrum One: chain ID `0xa4b1`, Alchemy, `rpc_healthy`.
+
+This proves production validation, quote generation, network separation and
+payment gating. It does not prove paid execution because no live payment was
+authorized in this audit.
+
 ## Verification Boundaries
 
 The following have not been claimed as complete because no real paid Mainnet
