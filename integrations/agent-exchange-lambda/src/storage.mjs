@@ -32,7 +32,7 @@ export async function createStore(config) {
       },
       async list(collection) {
         const result = await client.send(new ScanCommand({ TableName: table(collection), Limit: 100 }));
-        return (result.Items || []).map(({ id, ...value }) => value);
+        return result.Items || [];
       },
       async update(collection, key, fn) {
         const current = await this.get(collection, key); const next = await fn(current);
