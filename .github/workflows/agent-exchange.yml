@@ -2,7 +2,7 @@ name: Agent Exchange
 
 on:
   push:
-    branches: ["**"]
+    branches: [main]
     paths:
       - "integrations/agent-exchange-lambda/**"
       - ".github/workflows/agent-exchange.yml"
@@ -11,6 +11,10 @@ on:
       - "integrations/agent-exchange-lambda/**"
       - ".github/workflows/agent-exchange.yml"
   workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 permissions:
   contents: read
