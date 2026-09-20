@@ -23,7 +23,10 @@ const coreRoutes = [
   "/whitepaper",
   "/token",
   "/thesis",
+  "/about",
   "/contact",
+  "/privacy",
+  "/terms",
   "/legal",
 ] as const;
 
