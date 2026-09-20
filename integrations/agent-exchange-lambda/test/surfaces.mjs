@@ -27,6 +27,12 @@ test("human root is HTML while machine surfaces remain available", async () => {
   }
   const marketplace = await request("/marketplace");
   assert.match(marketplace.body, /https:\/\/privatedao\.org\/\?lang=en/);
+  const partners = await request("/partners");
+  assert.equal(partners.statusCode, 200);
+  assert.match(partners.body, /Featured Partners/);
+  const partnerApi = await request("/api/marketplace/partners");
+  assert.equal(partnerApi.statusCode, 200);
+  assert.deepEqual(JSON.parse(partnerApi.body).partners, []);
   for (const path of ["/agent-registry/register", "/pay/surface-test"]) {
     const response = await request(path);
     assert.equal(response.statusCode, 200, path);

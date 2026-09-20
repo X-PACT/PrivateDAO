@@ -566,8 +566,92 @@ const collectionFor = (name) =>
     logistics: "Logistics",
     revenue: "Revenue",
   })[name] || name;
+function adminTokenAuthorized(event) {
+  const token = event.headers?.["x-pdao-admin-smoke"] || event.headers?.["X-Pdao-Admin-Smoke"] || event.headers?.["X-PDAO-Admin-Smoke"];
+  return Boolean(config.adminSmokeToken && token === config.adminSmokeToken);
+}
+function partnershipDates(campaign) {
+  const start = Date.parse(campaign.start_at || campaign.start || "");
+  const end = Date.parse(campaign.end_at || campaign.expiry || "");
+  return { start, end };
+}
+function isActivePartnership(campaign, at = Date.now()) {
+  const { start, end } = partnershipDates(campaign);
+  return campaign.type === "featured_partner" && campaign.campaign_status === "active" && campaign.payment_status === "paid" && Number.isFinite(start) && Number.isFinite(end) && start <= at && at < end;
+}
+async function activePartnerships() {
+  return (await (await store()).list("Campaigns")).filter((campaign) => isActivePartnership(campaign));
+}
+async function createPartnership(body) {
+  const agentId = String(body.agentId || "").trim();
+  if (!agentId) throw Object.assign(new Error("agentId is required"), { statusCode: 400 });
+  const agent = await (await store()).get("Registry", agentId);
+  if (!agent) throw Object.assign(new Error("registered agent not found"), { statusCode: 404 });
+  const price = Number(body.priceUsd);
+  if (!Number.isFinite(price) || price < 100) throw Object.assign(new Error("Featured Partner price must be at least 100 USD"), { statusCode: 400 });
+  const startAt = new Date(body.startAt || body.start || "");
+  const endAt = new Date(body.endAt || body.end || body.expiry || "");
+  if (!Number.isFinite(startAt.getTime()) || !Number.isFinite(endAt.getTime()) || endAt <= startAt) throw Object.assign(new Error("valid startAt and endAt are required"), { statusCode: 400 });
+  const paymentStatus = ["pending", "paid", "failed", "refunded"].includes(body.paymentStatus) ? body.paymentStatus : "pending";
+  const campaign = {
+    id: `campaign_${randomUUID()}`,
+    type: "featured_partner",
+    package: "Featured Partner",
+    agentId,
+    agentName: agent.name,
+    price_usd: price,
+    payment_status: paymentStatus,
+    campaign_status: body.active === true && paymentStatus === "paid" ? "active" : "draft",
+    start_at: startAt.toISOString(),
+    end_at: endAt.toISOString(),
+    deliverables: Array.isArray(body.deliverables) ? body.deliverables.map(String).slice(0, 20) : [],
+    deliverables_completed: Boolean(body.deliverablesCompleted),
+    disclosure: "Featured Partner / Sponsored",
+    created_at: now(),
+    updated_at: now(),
+  };
+  await (await store()).put("Campaigns", campaign.id, campaign, true);
+  return campaign;
+}
+async function updatePartnership(id, body) {
+  const current = await (await store()).get("Campaigns", id);
+  if (!current || current.type !== "featured_partner") throw Object.assign(new Error("partnership not found"), { statusCode: 404 });
+  const next = { ...current };
+  if (body.priceUsd !== undefined) {
+    const price = Number(body.priceUsd);
+    if (!Number.isFinite(price) || price < 100) throw Object.assign(new Error("Featured Partner price must be at least 100 USD"), { statusCode: 400 });
+    next.price_usd = price;
+  }
+  if (body.paymentStatus !== undefined) {
+    if (!["pending", "paid", "failed", "refunded"].includes(body.paymentStatus)) throw Object.assign(new Error("invalid paymentStatus"), { statusCode: 400 });
+    next.payment_status = body.paymentStatus;
+  }
+  if (body.startAt || body.endAt) {
+    const startAt = new Date(body.startAt || next.start_at);
+    const endAt = new Date(body.endAt || next.end_at);
+    if (!Number.isFinite(startAt.getTime()) || !Number.isFinite(endAt.getTime()) || endAt <= startAt) throw Object.assign(new Error("invalid campaign dates"), { statusCode: 400 });
+    next.start_at = startAt.toISOString();
+    next.end_at = endAt.toISOString();
+  }
+  if (body.deliverables !== undefined) next.deliverables = Array.isArray(body.deliverables) ? body.deliverables.map(String).slice(0, 20) : [];
+  if (body.deliverablesCompleted !== undefined) next.deliverables_completed = Boolean(body.deliverablesCompleted);
+  if (body.active !== undefined) next.campaign_status = body.active && next.payment_status === "paid" ? "active" : "paused";
+  next.updated_at = now();
+  await (await store()).put("Campaigns", id, next);
+  return next;
+}
+async function partnersPage() {
+  const campaigns = await activePartnerships();
+  const cards = await Promise.all(campaigns.map(async (campaign) => {
+    const agent = await (await store()).get("Registry", campaign.agentId);
+    const technical = agent?.status === "connected" ? "MCP Connected" : agent?.status === "verified" ? "E2E Verified" : "Technical status unavailable";
+    return `<article><p class="eyebrow">Featured Partner</p><h2>${escapeHtml(campaign.agentName)}</h2><p>${escapeHtml(technical)} · Sponsored placement</p><p>Capabilities: ${escapeHtml((agent?.allowed_tools || agent?.capabilities || []).slice(0, 12).join(", ") || "Discovered capabilities")}</p><small>Campaign: ${escapeHtml(campaign.start_at)} → ${escapeHtml(campaign.end_at)}</small></article>`;
+  })).then((items) => items.join("") || "<p>No active Featured Partners at this time.</p>");
+  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Featured Partners | PrivateDAO Agent Exchange</title><meta name="description" content="Active sponsored Featured Partners in the PrivateDAO Agent Marketplace."><style>body{font-family:system-ui,sans-serif;max-width:980px;margin:0 auto;padding:32px 20px;color:#081b33}a{color:#1769e0}.eyebrow{color:#1769e0;font-weight:800;letter-spacing:.12em;text-transform:uppercase;font-size:.75rem}header{display:flex;justify-content:space-between;margin-bottom:80px}section{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}article{border:1px solid #dbe5f0;border-radius:16px;padding:22px}small{color:#52657c}@media(max-width:600px){header{margin-bottom:48px}}</style></head><body><header><strong><a href="/marketplace">PrivateDAO Agent Exchange</a></strong><nav><a href="/marketplace">Marketplace</a> · <a href="/connect">Build</a></nav></header><p class="eyebrow">Sponsored partnerships</p><h1>Featured Partners</h1><p>Paid promotion is disclosed separately from technical integration. Payment never creates MCP verification or execution access.</p><section>${cards}</section></body></html>`;
+}
 async function listListings(query = {}) {
   const all = await (await store()).list(collectionFor("listings"));
+  const partnerships = await activePartnerships();
   const external = (await (await store()).list("Registry"))
     .filter((agent) => agent.protocol === "MCP" && ["connected", "unavailable"].includes(agent.status))
     .map((agent) => ({
@@ -586,6 +670,8 @@ async function listListings(query = {}) {
       external: true,
       lastSuccessfulConnection: agent.last_successful_connection,
       unavailableReason: agent.unavailable_reason || null,
+      technicalStatus: agent.status === "connected" ? "MCP Connected" : agent.status === "verified" ? "E2E Verified" : "Unavailable",
+      commercialStatus: partnerships.some((campaign) => campaign.agentId === agent.id) ? "Featured Partner / Sponsored" : "Standard Listing",
     }));
   const firstParty = SERVICES.map((service) => ({
     id: `pdao_${service.id}`,
@@ -1645,6 +1731,8 @@ async function handle(e) {
     trackFunnel("marketplace_view");
     return { statusCode: 200, headers: { "content-type": "text/html; charset=utf-8", "cache-control": "no-store" }, body: marketplacePage() };
   }
+  if (method === "GET" && (path === "/partners" || path === "/marketplace/partners"))
+    return { statusCode: 200, headers: { "content-type": "text/html; charset=utf-8", "cache-control": "no-store" }, body: await partnersPage() };
   const servicePage = path.match(/^\/services\/([^/]+)$/);
   if (method === "GET" && servicePage) {
     const serviceId = decodeURIComponent(servicePage[1]).replaceAll("-", ".");
@@ -1843,6 +1931,17 @@ async function handle(e) {
     return json({
       listings: await listListings(e.queryStringParameters || {}),
     });
+  if (method === "GET" && path === "/api/marketplace/partners")
+    return json({ partners: await activePartnerships() });
+  if (method === "POST" && path === "/api/admin/partnerships") {
+    if (!adminTokenAuthorized(e)) return json({ error: "not_found" }, 404);
+    return json(await createPartnership(body), 201);
+  }
+  const partnership = path.match(/^\/api\/admin\/partnerships\/([^/]+)$/);
+  if (method === "PATCH" && partnership) {
+    if (!adminTokenAuthorized(e)) return json({ error: "not_found" }, 404);
+    return json(await updatePartnership(partnership[1], body));
+  }
   if (method === "POST" && path === "/api/marketplace/listings")
     return json(await publishListing(body), 201);
   if (method === "POST" && path === "/api/logistics/request")
@@ -1922,7 +2021,7 @@ async function handle(e) {
         tags: item.tags,
         persistUnavailable: true,
       });
-      return json(unavailable, error.statusCode || 503);
+      return json(unavailable, unavailable.status === "connected" ? 200 : (error.statusCode || 503));
     }
   }
   if (method === "POST" && path === "/api/agents/invoke")
