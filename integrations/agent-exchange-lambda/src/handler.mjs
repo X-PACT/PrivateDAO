@@ -142,6 +142,7 @@ function card() {
     },
     skills: [
       ...SERVICES.map((s) => ({
+        ...serviceManifest(s),
         id: s.id,
         name: s.title,
         description: `${s.access} service`,
