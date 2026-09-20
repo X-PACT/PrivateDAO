@@ -5,6 +5,7 @@ import { executeEvmService, evmRpcUrl, evmRuntimeStats } from "../src/evm.mjs";
 import { swapQuote, simulateSolanaTransaction } from "../src/solana.mjs";
 import { enforceRateLimit, resetRuntimeControls } from "../src/runtime-controls.mjs";
 import { researchAsset, researchReport, explainTransaction, portfolioIntelligence } from "../src/intelligence.mjs";
+import { marketData } from "../src/market.mjs";
 
 test("EVM services are read-only and use the configured provider", async () => {
   const server = createServer(async (request, response) => {
@@ -140,6 +141,24 @@ test("Solana simulation is RPC-backed and never broadcasts", async () => {
     assert.equal(result.would_broadcast, false);
     assert.equal(result.units_consumed, 1200);
     assert.deepEqual(calls, ["getGenesisHash", "simulateTransaction"]);
+  } finally {
+    global.fetch = originalFetch;
+  }
+});
+
+test("market data uses a chain-filtered sourced pair", async () => {
+  const originalFetch = global.fetch;
+  global.fetch = async () => new Response(JSON.stringify({
+    pairs: [
+      { chainId: "ethereum", pairAddress: "0xpair", dexId: "testdex", priceUsd: "1.25", liquidity: { usd: 1000 }, volume: { h24: 42 }, baseToken: { symbol: "TEST" }, quoteToken: { symbol: "USDC" } },
+      { chainId: "base", pairAddress: "0xother", liquidity: { usd: 999999 } },
+    ],
+  }), { status: 200, headers: { "content-type": "application/json" } });
+  try {
+    const result = await marketData({ marketDataUrl: "https://market.example/latest/dex" }, "ethereum-mainnet", "0x0000000000000000000000000000000000000001");
+    assert.equal(result.status, "source_confirmed");
+    assert.equal(result.pair_address, "0xpair");
+    assert.equal(result.price_usd, "1.25");
   } finally {
     global.fetch = originalFetch;
   }

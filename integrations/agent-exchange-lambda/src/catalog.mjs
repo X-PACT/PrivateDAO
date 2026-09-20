@@ -72,7 +72,7 @@ export const SERVICES = Object.freeze([
     currency: "USDC",
     access: "paid",
     input: "network and token identifier",
-    output: "current on-chain token snapshot where available",
+    output: "on-chain token facts plus sourced market price and liquidity where available",
     supportedNetworks: ["solana-mainnet-beta", "ethereum-mainnet", "base-mainnet", "arbitrum-mainnet"],
   },
   {

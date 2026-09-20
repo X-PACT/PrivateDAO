@@ -2,6 +2,7 @@ import { digest } from "./canonical.mjs";
 import { evmNetwork, executeEvmService, evmRead } from "./evm.mjs";
 import { mintEvidence, readRpc, simulateSolanaTransaction } from "./solana.mjs";
 import { runIntelInference } from "./intel.mjs";
+import { marketData } from "./market.mjs";
 
 const solanaAddress = /^[1-9A-HJ-NP-Za-km-z]{32,88}$/;
 const evmAddress = /^0x[0-9a-fA-F]{40}$/;
@@ -253,4 +254,14 @@ export async function portfolioIntelligence(config, input = {}) {
     report_hash: digest({ network, results }),
     generated_at: new Date().toISOString(),
   };
+}
+
+export async function marketSnapshot(config, input = {}) {
+  const network = networkOf(input);
+  const asset = String(input.asset || input.mint || input.token || "");
+  const [onchain, market] = await Promise.all([
+    researchAsset(config, input),
+    marketData(config, network, asset),
+  ]);
+  return { ...onchain, market };
 }

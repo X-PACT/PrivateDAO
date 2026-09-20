@@ -42,6 +42,7 @@ export function getConfig(env = process.env) {
     bedrockModel: env.BEDROCK_MODEL_ID || "amazon.nova-micro-v1:0",
     intelInferenceUrl: env.PDAO_INTEL_INFERENCE_URL || "",
     intelOpenvinoModel: env.PDAO_INTEL_OPENVINO_MODEL || "",
+    marketDataUrl: env.PDAO_MARKET_DATA_URL || "https://api.dexscreener.com/latest/dex",
     telegramNotifications: bool(env.PDAO_TELEGRAM_NOTIFICATIONS_ENABLED),
     discordNotifications: bool(env.PDAO_DISCORD_NOTIFICATIONS_ENABLED),
     tablePrefix: env.AGENT_EXCHANGE_TABLE_PREFIX || "PrivateDAOAgentExchange",
