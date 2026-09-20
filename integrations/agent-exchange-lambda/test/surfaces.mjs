@@ -154,6 +154,17 @@ test("every paid job retains its validated input for post-payment execution", as
   assert.match(publicStatus.input_hash, /^[a-f0-9]{64}$/);
 });
 
+test("service requests normalize accepted network aliases before quoting", async () => {
+  resetForTests();
+  const created = await request("/api/jobs", "POST", {
+    service_id: "research.asset",
+    input: { network: "ethereum:mainnet", asset: "0x0000000000000000000000000000000000000001" },
+  });
+  assert.equal(created.statusCode, 402);
+  const body = JSON.parse(created.body);
+  assert.equal(body.payment_intent.target_network, "ethereum-mainnet");
+});
+
 test("every catalog capability has a stable detail page", async () => {
   resetForTests();
   for (const service of SERVICES) {

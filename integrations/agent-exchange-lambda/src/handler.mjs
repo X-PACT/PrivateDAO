@@ -562,7 +562,7 @@ function validateServiceInput(serviceId, input = {}) {
   if (serviceId === "intelligence.synthesize" && !config.intelInferenceUrl) {
     throw Object.assign(new Error("Intel inference provider is not configured"), { statusCode: 503 });
   }
-  const network = input.network == null ? "" : String(input.network);
+  const network = input.network == null ? "" : normalizeNetworkId(input.network);
   if (service.supportedNetworks?.length && !service.supportedNetworks.includes(network))
     throw new Error(`${serviceId} is not supported on ${network || "this network"}`);
   const solana = /^[1-9A-HJ-NP-Za-km-z]{32,88}$/;
@@ -1247,7 +1247,7 @@ function publicJobStatus(job) {
   const { execution_input: _privateInput, ...publicJob } = job;
   return {
     ...publicJob,
-    target_network: job.execution_input?.network || job.target_network || null,
+    target_network: normalizeNetworkId(job.execution_input?.network || job.target_network || "") || null,
   };
 }
 
@@ -1282,7 +1282,7 @@ async function makeQuote(serviceId, jobId, admin = false, currency = "USDC", tar
     amountAtomic: Math.round(amount * (currency === "SOL" ? 1e9 : 1e6)),
     currency,
     network: "solana-mainnet-beta",
-    target_network: targetNetwork || "solana-mainnet-beta",
+    target_network: normalizeNetworkId(targetNetwork || "solana-mainnet-beta"),
     mint: config.usdcMint,
     treasuryOwner: config.treasury,
     treasuryTokenAccount: ata,
@@ -1300,28 +1300,29 @@ async function makeQuote(serviceId, jobId, admin = false, currency = "USDC", tar
 
 async function executeService(id, input) {
   const requestedNetwork = input?.network ? normalizeNetworkId(input.network) : "";
+  const normalizedInput = requestedNetwork ? { ...input, network: requestedNetwork } : input;
   const service = serviceById(id);
   if (["research.asset", "research.wallet", "contract.explain", "transaction.explain", "anomaly.detect", "agent.research.report", "portfolio.intelligence", "market.snapshot"].includes(id)) {
     if (!service?.supportedNetworks?.includes(requestedNetwork))
       throw new Error(`${id} is not supported on ${requestedNetwork || "this network"}`);
-    if (id === "research.asset") return researchAsset(config, input);
-    if (id === "research.wallet") return researchWallet(config, input);
-    if (id === "contract.explain") return explainContract(config, input);
-    if (id === "transaction.explain") return explainTransaction(config, input);
-    if (id === "anomaly.detect") return detectAnomaly(config, input);
-    if (id === "agent.research.report") return researchReport(config, input);
-    if (id === "market.snapshot") return marketSnapshot(config, input);
-    return portfolioIntelligence(config, input);
+    if (id === "research.asset") return researchAsset(config, normalizedInput);
+    if (id === "research.wallet") return researchWallet(config, normalizedInput);
+    if (id === "contract.explain") return explainContract(config, normalizedInput);
+    if (id === "transaction.explain") return explainTransaction(config, normalizedInput);
+    if (id === "anomaly.detect") return detectAnomaly(config, normalizedInput);
+    if (id === "agent.research.report") return researchReport(config, normalizedInput);
+    if (id === "market.snapshot") return marketSnapshot(config, normalizedInput);
+    return portfolioIntelligence(config, normalizedInput);
   }
   if (requestedNetwork && evmNetwork(requestedNetwork)) {
     if (!service?.supportedNetworks?.includes(requestedNetwork))
       throw new Error(`${id} is not supported on ${requestedNetwork}`);
-    return executeEvmService(config, id, input);
+    return executeEvmService(config, id, normalizedInput);
   }
   if (requestedNetwork && requestedNetwork !== "solana-mainnet-beta")
     throw new Error(`unsupported target network: ${requestedNetwork}`);
-  if (id === "swap.quote") return swapQuote(config, input);
-  if (id === "transaction.simulate") return simulateSolanaTransaction(config, input);
+  if (id === "swap.quote") return swapQuote(config, normalizedInput);
+  if (id === "transaction.simulate") return simulateSolanaTransaction(config, normalizedInput);
   if (id === "verify.basic" || id === "verify.deep") {
     const mint = input?.mint || input?.asset;
     if (mint) {
