@@ -178,10 +178,17 @@ export async function networkStats(config) {
 export async function mintEvidence(config, mint) {
   if (!/^[1-9A-HJ-NP-Za-km-z]{32,44}$/.test(mint || ""))
     throw new Error("valid Solana mint is required");
-  const [account, supply, largest] = await Promise.all([
-    readRpc(config, "getAccountInfo", [mint, { encoding: "jsonParsed" }]),
-    readRpc(config, "getTokenSupply", [mint]),
-    readRpc(config, "getTokenLargestAccounts", [mint]),
+  const account = await readRpc(config, "getAccountInfo", [mint, { encoding: "jsonParsed" }]);
+  const optionalRead = async (method, params) => {
+    try {
+      return { ...(await readRpc(config, method, params)), available: true, error: null };
+    } catch (error) {
+      return { result: null, url: null, available: false, error: error.message };
+    }
+  };
+  const [supply, largest] = await Promise.all([
+    optionalRead("getTokenSupply", [mint]),
+    optionalRead("getTokenLargestAccounts", [mint]),
   ]);
   return {
     mint,
@@ -197,6 +204,10 @@ export async function mintEvidence(config, mint) {
       account.result?.value?.data?.parsed?.info?.freezeAuthority || null,
     largest_accounts: largest.result?.value || [],
     provider_source: account.url,
+    evidence_gaps: {
+      token_supply: supply.available ? null : supply.error,
+      largest_accounts: largest.available ? null : largest.error,
+    },
     observed_at: new Date().toISOString(),
     evidence_confidence: account.result?.value ? "rpc-confirmed" : "not-found",
   };
