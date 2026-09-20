@@ -17,6 +17,10 @@ test("human root is HTML while machine surfaces remain available", async () => {
   assert.match(root.body, /PrivateDAO Agents/);
   assert.match(root.body, /Evidence for/);
   assert.match(root.body, /pdao-language-picker/);
+  const head = await request("/", "HEAD");
+  assert.equal(head.statusCode, 200);
+  assert.equal(head.body, "");
+  assert.match(head.headers["content-type"], /^text\/html/);
   for (const language of ["en", "ar", "ru", "uk", "pl", "hi", "ko", "es", "it"]) {
     assert.match(root.body, new RegExp(`value="${language}"`));
   }

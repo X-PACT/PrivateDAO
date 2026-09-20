@@ -1384,7 +1384,8 @@ async function handle(e) {
   if (routePath.startsWith("/api/") || routePath === "/a2a" || routePath === "/mcp")
     enforceRateLimit(rateLimitKey(e), config.rateLimitPerMinute);
   await runtimeConfig();
-  const method = methodOf(e),
+  const requestMethod = methodOf(e),
+    method = requestMethod === "HEAD" ? "GET" : requestMethod,
     path = pathOf(e),
     body = method === "GET" ? {} : parseBody(e);
   if (method === "OPTIONS") return json({}, 204);
@@ -1783,7 +1784,12 @@ async function mcp(request) {
 
 export async function handler(event) {
   try {
-    return await handle(event);
+    const response = await handle(event);
+    if (methodOf(event) !== "HEAD") return response;
+    const headers = { ...(response.headers || {}) };
+    delete headers["content-length"];
+    delete headers["Content-Length"];
+    return { ...response, headers, body: "" };
   } catch (error) {
     return errorResponse(error);
   }
