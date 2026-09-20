@@ -1729,7 +1729,11 @@ async function handle(e) {
   }
   if (method === "GET" && path === "/marketplace") {
     trackFunnel("marketplace_view");
-    return { statusCode: 200, headers: { "content-type": "text/html; charset=utf-8", "cache-control": "no-store" }, body: marketplacePage() };
+    const campaigns = await activePartnerships();
+    const featuredNames = campaigns.map((campaign) => `<a href="/partners"><strong>${escapeHtml(campaign.agentName)}</strong><span>Featured Partner · Sponsored</span></a>`).join("");
+    const featured = campaigns.length ? `<section class="featured-partners" aria-label="Featured Partners"><div><p class="eyebrow">Sponsored partnerships</p><h2>Featured Partners</h2><p>Paid promotion is disclosed separately from technical MCP status.</p></div><div class="featured-list">${featuredNames}</div></section>` : "";
+    const page = marketplacePage();
+    return { statusCode: 200, headers: { "content-type": "text/html; charset=utf-8", "cache-control": "no-store" }, body: page.replace("<footer>", `${featured}<footer>`) };
   }
   if (method === "GET" && (path === "/partners" || path === "/marketplace/partners"))
     return { statusCode: 200, headers: { "content-type": "text/html; charset=utf-8", "cache-control": "no-store" }, body: await partnersPage() };
