@@ -42,6 +42,7 @@ test("human root is HTML while machine surfaces remain available", async () => {
   assert.deepEqual(portfolioService.input_schema.properties.assets.minItems, 1);
   const simulationService = catalog.services.find((service) => service.id === "transaction.simulate");
   assert.ok(simulationService.input_schema.anyOf.some((branch) => branch.required.includes("transaction")));
+  assert.equal(simulationService.input_schema.anyOf.some((branch) => branch.required.includes("hash")), false);
   const inspectService = catalog.services.find((service) => service.id === "contract.inspect");
   assert.ok(inspectService.input_schema.anyOf.some((branch) => branch.required.includes("program")));
   const launchService = catalog.services.find((service) => service.id === "launch.check");
@@ -135,6 +136,19 @@ test("paid jobs validate before quoting and separate payment from target network
   });
   assert.equal(invalidAsset.statusCode, 400);
   assert.doesNotMatch(invalidAsset.body, /payment_intent/);
+});
+
+test("transaction simulation rejects a transaction hash before payment", async () => {
+  resetForTests();
+  const response = await request("/api/jobs", "POST", {
+    service_id: "transaction.simulate",
+    input: {
+      network: "ethereum-mainnet",
+      hash: "0x" + "1".repeat(64),
+    },
+  });
+  assert.equal(response.statusCode, 400);
+  assert.match(response.body, /unsigned transaction data is required for simulation/);
 });
 
 test("every paid job retains its validated input for post-payment execution", async () => {

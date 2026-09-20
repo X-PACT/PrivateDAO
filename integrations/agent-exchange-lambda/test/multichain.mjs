@@ -33,7 +33,7 @@ test("EVM services are read-only and use the configured provider", async () => {
   });
   const simulation = await executeEvmService(config, "transaction.simulate", {
     network: "ethereum-mainnet",
-    transaction: { to: "0x0000000000000000000000000000000000000001", data: "0x" },
+    unsignedTransaction: { to: "0x0000000000000000000000000000000000000001", data: "0x" },
   });
   await executeEvmService(config, "token.intelligence", {
     network: "ethereum-mainnet",

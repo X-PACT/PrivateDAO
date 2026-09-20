@@ -444,18 +444,21 @@ function walletSchema(service) {
   };
 }
 function transactionSchema(service) {
+  const simulation = service.id === "transaction.simulate";
   return {
     type: "object",
     properties: {
       network: NETWORK_SCHEMA(service),
       transaction: { type: ["object", "string"], description: "Unsigned transaction or serialized transaction data." },
-      unsignedTransaction: { type: ["object", "string"] },
+      unsignedTransaction: { type: "string", description: "Serialized unsigned transaction data." },
       serializedTransaction: { type: "string" },
       hash: { type: "string" },
       signature: { type: "string" },
     },
     required: ["network"],
-    anyOf: [{ required: ["transaction"] }, { required: ["unsignedTransaction"] }, { required: ["serializedTransaction"] }, { required: ["hash"] }, { required: ["signature"] }],
+    anyOf: simulation
+      ? [{ required: ["transaction"] }, { required: ["unsignedTransaction"] }, { required: ["serializedTransaction"] }]
+      : [{ required: ["transaction"] }, { required: ["unsignedTransaction"] }, { required: ["serializedTransaction"] }, { required: ["hash"] }, { required: ["signature"] }],
     additionalProperties: false,
   };
 }
@@ -583,7 +586,9 @@ function validateServiceInput(serviceId, input = {}) {
     if (input.assets.some((asset) => !(isEvm ? evm.test(String(asset)) : solana.test(String(asset)))))
       throw new Error(isEvm ? "all portfolio assets must be valid EVM addresses" : "all portfolio assets must be valid Solana addresses");
   }
-  if (["transaction.simulate", "transaction.explain"].includes(serviceId) && !input.transaction && !input.unsignedTransaction && !input.serializedTransaction && !input.hash && !input.signature)
+  if (serviceId === "transaction.simulate" && !input.transaction && !input.unsignedTransaction && !input.serializedTransaction)
+    throw new Error("unsigned transaction data is required for simulation");
+  if (serviceId === "transaction.explain" && !input.transaction && !input.unsignedTransaction && !input.serializedTransaction && !input.hash && !input.signature)
     throw new Error("transaction data or transaction hash is required");
 }
 function languageWidget() {

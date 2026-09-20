@@ -211,7 +211,9 @@ export async function executeEvmService(config, serviceId, input = {}) {
     return evidence;
   }
   if (serviceId === "transaction.simulate") {
-    const tx = input.transaction || input;
+    const tx = input.transaction || input.unsignedTransaction;
+    if (!tx || typeof tx !== "object" || Array.isArray(tx))
+      throw new Error("EVM simulation requires an unsigned transaction object");
     if (tx.to && !hexAddress.test(tx.to)) throw new Error("valid EVM transaction.to is required");
     if (tx.from && !hexAddress.test(tx.from)) throw new Error("valid EVM transaction.from is required");
     if (tx.data && !hexData.test(tx.data)) throw new Error("transaction.data must be hex");

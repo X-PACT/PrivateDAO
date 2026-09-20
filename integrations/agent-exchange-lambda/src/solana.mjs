@@ -284,7 +284,7 @@ export async function swapQuote(config, input = {}) {
 }
 
 export async function simulateSolanaTransaction(config, input = {}) {
-  const serialized = String(input.transaction || input.serializedTransaction || "");
+  const serialized = String(input.transaction || input.unsignedTransaction || input.serializedTransaction || "");
   if (!serialized || serialized.length > 1024 * 1024 || !/^[A-Za-z0-9+/]+={0,2}$/.test(serialized))
     throw new Error("base64 serialized Solana transaction is required");
   const { result, providerClass } = await readRpc(config, "simulateTransaction", [
