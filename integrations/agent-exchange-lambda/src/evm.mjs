@@ -79,6 +79,10 @@ export function evmRuntimeStats() {
   return { calls: rpcStats.calls, cache_hits: rpcStats.cacheHits, cache_misses: rpcStats.cacheMisses, by_method: { ...rpcStats.byMethod } };
 }
 
+export async function evmRead(config, network, method, params = []) {
+  return read(config, network, method, params);
+}
+
 function decodeUint(result) {
   return result && result !== "0x" ? BigInt(result).toString() : null;
 }
