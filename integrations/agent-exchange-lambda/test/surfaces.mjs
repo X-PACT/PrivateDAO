@@ -137,6 +137,20 @@ test("paid jobs validate before quoting and separate payment from target network
   assert.doesNotMatch(invalidAsset.body, /payment_intent/);
 });
 
+test("every paid job retains its validated input for post-payment execution", async () => {
+  resetForTests();
+  const created = await request("/api/jobs", "POST", {
+    service_id: "forensics.trace",
+    input: { wallet: "11111111111111111111111111111111", limit: 3 },
+  });
+  assert.equal(created.statusCode, 402);
+  const quote = JSON.parse(created.body);
+  assert.match(quote.payment_intent.jobId, /^job_/);
+  const persisted = await request(`/api/jobs/${quote.payment_intent.jobId}`);
+  assert.equal(persisted.statusCode, 200);
+  assert.deepEqual(JSON.parse(persisted.body).execution_input, { wallet: "11111111111111111111111111111111", limit: 3 });
+});
+
 test("every catalog capability has a stable detail page", async () => {
   resetForTests();
   for (const service of SERVICES) {

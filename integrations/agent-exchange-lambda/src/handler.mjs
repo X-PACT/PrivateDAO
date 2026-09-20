@@ -1568,20 +1568,7 @@ async function createJob(serviceId, input, admin = false, currency = "USDC", met
   const service = serviceById(serviceId);
   if (!service) throw new Error("unknown service");
   validateServiceInput(serviceId, input);
-  const persistForPaymentRetry = Boolean(service.price && [
-    "token.intelligence",
-    "risk.score",
-    "wallet.intelligence",
-    "market.snapshot",
-    "transaction.simulate",
-    "research.asset",
-    "research.wallet",
-    "contract.explain",
-    "transaction.explain",
-    "anomaly.detect",
-    "agent.research.report",
-    "portfolio.intelligence",
-  ].includes(serviceId));
+  const persistForPaymentRetry = Boolean(service.price);
   const job = {
     id: `job_${randomUUID()}`,
     service_id: serviceId,
