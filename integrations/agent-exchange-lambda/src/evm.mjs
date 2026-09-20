@@ -7,8 +7,19 @@ const EVM_NETWORKS = Object.freeze({
 const hexAddress = /^0x[0-9a-fA-F]{40}$/;
 const hexData = /^0x(?:[0-9a-fA-F]{2})*$/;
 const rpcCache = new Map();
-const rpcStats = { calls: 0, cacheHits: 0, cacheMisses: 0, byMethod: {} };
+const rpcStats = { calls: 0, retries: 0, cacheHits: 0, cacheMisses: 0, byMethod: {} };
 const cacheableMethods = new Set(["eth_getCode", "eth_call"]);
+const MAX_RPC_ATTEMPTS = 2;
+
+function retryableError(message, retryable = false) {
+  const error = new Error(message);
+  error.retryable = retryable;
+  return error;
+}
+
+function retryDelay(attempt) {
+  return new Promise((resolve) => setTimeout(resolve, 150 * (attempt + 1)));
+}
 
 export function evmNetwork(id) {
   return EVM_NETWORKS[id] || null;
@@ -28,18 +39,34 @@ export function evmRpcUrl(config, network) {
 }
 
 async function rpcCall(url, method, params = []) {
-  rpcStats.calls += 1;
-  rpcStats.byMethod[method] = (rpcStats.byMethod[method] || 0) + 1;
-  const response = await fetch(url, {
-    method: "POST",
-    headers: { "content-type": "application/json" },
-    body: JSON.stringify({ jsonrpc: "2.0", id: 1, method, params }),
-    signal: AbortSignal.timeout(10000),
-  });
-  if (!response.ok) throw new Error(`EVM RPC HTTP ${response.status}`);
-  const body = await response.json();
-  if (body.error) throw new Error(`EVM RPC ${body.error.code}: ${body.error.message}`);
-  return body.result;
+  let lastError;
+  for (let attempt = 0; attempt < MAX_RPC_ATTEMPTS; attempt += 1) {
+    rpcStats.calls += 1;
+    rpcStats.byMethod[method] = (rpcStats.byMethod[method] || 0) + 1;
+    try {
+      const response = await fetch(url, {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ jsonrpc: "2.0", id: 1, method, params }),
+        signal: AbortSignal.timeout(10000),
+      });
+      if (!response.ok) {
+        throw retryableError(`EVM RPC HTTP ${response.status}`, response.status === 429 || response.status >= 500);
+      }
+      const body = await response.json();
+      if (body.error) {
+        const code = Number(body.error.code);
+        throw retryableError(`EVM RPC ${body.error.code}: ${body.error.message}`, code === -32005 || code === -32603);
+      }
+      return body.result;
+    } catch (error) {
+      lastError = error;
+      if (!error.retryable || attempt === MAX_RPC_ATTEMPTS - 1) break;
+      rpcStats.retries += 1;
+      await retryDelay(attempt);
+    }
+  }
+  throw lastError || new Error("EVM RPC request failed");
 }
 
 async function alchemyData(config, network, method, params = []) {
@@ -76,7 +103,7 @@ async function read(config, network, method, params = []) {
 }
 
 export function evmRuntimeStats() {
-  return { calls: rpcStats.calls, cache_hits: rpcStats.cacheHits, cache_misses: rpcStats.cacheMisses, by_method: { ...rpcStats.byMethod } };
+  return { calls: rpcStats.calls, retries: rpcStats.retries, cache_hits: rpcStats.cacheHits, cache_misses: rpcStats.cacheMisses, by_method: { ...rpcStats.byMethod } };
 }
 
 export async function evmRead(config, network, method, params = []) {
@@ -100,15 +127,16 @@ function decodeString(result) {
 
 async function tokenCalls(config, network, asset) {
   if (!hexAddress.test(asset)) throw new Error("valid EVM token address is required");
-  const [code, decimals, supply, name, symbol] = await Promise.all([
+  const [code, decimals, supply, name, symbol, block] = await Promise.all([
     read(config, network, "eth_getCode", [asset, "latest"]),
     read(config, network, "eth_call", [{ to: asset, data: "0x313ce567" }, "latest"]),
     read(config, network, "eth_call", [{ to: asset, data: "0x18160ddd" }, "latest"]),
     read(config, network, "eth_call", [{ to: asset, data: "0x06fdde03" }, "latest"]),
     read(config, network, "eth_call", [{ to: asset, data: "0x95d89b41" }, "latest"]),
+    read(config, network, "eth_blockNumber"),
   ]);
   const metadata = await alchemyData(config, network, "alchemy_getTokenMetadata", [asset]);
-  return {
+  const evidence = {
     network,
     asset,
     contract_present: code.result !== "0x",
@@ -127,6 +155,8 @@ async function tokenCalls(config, network, asset) {
     provider_class: code.providerClass,
     observed_at: new Date().toISOString(),
   };
+  if (block.result !== undefined) evidence.block_number = block.result;
+  return evidence;
 }
 
 export async function executeEvmService(config, serviceId, input = {}) {
@@ -149,13 +179,14 @@ export async function executeEvmService(config, serviceId, input = {}) {
   if (serviceId === "wallet.intelligence") {
     const address = input.wallet || input.address;
     if (!hexAddress.test(address || "")) throw new Error("valid EVM wallet address is required");
-    const [balance, nonce, code] = await Promise.all([
+    const [balance, nonce, code, block] = await Promise.all([
       read(config, network, "eth_getBalance", [address, "latest"]),
       read(config, network, "eth_getTransactionCount", [address, "latest"]),
       read(config, network, "eth_getCode", [address, "latest"]),
+      read(config, network, "eth_blockNumber"),
     ]);
     const tokenBalances = await alchemyData(config, network, "alchemy_getTokenBalances", [address, "DEFAULT_TOKENS"]);
-    return {
+    const evidence = {
       network,
       address,
       native_balance_wei: decodeUint(balance.result),
@@ -173,6 +204,8 @@ export async function executeEvmService(config, serviceId, input = {}) {
       provider_class: balance.providerClass,
       observed_at: new Date().toISOString(),
     };
+    if (block.result !== undefined) evidence.block_number = block.result;
+    return evidence;
   }
   if (serviceId === "transaction.simulate") {
     const tx = input.transaction || input;
@@ -180,11 +213,14 @@ export async function executeEvmService(config, serviceId, input = {}) {
     if (tx.from && !hexAddress.test(tx.from)) throw new Error("valid EVM transaction.from is required");
     if (tx.data && !hexData.test(tx.data)) throw new Error("transaction.data must be hex");
     const call = { ...(tx.from ? { from: tx.from } : {}), ...(tx.to ? { to: tx.to } : {}), ...(tx.data ? { data: tx.data } : {}), ...(tx.value ? { value: tx.value } : {}) };
-    const [result, gas] = await Promise.all([
+    const [result, gas, block] = await Promise.all([
       read(config, network, "eth_call", [call, "latest"]),
       read(config, network, "eth_estimateGas", [call]),
+      read(config, network, "eth_blockNumber"),
     ]);
-    return { network, simulated: true, would_broadcast: false, return_data: result.result, estimated_gas: gas.result, evidence_confidence: "rpc-confirmed", provider_class: result.providerClass, observed_at: new Date().toISOString() };
+    const evidence = { network, simulated: true, would_broadcast: false, return_data: result.result, estimated_gas: gas.result, evidence_confidence: "rpc-confirmed", provider_class: result.providerClass, observed_at: new Date().toISOString() };
+    if (block.result !== undefined) evidence.block_number = block.result;
+    return evidence;
   }
   throw new Error(`service ${serviceId} is not implemented for EVM`);
 }

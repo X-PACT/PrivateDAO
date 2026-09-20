@@ -67,6 +67,7 @@ export async function researchAsset(config, input = {}) {
       decimals: evidence.decimals,
       total_supply: evidence.total_supply,
       provider_metadata: evidence.provider_metadata,
+      ...(evidence.block_number === undefined ? {} : { block_number: evidence.block_number }),
       observed_at: evidence.observed_at,
     }),
     signals: {

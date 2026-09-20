@@ -75,6 +75,32 @@ test("Alchemy URLs are constructed without exposing the key in results", () => {
   assert.equal(getConfig({ ALCHEMY_API_KEY: "test-only-key" }).rpcSecondary, "https://solana-mainnet.g.alchemy.com/v2/test-only-key");
 });
 
+test("EVM provider retries a transient response without exposing endpoint details", async () => {
+  const originalFetch = global.fetch;
+  let calls = 0;
+  global.fetch = async (_url, options) => {
+    calls += 1;
+    if (calls === 1) return new Response("busy", { status: 429 });
+    const request = JSON.parse(options.body);
+    const result = request.method === "eth_chainId" ? "0x2105" : "0x1234";
+    return new Response(JSON.stringify({ jsonrpc: "2.0", id: 1, result }), {
+      status: 200,
+      headers: { "content-type": "application/json" },
+    });
+  };
+  try {
+    const result = await executeEvmService({ evmRpcUrls: { "base-mainnet": "https://rpc.example/private-key" } }, "transaction.simulate", {
+      network: "base-mainnet",
+      transaction: { to: "0x0000000000000000000000000000000000000001", data: "0x" },
+    });
+    assert.equal(result.would_broadcast, false);
+    assert.equal(result.block_number, "0x1234");
+    assert.equal(calls >= 4, true);
+  } finally {
+    global.fetch = originalFetch;
+  }
+});
+
 test("production treasury token account is canonical and alternatives are rejected", async () => {
   const canonical = await derivedTreasuryTokenAccount({
     treasury: "2BJ4ezxqV9YJXc38D9duKBkdn4su4jE1beKUHwH663sL",
