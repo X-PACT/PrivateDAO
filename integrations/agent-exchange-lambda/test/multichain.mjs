@@ -4,7 +4,7 @@ import { createServer } from "node:http";
 import { executeEvmService, evmRpcUrl, evmRuntimeStats } from "../src/evm.mjs";
 import { swapQuote, simulateSolanaTransaction } from "../src/solana.mjs";
 import { enforceRateLimit, resetRuntimeControls } from "../src/runtime-controls.mjs";
-import { researchAsset, researchReport, explainTransaction } from "../src/intelligence.mjs";
+import { researchAsset, researchReport, explainTransaction, portfolioIntelligence } from "../src/intelligence.mjs";
 
 test("EVM services are read-only and use the configured provider", async () => {
   const server = createServer(async (request, response) => {
@@ -58,6 +58,12 @@ test("EVM services are read-only and use the configured provider", async () => {
   });
   assert.equal(explained.facts.pre_sign, true);
   assert.equal(explained.facts.would_broadcast, false);
+  const portfolio = await portfolioIntelligence(config, {
+    network: "ethereum-mainnet",
+    assets: ["0x0000000000000000000000000000000000000001", "invalid"],
+  });
+  assert.equal(portfolio.requested_assets, 2);
+  assert.equal(portfolio.completed_assets, 1);
   server.close();
 });
 

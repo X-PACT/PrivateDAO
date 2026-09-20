@@ -22,6 +22,7 @@ import {
   explainTransaction,
   detectAnomaly,
   researchReport,
+  portfolioIntelligence,
 } from "./intelligence.mjs";
 
 const config = getConfig();
@@ -821,7 +822,7 @@ async function makeQuote(serviceId, jobId, admin = false, currency = "USDC") {
 async function executeService(id, input) {
   const requestedNetwork = String(input?.network || "");
   const service = serviceById(id);
-  if (["research.asset", "research.wallet", "contract.explain", "transaction.explain", "anomaly.detect", "agent.research.report"].includes(id)) {
+  if (["research.asset", "research.wallet", "contract.explain", "transaction.explain", "anomaly.detect", "agent.research.report", "portfolio.intelligence"].includes(id)) {
     if (!service?.supportedNetworks?.includes(requestedNetwork))
       throw new Error(`${id} is not supported on ${requestedNetwork || "this network"}`);
     if (id === "research.asset") return researchAsset(config, input);
@@ -829,7 +830,8 @@ async function executeService(id, input) {
     if (id === "contract.explain") return explainContract(config, input);
     if (id === "transaction.explain") return explainTransaction(config, input);
     if (id === "anomaly.detect") return detectAnomaly(config, input);
-    return researchReport(config, input);
+    if (id === "agent.research.report") return researchReport(config, input);
+    return portfolioIntelligence(config, input);
   }
   if (requestedNetwork && evmNetwork(requestedNetwork)) {
     if (!service?.supportedNetworks?.includes(requestedNetwork))
@@ -1084,6 +1086,7 @@ async function createJob(serviceId, input, admin = false, currency = "USDC", met
     "transaction.explain",
     "anomaly.detect",
     "agent.research.report",
+    "portfolio.intelligence",
   ].includes(serviceId));
   const job = {
     id: `job_${randomUUID()}`,

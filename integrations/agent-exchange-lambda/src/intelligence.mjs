@@ -230,3 +230,27 @@ export async function researchReport(config, input = {}) {
     report_hash: digest({ subject, anomaly }),
   };
 }
+
+export async function portfolioIntelligence(config, input = {}) {
+  const network = networkOf(input);
+  if (!Array.isArray(input.assets) || input.assets.length < 1 || input.assets.length > 10)
+    throw new Error("assets must contain between 1 and 10 identifiers");
+  const results = await Promise.all(input.assets.map(async (asset) => {
+    try {
+      return { asset, status: "complete", report: await researchAsset(config, { network, asset }) };
+    } catch (error) {
+      return { asset, status: "failed", error: error.message };
+    }
+  }));
+  const completed = results.filter((item) => item.status === "complete");
+  return {
+    report_type: "portfolio-intelligence",
+    network,
+    requested_assets: results.length,
+    completed_assets: completed.length,
+    results,
+    inference: { status: "not_configured", provider: null },
+    report_hash: digest({ network, results }),
+    generated_at: new Date().toISOString(),
+  };
+}

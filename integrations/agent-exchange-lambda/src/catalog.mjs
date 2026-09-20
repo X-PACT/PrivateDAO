@@ -136,6 +136,16 @@ export const SERVICES = Object.freeze([
     supportedNetworks: ["solana-mainnet-beta", "ethereum-mainnet", "base-mainnet", "arbitrum-mainnet"],
   },
   {
+    id: "portfolio.intelligence",
+    title: "Portfolio intelligence",
+    price: 0.2,
+    currency: "USDC",
+    access: "paid",
+    input: "network and up to 10 asset identifiers",
+    output: "asset-by-asset facts, signals, failures and evidence digest",
+    supportedNetworks: ["solana-mainnet-beta", "ethereum-mainnet", "base-mainnet", "arbitrum-mainnet"],
+  },
+  {
     id: "swap.quote",
     title: "Swap quote",
     price: 0.01,
