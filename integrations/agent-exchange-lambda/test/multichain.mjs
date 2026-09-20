@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { createServer } from "node:http";
 import { executeEvmService, evmRpcUrl, evmRuntimeStats } from "../src/evm.mjs";
-import { derivedTreasuryTokenAccount, mintEvidence, readRpc, solanaHealth, swapQuote, simulateSolanaTransaction } from "../src/solana.mjs";
+import { derivedTreasuryTokenAccount, mintEvidence, readRpc, solanaHealth, swapQuote, simulateSolanaTransaction, verifyPayment } from "../src/solana.mjs";
 import { getConfig } from "../src/config.mjs";
 import { enforceRateLimit, resetRuntimeControls } from "../src/runtime-controls.mjs";
 import { researchAsset, researchReport, explainTransaction, portfolioIntelligence } from "../src/intelligence.mjs";
@@ -111,6 +111,29 @@ test("production treasury token account is canonical and alternatives are reject
     () => derivedTreasuryTokenAccount({ treasury: "11111111111111111111111111111111", usdcMint: canonical }),
     /unsupported production treasury or USDC mint/,
   );
+});
+
+test("payment verification rejects malformed signatures before contacting RPC", async () => {
+  const originalFetch = global.fetch;
+  let calls = 0;
+  global.fetch = async () => {
+    calls += 1;
+    throw new Error("RPC should not be called for malformed signatures");
+  };
+  try {
+    const result = await verifyPayment({
+      cluster: "mainnet-beta",
+      treasury: "2BJ4ezxqV9YJXc38D9duKBkdn4su4jE1beKUHwH663sL",
+      usdcMint: "EPjFWdd5AufSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+      rpcPrimary: "https://rpc.example/primary",
+    }, { signature: "not-a-real-solana-signature" }, { amountAtomic: "1" });
+    assert.equal(result.ok, false);
+    assert.equal(result.transient, undefined);
+    assert.equal(result.reason, "invalid Solana transaction signature");
+    assert.equal(calls, 0);
+  } finally {
+    global.fetch = originalFetch;
+  }
 });
 
 test("Solana reads fall back from a rate-limited primary provider", async () => {

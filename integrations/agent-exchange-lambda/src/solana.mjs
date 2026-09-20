@@ -14,6 +14,7 @@ const rpcCall = async (url, method, params = []) => {
 
 const mainnetAttestation = new Map();
 const forbiddenNetwork = /(devnet|testnet|localhost|127\.0\.0\.1)/i;
+const solanaSignaturePattern = /^[1-9A-HJ-NP-Za-km-z]{64,128}$/;
 
 export function assertMainnetConfig(config) {
   if (config.cluster !== "mainnet-beta")
@@ -85,6 +86,8 @@ export async function readRpc(config, method, params = []) {
 export async function verifyPayment(config, payment, quote) {
   if (!payment?.signature || !quote)
     return { ok: false, reason: "signature and quote are required" };
+  if (typeof payment.signature !== "string" || !solanaSignaturePattern.test(payment.signature))
+    return { ok: false, reason: "invalid Solana transaction signature" };
   let tx;
   try {
     ({ result: tx } = await readRpc(config, "getTransaction", [
