@@ -201,6 +201,8 @@ test("MCP lifecycle, schemas, errors, and network aliases are protocol-safe", as
   const failed = JSON.parse((await request("/mcp", "POST", { jsonrpc: "2.0", id: 4, method: "tools/call", params: { name: "verify_basic", arguments: {} } })).body);
   assert.equal(failed.result.isError, true);
   assert.match(failed.result.content[0].text, /mint or record is required/);
+  assert.equal(failed.result.structuredContent.statusCode, 400);
+  assert.equal(failed.result.structuredContent.upstreamStatus, undefined);
 
   const match = JSON.parse((await request("/mcp", "POST", { jsonrpc: "2.0", id: 5, method: "tools/call", params: { name: "agent_match", arguments: { capabilities: ["chains"], network: "solana:mainnet-beta" } } })).body);
   assert.equal(match.result.isError, undefined);

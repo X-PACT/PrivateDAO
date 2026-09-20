@@ -2616,13 +2616,18 @@ async function mcp(request) {
         },
       });
     } catch (error) {
+      const diagnostic = {
+        error: error.message,
+        statusCode: error.statusCode || 400,
+        ...(error.upstreamStatus ? { upstreamStatus: error.upstreamStatus } : {}),
+      };
       return json({
         jsonrpc: "2.0",
         id,
         result: {
           isError: true,
-          content: [{ type: "text", text: JSON.stringify({ error: error.message }) }],
-          structuredContent: { error: error.message, statusCode: error.statusCode || 400 },
+          content: [{ type: "text", text: JSON.stringify(diagnostic) }],
+          structuredContent: diagnostic,
         },
       });
     }
