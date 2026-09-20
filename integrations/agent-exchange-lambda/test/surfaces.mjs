@@ -33,6 +33,15 @@ test("human root is HTML while machine surfaces remain available", async () => {
   assert.deepEqual(tokenService.supported_target_networks, ["solana-mainnet-beta", "ethereum-mainnet", "base-mainnet", "arbitrum-mainnet"]);
   assert.equal(tokenService.input_schema.type, "object");
   assert.equal(tokenService.output_schema.type, "object");
+  assert.deepEqual(tokenService.input_schema.required, ["network"]);
+  assert.ok(tokenService.input_schema.anyOf.some((branch) => branch.required.includes("asset")));
+  const walletService = catalog.services.find((service) => service.id === "wallet.intelligence");
+  assert.deepEqual(walletService.input_schema.required, ["network"]);
+  assert.ok(walletService.input_schema.anyOf.some((branch) => branch.required.includes("wallet")));
+  const portfolioService = catalog.services.find((service) => service.id === "portfolio.intelligence");
+  assert.deepEqual(portfolioService.input_schema.properties.assets.minItems, 1);
+  const simulationService = catalog.services.find((service) => service.id === "transaction.simulate");
+  assert.ok(simulationService.input_schema.anyOf.some((branch) => branch.required.includes("transaction")));
   for (const serviceId of [
     "token.intelligence",
     "wallet.intelligence",

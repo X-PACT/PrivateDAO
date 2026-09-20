@@ -347,18 +347,125 @@ function serviceExample(service) {
   if (service.input.includes("structured")) return { evidence: { claim: "example" } };
   return { record: { claim: "example" } };
 }
-function serviceManifest(service) {
-  const inputSchema = {
+const ADDRESS_PATTERN = "^[1-9A-HJ-NP-Za-km-z]{32,88}$|^0x[0-9a-fA-F]{40}$";
+const NETWORK_SCHEMA = (service) => ({
+  type: "string",
+  enum: service.supportedNetworks || ["solana-mainnet-beta"],
+  description: "Target network for this read-only capability.",
+});
+function subjectSchema(service, subjectDescription = "Asset, token, contract, program or wallet subject") {
+  return {
     type: "object",
-    additionalProperties: true,
     properties: {
-      network: { type: "string", enum: service.supportedNetworks || ["solana-mainnet-beta"] },
-      asset: { type: "string" },
-      wallet: { type: "string" },
-      amount: { type: "string" },
-      transaction: { type: "object" },
+      network: NETWORK_SCHEMA(service),
+      asset: { type: "string", pattern: ADDRESS_PATTERN, description: subjectDescription },
+      mint: { type: "string", pattern: ADDRESS_PATTERN, description: "Solana mint alias." },
+      token: { type: "string", pattern: ADDRESS_PATTERN, description: "Token address alias." },
+      contract: { type: "string", pattern: ADDRESS_PATTERN, description: "Contract address alias." },
+      program: { type: "string", pattern: ADDRESS_PATTERN, description: "Solana program address alias." },
+      address: { type: "string", pattern: ADDRESS_PATTERN, description: "Subject address alias." },
     },
+    required: ["network"],
+    anyOf: [{ required: ["asset"] }, { required: ["mint"] }, { required: ["token"] }, { required: ["contract"] }, { required: ["program"] }, { required: ["address"] }],
+    additionalProperties: false,
   };
+}
+function walletSchema(service) {
+  return {
+    type: "object",
+    properties: {
+      network: NETWORK_SCHEMA(service),
+      wallet: { type: "string", pattern: ADDRESS_PATTERN },
+      address: { type: "string", pattern: ADDRESS_PATTERN },
+    },
+    required: ["network"],
+    anyOf: [{ required: ["wallet"] }, { required: ["address"] }],
+    additionalProperties: false,
+  };
+}
+function transactionSchema(service) {
+  return {
+    type: "object",
+    properties: {
+      network: NETWORK_SCHEMA(service),
+      transaction: { type: ["object", "string"], description: "Unsigned transaction or serialized transaction data." },
+      unsignedTransaction: { type: ["object", "string"] },
+      serializedTransaction: { type: "string" },
+      hash: { type: "string" },
+      signature: { type: "string" },
+    },
+    required: ["network"],
+    anyOf: [{ required: ["transaction"] }, { required: ["unsignedTransaction"] }, { required: ["serializedTransaction"] }, { required: ["hash"] }, { required: ["signature"] }],
+    additionalProperties: false,
+  };
+}
+function serviceInputSchema(service) {
+  const id = service.id;
+  if (["token.intelligence", "risk.score", "market.snapshot", "research.asset", "contract.explain"].includes(id)) return subjectSchema(service);
+  if (["wallet.intelligence", "research.wallet"].includes(id)) return walletSchema(service);
+  if (["anomaly.detect", "agent.research.report"].includes(id)) return subjectSchema(service, "Asset or wallet subject for analysis");
+  if (id === "portfolio.intelligence") return {
+    type: "object",
+    properties: { network: NETWORK_SCHEMA(service), assets: { type: "array", minItems: 1, maxItems: 10, items: { type: "string", pattern: ADDRESS_PATTERN } } },
+    required: ["network", "assets"],
+    additionalProperties: false,
+  };
+  if (["transaction.simulate", "transaction.explain"].includes(id)) return transactionSchema(service);
+  if (id === "swap.quote") return {
+    type: "object",
+    properties: {
+      network: NETWORK_SCHEMA(service),
+      inputMint: { type: "string", pattern: ADDRESS_PATTERN },
+      outputMint: { type: "string", pattern: ADDRESS_PATTERN },
+      amount: { type: "string", pattern: "^[0-9]+$" },
+      slippageBps: { type: "integer", minimum: 1, maximum: 5000 },
+    },
+    required: ["network", "inputMint", "outputMint", "amount"],
+    additionalProperties: false,
+  };
+  if (["verify.basic", "verify.deep"].includes(id)) return {
+    type: "object",
+    properties: {
+      network: NETWORK_SCHEMA(service),
+      mint: { type: "string", pattern: ADDRESS_PATTERN },
+      asset: { type: "string", pattern: ADDRESS_PATTERN },
+      record: { type: "object" },
+      expected_digest: { type: "string" },
+    },
+    anyOf: [{ required: ["mint"] }, { required: ["asset"] }, { required: ["record"] }],
+    additionalProperties: false,
+  };
+  if (id === "forensics.trace") return {
+    type: "object",
+    properties: { wallet: { type: "string", pattern: ADDRESS_PATTERN }, address: { type: "string", pattern: ADDRESS_PATTERN }, limit: { type: "integer", minimum: 1, maximum: 100 } },
+    anyOf: [{ required: ["wallet"] }, { required: ["address"] }],
+    additionalProperties: false,
+  };
+  if (id === "receipt.verify") return {
+    type: "object",
+    properties: { receipt: { type: "object" }, expected_hash: { type: "string" } },
+    required: ["receipt"],
+    additionalProperties: false,
+  };
+  if (id === "agent.match") return {
+    type: "object",
+    properties: { capabilities: { type: "array", items: { type: "string" }, maxItems: 32 }, network: { type: "string" } },
+    required: ["capabilities"],
+    additionalProperties: false,
+  };
+  if (id === "intelligence.synthesize") return {
+    type: "object",
+    properties: { evidence: { type: "object" }, requested_output: { type: "string", maxLength: 500 } },
+    required: ["evidence"],
+    additionalProperties: false,
+  };
+  if (id === "decision.context") return { type: "object", properties: { evidence: { type: "object" } }, required: ["evidence"], additionalProperties: false };
+  if (id === "game.tool") return { type: "object", properties: { world: { type: "string", maxLength: 40 }, tool: { type: "string", enum: ["privacy-lens", "verification-scanner", "hoverboard"] } }, required: ["tool"], additionalProperties: false };
+  if (id === "sponsored.discovery") return { type: "object", properties: { campaignId: { type: "string" }, destination: { type: "string", format: "uri" }, subject: { type: "string" }, targetCapabilities: { type: "array", items: { type: "string" } }, targetChains: { type: "array", items: { type: "string" } }, tags: { type: "array", items: { type: "string" } }, start: { type: "string", format: "date-time" }, expiry: { type: "string", format: "date-time" } }, required: ["campaignId", "destination"], additionalProperties: false };
+  return { type: "object", additionalProperties: true, description: "Service-specific JSON input." };
+}
+function serviceManifest(service) {
+  const inputSchema = serviceInputSchema(service);
   return {
     ...service,
     free: service.access === "free",
