@@ -91,6 +91,37 @@ export const LIVE_NETWORKS = Object.freeze(
   NETWORK_CAPABILITIES.filter((network) => network.status === "live").map((network) => network.id),
 );
 
+const NETWORK_ALIASES = Object.freeze({
+  solana: "solana-mainnet-beta",
+  "solana-mainnet-beta": "solana-mainnet-beta",
+  "solana:mainnet-beta": "solana-mainnet-beta",
+  ethereum: "ethereum-mainnet",
+  "ethereum-mainnet": "ethereum-mainnet",
+  "ethereum:mainnet": "ethereum-mainnet",
+  base: "base-mainnet",
+  "base-mainnet": "base-mainnet",
+  "base:mainnet": "base-mainnet",
+  arbitrum: "arbitrum-mainnet",
+  "arbitrum-mainnet": "arbitrum-mainnet",
+  "arbitrum:mainnet": "arbitrum-mainnet",
+  "hyperliquid:hyperevm-mainnet": "hyperliquid:hyperevm-mainnet",
+  "tempo:mainnet": "tempo:mainnet",
+  "ethereum:sepolia": "ethereum:sepolia",
+  "arbitrum:sepolia": "arbitrum:sepolia",
+  "base:sepolia": "base:sepolia",
+  "bnb:testnet": "bnb:testnet",
+  "robinhood:testnet": "robinhood:testnet",
+  "hyperliquid:testnet": "hyperliquid:testnet",
+  "tempo:testnet": "tempo:testnet",
+  "zcash:testnet": "zcash:testnet",
+});
+
+export function normalizeNetworkId(id) {
+  const value = String(id || "").trim().toLowerCase();
+  return NETWORK_ALIASES[value] || value;
+}
+
 export function networkCapability(id) {
-  return NETWORK_CAPABILITIES.find((network) => network.id === id) || null;
+  const normalized = normalizeNetworkId(id);
+  return NETWORK_CAPABILITIES.find((network) => normalizeNetworkId(network.id) === normalized) || null;
 }

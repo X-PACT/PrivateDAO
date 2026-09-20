@@ -153,3 +153,36 @@ test("MCP and A2A machine entrypoints remain callable", async () => {
   assert.equal(mcp.statusCode, 200);
   assert.match(mcp.body, /pdao_services/);
 });
+
+test("MCP lifecycle, schemas, errors, and network aliases are protocol-safe", async () => {
+  resetForTests();
+  const initialize = await request("/mcp", "POST", { jsonrpc: "2.0", id: 1, method: "initialize", params: { protocolVersion: "2025-06-18", capabilities: {}, clientInfo: { name: "test-client", version: "1" } } });
+  assert.equal(initialize.statusCode, 200);
+  assert.equal(JSON.parse(initialize.body).result.protocolVersion, "2025-06-18");
+
+  const initialized = await request("/mcp", "POST", { jsonrpc: "2.0", method: "notifications/initialized", params: {} });
+  assert.equal(initialized.statusCode, 202);
+  assert.equal(initialized.body, "");
+
+  const listed = JSON.parse((await request("/mcp", "POST", { jsonrpc: "2.0", id: 2, method: "tools/list", params: {} })).body).result.tools;
+  assert.equal(listed.length, 11);
+  for (const tool of listed) {
+    assert.equal(tool.inputSchema.type, "object", tool.name);
+    assert.ok(tool.inputSchema.properties, tool.name);
+  }
+  const byName = Object.fromEntries(listed.map((tool) => [tool.name, tool.inputSchema]));
+  assert.deepEqual(byName.submit_payment.required, ["job_id", "signature"]);
+  assert.deepEqual(byName.register_agent.anyOf, [{ required: ["mcpUrl"] }, { required: ["mcp_url"] }, { required: ["endpoint"] }]);
+  assert.deepEqual(byName.logistics_request.required, ["capability"]);
+
+  const safe = JSON.parse((await request("/mcp", "POST", { jsonrpc: "2.0", id: 3, method: "tools/call", params: { name: "verify_basic", arguments: { record: { test: "mcp" } } } })).body);
+  assert.equal(safe.result.isError, undefined);
+  assert.match(safe.result.content[0].text, /VERIFIED/);
+
+  const failed = JSON.parse((await request("/mcp", "POST", { jsonrpc: "2.0", id: 4, method: "tools/call", params: { name: "verify_basic", arguments: {} } })).body);
+  assert.equal(failed.result.isError, true);
+  assert.match(failed.result.content[0].text, /mint or record is required/);
+
+  const match = JSON.parse((await request("/mcp", "POST", { jsonrpc: "2.0", id: 5, method: "tools/call", params: { name: "agent_match", arguments: { capabilities: ["chains"], network: "solana:mainnet-beta" } } })).body);
+  assert.equal(match.result.isError, undefined);
+});

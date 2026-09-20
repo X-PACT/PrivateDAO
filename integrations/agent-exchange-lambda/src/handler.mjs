@@ -2,7 +2,7 @@ import { randomUUID } from "node:crypto";
 import { getConfig, hydrateConfig } from "./config.mjs";
 import { digest, receiptId } from "./canonical.mjs";
 import { SERVICES, serviceById } from "./catalog.mjs";
-import { LIVE_NETWORKS, NETWORK_CAPABILITIES, networkCapability } from "./network-capabilities.mjs";
+import { LIVE_NETWORKS, NETWORK_CAPABILITIES, networkCapability, normalizeNetworkId } from "./network-capabilities.mjs";
 import { createStore, MemoryStore } from "./storage.mjs";
 import {
   mintEvidence,
@@ -802,7 +802,7 @@ async function listListings(query = {}) {
       description: `${agent.name} external MCP server`,
       capabilities: agent.allowed_tools || [],
       protocols: ["MCP"],
-      chains: agent.networks || [],
+      chains: (agent.networks || []).map(normalizeNetworkId),
       price: null,
       asset: null,
       verificationLevel: agent.status === "connected" ? "MCP_HANDSHAKE_VERIFIED" : "MCP_HANDSHAKE_FAILED",
@@ -835,7 +835,8 @@ async function listListings(query = {}) {
       (!query.capability ||
         (x.capabilities || []).includes(query.capability)) &&
       (!query.protocol || (x.protocols || []).includes(query.protocol)) &&
-      (!query.chain || (x.chains || []).includes(query.chain)),
+      (!query.chain || (x.chains || []).map(normalizeNetworkId).includes(normalizeNetworkId(query.chain))) &&
+      (!query.network || !(x.chains || []).length || (x.chains || []).map(normalizeNetworkId).includes(normalizeNetworkId(query.network))),
   );
 }
 async function publishListing(body) {
@@ -871,7 +872,8 @@ async function publishListing(body) {
 }
 async function requestLogistics(body) {
   if (!body.capability) throw new Error("capability is required");
-  const candidates = (await listListings(body))
+  const network = body.network ? normalizeNetworkId(body.network) : null;
+  const candidates = (await listListings({ ...body, network }))
     .sort((a, b) => Number(a.price) - Number(b.price))
     .slice(0, 10);
   const firstParty = serviceById(body.capability)
@@ -881,7 +883,7 @@ async function requestLogistics(body) {
           service: body.capability,
           price: serviceById(body.capability).price,
           asset: "USDC",
-          chains: ["solana:mainnet-beta"],
+          chains: ["solana-mainnet-beta"],
           verified: true,
         },
       ]
@@ -895,7 +897,7 @@ async function requestLogistics(body) {
     deadline: body.deadline || null,
     preferredProtocols: body.preferredProtocols || [],
     candidates: [...firstParty, ...candidates],
-    network: "solana:mainnet-beta",
+    ...(network ? { network } : { network: "solana-mainnet-beta" }),
     status: "quoted",
     createdAt: now(),
   };
@@ -1103,7 +1105,7 @@ async function makeQuote(serviceId, jobId, admin = false, currency = "USDC", tar
 }
 
 async function executeService(id, input) {
-  const requestedNetwork = String(input?.network || "");
+  const requestedNetwork = input?.network ? normalizeNetworkId(input.network) : "";
   const service = serviceById(id);
   if (["research.asset", "research.wallet", "contract.explain", "transaction.explain", "anomaly.detect", "agent.research.report", "portfolio.intelligence", "market.snapshot"].includes(id)) {
     if (!service?.supportedNetworks?.includes(requestedNetwork))
@@ -1296,11 +1298,14 @@ async function executeService(id, input) {
   if (id === "agent.match") {
     const all = await (await store()).list("Registry");
     const wanted = new Set(input?.capabilities || []);
+    const requestedNetwork = input?.network ? normalizeNetworkId(input.network) : null;
     return {
       matches: all
         .filter((x) => ["verified", "connected"].includes(x.status))
+        .filter((x) => !requestedNetwork || !(x.networks || []).length || x.networks.map(normalizeNetworkId).includes(requestedNetwork))
         .map((x) => ({
           ...x,
+          network_match: requestedNetwork ? ((x.networks || []).length ? x.networks.map(normalizeNetworkId).includes(requestedNetwork) : "capability-declared") : null,
           match_score:
             (x.capabilities || []).filter((c) => wanted.has(c)).length /
             Math.max(wanted.size, 1),
@@ -1638,12 +1643,14 @@ const MCP_TIMEOUT_MS = 8000;
 const MCP_RISKY_TOOL_PATTERN = /(?:build|burn|sign|send|transfer|withdraw|mint|swap|write|delete|destroy|execute|submit|approve|govern|vote|publish|deploy|close|cancel)/i;
 
 function assertPublicHttps(urlText) {
-  const url = new URL(urlText);
+  let url;
+  try { url = new URL(urlText); }
+  catch { throw Object.assign(new Error("valid public HTTPS MCP endpoint required"), { statusCode: 400 }); }
   if (url.protocol !== "https:" || url.username || url.password)
-    throw new Error("external MCP endpoint must be public HTTPS without embedded credentials");
+    throw Object.assign(new Error("external MCP endpoint must be public HTTPS without embedded credentials"), { statusCode: 400 });
   const host = url.hostname.toLowerCase();
   if (host === "localhost" || host.endsWith(".localhost") || host.endsWith(".local") || host === "0.0.0.0" || host === "127.0.0.1" || host === "::1" || /^(10|192\.168|169\.254)\./.test(host))
-    throw new Error("private or loopback MCP endpoint is not allowed");
+    throw Object.assign(new Error("private or loopback MCP endpoint is not allowed"), { statusCode: 400 });
   return url;
 }
 
@@ -1662,6 +1669,15 @@ async function mcpHttp(url, request, sessionId = null) {
     headers,
     body: JSON.stringify(request),
   });
+  if (request.id == null) {
+    if (!response.ok) {
+      const error = new Error(`MCP notification returned HTTP ${response.status}`);
+      error.statusCode = 502;
+      error.upstreamStatus = response.status;
+      throw error;
+    }
+    return { payload: null, sessionId: response.headers.get("mcp-session-id") || sessionId };
+  }
   const text = await response.text();
   let payload;
   try { payload = JSON.parse(text); }
@@ -1706,6 +1722,7 @@ async function discoverMcp(mcpUrl) {
   if (!init?.protocolVersion || !init?.serverInfo?.name)
     throw new Error("MCP initialize response is incomplete");
   const sessionId = initialized.sessionId;
+  await mcpHttp(url.href, { jsonrpc: "2.0", method: "notifications/initialized", params: {} }, sessionId);
   const toolsResponse = await mcpHttp(url.href, { jsonrpc: "2.0", id: 2, method: "tools/list", params: {} }, sessionId);
   const tools = Array.isArray(toolsResponse.payload.result?.tools)
     ? toolsResponse.payload.result.tools.map(mcpToolSummary).filter((tool) => tool.name)
@@ -1762,7 +1779,7 @@ async function registerMcp(body) {
       mcp: { resourcesSupported: false, promptsSupported: false },
       acceptedAssets: [],
       pricing: body.pricing || {},
-      networks: body.networks || [],
+      networks: Array.isArray(body.networks) ? body.networks.map(normalizeNetworkId).filter(Boolean) : [],
       tags: body.tags || ["external", "mcp"],
       status: "unavailable",
       health: "unavailable",
@@ -1779,6 +1796,7 @@ async function registerMcp(body) {
   const discoveredNames = new Set(discovery.tools.map((tool) => tool.name));
   const allowedTools = (requested || defaultMcpAllowlist(discovery.tools)).filter((name) => discoveredNames.has(name) && !MCP_RISKY_TOOL_PATTERN.test(name));
   const id = `agent_${digest({ protocol: "MCP", url: discovery.url }).slice(0, 24)}`;
+  const existing = await (await store()).get("Registry", id);
   const agent = {
     id,
     name: body.name || discovery.serverInfo.name,
@@ -1799,7 +1817,7 @@ async function registerMcp(body) {
     },
     acceptedAssets: [],
     pricing: body.pricing || {},
-    networks: body.networks || [],
+    networks: Array.isArray(body.networks) ? body.networks.map(normalizeNetworkId).filter(Boolean) : (existing?.networks || []),
     tags: body.tags || ["external", "mcp"],
     status: "connected",
     health: "connected",
@@ -1808,7 +1826,7 @@ async function registerMcp(body) {
     side_effect_policy: "read-only allowlist; financial, signing and destructive tools blocked",
   };
   await (await store()).put("Registry", id, agent);
-  return agent;
+  return { ...agent, registration_status: existing ? "already_registered" : "registered" };
 }
 
 async function invokeMcpAgent(agent, tool, args = {}) {
@@ -2234,30 +2252,106 @@ async function handle(e) {
 
 async function mcp(request) {
   const id = request.id;
+  if (typeof request.method === "string" && request.method.startsWith("notifications/"))
+    return { statusCode: 202, headers: { "cache-control": "no-store" }, body: "" };
   if (request.method === "initialize")
     return json({
       jsonrpc: "2.0",
       id,
       result: {
-        protocolVersion: "2025-03-26",
+        protocolVersion: "2025-06-18",
         serverInfo: { name: "pdao-agent-exchange", version: "1.4.0" },
         capabilities: { tools: {} },
       },
     });
   const schemas = {
+    pdao_services: { type: "object", properties: {}, additionalProperties: false, description: "List available PrivateDAO services." },
+    verify_basic: {
+      type: "object",
+      properties: {
+        network: { type: "string", description: "Optional target network identifier." },
+        mint: { type: "string", description: "Solana mint address to inspect." },
+        asset: { type: "string", description: "Alias for mint." },
+        record: { type: "object", description: "Structured record to hash and verify." },
+        expected_digest: { type: "string", description: "Optional expected canonical digest." },
+      },
+      anyOf: [{ required: ["mint"] }, { required: ["asset"] }, { required: ["record"] }],
+      additionalProperties: false,
+    },
+    create_paid_job: {
+      type: "object",
+      properties: {
+        service_id: { type: "string", enum: SERVICES.filter((service) => service.access === "paid").map((service) => service.id) },
+        input: { type: "object", description: "Service-specific JSON input." },
+      },
+      required: ["service_id"],
+      additionalProperties: false,
+    },
+    submit_payment: {
+      type: "object",
+      properties: { job_id: { type: "string", pattern: "^job_[A-Za-z0-9-]+$" }, signature: { type: "string", description: "Finalized Solana transaction signature." } },
+      required: ["job_id", "signature"],
+      additionalProperties: false,
+    },
+    job_status: {
+      type: "object",
+      properties: { job_id: { type: "string", pattern: "^job_[A-Za-z0-9-]+$" } },
+      required: ["job_id"],
+      additionalProperties: false,
+    },
+    get_receipt: {
+      type: "object",
+      properties: { receipt_id: { type: "string", pattern: "^rvr_[A-Za-z0-9]+$" } },
+      required: ["receipt_id"],
+      additionalProperties: false,
+    },
+    search_agents: {
+      type: "object",
+      properties: {
+        q: { type: "string", maxLength: 200, description: "Free-text registry search." },
+        capability: { type: "string", maxLength: 120 },
+        network: { type: "string", description: "Canonical network or accepted alias." },
+        limit: { type: "integer", minimum: 1, maximum: 100 },
+      },
+      additionalProperties: false,
+    },
     register_agent: {
       type: "object",
-      additionalProperties: false,
       properties: {
         name: { type: "string", maxLength: 200 },
         protocol: { type: "string", enum: ["MCP"] },
         mcpUrl: { type: "string", format: "uri", description: "Public HTTPS MCP endpoint" },
+        mcp_url: { type: "string", format: "uri", description: "Compatibility alias for mcpUrl." },
+        endpoint: { type: "string", format: "uri", description: "Compatibility alias for mcpUrl." },
         allowedTools: { type: "array", items: { type: "string", maxLength: 120 }, maxItems: 64 },
         tags: { type: "array", items: { type: "string", maxLength: 64 }, maxItems: 16 },
+        networks: { type: "array", items: { type: "string", maxLength: 80 }, maxItems: 32, description: "Explicitly declared supported networks; aliases are normalized." },
         persistUnavailable: { type: "boolean", description: "Persist Unavailable after a failed health check; never marks it connected" },
       },
-      required: ["mcpUrl"],
+      anyOf: [{ required: ["mcpUrl"] }, { required: ["mcp_url"] }, { required: ["endpoint"] }],
+      additionalProperties: false,
     },
+    agent_match: {
+      type: "object",
+      properties: { capabilities: { type: "array", items: { type: "string", maxLength: 120 }, maxItems: 32 }, network: { type: "string", description: "Canonical network or accepted alias." } },
+      required: ["capabilities"],
+      additionalProperties: false,
+    },
+    logistics_request: {
+      type: "object",
+      properties: {
+        capability: { type: "string", maxLength: 120 },
+        requirements: { type: "object" },
+        maxPrice: { type: "number", minimum: 0 },
+        asset: { type: "string", maxLength: 20 },
+        deadline: { type: "string", format: "date-time" },
+        preferredProtocols: { type: "array", items: { type: "string", maxLength: 40 }, maxItems: 8 },
+        network: { type: "string", description: "Canonical network or accepted alias." },
+      },
+      required: ["capability"],
+      additionalProperties: false,
+    },
+    network_stats: { type: "object", properties: {}, additionalProperties: false },
   };
   const tools = [
     "pdao_services",
@@ -2301,8 +2395,19 @@ async function mcp(request) {
         result = await (await store()).get("Jobs", a.job_id);
       else if (name === "get_receipt")
         result = await (await store()).get("Receipts", a.receipt_id);
-      else if (name === "search_agents")
-        result = { agents: await (await store()).list("Registry") };
+      else if (name === "search_agents") {
+        const query = String(a.q || "").toLowerCase();
+        const capability = a.capability ? String(a.capability) : null;
+        const network = a.network ? normalizeNetworkId(a.network) : null;
+        const agents = (await (await store()).list("Registry")).filter((agent) => {
+          const haystack = JSON.stringify(agent).toLowerCase();
+          const chains = (agent.networks || []).map(normalizeNetworkId);
+          return (!query || haystack.includes(query)) &&
+            (!capability || (agent.capabilities || []).includes(capability)) &&
+            (!network || !chains.length || chains.includes(network));
+        }).slice(0, Math.min(Number(a.limit || 50), 100));
+        result = { agents };
+      }
       else if (name === "agent_match")
         result = await executeService("agent.match", a);
       else if (name === "logistics_request") result = await requestLogistics(a);
@@ -2326,8 +2431,12 @@ async function mcp(request) {
       return json({
         jsonrpc: "2.0",
         id,
-        error: { code: error.statusCode === 502 ? -32002 : -32000, message: error.message },
-      }, error.statusCode || 400);
+        result: {
+          isError: true,
+          content: [{ type: "text", text: JSON.stringify({ error: error.message }) }],
+          structuredContent: { error: error.message, statusCode: error.statusCode || 400 },
+        },
+      });
     }
   }
   return json(
@@ -2336,7 +2445,6 @@ async function mcp(request) {
       id,
       error: { code: -32601, message: "method not found" },
     },
-    400,
   );
 }
 
