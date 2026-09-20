@@ -249,6 +249,9 @@ test("MCP lifecycle, schemas, errors, and network aliases are protocol-safe", as
   const initialized = await request("/mcp", "POST", { jsonrpc: "2.0", method: "notifications/initialized", params: {} });
   assert.equal(initialized.statusCode, 202);
   assert.equal(initialized.body, "");
+  const cancelled = await request("/mcp", "POST", { jsonrpc: "2.0", method: "notifications/cancelled", params: {} });
+  assert.equal(cancelled.statusCode, 202);
+  assert.equal(cancelled.body, "");
 
   const listed = JSON.parse((await request("/mcp", "POST", { jsonrpc: "2.0", id: 2, method: "tools/list", params: {} })).body).result.tools;
   assert.equal(listed.length, 11);
