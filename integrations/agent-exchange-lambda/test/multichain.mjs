@@ -272,6 +272,43 @@ test("Solana token evidence remains useful when optional methods are unavailable
   }
 });
 
+test("Solana evidence exposes provider class, never authenticated RPC URLs", async () => {
+  const originalFetch = global.fetch;
+  const originalNodeEnv = process.env.NODE_ENV;
+  process.env.NODE_ENV = "test";
+  global.fetch = async (_url, options) => {
+    const request = JSON.parse(options.body);
+    const result = request.method === "getAccountInfo"
+      ? { value: { owner: "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA", data: { parsed: { info: { mintAuthority: null, freezeAuthority: null } } } } }
+      : request.method === "getTokenSupply"
+        ? { value: { amount: "1", decimals: 6 } }
+        : request.method === "getTokenLargestAccounts"
+          ? { value: [] }
+          : null;
+    return new Response(JSON.stringify({ jsonrpc: "2.0", id: 1, result }), {
+      status: 200,
+      headers: { "content-type": "application/json" },
+    });
+  };
+  try {
+    const evidence = await mintEvidence({
+      cluster: "mainnet-beta",
+      treasury: "2BJ4ezxqV9YJXc38D9duKBkdn4su4jE1beKUHwH663sL",
+      usdcMint: "EPjFWdd5AufSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+      rpcPrimary: "https://solana-mainnet.g.alchemy.com/v2/test-only-key",
+      rpcSecondary: "",
+      rpcFallback: "",
+      mainnetGenesisHash: "5eykt4UsFv8P8NJdTREpY1vzqKqZKvdpKuc147dw2N9d",
+    }, "EPjFWdd5AufSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v");
+    assert.equal(evidence.provider_source, "alchemy");
+    assert.doesNotMatch(JSON.stringify(evidence), /test-only-key/);
+  } finally {
+    global.fetch = originalFetch;
+    if (originalNodeEnv == null) delete process.env.NODE_ENV;
+    else process.env.NODE_ENV = originalNodeEnv;
+  }
+});
+
 test("market data uses a chain-filtered sourced pair", async () => {
   const originalFetch = global.fetch;
   global.fetch = async () => new Response(JSON.stringify({

@@ -74,7 +74,7 @@ export async function readRpc(config, method, params = []) {
   for (const url of rpcUrls(config)) {
     try {
       await attestMainnetRpc(url, config);
-      return { url, result: await rpcCall(url, method, params) };
+      return { providerClass: providerClassForUrl(url), result: await rpcCall(url, method, params) };
     } catch (error) {
       last = error;
     }
@@ -156,9 +156,9 @@ export async function verifyPayment(config, payment, quote) {
 }
 
 export async function networkStats(config) {
-  const { url, result } = await readRpc(config, "getEpochInfo");
+  const { providerClass, result } = await readRpc(config, "getEpochInfo");
   return {
-    providerClass: providerClassForUrl(url),
+    providerClass,
     cluster: "mainnet-beta",
     epoch: result.epoch,
     slotIndex: result.slotIndex,
@@ -182,7 +182,7 @@ export async function solanaHealth(config) {
     slot: slot.result || null,
     latest_blockhash_available: Boolean(blockhash.result?.value?.blockhash),
     latency_ms: Date.now() - started,
-    provider: providerClassForUrl(health.url),
+    provider: health.providerClass,
     status: "rpc_healthy",
     observed_at: new Date().toISOString(),
   };
@@ -216,7 +216,7 @@ export async function mintEvidence(config, mint) {
     freeze_authority:
       account.result?.value?.data?.parsed?.info?.freezeAuthority || null,
     largest_accounts: largest.result?.value || [],
-    provider_source: account.url,
+    provider_source: account.providerClass,
     evidence_gaps: {
       token_supply: supply.available ? null : supply.error,
       largest_accounts: largest.available ? null : largest.error,
@@ -267,7 +267,7 @@ export async function simulateSolanaTransaction(config, input = {}) {
   const serialized = String(input.transaction || input.serializedTransaction || "");
   if (!serialized || serialized.length > 1024 * 1024 || !/^[A-Za-z0-9+/]+={0,2}$/.test(serialized))
     throw new Error("base64 serialized Solana transaction is required");
-  const { result, url } = await readRpc(config, "simulateTransaction", [
+  const { result, providerClass } = await readRpc(config, "simulateTransaction", [
     serialized,
     {
       encoding: "base64",
@@ -284,7 +284,7 @@ export async function simulateSolanaTransaction(config, input = {}) {
     logs: Array.isArray(result?.value?.logs) ? result.value.logs : [],
     units_consumed: result?.value?.unitsConsumed ?? null,
     return_data: result?.value?.returnData || null,
-    provider_class: providerClassForUrl(url),
+    provider_class: providerClass,
     evidence_confidence: "rpc-confirmed",
     observed_at: new Date().toISOString(),
   };

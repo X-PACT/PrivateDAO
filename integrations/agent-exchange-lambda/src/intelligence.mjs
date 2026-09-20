@@ -87,7 +87,7 @@ export async function researchWallet(config, input = {}) {
       readRpc(config, "getTokenAccountsByOwner", [address, { programId: "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA" }, { encoding: "jsonParsed" }]),
       readRpc(config, "getSignaturesForAddress", [address, { limit: 20 }]),
     ]);
-    return sourceFacts(network, balance.url, {
+    return sourceFacts(network, balance.providerClass, {
       address,
       native_balance_lamports: balance.result?.value || 0,
       token_account_count: accounts.result?.value?.length || 0,
@@ -114,7 +114,7 @@ export async function explainContract(config, input = {}) {
   if (network === "solana-mainnet-beta") {
     if (!solanaAddress.test(address)) throw new Error("valid Solana program or account is required");
     const account = await readRpc(config, "getAccountInfo", [address, { encoding: "jsonParsed" }]);
-    return sourceFacts(network, account.url, {
+    return sourceFacts(network, account.providerClass, {
       address,
       exists: Boolean(account.result?.value),
       owner: account.result?.value?.owner || null,
@@ -165,7 +165,7 @@ export async function explainTransaction(config, input = {}) {
   if (network === "solana-mainnet-beta") {
     if (!solanaAddress.test(hash)) throw new Error("valid Solana transaction signature is required");
     const tx = await readRpc(config, "getTransaction", [hash, { commitment: "finalized", maxSupportedTransactionVersion: 0, encoding: "jsonParsed" }]);
-    return sourceFacts(network, tx.url, {
+    return sourceFacts(network, tx.providerClass, {
       signature: hash,
       found: Boolean(tx.result),
       slot: tx.result?.slot || null,
