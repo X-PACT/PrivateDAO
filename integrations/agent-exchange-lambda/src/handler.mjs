@@ -15,6 +15,14 @@ import {
 } from "./solana.mjs";
 import { evmNetwork, evmHealth, executeEvmService, evmRuntimeStats } from "./evm.mjs";
 import { enforceRateLimit, rateLimitKey, resetRuntimeControls } from "./runtime-controls.mjs";
+import {
+  researchAsset,
+  researchWallet,
+  explainContract,
+  explainTransaction,
+  detectAnomaly,
+  researchReport,
+} from "./intelligence.mjs";
 
 const config = getConfig();
 let storePromise;
@@ -812,8 +820,18 @@ async function makeQuote(serviceId, jobId, admin = false, currency = "USDC") {
 
 async function executeService(id, input) {
   const requestedNetwork = String(input?.network || "");
+  const service = serviceById(id);
+  if (["research.asset", "research.wallet", "contract.explain", "transaction.explain", "anomaly.detect", "agent.research.report"].includes(id)) {
+    if (!service?.supportedNetworks?.includes(requestedNetwork))
+      throw new Error(`${id} is not supported on ${requestedNetwork || "this network"}`);
+    if (id === "research.asset") return researchAsset(config, input);
+    if (id === "research.wallet") return researchWallet(config, input);
+    if (id === "contract.explain") return explainContract(config, input);
+    if (id === "transaction.explain") return explainTransaction(config, input);
+    if (id === "anomaly.detect") return detectAnomaly(config, input);
+    return researchReport(config, input);
+  }
   if (requestedNetwork && evmNetwork(requestedNetwork)) {
-    const service = serviceById(id);
     if (!service?.supportedNetworks?.includes(requestedNetwork))
       throw new Error(`${id} is not supported on ${requestedNetwork}`);
     return executeEvmService(config, id, input);
@@ -1060,6 +1078,12 @@ async function createJob(serviceId, input, admin = false, currency = "USDC", met
     "wallet.intelligence",
     "market.snapshot",
     "transaction.simulate",
+    "research.asset",
+    "research.wallet",
+    "contract.explain",
+    "transaction.explain",
+    "anomaly.detect",
+    "agent.research.report",
   ].includes(serviceId));
   const job = {
     id: `job_${randomUUID()}`,

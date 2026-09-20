@@ -40,6 +40,8 @@ export function getConfig(env = process.env) {
     jupiterApiKey: env.PDAO_JUPITER_API_KEY || "",
     bedrockEnabled: bool(env.BEDROCK_ENABLED),
     bedrockModel: env.BEDROCK_MODEL_ID || "amazon.nova-micro-v1:0",
+    intelInferenceUrl: env.PDAO_INTEL_INFERENCE_URL || "",
+    intelOpenvinoModel: env.PDAO_INTEL_OPENVINO_MODEL || "",
     telegramNotifications: bool(env.PDAO_TELEGRAM_NOTIFICATIONS_ENABLED),
     discordNotifications: bool(env.PDAO_DISCORD_NOTIFICATIONS_ENABLED),
     tablePrefix: env.AGENT_EXCHANGE_TABLE_PREFIX || "PrivateDAOAgentExchange",
