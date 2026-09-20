@@ -25,6 +25,7 @@ import {
   portfolioIntelligence,
   marketSnapshot,
 } from "./intelligence.mjs";
+import { runIntelInference } from "./intel.mjs";
 
 const config = getConfig();
 let storePromise;
@@ -1027,16 +1028,21 @@ async function executeService(id, input) {
         .slice(0, 20),
     };
   }
-  if (id === "intelligence.synthesize")
+  if (id === "intelligence.synthesize") {
+    const inference = await runIntelInference(config, {
+      evidence: input?.evidence || input,
+      requested_output: input?.requested_output || "structured synthesis",
+    });
     return {
-      synthesis: {
-        summary:
-          "Evidence was deterministically organized for downstream review.",
-        evidence_digest: digest(input?.evidence || input),
-        ai_provider: "deterministic-fallback",
-      },
+      status: inference.status,
+      provider: inference.provider,
+      model: inference.model,
+      result: inference.result,
+      evidence_digest: digest(input?.evidence || input),
       machine_readable: true,
+      ...(inference.note ? { note: inference.note } : {}),
     };
+  }
   if (id === "game.tool") {
     const world = String(input?.world || "dao").slice(0, 40);
     const tool = String(input?.tool || "privacy-lens").slice(0, 60);
