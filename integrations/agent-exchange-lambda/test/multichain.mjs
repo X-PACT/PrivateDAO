@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { createServer } from "node:http";
-import { executeEvmService, evmRpcUrl, evmRuntimeStats } from "../src/evm.mjs";
+import { executeEvmService, evmHealth, evmRpcUrl, evmRuntimeStats } from "../src/evm.mjs";
 import { derivedTreasuryTokenAccount, mintEvidence, readRpc, solanaHealth, swapQuote, simulateSolanaTransaction, verifyPayment } from "../src/solana.mjs";
 import { getConfig } from "../src/config.mjs";
 import { enforceRateLimit, resetRuntimeControls } from "../src/runtime-controls.mjs";
@@ -108,6 +108,38 @@ test("Alchemy URLs are constructed without exposing the key in results", () => {
   const url = evmRpcUrl({ alchemyApiKey: "test-only-key", evmRpcUrls: {} }, "base-mainnet");
   assert.equal(url, "https://base-mainnet.g.alchemy.com/v2/test-only-key");
   assert.equal(getConfig({ ALCHEMY_API_KEY: "test-only-key" }).rpcSecondary, "https://solana-mainnet.g.alchemy.com/v2/test-only-key");
+});
+
+test("EVM health verifies every production read-only chain ID", async () => {
+  const originalFetch = global.fetch;
+  const chainIds = {
+    "ethereum-mainnet": "0x1",
+    "base-mainnet": "0x2105",
+    "arbitrum-mainnet": "0xa4b1",
+  };
+  global.fetch = async (url, options) => {
+    const network = new URL(url).pathname.slice(1);
+    const { method } = JSON.parse(options.body);
+    const result = method === "eth_chainId"
+      ? chainIds[network]
+      : method === "eth_blockNumber"
+        ? "0x1234"
+        : "0x3b9aca00";
+    return new Response(JSON.stringify({ jsonrpc: "2.0", id: 1, result }), {
+      status: 200,
+      headers: { "content-type": "application/json" },
+    });
+  };
+  try {
+    for (const [network, chainId] of Object.entries(chainIds)) {
+      const health = await evmHealth({ evmRpcUrls: { [network]: `https://rpc.test/${network}` } }, network);
+      assert.equal(health.chain_id, chainId);
+      assert.equal(health.status, "rpc_healthy");
+      assert.equal(health.provider, "configured-rpc");
+    }
+  } finally {
+    global.fetch = originalFetch;
+  }
 });
 
 test("EVM provider retries a transient response without exposing endpoint details", async () => {
