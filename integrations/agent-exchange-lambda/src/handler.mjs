@@ -1756,13 +1756,16 @@ function defaultMcpAllowlist(tools) {
 async function registerMcp(body) {
   const endpoint = body.mcpUrl || body.mcp_url || body.endpoint;
   if (!endpoint) throw new Error("mcpUrl is required");
+  const url = assertPublicHttps(endpoint);
+  const id = `agent_${digest({ protocol: "MCP", url: url.href }).slice(0, 24)}`;
+  const existing = await (await store()).get("Registry", id);
+  if (existing?.protocol === "MCP" && existing.endpoint === url.href && existing.status === "connected" && body.forceRefresh !== true)
+    return { ...existing, registration_status: "already_registered" };
   let discovery;
   try {
-    discovery = await discoverMcp(endpoint);
+    discovery = await discoverMcp(url.href);
   } catch (error) {
     if (!body.persistUnavailable) throw error;
-    const url = assertPublicHttps(endpoint);
-    const id = `agent_${digest({ protocol: "MCP", url: url.href }).slice(0, 24)}`;
     const match = /HTTP (\d{3})/.exec(error.message);
     const reason = match ? `HTTP_${match[1]}` : /timeout/i.test(error.message) ? "TIMEOUT" : "MCP_CHECK_FAILED";
     const unavailable = {
@@ -1795,8 +1798,6 @@ async function registerMcp(body) {
   const requested = Array.isArray(body.allowedTools) ? body.allowedTools.map(String) : null;
   const discoveredNames = new Set(discovery.tools.map((tool) => tool.name));
   const allowedTools = (requested || defaultMcpAllowlist(discovery.tools)).filter((name) => discoveredNames.has(name) && !MCP_RISKY_TOOL_PATTERN.test(name));
-  const id = `agent_${digest({ protocol: "MCP", url: discovery.url }).slice(0, 24)}`;
-  const existing = await (await store()).get("Registry", id);
   const agent = {
     id,
     name: body.name || discovery.serverInfo.name,
@@ -2196,6 +2197,7 @@ async function handle(e) {
         mcpUrl: item.endpoint,
         allowedTools: item.allowed_tools,
         tags: item.tags,
+        forceRefresh: true,
       }));
     } catch (error) {
       const unavailable = await registerMcp({
@@ -2326,6 +2328,7 @@ async function mcp(request) {
         allowedTools: { type: "array", items: { type: "string", maxLength: 120 }, maxItems: 64 },
         tags: { type: "array", items: { type: "string", maxLength: 64 }, maxItems: 16 },
         networks: { type: "array", items: { type: "string", maxLength: 80 }, maxItems: 32, description: "Explicitly declared supported networks; aliases are normalized." },
+        forceRefresh: { type: "boolean", description: "Force a fresh MCP handshake instead of returning an existing healthy registration." },
         persistUnavailable: { type: "boolean", description: "Persist Unavailable after a failed health check; never marks it connected" },
       },
       anyOf: [{ required: ["mcpUrl"] }, { required: ["mcp_url"] }, { required: ["endpoint"] }],
