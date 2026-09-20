@@ -12,7 +12,8 @@ import {
   treasuryTokenAccount,
   verifyPayment,
 } from "./solana.mjs";
-import { evmNetwork, evmHealth, executeEvmService } from "./evm.mjs";
+import { evmNetwork, evmHealth, executeEvmService, evmRuntimeStats } from "./evm.mjs";
+import { enforceRateLimit, rateLimitKey, resetRuntimeControls } from "./runtime-controls.mjs";
 
 const config = getConfig();
 let storePromise;
@@ -28,7 +29,10 @@ function trackFunnel(event, details = {}) {
     service: details.service || null,
     source: details.source || "direct",
     agent: details.agent ? digest({ agent: details.agent }).slice(0, 20) : null,
-    network: "solana-mainnet-beta",
+    network: details.network || details.targetNetwork || "solana-mainnet-beta",
+    outcome: details.outcome || null,
+    durationMs: Number.isFinite(details.durationMs) ? details.durationMs : null,
+    providerCalls: Number.isFinite(details.providerCalls) ? details.providerCalls : null,
     createdAt: now(),
   };
   void store()
@@ -681,6 +685,7 @@ async function telemetrySummary() {
     totalEvents: events.length,
     byEvent,
     byService,
+    providerRuntime: evmRuntimeStats(),
     lastEventAt: events.map((event) => event.createdAt).sort().at(-1) || null,
   };
 }
@@ -748,6 +753,7 @@ function errorResponse(error) {
       message: error.message,
       ...(error.payment_intent ? { payment_intent: error.payment_intent } : {}),
       ...(error.quote ? { quote: error.quote } : {}),
+      ...(error.retryAfterSeconds ? { retry_after_seconds: error.retryAfterSeconds } : {}),
     },
     status,
     status === 402 ? { "www-authenticate": "Solana" } : {},
@@ -1090,6 +1096,8 @@ async function createJob(serviceId, input, admin = false, currency = "USDC", met
     e.payment_intent = intent;
     throw e;
   }
+  job.execution_started_at = now();
+  await (await store()).put("Jobs", job.id, job);
   const result = await executeService(serviceId, input);
   return await completeJob(job, result, null);
 }
@@ -1113,6 +1121,14 @@ async function completeJob(job, result, payment) {
   const enrichedResult = recommendations.length
     ? { ...result, recommended_next_services: recommendations }
     : result;
+  const executionMs = Date.now() - Date.parse(job.execution_started_at || job.created_at);
+  trackFunnel("service_completed", {
+    service: job.service_id,
+    targetNetwork: job.execution_input?.network || enrichedResult?.network,
+    outcome: "success",
+    durationMs: Number.isFinite(executionMs) ? executionMs : null,
+    providerCalls: Number.isFinite(enrichedResult?.provider_calls) ? enrichedResult.provider_calls : null,
+  });
   const payload = {
     job_id: job.id,
     service: job.service_id,
@@ -1222,6 +1238,8 @@ async function submitPayment(jobId, body) {
     // Recover a payment claim left behind by a crashed invocation. The
     // signature remains bound to this job, so no second payment is accepted.
   }
+  job.execution_started_at = now();
+  await storage.put("Jobs", job.id, job);
   const result = await executeService(job.service_id, body.input || job.execution_input || {});
   return completeJob(job, result, {
     signature: body.signature,
@@ -1288,6 +1306,9 @@ async function invokeAgent(body) {
 }
 
 async function handle(e) {
+  const routePath = pathOf(e);
+  if (routePath.startsWith("/api/") || routePath === "/a2a" || routePath === "/mcp")
+    enforceRateLimit(rateLimitKey(e), config.rateLimitPerMinute);
   await runtimeConfig();
   const method = methodOf(e),
     path = pathOf(e),
@@ -1692,4 +1713,5 @@ export async function handler(event) {
 export function resetForTests() {
   storePromise = Promise.resolve(new MemoryStore());
   configPromise = Promise.resolve(config);
+  resetRuntimeControls();
 }

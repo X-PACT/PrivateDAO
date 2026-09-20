@@ -3,6 +3,7 @@ import test from "node:test";
 import { createServer } from "node:http";
 import { executeEvmService, evmRpcUrl } from "../src/evm.mjs";
 import { swapQuote } from "../src/solana.mjs";
+import { enforceRateLimit, resetRuntimeControls } from "../src/runtime-controls.mjs";
 
 test("EVM services are read-only and use the configured provider", async () => {
   const server = createServer(async (request, response) => {
@@ -71,4 +72,12 @@ test("Jupiter quote path never broadcasts", async () => {
   } finally {
     global.fetch = originalFetch;
   }
+});
+
+test("runtime controls enforce bounded request rates", () => {
+  resetRuntimeControls();
+  enforceRateLimit("test-agent", 2, 60000);
+  enforceRateLimit("test-agent", 2, 60000);
+  assert.throws(() => enforceRateLimit("test-agent", 2, 60000), /rate limit exceeded/);
+  resetRuntimeControls();
 });

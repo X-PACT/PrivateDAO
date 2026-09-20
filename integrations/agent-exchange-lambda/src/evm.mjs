@@ -6,6 +6,8 @@ const EVM_NETWORKS = Object.freeze({
 
 const hexAddress = /^0x[0-9a-fA-F]{40}$/;
 const hexData = /^0x(?:[0-9a-fA-F]{2})*$/;
+const rpcCache = new Map();
+const rpcStats = { calls: 0, cacheHits: 0, byMethod: {} };
 
 export function evmNetwork(id) {
   return EVM_NETWORKS[id] || null;
@@ -25,6 +27,8 @@ export function evmRpcUrl(config, network) {
 }
 
 async function rpcCall(url, method, params = []) {
+  rpcStats.calls += 1;
+  rpcStats.byMethod[method] = (rpcStats.byMethod[method] || 0) + 1;
   const response = await fetch(url, {
     method: "POST",
     headers: { "content-type": "application/json" },
@@ -40,9 +44,19 @@ async function rpcCall(url, method, params = []) {
 async function read(config, network, method, params = []) {
   const definition = evmNetwork(network);
   const url = evmRpcUrl(config, network);
-  const chainId = await rpcCall(url, "eth_chainId");
+  const chainKey = `${network}:eth_chainId`;
+  const cachedChain = rpcCache.get(chainKey);
+  const chainId = cachedChain && cachedChain.expiresAt > Date.now()
+    ? (rpcStats.cacheHits++, cachedChain.value)
+    : await rpcCall(url, "eth_chainId");
+  if (!cachedChain || cachedChain.expiresAt <= Date.now())
+    rpcCache.set(chainKey, { value: chainId, expiresAt: Date.now() + 60000 });
   if (chainId.toLowerCase() !== definition.chainId) throw new Error(`chain ID mismatch for ${network}`);
   return { result: await rpcCall(url, method, params), chainId, providerClass: config.evmRpcUrls?.[network] ? "configured-rpc" : "alchemy" };
+}
+
+export function evmRuntimeStats() {
+  return { calls: rpcStats.calls, cache_hits: rpcStats.cacheHits, by_method: { ...rpcStats.byMethod } };
 }
 
 function decodeUint(result) {

@@ -57,6 +57,7 @@ export function getConfig(env = process.env) {
     },
     allowTestStorage: bool(env.AGENT_EXCHANGE_ALLOW_TEST_STORAGE),
     maxBodyBytes: Number(env.AGENT_EXCHANGE_MAX_BODY_BYTES || 262144),
+    rateLimitPerMinute: Math.min(1000, Math.max(10, Number(env.AGENT_EXCHANGE_RATE_LIMIT_PER_MINUTE || 120))),
     priceMultiplier: Number(env.AGENT_EXCHANGE_PRICE_MULTIPLIER || 1),
     marketplaceFeeBps: Math.min(10000, Math.max(0, Number(env.AGENT_EXCHANGE_MARKETPLACE_FEE_BPS || 500))),
   };
