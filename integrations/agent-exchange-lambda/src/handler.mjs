@@ -1058,7 +1058,26 @@ async function publishListing(body) {
 async function requestLogistics(body) {
   if (!body.capability) throw new Error("capability is required");
   const network = body.network ? normalizeNetworkId(body.network) : null;
+  const registryMatches = await matchRegisteredAgents({
+    capabilities: [body.capability],
+    network,
+  });
+  const matchesByAgentId = new Map(
+    registryMatches.matches.map((match) => [match.id, match]),
+  );
   const candidates = (await listListings({ ...body, network }))
+    .map((listing) => {
+      const match = listing.agentId ? matchesByAgentId.get(listing.agentId) : null;
+      if (!match) return listing;
+      // Keep marketplace fields, but expose the canonical Registry identity so
+      // logistics and agent_match return the same candidate set.
+      return {
+        ...listing,
+        id: match.id,
+        network_match: match.network_match,
+        match_score: match.match_score,
+      };
+    })
     .sort((a, b) => Number(a.price) - Number(b.price))
     .slice(0, 10);
   const firstParty = serviceById(body.capability)
