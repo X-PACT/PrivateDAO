@@ -5,12 +5,12 @@ Date: 2026-09-20
 ## Release
 
 - Repository branch: `rebrand/enterprise-white`
-- Deployed runtime commit: `be5e70a4e`
-- Lambda version: `51`
+- Deployed runtime commit: `29883ecf9`
+- Lambda version: `64`
 - Function: `PrivateDAOAgentExchange-Function-N2zgpQmMN41S`
 - Region: `eu-north-1`
 - Public URL: `https://agents.privatedao.org`
-- Previous rollback version: `50`
+- Previous rollback version: `63`
 
 The main PrivateDAO website and `/game/` are separate deployment boundaries.
 
@@ -65,6 +65,9 @@ RPC health is not treated as product execution or payment readiness.
 
 - Agent Card: HTTP 200, 24 skills
 - MCP: HTTP 200, 11 tools, including `pdao_services`
+- MCP lifecycle: external initialize -> initialized notification -> tools/list -> tools/call PASS
+- MCP schemas: all 11 tools publish object schemas with argument contracts
+- SingularityAgent: existing registration remains connected and idempotent; forced refresh is blocked by upstream HTTP 403
 - A2A: published and reachable
 - OpenAPI: HTTP 200, OpenAPI 3.1.0, 56 paths
 - Service catalog: HTTP 200, 23 services
@@ -89,6 +92,26 @@ Post-deployment checks also returned HTTP 200 for:
 - `https://privatedao.org/`
 - `https://privatedao.org/game/`
 
+## Interoperability Evidence
+
+The production read-only network health checks returned `rpc_healthy` for:
+
+| Network | Chain ID / context | Provider | Read-only |
+|---|---|---|---|
+| Solana Mainnet | mainnet-beta | Alchemy | yes |
+| Ethereum Mainnet | `0x1` | Alchemy | yes |
+| Base Mainnet | `0x2105` | Alchemy | yes |
+| Arbitrum One | `0xa4b1` | Alchemy | yes |
+
+RPC health is deliberately not treated as service execution, funding, or payment readiness.
+
+The external MCP audit also verified:
+
+- `notifications/initialized` and `notifications/cancelled` are accepted without JSON-RPC responses.
+- Unsupported `resources/list` and `prompts/list` return standard method-not-found errors without fake capabilities.
+- Existing SingularityAgent registration returns `already_registered` rather than creating a duplicate.
+- Network aliases normalize consistently for matching and logistics.
+
 ## Verification Boundaries
 
 The following have not been claimed as complete because no real paid Mainnet
@@ -101,10 +124,15 @@ transaction was authorized or submitted:
 
 No fake transaction, receipt, payment status, or E2E result was created.
 
+The current production payment quote path remains enabled. The payment transaction
+creates the canonical USDC associated token account idempotently when needed, so an
+uninitialized ATA does not block a first customer payment. A real paid E2E still
+requires an explicitly approved and funded test transaction.
+
 ## Quality Gates
 
 - Node syntax check: PASS
-- Test suite: 17/17 PASS
+- Test suite: 22/22 PASS
 - Smoke test: PASS
 - `npm audit --omit=dev`: 0 vulnerabilities
 - `git diff --check`: PASS
