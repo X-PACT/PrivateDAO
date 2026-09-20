@@ -1242,6 +1242,15 @@ function errorResponse(error) {
   );
 }
 
+function publicJobStatus(job) {
+  if (!job) return job;
+  const { execution_input: _privateInput, ...publicJob } = job;
+  return {
+    ...publicJob,
+    target_network: job.execution_input?.network || job.target_network || null,
+  };
+}
+
 async function makeQuote(serviceId, jobId, admin = false, currency = "USDC", targetNetwork = null) {
   const service = serviceById(serviceId);
   if (!service) throw new Error("unknown service");
@@ -2214,7 +2223,7 @@ async function handle(e) {
   const job = path.match(/^\/api\/jobs\/([^/]+)$/);
   if (method === "GET" && job) {
     const item = await (await store()).get("Jobs", job[1]);
-    return item ? json(item) : json({ error: "not_found" }, 404);
+    return item ? json(publicJobStatus(item)) : json({ error: "not_found" }, 404);
   }
   const paymentIntent = path.match(/^\/api\/jobs\/([^/]+)\/payment-intent$/);
   if (method === "GET" && paymentIntent) {
@@ -2567,7 +2576,7 @@ async function mcp(request) {
           else throw error;
         }
       } else if (name === "job_status")
-        result = await (await store()).get("Jobs", a.job_id);
+        result = publicJobStatus(await (await store()).get("Jobs", a.job_id));
       else if (name === "get_receipt")
         result = await (await store()).get("Receipts", a.receipt_id);
       else if (name === "search_agents") {

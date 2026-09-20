@@ -148,7 +148,10 @@ test("every paid job retains its validated input for post-payment execution", as
   assert.match(quote.payment_intent.jobId, /^job_/);
   const persisted = await request(`/api/jobs/${quote.payment_intent.jobId}`);
   assert.equal(persisted.statusCode, 200);
-  assert.deepEqual(JSON.parse(persisted.body).execution_input, { wallet: "11111111111111111111111111111111", limit: 3 });
+  const publicStatus = JSON.parse(persisted.body);
+  assert.equal(publicStatus.execution_input, undefined);
+  assert.equal(publicStatus.target_network, null);
+  assert.match(publicStatus.input_hash, /^[a-f0-9]{64}$/);
 });
 
 test("every catalog capability has a stable detail page", async () => {
