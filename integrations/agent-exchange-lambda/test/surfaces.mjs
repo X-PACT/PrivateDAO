@@ -161,6 +161,12 @@ test("MCP and A2A machine entrypoints remain callable", async () => {
   const mcp = await request("/mcp", "POST", { jsonrpc: "2.0", id: 1, method: "tools/list" });
   assert.equal(mcp.statusCode, 200);
   assert.match(mcp.body, /pdao_services/);
+  const api = JSON.parse((await request("/openapi.json")).body);
+  assert.ok(api.components.schemas.CreateJobRequest);
+  assert.ok(api.components.schemas.ServiceInput_token_intelligence);
+  assert.deepEqual(api.components.schemas.PaymentRequest.required, ["signature"]);
+  assert.ok(api.paths["/api/jobs"].post.requestBody);
+  assert.ok(api.paths["/api/jobs/{jobId}/payment"].post.requestBody);
 });
 
 test("MCP lifecycle, schemas, errors, and network aliases are protocol-safe", async () => {

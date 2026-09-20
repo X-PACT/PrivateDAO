@@ -162,52 +162,112 @@ function card() {
   };
 }
 function openapi() {
+  const serviceSchemas = Object.fromEntries(SERVICES.map((service) => [
+    `ServiceInput_${service.id.replaceAll(".", "_")}`,
+    serviceInputSchema(service),
+  ]));
+  const serviceInputRefs = Object.fromEntries(SERVICES.map((service) => [
+    service.id,
+    { $ref: `#/components/schemas/ServiceInput_${service.id.replaceAll(".", "_")}` },
+  ]));
+  const jobInput = {
+    type: "object",
+    properties: {
+      service_id: { type: "string", enum: SERVICES.map((service) => service.id) },
+      input: { oneOf: Object.values(serviceInputRefs) },
+    },
+    required: ["service_id", "input"],
+    additionalProperties: false,
+  };
+  const paymentInput = {
+    type: "object",
+    properties: {
+      signature: { type: "string", description: "Finalized Solana transaction signature." },
+    },
+    required: ["signature"],
+    additionalProperties: false,
+  };
+  const registerInput = {
+    type: "object",
+    properties: {
+      name: { type: "string" },
+      protocol: { type: "string", enum: ["MCP"] },
+      mcpUrl: { type: "string", format: "uri" },
+      mcp_url: { type: "string", format: "uri" },
+      endpoint: { type: "string", format: "uri" },
+      allowedTools: { type: "array", items: { type: "string" } },
+      networks: { type: "array", items: { type: "string" } },
+      forceRefresh: { type: "boolean" },
+    },
+    anyOf: [{ required: ["mcpUrl"] }, { required: ["mcp_url"] }, { required: ["endpoint"] }],
+    additionalProperties: false,
+  };
+  const paths = {
+    "/api/health": { get: { operationId: "health" } },
+    "/api/services": { get: { operationId: "services" } },
+    "/api/pricing": { get: { operationId: "pricing" } },
+    "/api/jobs": { post: { operationId: "createJob", requestBody: { required: true, content: { "application/json": { schema: { $ref: "#/components/schemas/CreateJobRequest" } } } } } },
+    "/api/jobs/{jobId}": { get: { operationId: "jobStatus", parameters: [{ $ref: "#/components/parameters/JobId" }] } },
+    "/api/jobs/{jobId}/payment": { post: { operationId: "submitPayment", parameters: [{ $ref: "#/components/parameters/JobId" }], requestBody: { required: true, content: { "application/json": { schema: { $ref: "#/components/schemas/PaymentRequest" } } } } } },
+    "/api/receipts/{receiptId}": { get: { operationId: "getReceipt", parameters: [{ $ref: "#/components/parameters/ReceiptId" }] } },
+    "/api/network/health": { get: { operationId: "networkHealth", parameters: [{ name: "network", in: "query", schema: { type: "string" } }] } },
+    "/api/registry/register": { post: { operationId: "registerAgent", requestBody: { required: true, content: { "application/json": { schema: { $ref: "#/components/schemas/RegisterAgentRequest" } } } } } },
+    "/api/registry/search": { get: { operationId: "searchAgents", parameters: [{ name: "q", in: "query", schema: { type: "string" } }] } },
+    "/api/discovery": { get: { operationId: "discovery" } },
+    "/api/acquisition": { get: { operationId: "acquisition" } },
+    "/api/referrals": { post: { operationId: "createReferral" } },
+    "/api/marketplace/listings": { get: { operationId: "searchListings" }, post: { operationId: "publishListing" } },
+    "/api/marketplace/partners": { get: { operationId: "featuredPartners" } },
+    "/api/partnerships/{partnershipId}/payment-intent": { get: { operationId: "partnershipPaymentIntent" } },
+    "/api/partnerships/{partnershipId}/payment-transaction": { post: { operationId: "partnershipPaymentTransaction" } },
+    "/api/partnerships/{partnershipId}/payment": { post: { operationId: "submitPartnershipPayment" } },
+    "/api/admin/partnerships": { post: { operationId: "createPartnership" } },
+    "/api/admin/partnerships/{partnershipId}": { patch: { operationId: "updatePartnership" } },
+    "/api/logistics/request": { post: { operationId: "requestLogistics", requestBody: { required: true, content: { "application/json": { schema: { $ref: "#/components/schemas/LogisticsRequest" } } } } } },
+    "/api/logistics/capabilities": { get: { operationId: "logisticsCapabilities" } },
+    "/api/agreements": { post: { operationId: "createAgreement" } },
+    "/api/agreements/{agreementId}": { get: { operationId: "getAgreement" } },
+    "/api/agreements/{agreementId}/accept": { post: { operationId: "acceptAgreement" } },
+    "/api/revenue": { get: { operationId: "revenueSummary" } },
+    "/api/treasury/status": { get: { operationId: "treasuryStatus" } },
+    "/receipts/{receiptId}": { get: { operationId: "humanReceipt" } },
+    "/verify/receipt/{receiptId}": { get: { operationId: "verifyHumanReceipt" } },
+    "/partners": { get: { operationId: "featuredPartnersPage" } },
+    "/marketplace/partners": { get: { operationId: "featuredPartnersPage" } },
+    "/agents/{agentId}": { get: { operationId: "agentProfile" } },
+    "/jobs/{jobId}": { get: { operationId: "humanJobReceipt" } },
+    ...Object.fromEntries(SERVICES.map((service) => [servicePath(service.id), { get: { operationId: `service_${service.id.replaceAll(".", "_")}` } }])),
+  };
   return {
     openapi: "3.1.0",
     info: { title: "PrivateDAO Agent Exchange", version: "1.4.0" },
     servers: [{ url: `https://${config.domain}` }],
-    paths: {
-      "/api/health": { get: { operationId: "health" } },
-      "/api/services": { get: { operationId: "services" } },
-      "/api/pricing": { get: { operationId: "pricing" } },
-      "/api/jobs": { post: { operationId: "createJob" } },
-      "/api/jobs/{jobId}": { get: { operationId: "jobStatus" } },
-      "/api/jobs/{jobId}/payment": { post: { operationId: "submitPayment" } },
-      "/api/receipts/{receiptId}": { get: { operationId: "getReceipt" } },
-      "/api/network/health": { get: { operationId: "networkHealth" } },
-      "/api/registry/register": { post: { operationId: "registerAgent" } },
-      "/api/registry/search": { get: { operationId: "searchAgents" } },
-      "/api/discovery": { get: { operationId: "discovery" } },
-      "/api/acquisition": { get: { operationId: "acquisition" } },
-      "/api/referrals": { post: { operationId: "createReferral" } },
-      "/api/marketplace/listings": {
-        get: { operationId: "searchListings" },
-        post: { operationId: "publishListing" },
+    paths,
+    components: {
+      schemas: {
+        ...serviceSchemas,
+        CreateJobRequest: jobInput,
+        PaymentRequest: paymentInput,
+        RegisterAgentRequest: registerInput,
+        LogisticsRequest: {
+          type: "object",
+          properties: {
+            capability: { type: "string" },
+            requirements: { type: "object" },
+            maxPrice: { type: "number", minimum: 0 },
+            asset: { type: "string" },
+            deadline: { type: "string", format: "date-time" },
+            preferredProtocols: { type: "array", items: { type: "string" } },
+            network: { type: "string", description: "Canonical network or accepted alias." },
+          },
+          required: ["capability"],
+          additionalProperties: false,
+        },
       },
-      "/api/marketplace/partners": { get: { operationId: "featuredPartners" } },
-      "/api/partnerships/{partnershipId}/payment-intent": { get: { operationId: "partnershipPaymentIntent" } },
-      "/api/partnerships/{partnershipId}/payment-transaction": { post: { operationId: "partnershipPaymentTransaction" } },
-      "/api/partnerships/{partnershipId}/payment": { post: { operationId: "submitPartnershipPayment" } },
-      "/api/admin/partnerships": { post: { operationId: "createPartnership" } },
-      "/api/admin/partnerships/{partnershipId}": { patch: { operationId: "updatePartnership" } },
-      "/api/logistics/request": { post: { operationId: "requestLogistics" } },
-      "/api/logistics/capabilities": {
-        get: { operationId: "logisticsCapabilities" },
+      parameters: {
+        JobId: { name: "jobId", in: "path", required: true, schema: { type: "string", pattern: "^job_[A-Za-z0-9-]+$" } },
+        ReceiptId: { name: "receiptId", in: "path", required: true, schema: { type: "string", pattern: "^rvr_[A-Za-z0-9]+$" } },
       },
-      "/api/agreements": { post: { operationId: "createAgreement" } },
-      "/api/agreements/{agreementId}": { get: { operationId: "getAgreement" } },
-      "/api/agreements/{agreementId}/accept": {
-        post: { operationId: "acceptAgreement" },
-      },
-      "/api/revenue": { get: { operationId: "revenueSummary" } },
-      "/api/treasury/status": { get: { operationId: "treasuryStatus" } },
-      "/receipts/{receiptId}": { get: { operationId: "humanReceipt" } },
-      "/verify/receipt/{receiptId}": { get: { operationId: "verifyHumanReceipt" } },
-      "/partners": { get: { operationId: "featuredPartnersPage" } },
-      "/marketplace/partners": { get: { operationId: "featuredPartnersPage" } },
-      "/agents/{agentId}": { get: { operationId: "agentProfile" } },
-      "/jobs/{jobId}": { get: { operationId: "humanJobReceipt" } },
-      ...Object.fromEntries(SERVICES.map((service) => [servicePath(service.id), { get: { operationId: `service_${service.id.replaceAll(".", "_")}` } }])),
     },
   };
 }
