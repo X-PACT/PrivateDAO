@@ -36,6 +36,17 @@ export function buildOrganizationJsonLd() {
     name: siteName,
     alternateName: ["Private DAO"],
     url: siteUrl,
+    email: "fahd@privatedao.org",
+    founder: {
+      "@type": "Person",
+      name: "Fahd Kotb",
+    },
+    contactPoint: {
+      "@type": "ContactPoint",
+      contactType: "business inquiries",
+      email: "fahd@privatedao.org",
+      url: `${siteUrl}/contact/`,
+    },
     logo: `${siteUrl}/assets/privatedao-brand-mark-20260918.jpeg`,
     sameAs: [
       "https://github.com/X-PACT/PrivateDAO",
@@ -78,7 +89,7 @@ export function buildSoftwareApplicationJsonLd() {
     copyrightYear: 2026,
     copyrightHolder: {
       "@type": "Person",
-      name: "Fahd Kotb / Eslam Kotb",
+      name: "Fahd Kotb",
     },
     creator: {
       "@type": "Person",

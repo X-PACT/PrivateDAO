@@ -24,6 +24,16 @@ const productOgImages: Record<string, string> = {
   "/whitepaper": "/assets/social/whitepaper.png",
   "/investors": "/assets/social/investors.png",
   "/token": "/assets/social/pdao.png",
+  "/confidential-payroll": "/assets/social/payroll.png",
+  "/private-treasury": "/assets/social/treasury.png",
+  "/private-governance": "/assets/social/governance.png",
+  "/sealed-auctions": "/assets/social/auctions.png",
+  "/blind-verification": "/assets/social/verification.png",
+  "/research": "/assets/social/thesis.png",
+  "/docs": "/assets/social/whitepaper.png",
+  "/architecture": "/assets/social/whitepaper.png",
+  "/networks": "/assets/social/whitepaper.png",
+  "/status": "/assets/social/whitepaper.png",
 };
 
 export function buildRouteMetadata({

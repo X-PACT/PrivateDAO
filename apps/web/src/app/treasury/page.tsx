@@ -11,7 +11,7 @@ export const metadata: Metadata = buildRouteMetadata({
   title: "Treasury Coordination",
   description:
     "Organize spending requests, approvals, and payment decisions in one clear treasury workspace.",
-  path: "/treasury",
+  path: "/private-treasury",
   keywords: ["treasury coordination", "treasury approvals", "spending requests", "treasury audit records"],
 });
 

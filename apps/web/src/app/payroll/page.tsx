@@ -6,7 +6,7 @@ import { buildRouteMetadata } from "@/lib/route-metadata";
 export const metadata: Metadata = buildRouteMetadata({
   title: "Confidential Payroll",
   description: "Prepare payroll privately, apply clear approval rules, and share proof that payments were processed correctly without exposing employee details.",
-  path: "/payroll",
+  path: "/confidential-payroll",
   keywords: ["payroll", "confidential payroll", "private payroll", "payroll verification"],
 });
 

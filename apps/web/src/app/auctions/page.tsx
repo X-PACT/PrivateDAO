@@ -11,7 +11,7 @@ import { cn } from "@/lib/utils";
 export const metadata: Metadata = buildRouteMetadata({
   title: "Sealed Auctions",
   description: "Run fair private auctions where bids stay hidden until the result is ready to share.",
-  path: "/auctions",
+  path: "/sealed-auctions",
   keywords: ["sealed auctions", "private auctions", "confidential procurement", "fair bidding"],
 });
 

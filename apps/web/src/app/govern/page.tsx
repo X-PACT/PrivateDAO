@@ -13,7 +13,7 @@ export const metadata: Metadata = buildRouteMetadata({
   title: "Private Governance",
   description:
     "Private rooms, private voting, committee decisions, DAO coordination, and verifiable governance outcomes for organizations.",
-  path: "/govern",
+  path: "/private-governance",
   keywords: ["private governance", "private rooms", "committee voting", "DAO coordination", "verifiable outcomes"],
 });
 
