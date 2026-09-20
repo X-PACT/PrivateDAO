@@ -5,8 +5,8 @@ Date: 2026-09-20
 ## Release
 
 - Repository branch: `rebrand/enterprise-white`
-- Deployed runtime commit: `b4a1ef632954ca151fe3d1ce72a5aa502e1d8fb7`
-- Lambda version: `72`
+- Deployed runtime commit: `e54e51f56`
+- Lambda version: `73`
 - Function: `PrivateDAOAgentExchange-Function-N2zgpQmMN41S`
 - Region: `eu-north-1`
 - Public URL: `https://agents.privatedao.org`
@@ -112,6 +112,7 @@ The external MCP audit also verified:
 - Existing SingularityAgent registration returns `already_registered` rather than creating a duplicate.
 - Network aliases normalize consistently for matching and logistics, and both return the canonical Registry ID `agent_724dd89f22ee9f4527ef1f16`.
 - A fresh SingularityAgent initialize/tools/list/safe-tool sequence succeeds with 18 tools.
+- Direct provider/service calls also normalize EVM aliases such as `base:mainnet` to `base-mainnet`.
 
 ## Verification Boundaries
 
@@ -133,7 +134,7 @@ requires an explicitly approved and funded test transaction.
 ## Quality Gates
 
 - Node syntax check: PASS
-- Test suite: 26/26 PASS
+- Test suite: 27/27 PASS
 - Smoke test: PASS
 - `npm audit --omit=dev`: 0 vulnerabilities
 - `git diff --check`: PASS
