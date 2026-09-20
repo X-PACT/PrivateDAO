@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { createServer } from "node:http";
 import { executeEvmService, evmRpcUrl, evmRuntimeStats } from "../src/evm.mjs";
-import { mintEvidence, readRpc, solanaHealth, swapQuote, simulateSolanaTransaction } from "../src/solana.mjs";
+import { derivedTreasuryTokenAccount, mintEvidence, readRpc, solanaHealth, swapQuote, simulateSolanaTransaction } from "../src/solana.mjs";
 import { getConfig } from "../src/config.mjs";
 import { enforceRateLimit, resetRuntimeControls } from "../src/runtime-controls.mjs";
 import { researchAsset, researchReport, explainTransaction, portfolioIntelligence } from "../src/intelligence.mjs";
@@ -73,6 +73,18 @@ test("Alchemy URLs are constructed without exposing the key in results", () => {
   const url = evmRpcUrl({ alchemyApiKey: "test-only-key", evmRpcUrls: {} }, "base-mainnet");
   assert.equal(url, "https://base-mainnet.g.alchemy.com/v2/test-only-key");
   assert.equal(getConfig({ ALCHEMY_API_KEY: "test-only-key" }).rpcSecondary, "https://solana-mainnet.g.alchemy.com/v2/test-only-key");
+});
+
+test("production treasury token account is canonical and alternatives are rejected", async () => {
+  const canonical = await derivedTreasuryTokenAccount({
+    treasury: "2BJ4ezxqV9YJXc38D9duKBkdn4su4jE1beKUHwH663sL",
+    usdcMint: "EPjFWdd5AufSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+  });
+  assert.equal(canonical, "L2iAzRuZZrubxcfkQXqBGpPHWej9vLMbm24cDT2jqbv");
+  await assert.rejects(
+    () => derivedTreasuryTokenAccount({ treasury: "11111111111111111111111111111111", usdcMint: canonical }),
+    /unsupported production treasury or USDC mint/,
+  );
 });
 
 test("Solana reads fall back from a rate-limited primary provider", async () => {

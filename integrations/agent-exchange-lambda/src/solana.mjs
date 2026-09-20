@@ -65,19 +65,7 @@ export async function derivedTreasuryTokenAccount(config) {
     config.usdcMint === "EPjFWdd5AufSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"
   )
     return "L2iAzRuZZrubxcfkQXqBGpPHWej9vLMbm24cDT2jqbv";
-  const { PublicKey } = await import("@solana/web3.js");
-  const owner = new PublicKey(config.treasury);
-  const mint = new PublicKey(config.usdcMint);
-  const tokenProgram = new PublicKey(
-    "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
-  );
-  const associatedProgram = new PublicKey(
-    "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL",
-  );
-  return PublicKey.findProgramAddressSync(
-    [owner.toBuffer(), tokenProgram.toBuffer(), mint.toBuffer()],
-    associatedProgram,
-  )[0].toBase58();
+  throw new Error("unsupported production treasury or USDC mint");
 }
 
 export async function readRpc(config, method, params = []) {
