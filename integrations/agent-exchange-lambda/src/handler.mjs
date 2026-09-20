@@ -568,6 +568,24 @@ const collectionFor = (name) =>
   })[name] || name;
 async function listListings(query = {}) {
   const all = await (await store()).list(collectionFor("listings"));
+  const external = (await (await store()).list("Registry"))
+    .filter((agent) => agent.protocol === "MCP" && agent.status === "connected")
+    .map((agent) => ({
+      id: `external_${agent.id}`,
+      agentId: agent.id,
+      provider: agent.name,
+      service: "external-mcp",
+      description: `${agent.name} external MCP server`,
+      capabilities: agent.allowed_tools || [],
+      protocols: ["MCP"],
+      chains: agent.networks || [],
+      price: null,
+      asset: null,
+      verificationLevel: "MCP_HANDSHAKE_VERIFIED",
+      status: "active",
+      external: true,
+      lastSuccessfulConnection: agent.last_successful_connection,
+    }));
   const firstParty = SERVICES.map((service) => ({
     id: `pdao_${service.id}`,
     agentId: "pdao-first-party",
@@ -584,7 +602,7 @@ async function listListings(query = {}) {
     status: "active",
     firstParty: true,
   }));
-  return [...firstParty, ...all].filter(
+  return [...firstParty, ...external, ...all].filter(
     (x) =>
       x.status !== "paused" &&
       (!query.capability ||
@@ -1345,6 +1363,8 @@ async function submitPayment(jobId, body) {
 }
 
 async function register(body) {
+  if (body.mcpUrl || body.mcp_url || String(body.protocol || "").toUpperCase() === "MCP")
+    return registerMcp(body);
   const url = new URL(body.agentCardUrl || body.agent_card_url);
   if (
     url.protocol !== "https:" ||
@@ -1380,10 +1400,169 @@ async function register(body) {
   return agent;
 }
 
+const MCP_TIMEOUT_MS = 8000;
+const MCP_RISKY_TOOL_PATTERN = /(?:build|burn|sign|send|transfer|withdraw|mint|swap|write|delete|destroy|execute|submit|approve|govern|vote|publish|deploy|close|cancel)/i;
+
+function assertPublicHttps(urlText) {
+  const url = new URL(urlText);
+  if (url.protocol !== "https:" || url.username || url.password)
+    throw new Error("external MCP endpoint must be public HTTPS without embedded credentials");
+  const host = url.hostname.toLowerCase();
+  if (host === "localhost" || host.endsWith(".localhost") || host.endsWith(".local") || host === "0.0.0.0" || host === "127.0.0.1" || host === "::1" || /^(10|192\.168|169\.254)\./.test(host))
+    throw new Error("private or loopback MCP endpoint is not allowed");
+  return url;
+}
+
+async function mcpHttp(url, request, sessionId = null) {
+  const headers = {
+    "content-type": "application/json",
+    accept: "application/json, text/event-stream",
+    "MCP-Protocol-Version": "2025-06-18",
+  };
+  if (sessionId) headers["Mcp-Session-Id"] = sessionId;
+  const response = await fetch(url, {
+    method: "POST",
+    redirect: "manual",
+    signal: AbortSignal.timeout(MCP_TIMEOUT_MS),
+    headers,
+    body: JSON.stringify(request),
+  });
+  const text = await response.text();
+  let payload;
+  try { payload = JSON.parse(text); }
+  catch { throw new Error(`MCP endpoint returned non-JSON HTTP ${response.status}`); }
+  if (!response.ok) throw new Error(`MCP endpoint returned HTTP ${response.status}`);
+  if (payload.error) throw new Error(`MCP ${payload.error.code || "error"}: ${payload.error.message || "request failed"}`);
+  return { payload, sessionId: response.headers.get("mcp-session-id") || sessionId };
+}
+
+function mcpToolSummary(tool) {
+  return {
+    name: String(tool?.name || "").slice(0, 120),
+    title: tool?.title ? String(tool.title).slice(0, 200) : null,
+    description: tool?.description ? String(tool.description).slice(0, 1000) : "",
+    inputSchema: tool?.inputSchema && typeof tool.inputSchema === "object" ? tool.inputSchema : { type: "object" },
+  };
+}
+
+async function discoverMcp(mcpUrl) {
+  const url = assertPublicHttps(mcpUrl);
+  const initialized = await mcpHttp(url.href, {
+    jsonrpc: "2.0",
+    id: 1,
+    method: "initialize",
+    params: {
+      protocolVersion: "2025-06-18",
+      capabilities: {},
+      clientInfo: { name: "PrivateDAO-Agent-Exchange", version: "1.0.0" },
+    },
+  });
+  const init = initialized.payload.result;
+  if (!init?.protocolVersion || !init?.serverInfo?.name)
+    throw new Error("MCP initialize response is incomplete");
+  const sessionId = initialized.sessionId;
+  const toolsResponse = await mcpHttp(url.href, { jsonrpc: "2.0", id: 2, method: "tools/list", params: {} }, sessionId);
+  const tools = Array.isArray(toolsResponse.payload.result?.tools)
+    ? toolsResponse.payload.result.tools.map(mcpToolSummary).filter((tool) => tool.name)
+    : [];
+  const optional = async (method, id) => {
+    try {
+      const response = await mcpHttp(url.href, { jsonrpc: "2.0", id, method, params: {} }, toolsResponse.sessionId);
+      return response.payload.result || {};
+    } catch (error) {
+      return { unsupported: true, reason: error.message };
+    }
+  };
+  const resources = await optional("resources/list", 3);
+  const prompts = await optional("prompts/list", 4);
+  return {
+    url: url.href,
+    protocolVersion: init.protocolVersion,
+    serverInfo: { name: String(init.serverInfo.name).slice(0, 200), version: String(init.serverInfo.version || "").slice(0, 80) },
+    capabilities: init.capabilities || {},
+    tools,
+    resourcesSupported: !resources.unsupported,
+    promptsSupported: !prompts.unsupported,
+    sessionId: toolsResponse.sessionId,
+  };
+}
+
+function defaultMcpAllowlist(tools) {
+  return tools.filter((tool) => !MCP_RISKY_TOOL_PATTERN.test(tool.name)).map((tool) => tool.name);
+}
+
+async function registerMcp(body) {
+  const endpoint = body.mcpUrl || body.mcp_url || body.endpoint;
+  if (!endpoint) throw new Error("mcpUrl is required");
+  const discovery = await discoverMcp(endpoint);
+  const requested = Array.isArray(body.allowedTools) ? body.allowedTools.map(String) : null;
+  const discoveredNames = new Set(discovery.tools.map((tool) => tool.name));
+  const allowedTools = (requested || defaultMcpAllowlist(discovery.tools)).filter((name) => discoveredNames.has(name) && !MCP_RISKY_TOOL_PATTERN.test(name));
+  const id = `agent_${digest({ protocol: "MCP", url: discovery.url }).slice(0, 24)}`;
+  const agent = {
+    id,
+    name: body.name || discovery.serverInfo.name,
+    url: discovery.url,
+    endpoint: discovery.url,
+    protocol: "MCP",
+    protocols: ["MCP"],
+    transport: "streamable-http",
+    capabilities: discovery.tools.map((tool) => tool.name),
+    allowed_tools: allowedTools,
+    tools: discovery.tools,
+    mcp: {
+      protocolVersion: discovery.protocolVersion,
+      serverInfo: discovery.serverInfo,
+      capabilities: discovery.capabilities,
+      resourcesSupported: discovery.resourcesSupported,
+      promptsSupported: discovery.promptsSupported,
+    },
+    acceptedAssets: [],
+    pricing: body.pricing || {},
+    networks: body.networks || [],
+    tags: body.tags || ["external", "mcp"],
+    status: "connected",
+    health: "connected",
+    last_successful_connection: now(),
+    verified_at: now(),
+    side_effect_policy: "read-only allowlist; financial, signing and destructive tools blocked",
+  };
+  await (await store()).put("Registry", id, agent);
+  return agent;
+}
+
+async function invokeMcpAgent(agent, tool, args = {}) {
+  const discovery = await discoverMcp(agent.endpoint);
+  if (!tool || typeof tool !== "string") throw Object.assign(new Error("MCP tool is required"), { statusCode: 400 });
+  if (!agent.allowed_tools?.includes(tool))
+    throw Object.assign(new Error("MCP tool is not allowlisted for this agent"), { statusCode: 403 });
+  if (!discovery.tools.some((item) => item.name === tool) || MCP_RISKY_TOOL_PATTERN.test(tool))
+    throw Object.assign(new Error("MCP tool is not available as a safe discovered tool"), { statusCode: 403 });
+  if (!args || typeof args !== "object" || Array.isArray(args) || JSON.stringify(args).length > 32768)
+    throw Object.assign(new Error("MCP tool arguments must be a bounded JSON object"), { statusCode: 400 });
+  const response = await mcpHttp(agent.endpoint, {
+    jsonrpc: "2.0",
+    id: randomUUID(),
+    method: "tools/call",
+    params: { name: tool, arguments: args },
+  }, discovery.sessionId || null);
+  return {
+    agent_id: agent.id,
+    agent_name: agent.name,
+    protocol: "MCP",
+    tool,
+    status: response.payload.result?.isError ? "error" : "completed",
+    result: response.payload.result || null,
+    evidence: { provider_url: agent.endpoint, observed_at: now(), handshake: "verified" },
+  };
+}
+
 async function invokeAgent(body) {
   const agent = await (await store()).get("Registry", body.agentId);
-  if (!agent || agent.status !== "verified")
+  if (!agent || !["verified", "connected"].includes(agent.status))
     throw new Error("verified agent required");
+  if (agent.protocol === "MCP" || agent.transport === "streamable-http")
+    return invokeMcpAgent(agent, body.tool, body.arguments || body.payload || {});
   const response = await fetch(agent.url, {
     method: "POST",
     redirect: "manual",
