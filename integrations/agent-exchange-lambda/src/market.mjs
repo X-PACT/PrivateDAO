@@ -4,10 +4,15 @@ const chainIds = Object.freeze({
   "base-mainnet": "base",
   "arbitrum-mainnet": "arbitrum",
 });
+const marketCache = new Map();
+const MARKET_TTL_MS = 15000;
 
 export async function marketData(config, network, asset) {
   const chainId = chainIds[network];
   if (!chainId) throw new Error(`market data is not supported on ${network}`);
+  const cacheKey = `${network}:${asset}`;
+  const cached = marketCache.get(cacheKey);
+  if (cached && cached.expiresAt > Date.now()) return { ...cached.value, cache: "hit" };
   const url = `${config.marketDataUrl.replace(/\/$/, "")}/tokens/${encodeURIComponent(asset)}`;
   const response = await fetch(url, {
     headers: { accept: "application/json" },
@@ -19,8 +24,12 @@ export async function marketData(config, network, asset) {
     ? body.pairs.filter((pair) => pair.chainId === chainId)
     : [];
   const pair = pairs.sort((a, b) => Number(b.liquidity?.usd || 0) - Number(a.liquidity?.usd || 0))[0];
-  if (!pair) return { status: "no_pair", source: "dexscreener", network, asset, observed_at: new Date().toISOString() };
-  return {
+  if (!pair) {
+    const value = { status: "no_pair", source: "dexscreener", network, asset, observed_at: new Date().toISOString() };
+    marketCache.set(cacheKey, { value, expiresAt: Date.now() + MARKET_TTL_MS });
+    return { ...value, cache: "miss" };
+  }
+  const value = {
     status: "source_confirmed",
     source: "dexscreener",
     network,
@@ -38,4 +47,6 @@ export async function marketData(config, network, asset) {
     price_change_24h_percent: pair.priceChange?.h24 ?? null,
     observed_at: new Date().toISOString(),
   };
+  marketCache.set(cacheKey, { value, expiresAt: Date.now() + MARKET_TTL_MS });
+  return { ...value, cache: "miss" };
 }

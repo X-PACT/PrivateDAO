@@ -159,6 +159,8 @@ test("market data uses a chain-filtered sourced pair", async () => {
     assert.equal(result.status, "source_confirmed");
     assert.equal(result.pair_address, "0xpair");
     assert.equal(result.price_usd, "1.25");
+    const cached = await marketData({ marketDataUrl: "https://market.example/latest/dex" }, "ethereum-mainnet", "0x0000000000000000000000000000000000000001");
+    assert.equal(cached.cache, "hit");
   } finally {
     global.fetch = originalFetch;
   }
