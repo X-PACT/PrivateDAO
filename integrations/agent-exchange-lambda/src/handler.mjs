@@ -1389,7 +1389,7 @@ async function handle(e) {
   }
   if (method === "GET" && ["/agent-registry/register", "/register/8004"].includes(path)) {
     const page = registryRegistrationPage();
-    return { statusCode: 200, headers: { "content-type": "text/html; charset=utf-8", "cache-control": "no-store", "content-security-policy": `default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'nonce-${page.nonce}' https://esm.sh https://cdn.jsdelivr.net; connect-src 'self' https://agents.privatedao.org https://api.mainnet-beta.solana.com; frame-ancestors 'none'` }, body: page.body };
+    return { statusCode: 200, headers: { "content-type": "text/html; charset=utf-8", "cache-control": "no-store", "content-security-policy": `default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'nonce-${page.nonce}' https://esm.sh https://cdn.jsdelivr.net; connect-src 'self' https://agents.privatedao.org https://api.mainnet-beta.solana.com; frame-ancestors 'none'` }, body: injectLanguageWidget(page.body) };
   }
   if (method === "GET" && path === "/") {
     trackFunnel("human_home_view");
@@ -1577,7 +1577,7 @@ async function handle(e) {
   if (method === "GET" && path === "/api/treasury/status")
     return json(await treasuryStatus());
   const payPage = path.match(/^\/pay\/([^/]+)$/);
-  if (method === "GET" && payPage) return { statusCode: 200, headers: { "content-type": "text/html; charset=utf-8", "cache-control": "no-store" }, body: paymentPage(decodeURIComponent(payPage[1])) };
+  if (method === "GET" && payPage) return { statusCode: 200, headers: { "content-type": "text/html; charset=utf-8", "cache-control": "no-store" }, body: injectLanguageWidget(paymentPage(decodeURIComponent(payPage[1]))) };
   if (method === "GET" && (path === "/mcp" || path === "/a2a"))
     return json(card());
   if (method === "POST" && path === "/api/admin/smoke-invoice") {
