@@ -8,9 +8,11 @@ import {
   mintEvidence,
   networkStats,
   readRpc,
+  swapQuote,
   treasuryTokenAccount,
   verifyPayment,
 } from "./solana.mjs";
+import { evmNetwork, evmHealth, executeEvmService } from "./evm.mjs";
 
 const config = getConfig();
 let storePromise;
@@ -77,7 +79,7 @@ function card() {
     name: "PrivateDAO Agent Exchange",
     description: "Machine-native PrivateDAO services for verification, evidence and agent workflows. Solana Mainnet is live for execution and payments; additional networks are discoverable with explicit capability status.",
     provider: { organization: "PrivateDAO", url: "https://privatedao.org" },
-    version: "1.3.0",
+    version: "1.4.0",
     protocolVersion: "0.3.0",
     url: `https://${config.domain}/a2a`,
     documentationUrl: `https://${config.domain}/llms-full.txt`,
@@ -127,6 +129,7 @@ function card() {
         inputModes: ["application/json"],
         outputModes: ["application/json"],
         pricing: { access: s.access, amount: s.price, currency: s.currency, free: s.access === "free" },
+        supportedNetworks: s.supportedNetworks || ["solana-mainnet-beta"],
       })),
       {
         id: "registry.search",
@@ -141,7 +144,7 @@ function card() {
 function openapi() {
   return {
     openapi: "3.1.0",
-    info: { title: "PrivateDAO Agent Exchange", version: "1.3.0" },
+    info: { title: "PrivateDAO Agent Exchange", version: "1.4.0" },
     servers: [{ url: `https://${config.domain}` }],
     paths: {
       "/api/health": { get: { operationId: "health" } },
@@ -151,6 +154,7 @@ function openapi() {
       "/api/jobs/{jobId}": { get: { operationId: "jobStatus" } },
       "/api/jobs/{jobId}/payment": { post: { operationId: "submitPayment" } },
       "/api/receipts/{receiptId}": { get: { operationId: "getReceipt" } },
+      "/api/network/health": { get: { operationId: "networkHealth" } },
       "/api/registry/register": { post: { operationId: "registerAgent" } },
       "/api/registry/search": { get: { operationId: "searchAgents" } },
       "/api/discovery": { get: { operationId: "discovery" } },
@@ -181,7 +185,7 @@ function openapi() {
 function llms() {
   const free = SERVICES.filter((service) => !service.price).map((service) => service.id).join(", ");
   const paid = SERVICES.filter((service) => service.price).map((service) => service.id).join(", ");
-  return `# PrivateDAO Agent Exchange\nPurpose: machine-native Solana Mainnet verification, evidence and agent services.\nFree: ${free}\nPaid: ${paid}\nFlow: discover -> POST /api/jobs -> run verify.basic free or receive HTTP 402 -> read payment_intent -> pay the exact finalized Solana Mainnet USDC quote -> POST /api/jobs/{jobId}/payment with the transaction signature -> GET /api/jobs/{jobId} -> GET /api/receipts/{receiptId}.\nPrices: GET https://${config.domain}/api/pricing\nServices: GET https://${config.domain}/api/services\nPayment: finalized Solana mainnet USDC transaction, quote first; agents sign their own transactions.\nAgent Card: https://${config.domain}/.well-known/agent-card.json\nA2A: https://${config.domain}/a2a\nMCP: https://${config.domain}/mcp\nOpenAPI: https://${config.domain}/openapi.json\nReceipts: GET https://${config.domain}/api/receipts/{receiptId}\n`;
+  return `# PrivateDAO Agent Exchange\nPurpose: machine-native Solana Mainnet services with read-only multi-chain intelligence for Ethereum Mainnet, Base Mainnet and Arbitrum One.\nFree: ${free}\nPaid: ${paid}\nFlow: discover -> POST /api/jobs -> run verify.basic free or receive HTTP 402 -> read payment_intent -> pay the exact finalized Solana Mainnet USDC quote -> POST /api/jobs/{jobId}/payment with the transaction signature -> GET /api/jobs/{jobId} -> GET /api/receipts/{receiptId}.\nTarget network is independent from the existing Solana payment network. New EVM services are read-only and never broadcast transactions.\nPrices: GET https://${config.domain}/api/pricing\nServices: GET https://${config.domain}/api/services\nPayment: finalized Solana mainnet USDC transaction, quote first; agents sign their own transactions.\nAgent Card: https://${config.domain}/.well-known/agent-card.json\nA2A: https://${config.domain}/a2a\nMCP: https://${config.domain}/mcp\nOpenAPI: https://${config.domain}/openapi.json\nReceipts: GET https://${config.domain}/api/receipts/{receiptId}\n`;
 }
 function acquisition() {
   const services = SERVICES.map((service) => ({
@@ -296,11 +300,17 @@ function capabilityStatus(serviceId) {
   // Only the free verification path has a recorded production smoke result.
   // Other catalog entries remain implementation-level until an execution
   // record proves their production path independently.
-  return serviceId === "verify.basic" ? "Mainnet Live" : "Implementation";
+  if (serviceId === "verify.basic") return "Mainnet Live";
+  const service = serviceById(serviceId);
+  if (service?.supportedNetworks?.some((network) => network !== "solana-mainnet-beta")) return "Mainnet Read-only";
+  return "Implementation";
 }
 function serviceExample(service) {
-  if (service.input.includes("mint")) return { mint: "YOUR_SOLANA_MINT" };
-  if (service.input.includes("wallet")) return { wallet: "YOUR_SOLANA_WALLET" };
+  if (service.id === "transaction.simulate") return { network: "ethereum-mainnet", transaction: { to: "0x0000000000000000000000000000000000000000", data: "0x" } };
+  if (service.id === "swap.quote") return { network: "solana-mainnet-beta", inputMint: "So11111111111111111111111111111111111111112", outputMint: "EPjFWdd5AufSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v", amount: "1000000", slippageBps: 50 };
+  if (service.input.includes("token identifier")) return { network: "ethereum-mainnet", asset: "0x0000000000000000000000000000000000000000" };
+  if (service.input.includes("mint")) return { network: "solana-mainnet-beta", mint: "YOUR_SOLANA_MINT" };
+  if (service.input.includes("wallet")) return { network: "solana-mainnet-beta", wallet: "YOUR_SOLANA_WALLET" };
   if (service.input.includes("program")) return { program: "YOUR_SOLANA_PROGRAM" };
   if (service.input.includes("receipt")) return { receipt: {}, expected_hash: "OPTIONAL_RECEIPT_HASH" };
   if (service.input.includes("capabilities")) return { capabilities: ["verification"] };
@@ -317,8 +327,8 @@ function injectLanguageWidget(html) {
 function serviceDetailPage(service) {
   const status = capabilityStatus(service.id);
   const example = JSON.stringify({ service_id: service.id, input: serviceExample(service) }, null, 2);
-  const network = status === "Mainnet Live" ? "Solana Mainnet" : "Solana Mainnet path implemented; independent production execution evidence is not yet published";
-  return injectLanguageWidget(`<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${escapeHtml(service.title)} | PrivateDAO Agents</title><meta name="description" content="${escapeHtml(service.output)} through the PrivateDAO Agent Exchange."><link rel="canonical" href="https://${config.domain}${servicePath(service.id)}"><meta property="og:title" content="${escapeHtml(service.title)} | PrivateDAO Agents"><meta property="og:description" content="${escapeHtml(service.output)} through the PrivateDAO Agent Exchange."><meta property="og:url" content="https://${config.domain}${servicePath(service.id)}"><style>:root{--ink:#071a32;--muted:#52657b;--line:#dbe5ef;--blue:#1769e0;--pale:#f5f9ff}*{box-sizing:border-box}body{margin:0;background:#fff;color:var(--ink);font-family:Inter,system-ui,sans-serif;line-height:1.55}main{max-width:1000px;margin:auto;padding:26px 24px 72px}header{display:flex;justify-content:space-between;gap:20px;padding-bottom:70px}.brand,a{color:var(--blue);font-weight:750;text-decoration:none}.brand{color:var(--ink);font-weight:850}.nav{display:flex;gap:18px;color:var(--muted);font-size:.9rem}.nav a{color:var(--muted)}.eyebrow{color:var(--blue);font-size:.72rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase}h1{font-size:clamp(2.7rem,7vw,5.8rem);line-height:.95;letter-spacing:-.06em;max-width:760px;margin:14px 0 18px}.lead{max-width:700px;color:var(--muted);font-size:1.15rem}.meta{display:flex;flex-wrap:wrap;gap:9px;margin:26px 0}.pill{border:1px solid var(--line);border-radius:999px;padding:8px 12px;background:var(--pale);font-size:.86rem;font-weight:700}.live{color:#087f5b}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:42px}.panel{border:1px solid var(--line);border-radius:16px;padding:20px;box-shadow:0 10px 25px rgba(14,42,78,.05)}.panel h2{margin-top:0;font-size:1.2rem}.muted{color:var(--muted)}pre{overflow:auto;background:#f5f9ff;border:1px solid var(--line);border-radius:12px;padding:14px;font-size:12px}.button{display:inline-flex;background:var(--ink);color:#fff;border-radius:999px;padding:12px 18px;margin-top:18px}@media(max-width:700px){main{padding:20px 16px 56px}header{padding-bottom:45px}.nav{gap:10px;font-size:.78rem}.grid{grid-template-columns:1fr}h1{font-size:clamp(3rem,15vw,5.4rem)}}</style></head><body><main><header><a class="brand" href="/">PrivateDAO Agents</a><nav class="nav"><a href="/marketplace">Marketplace</a><a href="/connect">Build</a><a href="/.well-known/agent-card.json">Agent Card</a></nav></header><p class="eyebrow">Service capability</p><h1>${escapeHtml(service.title)}</h1><p class="lead">${escapeHtml(service.output)}. Use the service through a structured request and receive a receipt for the completed result.</p><div class="meta"><span class="pill ${status === "Mainnet Live" ? "live" : ""}">${escapeHtml(status)}</span><span class="pill">${escapeHtml(service.access === "free" ? "Free" : `${service.price} ${service.currency}`)}</span><span class="pill">${escapeHtml(network)}</span></div><div class="grid"><section class="panel"><h2>What you provide</h2><p>${escapeHtml(service.input)}</p><h2>What happens</h2><p class="muted">PrivateDAO validates the request, runs the capability within its execution boundary, and returns a machine-readable result with a receipt when completed.</p></section><section class="panel"><h2>What you receive</h2><p>${escapeHtml(service.output)}</p><p class="muted">No claim is made beyond the evidence available for this capability and network.</p></section></div><section class="panel" style="margin-top:14px"><h2>API example</h2><pre>${escapeHtml(`curl -X POST https://${config.domain}/api/jobs -H 'content-type: application/json' -d '${example.replaceAll("'", "\\'")}'`)}</pre><a class="button" href="/connect#${escapeHtml(service.id)}">Run this service <span aria-hidden="true">→</span></a></section></main></body></html>`);
+  const supported = service.supportedNetworks?.length ? service.supportedNetworks.join(", ") : status === "Mainnet Live" ? "solana-mainnet-beta" : "Solana Mainnet path";
+  return injectLanguageWidget(`<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${escapeHtml(service.title)} | PrivateDAO Agents</title><meta name="description" content="${escapeHtml(service.output)} through the PrivateDAO Agent Exchange."><link rel="canonical" href="https://${config.domain}${servicePath(service.id)}"><meta property="og:title" content="${escapeHtml(service.title)} | PrivateDAO Agents"><meta property="og:description" content="${escapeHtml(service.output)} through the PrivateDAO Agent Exchange."><meta property="og:url" content="https://${config.domain}${servicePath(service.id)}"><style>:root{--ink:#071a32;--muted:#52657b;--line:#dbe5ef;--blue:#1769e0;--pale:#f5f9ff}*{box-sizing:border-box}body{margin:0;background:#fff;color:var(--ink);font-family:Inter,system-ui,sans-serif;line-height:1.55}main{max-width:1000px;margin:auto;padding:26px 24px 72px}header{display:flex;justify-content:space-between;gap:20px;padding-bottom:70px}.brand,a{color:var(--blue);font-weight:750;text-decoration:none}.brand{color:var(--ink);font-weight:850}.nav{display:flex;gap:18px;color:var(--muted);font-size:.9rem}.nav a{color:var(--muted)}.eyebrow{color:var(--blue);font-size:.72rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase}h1{font-size:clamp(2.7rem,7vw,5.8rem);line-height:.95;letter-spacing:-.06em;max-width:760px;margin:14px 0 18px}.lead{max-width:700px;color:var(--muted);font-size:1.15rem}.meta{display:flex;flex-wrap:wrap;gap:9px;margin:26px 0}.pill{border:1px solid var(--line);border-radius:999px;padding:8px 12px;background:var(--pale);font-size:.86rem;font-weight:700}.live{color:#087f5b}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:42px}.panel{border:1px solid var(--line);border-radius:16px;padding:20px;box-shadow:0 10px 25px rgba(14,42,78,.05)}.panel h2{margin-top:0;font-size:1.2rem}.muted{color:var(--muted)}pre{overflow:auto;background:#f5f9ff;border:1px solid var(--line);border-radius:12px;padding:14px;font-size:12px}.button{display:inline-flex;background:var(--ink);color:#fff;border-radius:999px;padding:12px 18px;margin-top:18px}@media(max-width:700px){main{padding:20px 16px 56px}header{padding-bottom:45px}.nav{gap:10px;font-size:.78rem}.grid{grid-template-columns:1fr}h1{font-size:clamp(3rem,15vw,5.4rem)}}</style></head><body><main><header><a class="brand" href="/">PrivateDAO Agents</a><nav class="nav"><a href="/marketplace">Marketplace</a><a href="/connect">Build</a><a href="/.well-known/agent-card.json">Agent Card</a></nav></header><p class="eyebrow">Service capability</p><h1>${escapeHtml(service.title)}</h1><p class="lead">${escapeHtml(service.output)}. Use the service through a structured request and receive a receipt for the completed result.</p><div class="meta"><span class="pill ${status === "Mainnet Live" ? "live" : ""}">${escapeHtml(status)}</span><span class="pill">${escapeHtml(service.access === "free" ? "Free" : `${service.price} ${service.currency}`)}</span><span class="pill">${escapeHtml(supported)}</span></div><div class="grid"><section class="panel"><h2>What you provide</h2><p>${escapeHtml(service.input)}</p><h2>What happens</h2><p class="muted">PrivateDAO validates the request, runs the capability within its execution boundary, and returns a machine-readable result with a receipt when completed.</p></section><section class="panel"><h2>What you receive</h2><p>${escapeHtml(service.output)}</p><p class="muted">No claim is made beyond the evidence available for this capability and network.</p></section></div><section class="panel" style="margin-top:14px"><h2>API example</h2><pre>${escapeHtml(`curl -X POST https://${config.domain}/api/jobs -H 'content-type: application/json' -d '${example.replaceAll("'", "\\'")}'`)}</pre><a class="button" href="/connect#${escapeHtml(service.id)}">Run this service <span aria-hidden="true">→</span></a></section></main></body></html>`);
 }
 function publicReceiptPage(receipt, verified = false) {
   const rows = [
@@ -791,9 +801,20 @@ async function makeQuote(serviceId, jobId, admin = false, currency = "USDC") {
 }
 
 async function executeService(id, input) {
+  const requestedNetwork = String(input?.network || "");
+  if (requestedNetwork && evmNetwork(requestedNetwork)) {
+    const service = serviceById(id);
+    if (!service?.supportedNetworks?.includes(requestedNetwork))
+      throw new Error(`${id} is not supported on ${requestedNetwork}`);
+    return executeEvmService(config, id, input);
+  }
+  if (requestedNetwork && requestedNetwork !== "solana-mainnet-beta")
+    throw new Error(`unsupported target network: ${requestedNetwork}`);
+  if (id === "swap.quote") return swapQuote(config, input);
   if (id === "verify.basic" || id === "verify.deep") {
-    if (input?.mint) {
-      const evidence = await mintEvidence(config, input.mint);
+    const mint = input?.mint || input?.asset;
+    if (mint) {
+      const evidence = await mintEvidence(config, mint);
       if (id === "verify.deep") {
         const sigs = await readRpc(config, "getSignaturesForAddress", [
           input.mint,
@@ -849,7 +870,7 @@ async function executeService(id, input) {
       "market.snapshot",
     ].includes(id)
   ) {
-    const evidence = await mintEvidence(config, input?.mint);
+    const evidence = await mintEvidence(config, input?.mint || input?.asset);
     const authorityRisk = [
       evidence.mint_authority,
       evidence.freeze_authority,
@@ -1022,6 +1043,13 @@ async function executeService(id, input) {
 async function createJob(serviceId, input, admin = false, currency = "USDC", metadata = {}) {
   const service = serviceById(serviceId);
   if (!service) throw new Error("unknown service");
+  const persistForPaymentRetry = Boolean(service.price && [
+    "token.intelligence",
+    "risk.score",
+    "wallet.intelligence",
+    "market.snapshot",
+    "transaction.simulate",
+  ].includes(serviceId));
   const job = {
     id: `job_${randomUUID()}`,
     service_id: serviceId,
@@ -1029,6 +1057,7 @@ async function createJob(serviceId, input, admin = false, currency = "USDC", met
     status: service.price ? "awaiting_payment" : "running",
     created_at: now(),
     expires_at: new Date(Date.now() + 900000).toISOString(),
+    ...(persistForPaymentRetry ? { execution_input: input } : {}),
   };
   await (await store()).put("Jobs", job.id, job, true);
   trackFunnel("job_created", { service: serviceId, ...metadata });
@@ -1101,6 +1130,8 @@ async function completeJob(job, result, payment) {
     amount: payment?.amount || 0,
     treasury: config.treasury,
     network: "solana-mainnet-beta",
+    payment_network: "solana-mainnet-beta",
+    target_network: job.execution_input?.network || enrichedResult?.network || "solana-mainnet-beta",
     status: "VERIFIED",
   };
   receipt.public_url = `https://${config.domain}/receipts/${encodeURIComponent(receipt.receipt_id)}`;
@@ -1191,7 +1222,7 @@ async function submitPayment(jobId, body) {
     // Recover a payment claim left behind by a crashed invocation. The
     // signature remains bound to this job, so no second payment is accepted.
   }
-  const result = await executeService(job.service_id, body.input || {});
+  const result = await executeService(job.service_id, body.input || job.execution_input || {});
   return completeJob(job, result, {
     signature: body.signature,
     currency: quote.currency,
@@ -1307,7 +1338,7 @@ async function handle(e) {
     return json({
       status: "ok",
       service: "pdao-agent-exchange",
-      version: "1.3.0",
+      version: "1.4.0",
       network: "solana-mainnet-beta",
       rpcMode: config.rpcPrimary.includes("api.mainnet-beta")
         ? "public-fallback"
@@ -1420,6 +1451,15 @@ async function handle(e) {
     return json(await buildPaymentTransaction(paymentTransaction[1], body.payer, body.sourceTokenAccount));
   if (method === "GET" && path === "/api/network/stats")
     return json(await networkStats(config));
+  if (method === "GET" && path === "/api/network/health") {
+    const requested = String(e.queryStringParameters?.network || "").trim();
+    const networks = requested ? [requested] : ["ethereum-mainnet", "base-mainnet", "arbitrum-mainnet"];
+    const results = await Promise.all(networks.map(async (network) => {
+      try { return await evmHealth(config, network); }
+      catch (error) { return { network, status: "rpc_unhealthy", reason: error.message }; }
+    }));
+    return json({ results, read_only: true, note: "RPC health does not imply service execution or payment readiness." });
+  }
   if (method === "GET" && path === "/api/acquisition") {
     const referral = e.queryStringParameters?.ref || null;
     trackFunnel("acquisition_manifest_view", { source: referral || "direct" });
@@ -1565,7 +1605,7 @@ async function mcp(request) {
       id,
       result: {
         protocolVersion: "2025-03-26",
-        serverInfo: { name: "pdao-agent-exchange", version: "1.1.0" },
+        serverInfo: { name: "pdao-agent-exchange", version: "1.4.0" },
         capabilities: { tools: {} },
       },
     });

@@ -2,6 +2,13 @@ const bool = (value, fallback = false) =>
   value == null ? fallback : value === "true" || value === "1";
 
 export function getConfig(env = process.env) {
+  const evmRpcUrls = Object.fromEntries(
+    [
+      ["ethereum-mainnet", "PDAO_EVM_ETHEREUM_MAINNET_RPC_URL"],
+      ["base-mainnet", "PDAO_EVM_BASE_MAINNET_RPC_URL"],
+      ["arbitrum-mainnet", "PDAO_EVM_ARBITRUM_MAINNET_RPC_URL"],
+    ].map(([network, key]) => [network, env[key] || ""]).filter(([, value]) => value),
+  );
   return {
     region: env.AWS_REGION || "eu-north-1",
     domain: env.AGENT_DOMAIN || "agents.privatedao.org",
@@ -26,6 +33,11 @@ export function getConfig(env = process.env) {
     rpcFallback:
       env.AGENT_GATEWAY_SOLANA_RPC_FALLBACK ||
       "https://api.mainnet-beta.solana.com",
+    alchemyApiKey: env.ALCHEMY_API_KEY || "",
+    alchemySecretId: env.AGENT_EXCHANGE_ALCHEMY_SECRET_ID || "",
+    evmRpcUrls,
+    jupiterQuoteUrl: env.PDAO_JUPITER_QUOTE_URL || "https://quote-api.jup.ag/v6/quote",
+    jupiterApiKey: env.PDAO_JUPITER_API_KEY || "",
     bedrockEnabled: bool(env.BEDROCK_ENABLED),
     bedrockModel: env.BEDROCK_MODEL_ID || "amazon.nova-micro-v1:0",
     telegramNotifications: bool(env.PDAO_TELEGRAM_NOTIFICATIONS_ENABLED),
@@ -51,32 +63,42 @@ export function getConfig(env = process.env) {
 }
 
 export async function hydrateConfig(config, env = process.env) {
-  if (!env.AGENT_EXCHANGE_SOLANA_RPC_SECRET_ID) return config;
+  if (!env.AGENT_EXCHANGE_SOLANA_RPC_SECRET_ID && !config.alchemySecretId) return config;
   const [{ SecretsManagerClient, GetSecretValueCommand }] = await Promise.all([
     import("@aws-sdk/client-secrets-manager"),
   ]);
   const client = new SecretsManagerClient({ region: config.region });
-  const result = await client.send(
-    new GetSecretValueCommand({
-      SecretId: env.AGENT_EXCHANGE_SOLANA_RPC_SECRET_ID,
-    }),
-  );
-  const values = Object.fromEntries(
-    (result.SecretString || "")
-      .split(/\r?\n/)
+  const parseSecret = (secret) => Object.fromEntries(
+    (secret || "").split(/\r?\n/)
       .filter((line) => line && !line.trim().startsWith("#"))
       .map((line) => {
         const i = line.indexOf("=");
-        return i > 0
-          ? [line.slice(0, i).trim(), line.slice(i + 1).trim()]
-          : null;
-      })
-      .filter(Boolean),
+        return i > 0 ? [line.slice(0, i).trim(), line.slice(i + 1).trim()] : null;
+      }).filter(Boolean),
   );
+  const values = env.AGENT_EXCHANGE_SOLANA_RPC_SECRET_ID
+    ? parseSecret((await client.send(new GetSecretValueCommand({ SecretId: env.AGENT_EXCHANGE_SOLANA_RPC_SECRET_ID }))).SecretString)
+    : {};
   if (values.AGENT_GATEWAY_SOLANA_RPC_PRIMARY)
     config.rpcPrimary = values.AGENT_GATEWAY_SOLANA_RPC_PRIMARY;
   if (values.AGENT_GATEWAY_SOLANA_WS_PRIMARY)
     config.rpcWsPrimary = values.AGENT_GATEWAY_SOLANA_WS_PRIMARY;
+  if (values.ALCHEMY_API_KEY) config.alchemyApiKey = values.ALCHEMY_API_KEY;
+  for (const [network, key] of [
+    ["ethereum-mainnet", "PDAO_EVM_ETHEREUM_MAINNET_RPC_URL"],
+    ["base-mainnet", "PDAO_EVM_BASE_MAINNET_RPC_URL"],
+    ["arbitrum-mainnet", "PDAO_EVM_ARBITRUM_MAINNET_RPC_URL"],
+  ]) if (values[key]) config.evmRpcUrls[network] = values[key];
+  if (config.alchemySecretId) {
+    const alchemy = await client.send(new GetSecretValueCommand({ SecretId: config.alchemySecretId }));
+    const alchemyValues = parseSecret(alchemy.SecretString);
+    if (alchemyValues.ALCHEMY_API_KEY) config.alchemyApiKey = alchemyValues.ALCHEMY_API_KEY;
+    for (const [network, key] of [
+      ["ethereum-mainnet", "PDAO_EVM_ETHEREUM_MAINNET_RPC_URL"],
+      ["base-mainnet", "PDAO_EVM_BASE_MAINNET_RPC_URL"],
+      ["arbitrum-mainnet", "PDAO_EVM_ARBITRUM_MAINNET_RPC_URL"],
+    ]) if (alchemyValues[key]) config.evmRpcUrls[network] = alchemyValues[key];
+  }
   if (env.AGENT_EXCHANGE_ADMIN_SECRET_ID) {
     const admin = await client.send(
       new GetSecretValueCommand({

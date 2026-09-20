@@ -198,3 +198,40 @@ export async function mintEvidence(config, mint) {
     evidence_confidence: account.result?.value ? "rpc-confirmed" : "not-found",
   };
 }
+
+export async function swapQuote(config, input = {}) {
+  assertMainnetConfig(config);
+  const inputMint = input.inputMint || input.input_mint;
+  const outputMint = input.outputMint || input.output_mint;
+  const amount = String(input.amount || "");
+  if (!/^[1-9][0-9]*$/.test(amount)) throw new Error("positive base-unit amount is required");
+  if (![inputMint, outputMint].every((value) => /^[1-9A-HJ-NP-Za-km-z]{32,44}$/.test(value || "")))
+    throw new Error("valid Solana inputMint and outputMint are required");
+  const url = new URL(config.jupiterQuoteUrl);
+  url.searchParams.set("inputMint", inputMint);
+  url.searchParams.set("outputMint", outputMint);
+  url.searchParams.set("amount", amount);
+  url.searchParams.set("slippageBps", String(Math.min(5000, Math.max(1, Number(input.slippageBps || 50)))));
+  const response = await fetch(url, {
+    headers: config.jupiterApiKey ? { "x-api-key": config.jupiterApiKey } : {},
+    signal: AbortSignal.timeout(10000),
+  });
+  if (!response.ok) throw new Error(`Jupiter quote HTTP ${response.status}`);
+  const quote = await response.json();
+  if (quote.error) throw new Error(String(quote.error));
+  return {
+    network: "solana-mainnet-beta",
+    provider: "Jupiter quote API",
+    quote_only: true,
+    execution: "disabled",
+    input_mint: inputMint,
+    output_mint: outputMint,
+    input_amount: amount,
+    expected_output_amount: quote.outAmount || null,
+    slippage_bps: quote.slippageBps ?? null,
+    route_plan: Array.isArray(quote.routePlan) ? quote.routePlan.map((route) => ({ swap: route.swap, percent: route.percent })) : [],
+    context_slot: quote.contextSlot || null,
+    time_taken_ms: quote.timeTaken ? Math.round(Number(quote.timeTaken) * 1000) : null,
+    observed_at: new Date().toISOString(),
+  };
+}

@@ -11,6 +11,8 @@ the game runtime.
 - Handler: `src/handler.handler`
 - Domain: `agents.privatedao.org`
 - Production execution network: Solana Mainnet
+- Mainnet read-only intelligence: Ethereum Mainnet, Base Mainnet, and Arbitrum One
+- Solana Agent identity: 8004 Agent #1471; this Lambda does not create or replace that identity
 
 ## Public surfaces
 
@@ -18,6 +20,7 @@ the game runtime.
 - `/connect` developer connection flow
 - `/.well-known/agent-card.json` discovery card
 - `/api/services` service catalog API
+- `/api/network/health?network=ethereum-mainnet` sanitized provider health
 - `/a2a`, `/mcp`, `/openapi.json` machine interfaces
 
 ## Deployment boundary
@@ -29,7 +32,21 @@ Runtime secrets and DynamoDB configuration are supplied by the Lambda
 environment and AWS Secrets Manager. No secret, private key, token, or
 `node_modules` directory belongs in this repository directory.
 
+The existing Solana RPC secret may also contain `ALCHEMY_API_KEY`. The runtime
+constructs network-specific Alchemy endpoints in `src/evm.mjs`; the key is
+never returned in health evidence, receipts, Agent Card metadata, browser
+bundles, or logs. Explicit `PDAO_EVM_*_RPC_URL` values take precedence when
+configured securely.
+
+The current payment rail remains Solana Mainnet USDC. A requested EVM target
+network does not move the payment rail: paid jobs quote and verify payment on
+Solana, then execute the read-only target service. EVM transaction simulation
+and Jupiter swap quotes never sign or broadcast transactions.
+
+Agent #1471 metadata remains the canonical Solana identity. Its existing IPFS
+URI and owner are preserved; no duplicate registration is created during
+multi-chain expansion.
+
 Before deployment, run `node --check src/handler.mjs`, package the source with
 the Lambda runtime dependencies, and verify the public API and browser surfaces
 after the update. Keep the previous Lambda package available for rollback.
-

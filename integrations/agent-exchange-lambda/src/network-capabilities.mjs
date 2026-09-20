@@ -8,6 +8,36 @@ export const NETWORK_CAPABILITIES = Object.freeze([
     capabilities: ["service-discovery", "payments", "job-execution", "receipts"],
   },
   {
+    id: "ethereum:mainnet",
+    label: "Ethereum Mainnet",
+    status: "mainnet-read-only",
+    capabilities: ["service-discovery", "read-only-intelligence", "transaction-simulation"],
+  },
+  {
+    id: "base:mainnet",
+    label: "Base Mainnet",
+    status: "mainnet-read-only",
+    capabilities: ["service-discovery", "read-only-intelligence", "transaction-simulation"],
+  },
+  {
+    id: "arbitrum:mainnet",
+    label: "Arbitrum One",
+    status: "mainnet-read-only",
+    capabilities: ["service-discovery", "read-only-intelligence", "transaction-simulation"],
+  },
+  {
+    id: "hyperliquid:hyperevm-mainnet",
+    label: "HyperEVM Mainnet",
+    status: "discovery-only",
+    capabilities: ["service-discovery", "registry", "marketplace-metadata"],
+  },
+  {
+    id: "tempo:mainnet",
+    label: "Tempo Mainnet",
+    status: "discovery-only",
+    capabilities: ["service-discovery", "registry", "marketplace-metadata"],
+  },
+  {
     id: "ethereum:sepolia",
     label: "Ethereum Sepolia",
     status: "discovery-only",
