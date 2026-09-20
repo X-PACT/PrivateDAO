@@ -165,6 +165,16 @@ test("service requests normalize accepted network aliases before quoting", async
   assert.equal(body.payment_intent.target_network, "ethereum-mainnet");
 });
 
+test("paid agent matching remains behind the paid job flow", async () => {
+  resetForTests();
+  const response = await request("/api/jobs", "POST", {
+    service_id: "agent.match",
+    input: { capabilities: ["chains"], network: "solana" },
+  });
+  assert.equal(response.statusCode, 402);
+  assert.equal(JSON.parse(response.body).payment_intent.network, "solana-mainnet-beta");
+});
+
 test("every catalog capability has a stable detail page", async () => {
   resetForTests();
   for (const service of SERVICES) {

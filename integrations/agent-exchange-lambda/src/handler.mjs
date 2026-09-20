@@ -1298,6 +1298,26 @@ async function makeQuote(serviceId, jobId, admin = false, currency = "USDC", tar
   return quote;
 }
 
+async function matchRegisteredAgents(input = {}) {
+  const all = await (await store()).list("Registry");
+  const wanted = new Set(input?.capabilities || []);
+  const requestedNetwork = input?.network ? normalizeNetworkId(input.network) : null;
+  return {
+    matches: all
+      .filter((x) => ["verified", "connected"].includes(x.status))
+      .filter((x) => !requestedNetwork || !(x.networks || []).length || x.networks.map(normalizeNetworkId).includes(requestedNetwork))
+      .map((x) => ({
+        ...x,
+        network_match: requestedNetwork ? ((x.networks || []).length ? x.networks.map(normalizeNetworkId).includes(requestedNetwork) : "capability-declared") : null,
+        match_score:
+          (x.capabilities || []).filter((c) => wanted.has(c)).length /
+          Math.max(wanted.size, 1),
+      }))
+      .sort((a, b) => b.match_score - a.match_score)
+      .slice(0, 20),
+  };
+}
+
 async function executeService(id, input) {
   const requestedNetwork = input?.network ? normalizeNetworkId(input.network) : "";
   const normalizedInput = requestedNetwork ? { ...input, network: requestedNetwork } : input;
@@ -1491,23 +1511,7 @@ async function executeService(id, input) {
     };
   }
   if (id === "agent.match") {
-    const all = await (await store()).list("Registry");
-    const wanted = new Set(input?.capabilities || []);
-    const requestedNetwork = input?.network ? normalizeNetworkId(input.network) : null;
-    return {
-      matches: all
-        .filter((x) => ["verified", "connected"].includes(x.status))
-        .filter((x) => !requestedNetwork || !(x.networks || []).length || x.networks.map(normalizeNetworkId).includes(requestedNetwork))
-        .map((x) => ({
-          ...x,
-          network_match: requestedNetwork ? ((x.networks || []).length ? x.networks.map(normalizeNetworkId).includes(requestedNetwork) : "capability-declared") : null,
-          match_score:
-            (x.capabilities || []).filter((c) => wanted.has(c)).length /
-            Math.max(wanted.size, 1),
-        }))
-        .sort((a, b) => b.match_score - a.match_score)
-        .slice(0, 20),
-    };
+    return matchRegisteredAgents(input);
   }
   if (id === "intelligence.synthesize") {
     const inference = await runIntelInference(config, {
@@ -2552,7 +2556,9 @@ async function mcp(request) {
     "network_stats",
   ].map((name) => ({
     name,
-    description: `PrivateDAO ${name}`,
+    description: name === "agent_match"
+      ? "Free registry discovery and capability matching. Use create_paid_job for the paid agent.match service."
+      : `PrivateDAO ${name}`,
     inputSchema: schemas[name] || { type: "object", additionalProperties: false },
   }));
   if (request.method === "tools/list")
@@ -2594,7 +2600,7 @@ async function mcp(request) {
         result = { agents };
       }
       else if (name === "agent_match")
-        result = await executeService("agent.match", a);
+        result = await matchRegisteredAgents(a);
       else if (name === "logistics_request") result = await requestLogistics(a);
       else if (name === "network_stats") result = await networkStats(config);
       else if (name === "register_agent") result = await register(a);
