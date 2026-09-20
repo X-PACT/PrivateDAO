@@ -462,6 +462,24 @@ function transactionSchema(service) {
 function serviceInputSchema(service) {
   const id = service.id;
   if (["token.intelligence", "risk.score", "market.snapshot", "research.asset", "contract.explain"].includes(id)) return subjectSchema(service);
+  if (id === "contract.inspect") return {
+    type: "object",
+    properties: {
+      program: { type: "string", pattern: ADDRESS_PATTERN, description: "Solana program address." },
+      address: { type: "string", pattern: ADDRESS_PATTERN, description: "Alias for program." },
+    },
+    anyOf: [{ required: ["program"] }, { required: ["address"] }],
+    additionalProperties: false,
+  };
+  if (id === "launch.check") return {
+    type: "object",
+    properties: {
+      mint: { type: "string", pattern: ADDRESS_PATTERN, description: "Solana mint address." },
+      asset: { type: "string", pattern: ADDRESS_PATTERN, description: "Alias for mint." },
+    },
+    anyOf: [{ required: ["mint"] }, { required: ["asset"] }],
+    additionalProperties: false,
+  };
   if (["wallet.intelligence", "research.wallet"].includes(id)) return walletSchema(service);
   if (["anomaly.detect", "agent.research.report"].includes(id)) return subjectSchema(service, "Asset or wallet subject for analysis");
   if (id === "portfolio.intelligence") return {

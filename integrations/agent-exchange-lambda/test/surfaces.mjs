@@ -42,6 +42,10 @@ test("human root is HTML while machine surfaces remain available", async () => {
   assert.deepEqual(portfolioService.input_schema.properties.assets.minItems, 1);
   const simulationService = catalog.services.find((service) => service.id === "transaction.simulate");
   assert.ok(simulationService.input_schema.anyOf.some((branch) => branch.required.includes("transaction")));
+  const inspectService = catalog.services.find((service) => service.id === "contract.inspect");
+  assert.ok(inspectService.input_schema.anyOf.some((branch) => branch.required.includes("program")));
+  const launchService = catalog.services.find((service) => service.id === "launch.check");
+  assert.ok(launchService.input_schema.anyOf.some((branch) => branch.required.includes("mint")));
   for (const serviceId of [
     "token.intelligence",
     "wallet.intelligence",
