@@ -5,12 +5,12 @@ Date: 2026-09-20
 ## Release
 
 - Repository branch: `rebrand/enterprise-white`
-- Deployed runtime commit: `29883ecf9`
-- Lambda version: `64`
+- Deployed runtime commit: `b4a1ef632954ca151fe3d1ce72a5aa502e1d8fb7`
+- Lambda version: `72`
 - Function: `PrivateDAOAgentExchange-Function-N2zgpQmMN41S`
 - Region: `eu-north-1`
 - Public URL: `https://agents.privatedao.org`
-- Previous rollback version: `63`
+- Previous known-good rollback version: `70`
 
 The main PrivateDAO website and `/game/` are separate deployment boundaries.
 
@@ -67,7 +67,7 @@ RPC health is not treated as product execution or payment readiness.
 - MCP: HTTP 200, 11 tools, including `pdao_services`
 - MCP lifecycle: external initialize -> initialized notification -> tools/list -> tools/call PASS
 - MCP schemas: all 11 tools publish object schemas with argument contracts
-- SingularityAgent: existing registration remains connected and idempotent; forced refresh is blocked by upstream HTTP 403
+- SingularityAgent: existing registration remains connected and idempotent; refresh succeeds with the required `MCP-Protocol-Version` header and preserves the existing 18-tool registration
 - A2A: published and reachable
 - OpenAPI: HTTP 200, OpenAPI 3.1.0, 56 paths
 - Service catalog: HTTP 200, 23 services
@@ -77,8 +77,8 @@ RPC health is not treated as product execution or payment readiness.
 
 A real free production verification job completed after deployment:
 
-- Job: `job_7cb2b8db-503b-4899-9d05-e61ebf37b799`
-- Receipt: `rvr_5ac86b8589a91a82c1a8c8c9eca66e5b`
+- Job: `job_b7884c42-1858-435f-8929-18794437b31d`
+- Receipt: `rvr_c0e2ba149335eb8d9d0b8fdeaa60626c`
 - Receipt page: HTTP 200
 - Verification page: HTTP 200
 - Job page: HTTP 200
@@ -110,7 +110,8 @@ The external MCP audit also verified:
 - `notifications/initialized` and `notifications/cancelled` are accepted without JSON-RPC responses.
 - Unsupported `resources/list` and `prompts/list` return standard method-not-found errors without fake capabilities.
 - Existing SingularityAgent registration returns `already_registered` rather than creating a duplicate.
-- Network aliases normalize consistently for matching and logistics.
+- Network aliases normalize consistently for matching and logistics, and both return the canonical Registry ID `agent_724dd89f22ee9f4527ef1f16`.
+- A fresh SingularityAgent initialize/tools/list/safe-tool sequence succeeds with 18 tools.
 
 ## Verification Boundaries
 
@@ -132,7 +133,7 @@ requires an explicitly approved and funded test transaction.
 ## Quality Gates
 
 - Node syntax check: PASS
-- Test suite: 22/22 PASS
+- Test suite: 26/26 PASS
 - Smoke test: PASS
 - `npm audit --omit=dev`: 0 vulnerabilities
 - `git diff --check`: PASS
@@ -140,6 +141,6 @@ requires an explicitly approved and funded test transaction.
 
 ## Rollback
 
-The immediately previous Lambda deployment is version `50`. Rollback must be
+The immediately previous known-good Lambda deployment is version `70`. Rollback must be
 performed through the existing AWS Lambda deployment process; the main website,
 game, DNS, and unrelated services are outside this rollback boundary.
