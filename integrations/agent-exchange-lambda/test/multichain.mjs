@@ -2,7 +2,8 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { createServer } from "node:http";
 import { executeEvmService, evmRpcUrl, evmRuntimeStats } from "../src/evm.mjs";
-import { swapQuote, simulateSolanaTransaction } from "../src/solana.mjs";
+import { readRpc, swapQuote, simulateSolanaTransaction } from "../src/solana.mjs";
+import { getConfig } from "../src/config.mjs";
 import { enforceRateLimit, resetRuntimeControls } from "../src/runtime-controls.mjs";
 import { researchAsset, researchReport, explainTransaction, portfolioIntelligence } from "../src/intelligence.mjs";
 import { marketData } from "../src/market.mjs";
@@ -71,6 +72,40 @@ test("EVM services are read-only and use the configured provider", async () => {
 test("Alchemy URLs are constructed without exposing the key in results", () => {
   const url = evmRpcUrl({ alchemyApiKey: "test-only-key", evmRpcUrls: {} }, "base-mainnet");
   assert.equal(url, "https://base-mainnet.g.alchemy.com/v2/test-only-key");
+  assert.equal(getConfig({ ALCHEMY_API_KEY: "test-only-key" }).rpcSecondary, "https://solana-mainnet.g.alchemy.com/v2/test-only-key");
+});
+
+test("Solana reads fall back from a rate-limited primary provider", async () => {
+  const originalFetch = global.fetch;
+  const originalNodeEnv = process.env.NODE_ENV;
+  process.env.NODE_ENV = "test";
+  const seen = [];
+  global.fetch = async (url, options) => {
+    seen.push(url);
+    if (url.includes("primary")) return new Response("rate limited", { status: 429 });
+    const request = JSON.parse(options.body);
+    return new Response(JSON.stringify({ jsonrpc: "2.0", id: 1, result: request.method === "getBalance" ? { value: 7 } : null }), {
+      status: 200,
+      headers: { "content-type": "application/json" },
+    });
+  };
+  try {
+    const result = await readRpc({
+      cluster: "mainnet-beta",
+      treasury: "2BJ4ezxqV9YJXc38D9duKBkdn4su4jE1beKUHwH663sL",
+      usdcMint: "EPjFWdd5AufSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+      rpcPrimary: "https://primary.example",
+      rpcSecondary: "https://secondary.example",
+      rpcFallback: "https://fallback.example",
+      mainnetGenesisHash: "5eykt4UsFv8P8NJdTREpY1vzqKqZKvdpKuc147dw2N9d",
+    }, "getBalance", ["2BJ4ezxqV9YJXc38D9duKBkdn4su4jE1beKUHwH663sL"]);
+    assert.equal(result.result.value, 7);
+    assert.deepEqual(seen, ["https://primary.example", "https://secondary.example"]);
+  } finally {
+    global.fetch = originalFetch;
+    if (originalNodeEnv == null) delete process.env.NODE_ENV;
+    else process.env.NODE_ENV = originalNodeEnv;
+  }
 });
 
 test("Jupiter quote path never broadcasts", async () => {

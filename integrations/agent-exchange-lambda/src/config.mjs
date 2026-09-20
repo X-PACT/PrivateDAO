@@ -1,6 +1,10 @@
 const bool = (value, fallback = false) =>
   value == null ? fallback : value === "true" || value === "1";
 
+function alchemySolanaRpcUrl(apiKey) {
+  return apiKey ? `https://solana-mainnet.g.alchemy.com/v2/${apiKey}` : "";
+}
+
 export function getConfig(env = process.env) {
   const evmRpcUrls = Object.fromEntries(
     [
@@ -29,7 +33,7 @@ export function getConfig(env = process.env) {
     adminSecretId:
       env.AGENT_EXCHANGE_ADMIN_SECRET_ID || "pdao/agent-exchange/admin-smoke",
     adminSmokeToken: "",
-    rpcSecondary: env.AGENT_GATEWAY_SOLANA_RPC_SECONDARY || "",
+    rpcSecondary: env.AGENT_GATEWAY_SOLANA_RPC_SECONDARY || alchemySolanaRpcUrl(env.ALCHEMY_API_KEY),
     rpcFallback:
       env.AGENT_GATEWAY_SOLANA_RPC_FALLBACK ||
       "https://api.mainnet-beta.solana.com",
@@ -87,7 +91,10 @@ export async function hydrateConfig(config, env = process.env) {
     config.rpcPrimary = values.AGENT_GATEWAY_SOLANA_RPC_PRIMARY;
   if (values.AGENT_GATEWAY_SOLANA_WS_PRIMARY)
     config.rpcWsPrimary = values.AGENT_GATEWAY_SOLANA_WS_PRIMARY;
-  if (values.ALCHEMY_API_KEY) config.alchemyApiKey = values.ALCHEMY_API_KEY;
+  if (values.ALCHEMY_API_KEY) {
+    config.alchemyApiKey = values.ALCHEMY_API_KEY;
+    if (!config.rpcSecondary) config.rpcSecondary = alchemySolanaRpcUrl(values.ALCHEMY_API_KEY);
+  }
   for (const [network, key] of [
     ["ethereum-mainnet", "PDAO_EVM_ETHEREUM_MAINNET_RPC_URL"],
     ["base-mainnet", "PDAO_EVM_BASE_MAINNET_RPC_URL"],
@@ -96,7 +103,10 @@ export async function hydrateConfig(config, env = process.env) {
   if (config.alchemySecretId) {
     const alchemy = await client.send(new GetSecretValueCommand({ SecretId: config.alchemySecretId }));
     const alchemyValues = parseSecret(alchemy.SecretString);
-    if (alchemyValues.ALCHEMY_API_KEY) config.alchemyApiKey = alchemyValues.ALCHEMY_API_KEY;
+    if (alchemyValues.ALCHEMY_API_KEY) {
+      config.alchemyApiKey = alchemyValues.ALCHEMY_API_KEY;
+      if (!config.rpcSecondary) config.rpcSecondary = alchemySolanaRpcUrl(alchemyValues.ALCHEMY_API_KEY);
+    }
     for (const [network, key] of [
       ["ethereum-mainnet", "PDAO_EVM_ETHEREUM_MAINNET_RPC_URL"],
       ["base-mainnet", "PDAO_EVM_BASE_MAINNET_RPC_URL"],

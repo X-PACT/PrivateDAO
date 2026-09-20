@@ -161,10 +161,13 @@ export async function verifyPayment(config, payment, quote) {
 
 export async function networkStats(config) {
   const { url, result } = await readRpc(config, "getEpochInfo");
-  return {
-    providerClass: url.includes("api.mainnet-beta.solana.com")
+  const providerClass = url.includes(".g.alchemy.com/")
+    ? "alchemy"
+    : url.includes("api.mainnet-beta.solana.com")
       ? "public-fallback"
-      : "quicknode",
+      : "configured-rpc";
+  return {
+    providerClass,
     cluster: "mainnet-beta",
     epoch: result.epoch,
     slotIndex: result.slotIndex,
