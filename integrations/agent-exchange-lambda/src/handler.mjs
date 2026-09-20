@@ -184,6 +184,12 @@ function openapi() {
         get: { operationId: "searchListings" },
         post: { operationId: "publishListing" },
       },
+      "/api/marketplace/partners": { get: { operationId: "featuredPartners" } },
+      "/api/partnerships/{partnershipId}/payment-intent": { get: { operationId: "partnershipPaymentIntent" } },
+      "/api/partnerships/{partnershipId}/payment-transaction": { post: { operationId: "partnershipPaymentTransaction" } },
+      "/api/partnerships/{partnershipId}/payment": { post: { operationId: "submitPartnershipPayment" } },
+      "/api/admin/partnerships": { post: { operationId: "createPartnership" } },
+      "/api/admin/partnerships/{partnershipId}": { patch: { operationId: "updatePartnership" } },
       "/api/logistics/request": { post: { operationId: "requestLogistics" } },
       "/api/logistics/capabilities": {
         get: { operationId: "logisticsCapabilities" },
@@ -197,6 +203,9 @@ function openapi() {
       "/api/treasury/status": { get: { operationId: "treasuryStatus" } },
       "/receipts/{receiptId}": { get: { operationId: "humanReceipt" } },
       "/verify/receipt/{receiptId}": { get: { operationId: "verifyHumanReceipt" } },
+      "/partners": { get: { operationId: "featuredPartnersPage" } },
+      "/marketplace/partners": { get: { operationId: "featuredPartnersPage" } },
+      "/agents/{agentId}": { get: { operationId: "agentProfile" } },
       "/jobs/{jobId}": { get: { operationId: "humanJobReceipt" } },
       ...Object.fromEntries(SERVICES.map((service) => [servicePath(service.id), { get: { operationId: `service_${service.id.replaceAll(".", "_")}` } }])),
     },
@@ -479,6 +488,14 @@ async function run(){try{const {PublicKey,Transaction,TransactionInstruction,Sys
 </script></body></html>`;
 }
 
+function partnershipPaymentPage(id) {
+  const safeId = JSON.stringify(id);
+  return [
+    "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Featured Partner payment | PrivateDAO</title><style>body{font-family:system-ui,sans-serif;max-width:620px;margin:42px auto;padding:24px;color:#081b33}button{padding:13px 18px;border:0;border-radius:10px;background:#1769e0;color:#fff;font-weight:800;cursor:pointer}pre{white-space:pre-wrap;background:#f5f9ff;padding:16px;border-radius:12px}</style></head><body><p><a href=\"/partners\">← Featured Partners</a></p><h1>Become a Featured Partner</h1><p>This is a real Solana Mainnet USDC payment. MCP verification and technical access are independent of sponsorship.</p><button id=\"pay\">Connect wallet and pay $100 USDC</button><pre id=\"status\">Ready</pre><script>",
+    "const campaignId=" + safeId + ",status=document.getElementById(\"status\"),button=document.getElementById(\"pay\");",
+    "async function run(){try{const intent=await (await fetch(\"/api/partnerships/\"+encodeURIComponent(campaignId)+\"/payment-intent\")).json();if(intent.status===\"paid\"){status.textContent=\"This campaign is already paid.\";return;}const web3=await import(\"https://esm.sh/@solana/web3.js@1.98.4\"),spl=await import(\"https://esm.sh/@solana/spl-token@0.4.14\");if(!window.solana)throw new Error(\"A Solana wallet was not detected\");const wallet=await window.solana.connect(),payer=new web3.PublicKey(wallet.publicKey.toString());const built=await (await fetch(\"/api/partnerships/\"+encodeURIComponent(campaignId)+\"/payment-transaction\",{method:\"POST\",headers:{\"content-type\":\"application/json\"},body:JSON.stringify({payer:payer.toBase58()})})).json();if(!built.recentBlockhash)throw new Error(built.message||\"payment transaction unavailable\");const mint=new web3.PublicKey(built.mint),source=new web3.PublicKey(built.sourceTokenAccount),destination=new web3.PublicKey(built.treasuryTokenAccount),owner=new web3.PublicKey(built.treasuryOwner),tx=new web3.Transaction();tx.add(spl.createAssociatedTokenAccountIdempotentInstruction(payer,destination,owner,mint,spl.TOKEN_PROGRAM_ID,spl.ASSOCIATED_TOKEN_PROGRAM_ID),spl.createTransferCheckedInstruction(source,mint,destination,payer,BigInt(built.amountBaseUnits),6,[],spl.TOKEN_PROGRAM_ID),new web3.TransactionInstruction({programId:new web3.PublicKey(\"MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr\"),keys:[{pubkey:payer,isSigner:true,isWritable:false}],data:new TextEncoder().encode(built.paymentReference)}));tx.feePayer=payer;tx.recentBlockhash=built.recentBlockhash;const sent=await window.solana.signAndSendTransaction(tx);status.textContent=\"Payment submitted. Waiting for finality...\";let result;for(let i=0;i<20;i++){result=await (await fetch(\"/api/partnerships/\"+encodeURIComponent(campaignId)+\"/payment\",{method:\"POST\",headers:{\"content-type\":\"application/json\"},body:JSON.stringify({signature:sent.signature})})).json();if(result.campaign||result.status===\"paid\")break;await new Promise(function(resolve){setTimeout(resolve,3000)});}status.textContent=JSON.stringify(Object.assign({},result,{signature:sent.signature}),null,2);}catch(error){status.textContent=error.message||String(error);}}button.onclick=run;</script></body></html>",
+  ].join("");
+}
 function registryRegistrationPage() {
   const nonce = randomUUID().replaceAll("-", "");
   return { nonce, body: `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>8004 Agent Registration | PrivateDAO</title><style>body{font-family:system-ui,sans-serif;max-width:900px;margin:0 auto;padding:28px 18px;background:#071018;color:#eef5f7;line-height:1.5}h1{line-height:1.1}.muted{color:#a9bbc2}button{border:0;border-radius:8px;padding:12px 16px;background:#14f195;color:#061016;font-weight:700;cursor:pointer;margin:6px 6px 6px 0}button:disabled{opacity:.45;cursor:not-allowed}pre{white-space:pre-wrap;overflow:auto;background:#02070a;border:1px solid #29424b;border-radius:8px;padding:14px;font-size:13px}.warning{border-left:3px solid #f5c451;padding:10px 14px;background:#17202a}a{color:#7de2c0}</style></head><body><p class="muted">PrivateDAO Agent Exchange · 8004 Solana Agent Registry</p><h1>Review registration before signing</h1><p class="muted">This page builds a fresh Mainnet transaction only after you request it. Phantom remains the only owner signer. The Asset signer is generated in browser memory and is never sent to PrivateDAO or persisted.</p><p class="warning">The Asset secret is intentionally memory-only. Reloading this page loses it. Do not use this page as a key backup or for later asset management.</p><p><button id="build">Connect wallet and build fresh transaction</button><button id="sign" disabled>Review and sign in Phantom</button></p><pre id="status">Ready. No transaction exists yet.</pre><pre id="details">Build the transaction to display program, accounts, instructions, cost, and expiry.</pre><p class="muted"><a href="/.well-known/agent-card.json">Agent Card</a> · <a href="https://8004.qnt.sh/" rel="noreferrer">8004 registry</a></p><script nonce="${nonce}">
@@ -602,7 +619,7 @@ function partnershipDates(campaign) {
 }
 function isActivePartnership(campaign, at = Date.now()) {
   const { start, end } = partnershipDates(campaign);
-  return campaign.type === "featured_partner" && campaign.campaign_status === "active" && campaign.payment_status === "paid" && Number.isFinite(start) && Number.isFinite(end) && start <= at && at < end;
+  return campaign.type === "featured_partner" && ["active", "scheduled"].includes(campaign.campaign_status) && campaign.payment_status === "paid" && Number.isFinite(start) && Number.isFinite(end) && start <= at && at < end;
 }
 async function activePartnerships() {
   return (await (await store()).list("Campaigns")).filter((campaign) => isActivePartnership(campaign));
@@ -617,7 +634,7 @@ async function createPartnership(body) {
   const startAt = new Date(body.startAt || body.start || "");
   const endAt = new Date(body.endAt || body.end || body.expiry || "");
   if (!Number.isFinite(startAt.getTime()) || !Number.isFinite(endAt.getTime()) || endAt <= startAt) throw Object.assign(new Error("valid startAt and endAt are required"), { statusCode: 400 });
-  const paymentStatus = ["pending", "paid", "failed", "refunded"].includes(body.paymentStatus) ? body.paymentStatus : "pending";
+  const paymentStatus = ["pending", "failed", "refunded"].includes(body.paymentStatus) ? body.paymentStatus : "pending";
   const campaign = {
     id: `campaign_${randomUUID()}`,
     type: "featured_partner",
@@ -626,15 +643,17 @@ async function createPartnership(body) {
     agentName: agent.name,
     price_usd: price,
     payment_status: paymentStatus,
-    campaign_status: body.active === true && paymentStatus === "paid" ? "active" : "draft",
+    campaign_status: "draft",
     start_at: startAt.toISOString(),
     end_at: endAt.toISOString(),
     deliverables: Array.isArray(body.deliverables) ? body.deliverables.map(String).slice(0, 20) : [],
     deliverables_completed: Boolean(body.deliverablesCompleted),
     disclosure: "Featured Partner / Sponsored",
+    payment_url: `https://${config.domain}/partners/REPLACE_AFTER_CREATE/pay`,
     created_at: now(),
     updated_at: now(),
   };
+  campaign.payment_url = `https://${config.domain}/partners/${encodeURIComponent(campaign.id)}/pay`;
   await (await store()).put("Campaigns", campaign.id, campaign, true);
   return campaign;
 }
@@ -648,7 +667,7 @@ async function updatePartnership(id, body) {
     next.price_usd = price;
   }
   if (body.paymentStatus !== undefined) {
-    if (!["pending", "paid", "failed", "refunded"].includes(body.paymentStatus)) throw Object.assign(new Error("invalid paymentStatus"), { statusCode: 400 });
+    if (!["pending", "failed", "refunded"].includes(body.paymentStatus)) throw Object.assign(new Error("paid status requires a verified on-chain payment"), { statusCode: 400 });
     next.payment_status = body.paymentStatus;
   }
   if (body.startAt || body.endAt) {
@@ -665,6 +684,81 @@ async function updatePartnership(id, body) {
   await (await store()).put("Campaigns", id, next);
   return next;
 }
+async function partnershipQuote(campaign) {
+  const storage = await store();
+  const existing = (await storage.list("Quotes")).find((quote) => quote.partnership_id === campaign.id && Date.parse(quote.expires_at) > Date.now());
+  if (existing) return existing;
+  const expiresAt = new Date(Date.now() + 30 * 60 * 1000);
+  const quote = {
+    quote_id: `pq_${randomUUID()}`,
+    partnership_id: campaign.id,
+    amount: Number(campaign.price_usd),
+    amountAtomic: Math.round(Number(campaign.price_usd) * 1e6),
+    currency: "USDC",
+    network: "solana-mainnet-beta",
+    target_network: "agent-marketplace",
+    mint: config.usdcMint,
+    treasuryOwner: config.treasury,
+    treasuryTokenAccount: await treasuryTokenAccount(config),
+    recipient: config.treasury,
+    paymentReference: `PDAO_PARTNER:${campaign.id}`,
+    expires_at: expiresAt.toISOString(),
+    created_at: now(),
+  };
+  await storage.put("Quotes", quote.quote_id, quote, true);
+  return quote;
+}
+async function partnershipPaymentIntent(id) {
+  const campaign = await (await store()).get("Campaigns", id);
+  if (!campaign || campaign.type !== "featured_partner") throw Object.assign(new Error("partnership not found"), { statusCode: 404 });
+  if (campaign.payment_status === "paid") return { campaignId: id, status: "paid", campaign };
+  const quote = await partnershipQuote(campaign);
+  return { campaignId: id, status: "awaiting_payment", amount: quote.amount.toFixed(6), amountBaseUnits: String(quote.amountAtomic), currency: quote.currency, network: quote.network, mint: quote.mint, treasuryOwner: quote.treasuryOwner, treasuryTokenAccount: quote.treasuryTokenAccount, paymentReference: quote.paymentReference, quoteId: quote.quote_id, expiresAt: quote.expires_at, paymentUrl: `https://${config.domain}/partners/${encodeURIComponent(id)}/pay` };
+}
+async function buildPartnershipPaymentTransaction(id, payerText, sourceTokenAccountText = "") {
+  if (!/^[1-9A-HJ-NP-Za-km-z]{32,44}$/.test(payerText || "")) throw Object.assign(new Error("valid payer wallet is required"), { statusCode: 400 });
+  const campaign = await (await store()).get("Campaigns", id);
+  if (!campaign || campaign.type !== "featured_partner") throw Object.assign(new Error("partnership not found"), { statusCode: 404 });
+  const quote = await partnershipQuote(campaign);
+  if (new Date(quote.expires_at) < new Date()) throw new Error("partnership payment quote expired");
+  let source = sourceTokenAccountText ? { pubkey: sourceTokenAccountText } : null;
+  if (source && !/^[1-9A-HJ-NP-Za-km-z]{32,44}$/.test(source.pubkey)) throw Object.assign(new Error("valid source token account is required"), { statusCode: 400 });
+  if (!source) {
+    const accounts = await readRpc(config, "getTokenAccountsByOwner", [payerText, { mint: quote.mint }, { encoding: "jsonParsed" }]);
+    source = (accounts.result?.value || []).find((item) => Number(item.account?.data?.parsed?.info?.tokenAmount?.amount || 0) >= quote.amountAtomic);
+  }
+  if (!source) throw Object.assign(new Error("payer wallet has no funded Solana USDC token account"), { statusCode: 402 });
+  const latest = await readRpc(config, "getLatestBlockhash", [{ commitment: "finalized" }]);
+  return { payer: payerText, sourceTokenAccount: source.pubkey, mint: quote.mint, treasuryOwner: quote.treasuryOwner, treasuryTokenAccount: quote.treasuryTokenAccount, amountBaseUnits: String(quote.amountAtomic), paymentReference: quote.paymentReference, recentBlockhash: latest.result.value.blockhash, lastValidBlockHeight: latest.result.value.lastValidBlockHeight, expiresAt: quote.expires_at };
+}
+async function submitPartnershipPayment(id, body) {
+  const storage = await store();
+  const campaign = await storage.get("Campaigns", id);
+  if (!campaign || campaign.type !== "featured_partner") throw Object.assign(new Error("partnership not found"), { statusCode: 404 });
+  if (campaign.payment_status === "paid") return { status: "paid", campaign };
+  if (!body.signature) throw Object.assign(new Error("signature is required"), { statusCode: 400 });
+  const quote = (await storage.list("Quotes")).find((item) => item.partnership_id === id);
+  if (!quote) throw Object.assign(new Error("partnership payment quote not found"), { statusCode: 404 });
+  const payment = await verifyPayment(config, { signature: body.signature }, quote);
+  if (payment.transient) return { status: "verifying", signature: body.signature, message: payment.reason, retryAfterSeconds: 3 };
+  if (!payment.ok) throw Object.assign(new Error(payment.reason), { statusCode: 402 });
+  const transaction = await readRpc(config, "getTransaction", [body.signature, { commitment: "finalized", maxSupportedTransactionVersion: 0, encoding: "jsonParsed" }]);
+  const instructions = transaction.result?.transaction?.message?.instructions || [];
+  const memoFound = instructions.some((instruction) => instruction.program === "spl-memo" && String(instruction.parsed || "").includes(quote.paymentReference));
+  if (!memoFound) throw Object.assign(new Error("payment reference does not match this partnership campaign"), { statusCode: 402 });
+  const transfer = instructions.find((instruction) => instruction.program === "spl-token" && ["transfer", "transferChecked"].includes(instruction.parsed?.type) && Number(instruction.parsed?.info?.amount ?? instruction.parsed?.info?.tokenAmount?.amount) === Number(quote.amountAtomic));
+  const payerWallet = transfer?.parsed?.info?.authority || transfer?.parsed?.info?.owner || null;
+  const expiresAt = Date.parse(quote.expires_at);
+  const paidAt = payment.blockTime ? payment.blockTime * 1000 : NaN;
+  if (!Number.isFinite(paidAt) || paidAt > expiresAt) throw Object.assign(new Error("partnership payment quote expired"), { statusCode: 402 });
+  const paymentId = `payment_${body.signature}`;
+  const existing = await storage.get("Payments", paymentId);
+  if (existing && existing.partnership_id !== id) throw Object.assign(new Error("payment signature was already used"), { statusCode: 402 });
+  if (!existing) await storage.put("Payments", paymentId, { id: paymentId, signature: body.signature, partnership_id: id, payer_wallet: payerWallet, amount: quote.amount, asset: quote.currency, network: quote.network, consumed_at: now() }, true);
+  const next = { ...campaign, payment_status: "paid", campaign_status: new Date(campaign.start_at) <= new Date() ? "active" : "scheduled", payment_signature: body.signature, payer_wallet: payerWallet, paid_amount: quote.amount, paid_at: now(), payment_network: quote.network, payment_asset: quote.currency, updated_at: now() };
+  await storage.put("Campaigns", id, next);
+  return { status: next.campaign_status, campaign: next, payment: { signature: body.signature, block_time: payment.blockTime, network: quote.network, asset: quote.currency } };
+}
 async function partnersPage() {
   const campaigns = await activePartnerships();
   const cards = await Promise.all(campaigns.map(async (campaign) => {
@@ -678,10 +772,12 @@ async function agentProfilePage(id) {
   const agent = await (await store()).get("Registry", id);
   if (!agent) return null;
   const campaigns = (await activePartnerships()).filter((campaign) => campaign.agentId === id);
+  const pendingCampaign = (await (await store()).list("Campaigns")).find((campaign) => campaign.type === "featured_partner" && campaign.agentId === id && ["pending", "draft", "failed"].includes(campaign.payment_status));
   const technical = agent.status === "connected" ? "MCP Connected" : agent.status === "verified" ? "E2E Verified" : "Unavailable";
   const commercial = campaigns.length ? "Featured Partner / Sponsored" : "Standard Listing";
   const tools = (agent.allowed_tools || agent.capabilities || []).slice(0, 24).map((tool) => `<li>${escapeHtml(tool)}</li>`).join("") || "<li>No safe tools currently enabled</li>";
-  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${escapeHtml(agent.name)} | PrivateDAO Agent Marketplace</title><meta name="description" content="Technical and commercial status for ${escapeHtml(agent.name)} in the PrivateDAO Agent Marketplace."><style>body{font-family:system-ui,sans-serif;max-width:900px;margin:0 auto;padding:32px 20px;color:#081b33}a{color:#1769e0}.eyebrow{color:#1769e0;font-weight:800;letter-spacing:.12em;text-transform:uppercase;font-size:.75rem}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:28px}.panel{border:1px solid #dbe5f0;border-radius:16px;padding:22px}.status{font-size:1.2rem;font-weight:800}.muted{color:#52657c}li{margin:6px 0}@media(max-width:650px){.grid{grid-template-columns:1fr}}</style></head><body><p><a href="/marketplace">← Agent Marketplace</a></p><p class="eyebrow">Agent profile</p><h1>${escapeHtml(agent.name)}</h1><div class="grid"><section class="panel"><p class="eyebrow">Technical status</p><p class="status">${escapeHtml(technical)}</p><p class="muted">Protocol: ${escapeHtml(agent.protocol || "MCP")} · Capabilities discovered: ${escapeHtml(String((agent.capabilities || []).length))}</p><h2>Safe capabilities</h2><ul>${tools}</ul></section><section class="panel"><p class="eyebrow">Commercial status</p><p class="status">${escapeHtml(commercial)}</p><p class="muted">Paid promotion never creates MCP verification, permissions, or execution access.</p>${campaigns.length ? `<p>Campaign window: ${escapeHtml(campaigns[0].start_at)} → ${escapeHtml(campaigns[0].end_at)}</p>` : "<p>Free standard listing. No sponsored placement is active.</p>"}</section></div></body></html>`;
+  const checkout = pendingCampaign ? `<p><a href="/partners/${encodeURIComponent(pendingCampaign.id)}/pay"><strong>Become a Featured Partner · $100 USDC</strong></a></p>` : "";
+  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${escapeHtml(agent.name)} | PrivateDAO Agent Marketplace</title><meta name="description" content="Technical and commercial status for ${escapeHtml(agent.name)} in the PrivateDAO Agent Marketplace."><style>body{font-family:system-ui,sans-serif;max-width:900px;margin:0 auto;padding:32px 20px;color:#081b33}a{color:#1769e0}.eyebrow{color:#1769e0;font-weight:800;letter-spacing:.12em;text-transform:uppercase;font-size:.75rem}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:28px}.panel{border:1px solid #dbe5f0;border-radius:16px;padding:22px}.status{font-size:1.2rem;font-weight:800}.muted{color:#52657c}li{margin:6px 0}@media(max-width:650px){.grid{grid-template-columns:1fr}}</style></head><body><p><a href="/marketplace">← Agent Marketplace</a></p><p class="eyebrow">Agent profile</p><h1>${escapeHtml(agent.name)}</h1><div class="grid"><section class="panel"><p class="eyebrow">Technical status</p><p class="status">${escapeHtml(technical)}</p><p class="muted">Protocol: ${escapeHtml(agent.protocol || "MCP")} · Capabilities discovered: ${escapeHtml(String((agent.capabilities || []).length))}</p><h2>Safe capabilities</h2><ul>${tools}</ul></section><section class="panel"><p class="eyebrow">Commercial status</p><p class="status">${escapeHtml(commercial)}</p><p class="muted">Paid promotion never creates MCP verification, permissions, or execution access.</p>${campaigns.length ? `<p>Campaign window: ${escapeHtml(campaigns[0].start_at)} → ${escapeHtml(campaigns[0].end_at)}</p>` : "<p>Free standard listing. No sponsored placement is active.</p>"}${checkout}</section></div></body></html>`;
 }
 async function listListings(query = {}) {
   const all = await (await store()).list(collectionFor("listings"));
@@ -1771,6 +1867,9 @@ async function handle(e) {
   }
   if (method === "GET" && (path === "/partners" || path === "/marketplace/partners"))
     return { statusCode: 200, headers: { "content-type": "text/html; charset=utf-8", "cache-control": "no-store" }, body: await partnersPage() };
+  const partnershipPayPage = path.match(/^\/partners\/([^/]+)\/pay$/);
+  if (method === "GET" && partnershipPayPage)
+    return { statusCode: 200, headers: { "content-type": "text/html; charset=utf-8", "cache-control": "no-store" }, body: partnershipPaymentPage(decodeURIComponent(partnershipPayPage[1])) };
   const agentProfile = path.match(/^\/agents\/([^/]+)$/);
   if (method === "GET" && agentProfile) {
     const page = await agentProfilePage(decodeURIComponent(agentProfile[1]));
@@ -1980,6 +2079,15 @@ async function handle(e) {
     if (!adminTokenAuthorized(e)) return json({ error: "not_found" }, 404);
     return json(await updatePartnership(partnership[1], body));
   }
+  const partnershipPaymentIntentRoute = path.match(/^\/api\/partnerships\/([^/]+)\/payment-intent$/);
+  if (method === "GET" && partnershipPaymentIntentRoute)
+    return json(await partnershipPaymentIntent(decodeURIComponent(partnershipPaymentIntentRoute[1])));
+  const partnershipPaymentTransactionRoute = path.match(/^\/api\/partnerships\/([^/]+)\/payment-transaction$/);
+  if (method === "POST" && partnershipPaymentTransactionRoute)
+    return json(await buildPartnershipPaymentTransaction(decodeURIComponent(partnershipPaymentTransactionRoute[1]), body.payer, body.sourceTokenAccount));
+  const partnershipPaymentRoute = path.match(/^\/api\/partnerships\/([^/]+)\/payment$/);
+  if (method === "POST" && partnershipPaymentRoute)
+    return json(await submitPartnershipPayment(decodeURIComponent(partnershipPaymentRoute[1]), body));
   if (method === "POST" && path === "/api/marketplace/listings")
     return json(await publishListing(body), 201);
   if (method === "POST" && path === "/api/logistics/request")
