@@ -756,7 +756,10 @@ function errorResponse(error) {
       ...(error.retryAfterSeconds ? { retry_after_seconds: error.retryAfterSeconds } : {}),
     },
     status,
-    status === 402 ? { "www-authenticate": "Solana" } : {},
+    {
+      ...(status === 402 ? { "www-authenticate": "Solana" } : {}),
+      ...(error.retryAfterSeconds ? { "retry-after": String(error.retryAfterSeconds) } : {}),
+    },
   );
 }
 
