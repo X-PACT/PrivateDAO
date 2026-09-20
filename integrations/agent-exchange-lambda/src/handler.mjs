@@ -337,6 +337,30 @@ function serviceExample(service) {
   if (service.input.includes("structured")) return { evidence: { claim: "example" } };
   return { record: { claim: "example" } };
 }
+function serviceManifest(service) {
+  const inputSchema = {
+    type: "object",
+    additionalProperties: true,
+    properties: {
+      network: { type: "string", enum: service.supportedNetworks || ["solana-mainnet-beta"] },
+      asset: { type: "string" },
+      wallet: { type: "string" },
+      amount: { type: "string" },
+      transaction: { type: "object" },
+    },
+  };
+  return {
+    ...service,
+    free: service.access === "free",
+    status: capabilityStatus(service.id),
+    public_url: `https://${config.domain}${servicePath(service.id)}`,
+    payment_network: "solana-mainnet-beta",
+    supported_target_networks: service.supportedNetworks || ["solana-mainnet-beta"],
+    input_schema: inputSchema,
+    output_schema: { type: "object", description: service.output },
+    estimated_completion_behavior: service.access === "free" ? "immediate_read_only" : "payment_required_then_read_only_execution",
+  };
+}
 function validateServiceInput(serviceId, input = {}) {
   const service = serviceById(serviceId);
   if (!service) throw new Error("unknown service");
@@ -1825,11 +1849,11 @@ async function handle(e) {
   if (method === "GET" && ["/llms.txt", "/llms-full.txt"].includes(path))
     return text(llms());
   if (method === "GET" && path === "/robots.txt")
-    return text(`User-agent: *\nAllow: /\nAllow: /marketplace\nAllow: /connect\nAllow: /.well-known/\nAllow: /api/acquisition\nAllow: /api/services\nAllow: /api/pricing\nAllow: /api/discovery\nAllow: /api/logistics/capabilities\nDisallow: /api/admin/\nDisallow: /api/revenue\nDisallow: /api/treasury/\nSitemap: https://${config.domain}/sitemap.xml\n`);
+    return text(`User-agent: *\nAllow: /\nAllow: /marketplace\nAllow: /partners\nAllow: /marketplace/partners\nAllow: /connect\nAllow: /.well-known/\nAllow: /api/acquisition\nAllow: /api/services\nAllow: /api/pricing\nAllow: /api/discovery\nAllow: /api/logistics/capabilities\nDisallow: /api/admin/\nDisallow: /api/revenue\nDisallow: /api/treasury/\nSitemap: https://${config.domain}/sitemap.xml\n`);
   if (method === "GET" && path === "/favicon.ico")
     return { statusCode: 200, headers: { "content-type": "image/svg+xml", "cache-control": "public, max-age=86400" }, body: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="16" fill="#071a32"/><path d="M18 47V17h17c9 0 15 5 15 13s-6 13-15 13H27v4zm9-12h8c4 0 6-2 6-5s-2-5-6-5h-8z" fill="#fff"/><path d="M18 17h9v30h-9z" fill="#1769e0"/></svg>` };
   if (method === "GET" && path === "/sitemap.xml")
-    return { statusCode: 200, headers: { "content-type": "application/xml; charset=utf-8", "cache-control": "public, max-age=3600" }, body: `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>https://${config.domain}/</loc></url><url><loc>https://${config.domain}/marketplace</loc></url><url><loc>https://${config.domain}/connect</loc></url><url><loc>https://${config.domain}/.well-known/agent-card.json</loc></url><url><loc>https://${config.domain}/openapi.json</loc></url>${SERVICES.map((service) => `<url><loc>https://${config.domain}${servicePath(service.id)}</loc></url>`).join("")}</urlset>` };
+    return { statusCode: 200, headers: { "content-type": "application/xml; charset=utf-8", "cache-control": "public, max-age=3600" }, body: `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>https://${config.domain}/</loc></url><url><loc>https://${config.domain}/marketplace</loc></url><url><loc>https://${config.domain}/partners</loc></url><url><loc>https://${config.domain}/marketplace/partners</loc></url><url><loc>https://${config.domain}/connect</loc></url><url><loc>https://${config.domain}/.well-known/agent-card.json</loc></url><url><loc>https://${config.domain}/openapi.json</loc></url>${SERVICES.map((service) => `<url><loc>https://${config.domain}${servicePath(service.id)}</loc></url>`).join("")}</urlset>` };
   if (method === "GET" && path === "/llms.json")
     return json({
       name: "PrivateDAO Agent Exchange",
@@ -1839,12 +1863,7 @@ async function handle(e) {
   if (method === "GET" && path === "/api/services") {
     trackFunnel("service_catalog_view");
     return json({
-      services: SERVICES.map((service) => ({
-        ...service,
-        free: service.access === "free",
-        status: capabilityStatus(service.id),
-        public_url: `https://${config.domain}${servicePath(service.id)}`,
-      })),
+      services: SERVICES.map(serviceManifest),
       payment: {
         network: "solana-mainnet-beta",
         treasury: config.treasury,
@@ -2135,7 +2154,7 @@ async function mcp(request) {
       a = request.params?.arguments || {};
     try {
       let result;
-      if (name === "pdao_services") result = { services: SERVICES };
+      if (name === "pdao_services") result = { services: SERVICES.map(serviceManifest) };
       else if (name === "verify_basic")
         result = await executeService("verify.basic", a);
       else if (name === "create_paid_job") {

@@ -27,6 +27,12 @@ test("human root is HTML while machine surfaces remain available", async () => {
   }
   const marketplace = await request("/marketplace");
   assert.match(marketplace.body, /https:\/\/privatedao\.org\/\?lang=en/);
+  const catalog = JSON.parse((await request("/api/services")).body);
+  const tokenService = catalog.services.find((service) => service.id === "token.intelligence");
+  assert.equal(tokenService.payment_network, "solana-mainnet-beta");
+  assert.deepEqual(tokenService.supported_target_networks, ["solana-mainnet-beta", "ethereum-mainnet", "base-mainnet", "arbitrum-mainnet"]);
+  assert.equal(tokenService.input_schema.type, "object");
+  assert.equal(tokenService.output_schema.type, "object");
   const partners = await request("/partners");
   assert.equal(partners.statusCode, 200);
   assert.match(partners.body, /Featured Partners/);
