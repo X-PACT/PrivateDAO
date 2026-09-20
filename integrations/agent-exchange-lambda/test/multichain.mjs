@@ -136,6 +136,58 @@ test("payment verification rejects malformed signatures before contacting RPC", 
   }
 });
 
+test("payment verification binds a finalized transfer to the quoted payment reference and ATA", async () => {
+  const originalFetch = global.fetch;
+  const signature = "1".repeat(64);
+  const treasuryOwner = "2BJ4ezxqV9YJXc38D9duKBkdn4su4jE1beKUHwH663sL";
+  const treasuryTokenAccount = "L2iAzRuZZrubxcfkQXqBGpPHWej9vLMbm24cDT2jqbv";
+  const mint = "EPjFWdd5AufSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v";
+  global.fetch = async (_url, options) => {
+    const request = JSON.parse(options.body);
+    if (request.method === "getTransaction") {
+      return {
+        ok: true,
+        json: async () => ({ result: {
+          slot: 10,
+          blockTime: 1700000000,
+          transaction: { message: { instructions: [
+            { program: "spl-token", parsed: { type: "transferChecked", info: { destination: treasuryTokenAccount, amount: "100", mint } } },
+            { program: "spl-memo", parsed: "PDAOJOB:another-job" },
+          ] } },
+          meta: { err: null },
+        } }),
+      };
+    }
+    if (request.method === "getTokenAccountsByOwner") {
+      return {
+        ok: true,
+        json: async () => ({ result: { value: [{ pubkey: treasuryTokenAccount }] } }),
+      };
+    }
+    throw new Error(`unexpected RPC method: ${request.method}`);
+  };
+  try {
+    const result = await verifyPayment({
+      cluster: "mainnet-beta",
+      treasury: treasuryOwner,
+      usdcMint: mint,
+      rpcPrimary: "https://rpc.example/primary",
+    }, { signature }, {
+      amountAtomic: "100",
+      currency: "USDC",
+      mint,
+      treasuryOwner,
+      treasuryTokenAccount,
+      paymentReference: "PDAOJOB:expected-job",
+    });
+    assert.equal(result.ok, false);
+    assert.equal(result.transient, undefined);
+    assert.equal(result.reason, "payment reference does not match quote");
+  } finally {
+    global.fetch = originalFetch;
+  }
+});
+
 test("Solana reads fall back from a rate-limited primary provider", async () => {
   const originalFetch = global.fetch;
   const originalNodeEnv = process.env.NODE_ENV;

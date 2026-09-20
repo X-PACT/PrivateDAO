@@ -15,6 +15,18 @@ const rpcCall = async (url, method, params = []) => {
 const mainnetAttestation = new Map();
 const forbiddenNetwork = /(devnet|testnet|localhost|127\.0\.0\.1)/i;
 const solanaSignaturePattern = /^[1-9A-HJ-NP-Za-km-z]{64,128}$/;
+const memoProgramId = "MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr";
+
+function paymentReferenceMatches(instructions, expectedReference) {
+  if (!expectedReference) return true;
+  return instructions.some((instruction) => {
+    if (instruction.program === "spl-memo")
+      return String(instruction.parsed || instruction.data || "") === expectedReference;
+    if (instruction.programId === memoProgramId)
+      return String(instruction.data || "") === expectedReference;
+    return false;
+  });
+}
 
 export function assertMainnetConfig(config) {
   if (config.cluster !== "mainnet-beta")
@@ -113,12 +125,16 @@ export async function verifyPayment(config, payment, quote) {
       reason: "transaction is not finalized or was not found",
     };
   const instructions = tx.transaction?.message?.instructions || [];
+  if (!paymentReferenceMatches(instructions, quote.paymentReference))
+    return { ok: false, reason: "payment reference does not match quote" };
   const expected = Number(quote.amountAtomic);
   let tokenAccounts = [];
   if (quote.currency === "USDC") {
     const treasuryOwner = quote.treasuryOwner || quote.recipient;
     if (!treasuryOwner)
       return { ok: false, reason: "quote treasury owner is missing" };
+    if (!quote.treasuryTokenAccount)
+      return { ok: false, reason: "quote treasury token account is missing" };
     const accounts = await readRpc(config, "getTokenAccountsByOwner", [
       treasuryOwner,
       { mint: quote.mint },
@@ -140,6 +156,7 @@ export async function verifyPayment(config, payment, quote) {
     return (
       instruction.program === "spl-token" &&
       ["transfer", "transferChecked"].includes(instruction.parsed?.type) &&
+      info.destination === quote.treasuryTokenAccount &&
       tokenAccounts.includes(info.destination) &&
       Number(info.amount ?? info.tokenAmount?.amount) === expected &&
       (!quote.mint || info.mint === quote.mint)
