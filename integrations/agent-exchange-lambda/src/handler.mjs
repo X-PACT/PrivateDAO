@@ -1072,7 +1072,7 @@ async function executeService(id, input) {
     const wanted = new Set(input?.capabilities || []);
     return {
       matches: all
-        .filter((x) => x.status === "verified")
+        .filter((x) => ["verified", "connected"].includes(x.status))
         .map((x) => ({
           ...x,
           match_score:
