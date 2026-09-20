@@ -1403,9 +1403,9 @@ async function handle(e) {
       service: "pdao-agent-exchange",
       version: "1.4.0",
       network: "solana-mainnet-beta",
-      rpcMode: config.rpcPrimary.includes("api.mainnet-beta")
+      rpcMode: stats?.providerClass || (config.rpcPrimary.includes("api.mainnet-beta")
         ? "public-fallback"
-        : "quicknode-primary",
+        : "configured-primary"),
       paymentVerification: "finalized-usdc",
       a2a: "active",
       mcp: "active",
