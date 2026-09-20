@@ -569,7 +569,7 @@ const collectionFor = (name) =>
 async function listListings(query = {}) {
   const all = await (await store()).list(collectionFor("listings"));
   const external = (await (await store()).list("Registry"))
-    .filter((agent) => agent.protocol === "MCP" && agent.status === "connected")
+    .filter((agent) => agent.protocol === "MCP" && ["connected", "unavailable"].includes(agent.status))
     .map((agent) => ({
       id: `external_${agent.id}`,
       agentId: agent.id,
@@ -581,10 +581,11 @@ async function listListings(query = {}) {
       chains: agent.networks || [],
       price: null,
       asset: null,
-      verificationLevel: "MCP_HANDSHAKE_VERIFIED",
-      status: "active",
+      verificationLevel: agent.status === "connected" ? "MCP_HANDSHAKE_VERIFIED" : "MCP_HANDSHAKE_FAILED",
+      status: agent.status === "connected" ? "active" : "unavailable",
       external: true,
       lastSuccessfulConnection: agent.last_successful_connection,
+      unavailableReason: agent.unavailable_reason || null,
     }));
   const firstParty = SERVICES.map((service) => ({
     id: `pdao_${service.id}`,
@@ -1495,7 +1496,42 @@ function defaultMcpAllowlist(tools) {
 async function registerMcp(body) {
   const endpoint = body.mcpUrl || body.mcp_url || body.endpoint;
   if (!endpoint) throw new Error("mcpUrl is required");
-  const discovery = await discoverMcp(endpoint);
+  let discovery;
+  try {
+    discovery = await discoverMcp(endpoint);
+  } catch (error) {
+    if (!body.persistUnavailable) throw error;
+    const url = assertPublicHttps(endpoint);
+    const id = `agent_${digest({ protocol: "MCP", url: url.href }).slice(0, 24)}`;
+    const match = /HTTP (\d{3})/.exec(error.message);
+    const reason = match ? `HTTP_${match[1]}` : /timeout/i.test(error.message) ? "TIMEOUT" : "MCP_CHECK_FAILED";
+    const unavailable = {
+      id,
+      name: body.name || "External MCP Agent",
+      url: url.href,
+      endpoint: url.href,
+      protocol: "MCP",
+      protocols: ["MCP"],
+      transport: "streamable-http",
+      capabilities: [],
+      allowed_tools: [],
+      tools: [],
+      mcp: { resourcesSupported: false, promptsSupported: false },
+      acceptedAssets: [],
+      pricing: body.pricing || {},
+      networks: body.networks || [],
+      tags: body.tags || ["external", "mcp"],
+      status: "unavailable",
+      health: "unavailable",
+      unavailable_reason: reason,
+      last_successful_connection: null,
+      verified_at: null,
+      side_effect_policy: "execution disabled until MCP handshake succeeds",
+      updated_at: now(),
+    };
+    await (await store()).put("Registry", id, unavailable);
+    return unavailable;
+  }
   const requested = Array.isArray(body.allowedTools) ? body.allowedTools.map(String) : null;
   const discoveredNames = new Set(discovery.tools.map((tool) => tool.name));
   const allowedTools = (requested || defaultMcpAllowlist(discovery.tools)).filter((name) => discoveredNames.has(name) && !MCP_RISKY_TOOL_PATTERN.test(name));
