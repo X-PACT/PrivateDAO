@@ -47,6 +47,14 @@ export function rpcUrls(config) {
     .filter((url, i, all) => all.indexOf(url) === i);
 }
 
+function providerClassForUrl(url) {
+  return url.includes(".g.alchemy.com/")
+    ? "alchemy"
+    : url.includes("api.mainnet-beta.solana.com")
+      ? "public-fallback"
+      : "configured-rpc";
+}
+
 export async function treasuryTokenAccount(config) {
   return derivedTreasuryTokenAccount(config);
 }
@@ -161,17 +169,34 @@ export async function verifyPayment(config, payment, quote) {
 
 export async function networkStats(config) {
   const { url, result } = await readRpc(config, "getEpochInfo");
-  const providerClass = url.includes(".g.alchemy.com/")
-    ? "alchemy"
-    : url.includes("api.mainnet-beta.solana.com")
-      ? "public-fallback"
-      : "configured-rpc";
   return {
-    providerClass,
+    providerClass: providerClassForUrl(url),
     cluster: "mainnet-beta",
     epoch: result.epoch,
     slotIndex: result.slotIndex,
     absoluteSlot: result.absoluteSlot,
+  };
+}
+
+export async function solanaHealth(config) {
+  const started = Date.now();
+  const [health, version, slot, blockhash] = await Promise.all([
+    readRpc(config, "getHealth"),
+    readRpc(config, "getVersion"),
+    readRpc(config, "getSlot", [{ commitment: "finalized" }]),
+    readRpc(config, "getLatestBlockhash", [{ commitment: "finalized" }]),
+  ]);
+  return {
+    network: "solana-mainnet-beta",
+    cluster: "mainnet-beta",
+    health: health.result,
+    solana_version: version.result || null,
+    slot: slot.result || null,
+    latest_blockhash_available: Boolean(blockhash.result?.value?.blockhash),
+    latency_ms: Date.now() - started,
+    provider: providerClassForUrl(health.url),
+    status: "rpc_healthy",
+    observed_at: new Date().toISOString(),
   };
 }
 
@@ -271,7 +296,7 @@ export async function simulateSolanaTransaction(config, input = {}) {
     logs: Array.isArray(result?.value?.logs) ? result.value.logs : [],
     units_consumed: result?.value?.unitsConsumed ?? null,
     return_data: result?.value?.returnData || null,
-    provider_class: url.includes("api.mainnet-beta.solana.com") ? "public-fallback" : "configured-rpc",
+    provider_class: providerClassForUrl(url),
     evidence_confidence: "rpc-confirmed",
     observed_at: new Date().toISOString(),
   };

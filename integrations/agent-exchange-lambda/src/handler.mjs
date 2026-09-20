@@ -7,6 +7,7 @@ import { createStore, MemoryStore } from "./storage.mjs";
 import {
   mintEvidence,
   networkStats,
+  solanaHealth,
   readRpc,
   swapQuote,
   simulateSolanaTransaction,
@@ -1547,9 +1548,13 @@ async function handle(e) {
     return json(await networkStats(config));
   if (method === "GET" && path === "/api/network/health") {
     const requested = String(e.queryStringParameters?.network || "").trim();
-    const networks = requested ? [requested] : ["ethereum-mainnet", "base-mainnet", "arbitrum-mainnet"];
+    const networks = requested ? [requested] : ["solana-mainnet-beta", "ethereum-mainnet", "base-mainnet", "arbitrum-mainnet"];
     const results = await Promise.all(networks.map(async (network) => {
-      try { return await evmHealth(config, network); }
+      try {
+        return network === "solana-mainnet-beta"
+          ? await solanaHealth(config)
+          : await evmHealth(config, network);
+      }
       catch (error) { return { network, status: "rpc_unhealthy", reason: error.message }; }
     }));
     return json({ results, read_only: true, note: "RPC health does not imply service execution or payment readiness." });

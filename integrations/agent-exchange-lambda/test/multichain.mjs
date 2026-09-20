@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { createServer } from "node:http";
 import { executeEvmService, evmRpcUrl, evmRuntimeStats } from "../src/evm.mjs";
-import { mintEvidence, readRpc, swapQuote, simulateSolanaTransaction } from "../src/solana.mjs";
+import { mintEvidence, readRpc, solanaHealth, swapQuote, simulateSolanaTransaction } from "../src/solana.mjs";
 import { getConfig } from "../src/config.mjs";
 import { enforceRateLimit, resetRuntimeControls } from "../src/runtime-controls.mjs";
 import { researchAsset, researchReport, explainTransaction, portfolioIntelligence } from "../src/intelligence.mjs";
@@ -101,6 +101,44 @@ test("Solana reads fall back from a rate-limited primary provider", async () => 
     }, "getBalance", ["2BJ4ezxqV9YJXc38D9duKBkdn4su4jE1beKUHwH663sL"]);
     assert.equal(result.result.value, 7);
     assert.deepEqual(seen, ["https://primary.example", "https://secondary.example"]);
+  } finally {
+    global.fetch = originalFetch;
+    if (originalNodeEnv == null) delete process.env.NODE_ENV;
+    else process.env.NODE_ENV = originalNodeEnv;
+  }
+});
+
+test("Solana health reports the required read-only checks", async () => {
+  const originalFetch = global.fetch;
+  const originalNodeEnv = process.env.NODE_ENV;
+  process.env.NODE_ENV = "test";
+  global.fetch = async (_url, options) => {
+    const request = JSON.parse(options.body);
+    const result = {
+      getHealth: "ok",
+      getVersion: { "solana-core": "test-version" },
+      getSlot: 123,
+      getLatestBlockhash: { value: { blockhash: "test-blockhash" } },
+    }[request.method];
+    return new Response(JSON.stringify({ jsonrpc: "2.0", id: 1, result }), {
+      status: 200,
+      headers: { "content-type": "application/json" },
+    });
+  };
+  try {
+    const health = await solanaHealth({
+      cluster: "mainnet-beta",
+      treasury: "2BJ4ezxqV9YJXc38D9duKBkdn4su4jE1beKUHwH663sL",
+      usdcMint: "EPjFWdd5AufSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+      rpcPrimary: "https://alchemy.example",
+      rpcSecondary: "",
+      rpcFallback: "",
+      mainnetGenesisHash: "5eykt4UsFv8P8NJdTREpY1vzqKqZKvdpKuc147dw2N9d",
+    });
+    assert.equal(health.status, "rpc_healthy");
+    assert.equal(health.health, "ok");
+    assert.equal(health.slot, 123);
+    assert.equal(health.latest_blockhash_available, true);
   } finally {
     global.fetch = originalFetch;
     if (originalNodeEnv == null) delete process.env.NODE_ENV;
