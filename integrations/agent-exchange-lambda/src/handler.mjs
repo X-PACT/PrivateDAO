@@ -1705,6 +1705,8 @@ async function submitPayment(jobId, body) {
   }
   if (job.status !== "awaiting_payment")
     throw new Error("job is not awaiting payment");
+  if (body.input !== undefined && digest(body.input) !== job.input_hash)
+    throw Object.assign(new Error("payment input does not match the quoted job"), { statusCode: 400 });
   const quotes = await storage.list("Quotes");
   const quote = quotes.find((x) => x.job_id === jobId);
   if (!quote)
@@ -1779,7 +1781,10 @@ async function submitPayment(jobId, body) {
   }
   job.execution_started_at = now();
   await storage.put("Jobs", job.id, job);
-  const execution = await executeMeasuredService(job.service_id, body.input || job.execution_input || {});
+  const executionInput = job.execution_input || body.input || {};
+  if (digest(executionInput) !== job.input_hash)
+    throw Object.assign(new Error("quoted job input is unavailable or changed"), { statusCode: 400 });
+  const execution = await executeMeasuredService(job.service_id, executionInput);
   return completeJob(job, execution.result, {
     signature: body.signature,
     currency: quote.currency,

@@ -175,6 +175,21 @@ test("paid agent matching remains behind the paid job flow", async () => {
   assert.equal(JSON.parse(response.body).payment_intent.network, "solana-mainnet-beta");
 });
 
+test("payment cannot replace the input bound to a paid quote", async () => {
+  resetForTests();
+  const created = await request("/api/jobs", "POST", {
+    service_id: "forensics.trace",
+    input: { wallet: "11111111111111111111111111111111", limit: 3 },
+  });
+  const jobId = JSON.parse(created.body).payment_intent.jobId;
+  const tampered = await request(`/api/jobs/${jobId}/payment`, "POST", {
+    signature: "not-a-real-solana-signature",
+    input: { wallet: "11111111111111111111111111111111", limit: 99 },
+  });
+  assert.equal(tampered.statusCode, 400);
+  assert.match(tampered.body, /input does not match/);
+});
+
 test("every catalog capability has a stable detail page", async () => {
   resetForTests();
   for (const service of SERVICES) {
