@@ -9,6 +9,7 @@ import {
   networkStats,
   readRpc,
   swapQuote,
+  simulateSolanaTransaction,
   treasuryTokenAccount,
   verifyPayment,
 } from "./solana.mjs";
@@ -820,6 +821,7 @@ async function executeService(id, input) {
   if (requestedNetwork && requestedNetwork !== "solana-mainnet-beta")
     throw new Error(`unsupported target network: ${requestedNetwork}`);
   if (id === "swap.quote") return swapQuote(config, input);
+  if (id === "transaction.simulate") return simulateSolanaTransaction(config, input);
   if (id === "verify.basic" || id === "verify.deep") {
     const mint = input?.mint || input?.asset;
     if (mint) {

@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { createServer } from "node:http";
 import { executeEvmService, evmRpcUrl } from "../src/evm.mjs";
-import { swapQuote } from "../src/solana.mjs";
+import { swapQuote, simulateSolanaTransaction } from "../src/solana.mjs";
 import { enforceRateLimit, resetRuntimeControls } from "../src/runtime-controls.mjs";
 
 test("EVM services are read-only and use the configured provider", async () => {
@@ -80,4 +80,38 @@ test("runtime controls enforce bounded request rates", () => {
   enforceRateLimit("test-agent", 2, 60000);
   assert.throws(() => enforceRateLimit("test-agent", 2, 60000), /rate limit exceeded/);
   resetRuntimeControls();
+});
+
+test("Solana simulation is RPC-backed and never broadcasts", async () => {
+  const originalFetch = global.fetch;
+  const calls = [];
+  global.fetch = async (_url, options) => {
+    const request = JSON.parse(options.body);
+    calls.push(request.method);
+    const result = request.method === "getGenesisHash"
+      ? "5eykt4UsFv8P8NJdTREpY1vzqKqZKvdpKuc147dw2N9d"
+      : request.method === "simulateTransaction"
+        ? { value: { err: null, logs: ["Program ok"], unitsConsumed: 1200 } }
+        : null;
+    return new Response(JSON.stringify({ jsonrpc: "2.0", id: 1, result }), {
+      status: 200,
+      headers: { "content-type": "application/json" },
+    });
+  };
+  try {
+    const result = await simulateSolanaTransaction({
+      cluster: "mainnet-beta",
+      treasury: "2BJ4ezxqV9YJXc38D9duKBkdn4su4jE1beKUHwH663sL",
+      usdcMint: "EPjFWdd5AufSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+      rpcPrimary: "https://rpc.example",
+      rpcSecondary: "",
+      rpcFallback: "https://rpc.example",
+      mainnetGenesisHash: "5eykt4UsFv8P8NJdTREpY1vzqKqZKvdpKuc147dw2N9d",
+    }, { transaction: "AA==" });
+    assert.equal(result.would_broadcast, false);
+    assert.equal(result.units_consumed, 1200);
+    assert.deepEqual(calls, ["getGenesisHash", "simulateTransaction"]);
+  } finally {
+    global.fetch = originalFetch;
+  }
 });

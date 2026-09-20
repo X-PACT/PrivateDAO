@@ -93,7 +93,7 @@ export const SERVICES = Object.freeze([
     access: "paid",
     input: "network and unsigned transaction",
     output: "simulation result, estimated gas and deterministic errors",
-    supportedNetworks: ["ethereum-mainnet", "base-mainnet", "arbitrum-mainnet"],
+    supportedNetworks: ["solana-mainnet-beta", "ethereum-mainnet", "base-mainnet", "arbitrum-mainnet"],
   },
   {
     id: "decision.context",

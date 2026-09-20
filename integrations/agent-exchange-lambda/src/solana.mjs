@@ -235,3 +235,30 @@ export async function swapQuote(config, input = {}) {
     observed_at: new Date().toISOString(),
   };
 }
+
+export async function simulateSolanaTransaction(config, input = {}) {
+  const serialized = String(input.transaction || input.serializedTransaction || "");
+  if (!serialized || serialized.length > 1024 * 1024 || !/^[A-Za-z0-9+/]+={0,2}$/.test(serialized))
+    throw new Error("base64 serialized Solana transaction is required");
+  const { result, url } = await readRpc(config, "simulateTransaction", [
+    serialized,
+    {
+      encoding: "base64",
+      sigVerify: false,
+      replaceRecentBlockhash: true,
+      commitment: "confirmed",
+    },
+  ]);
+  return {
+    network: "solana-mainnet-beta",
+    simulated: true,
+    would_broadcast: false,
+    err: result?.value?.err || null,
+    logs: Array.isArray(result?.value?.logs) ? result.value.logs : [],
+    units_consumed: result?.value?.unitsConsumed ?? null,
+    return_data: result?.value?.returnData || null,
+    provider_class: url.includes("api.mainnet-beta.solana.com") ? "public-fallback" : "configured-rpc",
+    evidence_confidence: "rpc-confirmed",
+    observed_at: new Date().toISOString(),
+  };
+}

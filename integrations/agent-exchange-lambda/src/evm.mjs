@@ -111,7 +111,7 @@ export async function executeEvmService(config, serviceId, input = {}) {
         standard_metadata_available: Boolean(evidence.decimals && evidence.total_supply),
         evidence_confidence: evidence.evidence_confidence,
       };
-      return { ...evidence, factors, methodology: "deterministic-evm-observations-v1", score: factors.contract_present ? 0 : null, score_status: factors.contract_present ? "limited-signal" : "insufficient-evidence" };
+      return { ...evidence, factors, methodology: "deterministic-evm-observations-v1", score: null, score_status: "insufficient-evidence", score_reason: "RPC metadata alone cannot support a numerical token-risk score." };
     }
     return evidence;
   }
