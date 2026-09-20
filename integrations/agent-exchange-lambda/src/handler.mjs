@@ -775,7 +775,7 @@ function errorResponse(error) {
   );
 }
 
-async function makeQuote(serviceId, jobId, admin = false, currency = "USDC") {
+async function makeQuote(serviceId, jobId, admin = false, currency = "USDC", targetNetwork = null) {
   const service = serviceById(serviceId);
   if (!service) throw new Error("unknown service");
   const amount = admin && currency === "SOL"
@@ -806,6 +806,7 @@ async function makeQuote(serviceId, jobId, admin = false, currency = "USDC") {
     amountAtomic: Math.round(amount * (currency === "SOL" ? 1e9 : 1e6)),
     currency,
     network: "solana-mainnet-beta",
+    target_network: targetNetwork || "solana-mainnet-beta",
     mint: config.usdcMint,
     treasuryOwner: config.treasury,
     treasuryTokenAccount: ata,
@@ -1108,11 +1109,12 @@ async function createJob(serviceId, input, admin = false, currency = "USDC", met
   await (await store()).put("Jobs", job.id, job, true);
   trackFunnel("job_created", { service: serviceId, ...metadata });
   if (service.price) {
-    const quote = await makeQuote(serviceId, job.id, admin, currency);
+    const quote = await makeQuote(serviceId, job.id, admin, currency, input?.network || null);
     const intent = {
       jobId: job.id,
       status: "awaiting_payment",
       network: quote.network,
+      target_network: quote.target_network,
       asset: quote.currency,
       mint: quote.mint,
       amount: quote.amount.toFixed(6),
@@ -1502,7 +1504,7 @@ async function handle(e) {
     const item = await (await store()).get("Jobs", paymentIntent[1]);
     const quote = (await (await store()).list("Quotes")).find((x) => x.job_id === paymentIntent[1]);
     if (!item || !quote) return json({ error: "not_found" }, 404);
-    return json({ jobId: item.id, status: item.status, paymentIntent: { jobId: item.id, amount: quote.amount.toFixed(6), amountBaseUnits: String(quote.amountAtomic), mint: quote.mint, treasuryOwner: quote.treasuryOwner, treasuryTokenAccount: quote.treasuryTokenAccount, paymentReference: quote.paymentReference, expiresAtUtc: quote.expires_at_utc || quote.expires_at, expiresAtEpochMs: quote.expires_at_epoch_ms || Date.parse(quote.expires_at) } });
+    return json({ jobId: item.id, status: item.status, paymentIntent: { jobId: item.id, amount: quote.amount.toFixed(6), amountBaseUnits: String(quote.amountAtomic), mint: quote.mint, network: quote.network, target_network: quote.target_network || item.execution_input?.network || "solana-mainnet-beta", treasuryOwner: quote.treasuryOwner, treasuryTokenAccount: quote.treasuryTokenAccount, paymentReference: quote.paymentReference, expiresAtUtc: quote.expires_at_utc || quote.expires_at, expiresAtEpochMs: quote.expires_at_epoch_ms || Date.parse(quote.expires_at) } });
   }
   const payment = path.match(/^\/api\/jobs\/([^/]+)\/payment$/);
   if (method === "POST" && payment)
