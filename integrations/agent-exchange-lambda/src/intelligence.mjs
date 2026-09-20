@@ -3,13 +3,14 @@ import { evmNetwork, executeEvmService, evmRead } from "./evm.mjs";
 import { mintEvidence, readRpc, simulateSolanaTransaction } from "./solana.mjs";
 import { runIntelInference } from "./intel.mjs";
 import { marketData } from "./market.mjs";
+import { normalizeNetworkId } from "./network-capabilities.mjs";
 
 const solanaAddress = /^[1-9A-HJ-NP-Za-km-z]{32,88}$/;
 const evmAddress = /^0x[0-9a-fA-F]{40}$/;
 const evmTx = /^0x[0-9a-fA-F]{64}$/;
 
 function networkOf(input) {
-  const network = String(input?.network || "");
+  const network = normalizeNetworkId(input?.network || "");
   if (network === "solana-mainnet-beta" || evmNetwork(network)) return network;
   throw new Error("supported network is required");
 }

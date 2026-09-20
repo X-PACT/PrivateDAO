@@ -69,6 +69,41 @@ test("EVM services are read-only and use the configured provider", async () => {
   server.close();
 });
 
+test("direct service and provider calls normalize EVM network aliases", async () => {
+  const server = createServer(async (request, response) => {
+    let body = "";
+    for await (const chunk of request) body += chunk;
+    const { method } = JSON.parse(body);
+    const result = {
+      eth_chainId: "0x2105",
+      eth_getCode: "0x6000",
+      eth_call: "0x" + "0".repeat(64),
+      eth_blockNumber: "0x10",
+    }[method];
+    response.setHeader("content-type", "application/json");
+    response.end(JSON.stringify({ jsonrpc: "2.0", id: 1, result }));
+  });
+  await new Promise((resolve) => server.listen(0, resolve));
+  const port = server.address().port;
+  const config = { evmRpcUrls: { "base-mainnet": `http://127.0.0.1:${port}` } };
+  try {
+    const direct = await executeEvmService(config, "token.intelligence", {
+      network: "base:mainnet",
+      asset: "0x0000000000000000000000000000000000000001",
+    });
+    assert.equal(direct.network, "base-mainnet");
+    assert.equal(direct.contract_present, true);
+    const viaIntelligence = await researchAsset(config, {
+      network: "base:mainnet",
+      asset: "0x0000000000000000000000000000000000000001",
+    });
+    assert.equal(viaIntelligence.network, "base-mainnet");
+    assert.equal(evmRpcUrl(config, "base:mainnet"), `http://127.0.0.1:${port}`);
+  } finally {
+    server.close();
+  }
+});
+
 test("Alchemy URLs are constructed without exposing the key in results", () => {
   const url = evmRpcUrl({ alchemyApiKey: "test-only-key", evmRpcUrls: {} }, "base-mainnet");
   assert.equal(url, "https://base-mainnet.g.alchemy.com/v2/test-only-key");

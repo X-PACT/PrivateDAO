@@ -1,3 +1,5 @@
+import { normalizeNetworkId } from "./network-capabilities.mjs";
+
 const EVM_NETWORKS = Object.freeze({
   "ethereum-mainnet": { chainId: "0x1", label: "Ethereum Mainnet", alchemySlug: "eth-mainnet", env: "PDAO_EVM_ETHEREUM_MAINNET_RPC_URL" },
   "base-mainnet": { chainId: "0x2105", label: "Base Mainnet", alchemySlug: "base-mainnet", env: "PDAO_EVM_BASE_MAINNET_RPC_URL" },
@@ -22,7 +24,7 @@ function retryDelay(attempt) {
 }
 
 export function evmNetwork(id) {
-  return EVM_NETWORKS[id] || null;
+  return EVM_NETWORKS[normalizeNetworkId(id)] || null;
 }
 
 export function evmNetworks() {
@@ -30,9 +32,10 @@ export function evmNetworks() {
 }
 
 export function evmRpcUrl(config, network) {
-  const definition = evmNetwork(network);
+  const normalizedNetwork = normalizeNetworkId(network);
+  const definition = evmNetwork(normalizedNetwork);
   if (!definition) throw new Error(`unsupported EVM network: ${network}`);
-  const explicit = config.evmRpcUrls?.[network];
+  const explicit = config.evmRpcUrls?.[normalizedNetwork];
   if (explicit) return explicit;
   if (config.alchemyApiKey) return `https://${definition.alchemySlug}.g.alchemy.com/v2/${config.alchemyApiKey}`;
   throw new Error(`RPC is not configured for ${network}`);
@@ -160,7 +163,7 @@ async function tokenCalls(config, network, asset) {
 }
 
 export async function executeEvmService(config, serviceId, input = {}) {
-  const network = String(input.network || "");
+  const network = normalizeNetworkId(input.network || "");
   const definition = evmNetwork(network);
   if (!definition) throw new Error("supported EVM network is required");
   const asset = input.asset || input.token || input.contract;
