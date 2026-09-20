@@ -42,6 +42,15 @@ async function rpcCall(url, method, params = []) {
   return body.result;
 }
 
+async function alchemyData(config, network, method, params = []) {
+  if (!config.alchemyApiKey || config.evmRpcUrls?.[network]) return null;
+  try {
+    return await rpcCall(evmRpcUrl(config, network), method, params);
+  } catch {
+    return null;
+  }
+}
+
 async function read(config, network, method, params = []) {
   const definition = evmNetwork(network);
   const url = evmRpcUrl(config, network);
@@ -94,6 +103,7 @@ async function tokenCalls(config, network, asset) {
     read(config, network, "eth_call", [{ to: asset, data: "0x06fdde03" }, "latest"]),
     read(config, network, "eth_call", [{ to: asset, data: "0x95d89b41" }, "latest"]),
   ]);
+  const metadata = await alchemyData(config, network, "alchemy_getTokenMetadata", [asset]);
   return {
     network,
     asset,
@@ -103,6 +113,12 @@ async function tokenCalls(config, network, asset) {
     total_supply: decodeUint(supply.result),
     name: decodeString(name.result),
     symbol: decodeString(symbol.result),
+    provider_metadata: metadata && typeof metadata === "object" ? {
+      name: metadata.name || null,
+      symbol: metadata.symbol || null,
+      decimals: metadata.decimals ?? null,
+      logo: metadata.logo || null,
+    } : null,
     evidence_confidence: "rpc-confirmed",
     provider_class: code.providerClass,
     observed_at: new Date().toISOString(),
@@ -134,7 +150,25 @@ export async function executeEvmService(config, serviceId, input = {}) {
       read(config, network, "eth_getTransactionCount", [address, "latest"]),
       read(config, network, "eth_getCode", [address, "latest"]),
     ]);
-    return { network, address, native_balance_wei: decodeUint(balance.result), transaction_count: Number.parseInt(nonce.result, 16), is_contract: code.result !== "0x", evidence_confidence: "rpc-confirmed", provider_class: balance.providerClass, observed_at: new Date().toISOString() };
+    const tokenBalances = await alchemyData(config, network, "alchemy_getTokenBalances", [address, "DEFAULT_TOKENS"]);
+    return {
+      network,
+      address,
+      native_balance_wei: decodeUint(balance.result),
+      transaction_count: Number.parseInt(nonce.result, 16),
+      is_contract: code.result !== "0x",
+      token_balances: Array.isArray(tokenBalances?.tokenBalances)
+        ? tokenBalances.tokenBalances.map((item) => ({
+          contract_address: item.contractAddress || null,
+          token_balance: item.tokenBalance || null,
+          error: item.error || null,
+        }))
+        : null,
+      token_balance_source: tokenBalances ? "alchemy-data-api" : null,
+      evidence_confidence: "rpc-confirmed",
+      provider_class: balance.providerClass,
+      observed_at: new Date().toISOString(),
+    };
   }
   if (serviceId === "transaction.simulate") {
     const tx = input.transaction || input;
