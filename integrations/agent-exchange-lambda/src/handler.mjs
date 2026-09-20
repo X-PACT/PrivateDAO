@@ -645,9 +645,18 @@ async function partnersPage() {
   const cards = await Promise.all(campaigns.map(async (campaign) => {
     const agent = await (await store()).get("Registry", campaign.agentId);
     const technical = agent?.status === "connected" ? "MCP Connected" : agent?.status === "verified" ? "E2E Verified" : "Technical status unavailable";
-    return `<article><p class="eyebrow">Featured Partner</p><h2>${escapeHtml(campaign.agentName)}</h2><p>${escapeHtml(technical)} · Sponsored placement</p><p>Capabilities: ${escapeHtml((agent?.allowed_tools || agent?.capabilities || []).slice(0, 12).join(", ") || "Discovered capabilities")}</p><small>Campaign: ${escapeHtml(campaign.start_at)} → ${escapeHtml(campaign.end_at)}</small></article>`;
+    return `<article><p class="eyebrow">Featured Partner</p><h2><a href="/agents/${encodeURIComponent(campaign.agentId)}">${escapeHtml(campaign.agentName)}</a></h2><p>${escapeHtml(technical)} · Sponsored placement</p><p>Capabilities: ${escapeHtml((agent?.allowed_tools || agent?.capabilities || []).slice(0, 12).join(", ") || "Discovered capabilities")}</p><small>Campaign: ${escapeHtml(campaign.start_at)} → ${escapeHtml(campaign.end_at)}</small></article>`;
   })).then((items) => items.join("") || "<p>No active Featured Partners at this time.</p>");
   return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Featured Partners | PrivateDAO Agent Exchange</title><meta name="description" content="Active sponsored Featured Partners in the PrivateDAO Agent Marketplace."><style>body{font-family:system-ui,sans-serif;max-width:980px;margin:0 auto;padding:32px 20px;color:#081b33}a{color:#1769e0}.eyebrow{color:#1769e0;font-weight:800;letter-spacing:.12em;text-transform:uppercase;font-size:.75rem}header{display:flex;justify-content:space-between;margin-bottom:80px}section{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}article{border:1px solid #dbe5f0;border-radius:16px;padding:22px}small{color:#52657c}@media(max-width:600px){header{margin-bottom:48px}}</style></head><body><header><strong><a href="/marketplace">PrivateDAO Agent Exchange</a></strong><nav><a href="/marketplace">Marketplace</a> · <a href="/connect">Build</a></nav></header><p class="eyebrow">Sponsored partnerships</p><h1>Featured Partners</h1><p>Paid promotion is disclosed separately from technical integration. Payment never creates MCP verification or execution access.</p><section>${cards}</section></body></html>`;
+}
+async function agentProfilePage(id) {
+  const agent = await (await store()).get("Registry", id);
+  if (!agent) return null;
+  const campaigns = (await activePartnerships()).filter((campaign) => campaign.agentId === id);
+  const technical = agent.status === "connected" ? "MCP Connected" : agent.status === "verified" ? "E2E Verified" : "Unavailable";
+  const commercial = campaigns.length ? "Featured Partner / Sponsored" : "Standard Listing";
+  const tools = (agent.allowed_tools || agent.capabilities || []).slice(0, 24).map((tool) => `<li>${escapeHtml(tool)}</li>`).join("") || "<li>No safe tools currently enabled</li>";
+  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${escapeHtml(agent.name)} | PrivateDAO Agent Marketplace</title><meta name="description" content="Technical and commercial status for ${escapeHtml(agent.name)} in the PrivateDAO Agent Marketplace."><style>body{font-family:system-ui,sans-serif;max-width:900px;margin:0 auto;padding:32px 20px;color:#081b33}a{color:#1769e0}.eyebrow{color:#1769e0;font-weight:800;letter-spacing:.12em;text-transform:uppercase;font-size:.75rem}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:28px}.panel{border:1px solid #dbe5f0;border-radius:16px;padding:22px}.status{font-size:1.2rem;font-weight:800}.muted{color:#52657c}li{margin:6px 0}@media(max-width:650px){.grid{grid-template-columns:1fr}}</style></head><body><p><a href="/marketplace">← Agent Marketplace</a></p><p class="eyebrow">Agent profile</p><h1>${escapeHtml(agent.name)}</h1><div class="grid"><section class="panel"><p class="eyebrow">Technical status</p><p class="status">${escapeHtml(technical)}</p><p class="muted">Protocol: ${escapeHtml(agent.protocol || "MCP")} · Capabilities discovered: ${escapeHtml(String((agent.capabilities || []).length))}</p><h2>Safe capabilities</h2><ul>${tools}</ul></section><section class="panel"><p class="eyebrow">Commercial status</p><p class="status">${escapeHtml(commercial)}</p><p class="muted">Paid promotion never creates MCP verification, permissions, or execution access.</p>${campaigns.length ? `<p>Campaign window: ${escapeHtml(campaigns[0].start_at)} → ${escapeHtml(campaigns[0].end_at)}</p>` : "<p>Free standard listing. No sponsored placement is active.</p>"}</section></div></body></html>`;
 }
 async function listListings(query = {}) {
   const all = await (await store()).list(collectionFor("listings"));
@@ -1737,6 +1746,11 @@ async function handle(e) {
   }
   if (method === "GET" && (path === "/partners" || path === "/marketplace/partners"))
     return { statusCode: 200, headers: { "content-type": "text/html; charset=utf-8", "cache-control": "no-store" }, body: await partnersPage() };
+  const agentProfile = path.match(/^\/agents\/([^/]+)$/);
+  if (method === "GET" && agentProfile) {
+    const page = await agentProfilePage(decodeURIComponent(agentProfile[1]));
+    return page ? { statusCode: 200, headers: { "content-type": "text/html; charset=utf-8", "cache-control": "no-store" }, body: page } : json({ error: "not_found" }, 404);
+  }
   const servicePage = path.match(/^\/services\/([^/]+)$/);
   if (method === "GET" && servicePage) {
     const serviceId = decodeURIComponent(servicePage[1]).replaceAll("-", ".");
