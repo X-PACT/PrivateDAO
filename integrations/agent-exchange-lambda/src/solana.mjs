@@ -72,20 +72,6 @@ export async function treasuryTokenAccount(config) {
   return derivedTreasuryTokenAccount(config);
 }
 
-export async function usdcTreasuryReadiness(config) {
-  const ata = await treasuryTokenAccount(config);
-  try {
-    const account = await readRpc(config, "getAccountInfo", [ata, { encoding: "jsonParsed" }]);
-    const value = account.result?.value;
-    const mint = value?.data?.parsed?.info?.mint || null;
-    if (!value) return { ready: false, status: "ATA_NOT_INITIALIZED", ata };
-    if (mint !== config.usdcMint) return { ready: false, status: "ATA_MINT_MISMATCH", ata };
-    return { ready: true, status: "ready", ata, providerClass: account.providerClass };
-  } catch (error) {
-    return { ready: false, status: "RPC_UNAVAILABLE", ata, reason: error?.message || "RPC unavailable" };
-  }
-}
-
 export async function derivedTreasuryTokenAccount(config) {
   if (
     config.treasury === "2BJ4ezxqV9YJXc38D9duKBkdn4su4jE1beKUHwH663sL" &&

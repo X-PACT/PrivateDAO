@@ -5,7 +5,7 @@
   "engines": { "node": ">=22" },
   "scripts": {
     "test:surfaces": "NODE_ENV=test node --test test/surfaces.mjs",
-    "test": "NODE_ENV=test node --test test/*.mjs",
+    "test": "node --test test/*.mjs",
     "smoke": "node test/smoke.mjs",
     "lint": "node --check src/*.mjs test/*.mjs"
   },

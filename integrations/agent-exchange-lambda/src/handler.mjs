@@ -12,7 +12,6 @@ import {
   swapQuote,
   simulateSolanaTransaction,
   treasuryTokenAccount,
-  usdcTreasuryReadiness,
   verifyPayment,
 } from "./solana.mjs";
 import { evmNetwork, evmHealth, executeEvmService, evmRuntimeStats } from "./evm.mjs";
@@ -871,7 +870,6 @@ async function updatePartnership(id, body) {
   return next;
 }
 async function partnershipQuote(campaign) {
-  await requireUsdcTreasuryReady();
   const storage = await store();
   const existing = (await storage.list("Quotes")).find((quote) => quote.partnership_id === campaign.id && Date.parse(quote.expires_at) > Date.now());
   if (existing) return existing;
@@ -896,18 +894,6 @@ async function partnershipQuote(campaign) {
   await storage.put("Quotes", quote.quote_id, quote, true);
   return quote;
 }
-async function requireUsdcTreasuryReady() {
-  if (process.env.NODE_ENV === "test") return;
-  const readiness = await usdcTreasuryReadiness(config);
-  if (!readiness.ready) {
-    throw Object.assign(new Error("USDC payment rail is not ready"), {
-      statusCode: 503,
-      paymentUnavailable: true,
-      readinessStatus: readiness.status,
-    });
-  }
-}
-
 async function partnershipPaymentIntent(id) {
   const campaign = await (await store()).get("Campaigns", id);
   if (!campaign || campaign.type !== "featured_partner") throw Object.assign(new Error("partnership not found"), { statusCode: 404 });
@@ -1242,9 +1228,8 @@ function errorResponse(error) {
   const status = error.statusCode || 400;
   return json(
     {
-      error: status === 402 ? "payment_required" : error.paymentUnavailable ? "payment_unavailable" : "request_failed",
+      error: status === 402 ? "payment_required" : "request_failed",
       message: error.message,
-      ...(error.readinessStatus ? { readiness_status: error.readinessStatus } : {}),
       ...(error.payment_intent ? { payment_intent: error.payment_intent } : {}),
       ...(error.quote ? { quote: error.quote } : {}),
       ...(error.retryAfterSeconds ? { retry_after_seconds: error.retryAfterSeconds } : {}),
@@ -1260,7 +1245,6 @@ function errorResponse(error) {
 async function makeQuote(serviceId, jobId, admin = false, currency = "USDC", targetNetwork = null) {
   const service = serviceById(serviceId);
   if (!service) throw new Error("unknown service");
-  if (service.price && currency === "USDC") await requireUsdcTreasuryReady();
   const amount = admin && currency === "SOL"
     ? 0.0001
     : admin
@@ -1607,12 +1591,10 @@ async function createJob(serviceId, input, admin = false, currency = "USDC", met
     expires_at: new Date(Date.now() + 900000).toISOString(),
     ...(persistForPaymentRetry ? { execution_input: input } : {}),
   };
-  const quote = service.price
-    ? await makeQuote(serviceId, job.id, admin, currency, input?.network || null)
-    : null;
   await (await store()).put("Jobs", job.id, job, true);
   trackFunnel("job_created", { service: serviceId, ...metadata });
   if (service.price) {
+    const quote = await makeQuote(serviceId, job.id, admin, currency, input?.network || null);
     const intent = {
       jobId: job.id,
       status: "awaiting_payment",

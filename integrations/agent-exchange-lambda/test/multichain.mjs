@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { createServer } from "node:http";
 import { executeEvmService, evmRpcUrl, evmRuntimeStats } from "../src/evm.mjs";
-import { derivedTreasuryTokenAccount, mintEvidence, readRpc, solanaHealth, swapQuote, simulateSolanaTransaction, usdcTreasuryReadiness, verifyPayment } from "../src/solana.mjs";
+import { derivedTreasuryTokenAccount, mintEvidence, readRpc, solanaHealth, swapQuote, simulateSolanaTransaction, verifyPayment } from "../src/solana.mjs";
 import { getConfig } from "../src/config.mjs";
 import { enforceRateLimit, resetRuntimeControls } from "../src/runtime-controls.mjs";
 import { researchAsset, researchReport, explainTransaction, portfolioIntelligence } from "../src/intelligence.mjs";
@@ -111,39 +111,6 @@ test("production treasury token account is canonical and alternatives are reject
     () => derivedTreasuryTokenAccount({ treasury: "11111111111111111111111111111111", usdcMint: canonical }),
     /unsupported production treasury or USDC mint/,
   );
-});
-
-test("USDC payment readiness rejects an uninitialized or mismatched treasury ATA", async () => {
-  const originalFetch = global.fetch;
-  const originalNodeEnv = process.env.NODE_ENV;
-  delete process.env.NODE_ENV;
-  global.fetch = async (_url, options) => {
-    const request = JSON.parse(options.body);
-    const result = request.method === "getGenesisHash"
-      ? "5eykt4UsFv8P8NJdTREpY1vzqKqZKvdpKuc147dw2N9d"
-      : { value: null };
-    return new Response(JSON.stringify({ jsonrpc: "2.0", id: 1, result }), {
-      status: 200,
-      headers: { "content-type": "application/json" },
-    });
-  };
-  try {
-    const readiness = await usdcTreasuryReadiness({
-      cluster: "mainnet-beta",
-      treasury: "2BJ4ezxqV9YJXc38D9duKBkdn4su4jE1beKUHwH663sL",
-      usdcMint: "EPjFWdd5AufSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
-      rpcPrimary: "https://primary.example",
-      rpcSecondary: "",
-      rpcFallback: "",
-      mainnetGenesisHash: "5eykt4UsFv8P8NJdTREpY1vzqKqZKvdpKuc147dw2N9d",
-    });
-    assert.equal(readiness.ready, false);
-    assert.equal(readiness.status, "ATA_NOT_INITIALIZED");
-  } finally {
-    global.fetch = originalFetch;
-    if (originalNodeEnv == null) delete process.env.NODE_ENV;
-    else process.env.NODE_ENV = originalNodeEnv;
-  }
 });
 
 test("payment verification rejects malformed signatures before contacting RPC", async () => {
@@ -359,9 +326,7 @@ test("Solana simulation is RPC-backed and never broadcasts", async () => {
     }, { transaction: "AA==" });
     assert.equal(result.would_broadcast, false);
     assert.equal(result.units_consumed, 1200);
-    assert.deepEqual(calls, process.env.NODE_ENV === "test"
-      ? ["simulateTransaction"]
-      : ["getGenesisHash", "simulateTransaction"]);
+    assert.deepEqual(calls, ["getGenesisHash", "simulateTransaction"]);
   } finally {
     global.fetch = originalFetch;
   }
