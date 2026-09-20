@@ -755,7 +755,16 @@ async function submitPartnershipPayment(id, body) {
   const paymentId = `payment_${body.signature}`;
   const existing = await storage.get("Payments", paymentId);
   if (existing && existing.partnership_id !== id) throw Object.assign(new Error("payment signature was already used"), { statusCode: 402 });
-  if (!existing) await storage.put("Payments", paymentId, { id: paymentId, signature: body.signature, payment_type: "featured_partnership", partnership_id: id, payer_wallet: payerWallet, amount: quote.amount, asset: quote.currency, network: quote.network, consumed_at: now() }, true);
+  if (!existing) {
+    const candidate = { id: paymentId, signature: body.signature, payment_type: "featured_partnership", partnership_id: id, payer_wallet: payerWallet, amount: quote.amount, asset: quote.currency, network: quote.network, consumed_at: now() };
+    try {
+      await storage.put("Payments", paymentId, candidate, true);
+    } catch (error) {
+      const raced = await storage.get("Payments", paymentId);
+      if (!raced) throw error;
+      if (raced.partnership_id !== id) throw Object.assign(new Error("payment signature was already used"), { statusCode: 402 });
+    }
+  }
   const next = { ...campaign, payment_status: "paid", campaign_status: new Date(campaign.start_at) <= new Date() ? "active" : "scheduled", payment_signature: body.signature, payer_wallet: payerWallet, paid_amount: quote.amount, paid_at: now(), payment_network: quote.network, payment_asset: quote.currency, updated_at: now() };
   await storage.put("Campaigns", id, next);
   return { status: next.campaign_status, campaign: next, payment: { signature: body.signature, block_time: payment.blockTime, network: quote.network, asset: quote.currency } };
@@ -1541,25 +1550,32 @@ async function submitPayment(jobId, body) {
     throw Object.assign(new Error("payment signature was already used"), {
       statusCode: 402,
     });
+  let paymentClaim = existingPayment;
+  let claimedByThisInvocation = false;
   if (!existingPayment) {
-    await storage.put(
-      "Payments",
-      paymentId,
-      {
-        id: paymentId,
-        signature: body.signature,
-        job_id: jobId,
-        consumed_at: now(),
-      },
-      true,
-    );
+    const candidate = {
+      id: paymentId,
+      signature: body.signature,
+      job_id: jobId,
+      consumed_at: now(),
+    };
+    try {
+      await storage.put("Payments", paymentId, candidate, true);
+      paymentClaim = candidate;
+      claimedByThisInvocation = true;
+    } catch (error) {
+      paymentClaim = await storage.get("Payments", paymentId);
+      if (!paymentClaim) throw error;
+      if (paymentClaim.job_id !== jobId)
+        throw Object.assign(new Error("payment signature was already used"), { statusCode: 402 });
+    }
   }
 
   const currentJob = await storage.get("Jobs", jobId);
   if (currentJob?.status === "completed" && currentJob.receipt_id)
     return completeJob(currentJob, currentJob.result, null);
-  if (existingPayment) {
-    const claimedAt = Date.parse(existingPayment.consumed_at || "");
+  if (!claimedByThisInvocation && paymentClaim) {
+    const claimedAt = Date.parse(paymentClaim.consumed_at || "");
     if (Number.isFinite(claimedAt) && Date.now() - claimedAt < 30000)
       return {
         job_id: jobId,
