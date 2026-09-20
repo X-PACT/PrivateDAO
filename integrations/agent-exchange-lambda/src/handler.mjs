@@ -1868,8 +1868,11 @@ async function handle(e) {
   if (method === "GET" && (path === "/partners" || path === "/marketplace/partners"))
     return { statusCode: 200, headers: { "content-type": "text/html; charset=utf-8", "cache-control": "no-store" }, body: await partnersPage() };
   const partnershipPayPage = path.match(/^\/partners\/([^/]+)\/pay$/);
-  if (method === "GET" && partnershipPayPage)
+  if (method === "GET" && partnershipPayPage) {
+    const campaign = await (await store()).get("Campaigns", decodeURIComponent(partnershipPayPage[1]));
+    if (!campaign || campaign.type !== "featured_partner") return json({ error: "partnership_not_found" }, 404);
     return { statusCode: 200, headers: { "content-type": "text/html; charset=utf-8", "cache-control": "no-store" }, body: partnershipPaymentPage(decodeURIComponent(partnershipPayPage[1])) };
+  }
   const agentProfile = path.match(/^\/agents\/([^/]+)$/);
   if (method === "GET" && agentProfile) {
     const page = await agentProfilePage(decodeURIComponent(agentProfile[1]));
