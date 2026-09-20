@@ -334,6 +334,36 @@ function serviceExample(service) {
   if (service.input.includes("structured")) return { evidence: { claim: "example" } };
   return { record: { claim: "example" } };
 }
+function validateServiceInput(serviceId, input = {}) {
+  const service = serviceById(serviceId);
+  if (!service) throw new Error("unknown service");
+  if (serviceId === "intelligence.synthesize" && !config.intelInferenceUrl) {
+    throw Object.assign(new Error("Intel inference provider is not configured"), { statusCode: 503 });
+  }
+  const network = input.network == null ? "" : String(input.network);
+  if (service.supportedNetworks?.length && !service.supportedNetworks.includes(network))
+    throw new Error(`${serviceId} is not supported on ${network || "this network"}`);
+  const solana = /^[1-9A-HJ-NP-Za-km-z]{32,88}$/;
+  const evm = /^0x[0-9a-fA-F]{40}$/;
+  const isEvm = ["ethereum-mainnet", "base-mainnet", "arbitrum-mainnet"].includes(network);
+  const subject = input.asset || input.mint || input.token || input.contract || input.program || input.address || input.wallet;
+  const addressValid = isEvm ? evm.test(String(subject || "")) : solana.test(String(subject || ""));
+  if (["token.intelligence", "risk.score", "market.snapshot", "research.asset", "contract.explain"].includes(serviceId) && !addressValid)
+    throw new Error(isEvm ? "valid EVM asset address is required" : "valid Solana asset address is required");
+  if (["wallet.intelligence", "research.wallet"].includes(serviceId))
+    if (!(isEvm ? evm.test(String(input.wallet || input.address || "")) : solana.test(String(input.wallet || input.address || ""))))
+      throw new Error(isEvm ? "valid EVM wallet address is required" : "valid Solana wallet address is required");
+  if (["anomaly.detect", "agent.research.report"].includes(serviceId) && !addressValid)
+    throw new Error("valid asset or wallet subject is required");
+  if (serviceId === "portfolio.intelligence") {
+    if (!Array.isArray(input.assets) || input.assets.length < 1 || input.assets.length > 10)
+      throw new Error("assets must contain between 1 and 10 identifiers");
+    if (input.assets.some((asset) => !(isEvm ? evm.test(String(asset)) : solana.test(String(asset)))))
+      throw new Error(isEvm ? "all portfolio assets must be valid EVM addresses" : "all portfolio assets must be valid Solana addresses");
+  }
+  if (["transaction.simulate", "transaction.explain"].includes(serviceId) && !input.transaction && !input.unsignedTransaction && !input.serializedTransaction && !input.hash && !input.signature)
+    throw new Error("transaction data or transaction hash is required");
+}
 function languageWidget() {
   return `<label id="pdao-language-picker" title="Change language" aria-label="Change language"><span aria-hidden="true">🌐</span><select aria-label="Language"><option value="en">English</option><option value="ar">العربية</option><option value="ru">Русский</option><option value="uk">Українська</option><option value="pl">Polski</option><option value="hi">हिन्दी</option><option value="ko">한국어</option><option value="es">Español</option><option value="it">Italiano</option></select></label><style>#pdao-language-picker{position:fixed;right:18px;bottom:18px;z-index:20;display:inline-flex;align-items:center;gap:6px;border:1px solid #dbe5ef;border-radius:999px;background:#fff;color:#071a32;padding:8px 11px;box-shadow:0 8px 24px rgba(7,26,50,.12);font:700 12px system-ui}#pdao-language-picker select{border:0;background:transparent;color:#071a32;font:700 12px system-ui;outline:none;cursor:pointer}#pdao-language-picker:hover{border-color:#1769e0;color:#1769e0}</style><script>(function(){const picker=document.querySelector("#pdao-language-picker select");if(!picker)return;const pairs={"Marketplace":"السوق","Build":"التكامل","Agent Card":"بطاقة الوكيل","Connect an agent":"اربط وكيلًا","Browse capabilities":"استعرض القدرات","Explore services":"استعرض الخدمات","Try verification":"جرّب التحقق","PrivateDAO Agents":"وكلاء PrivateDAO","OpenAPI":"OpenAPI","MCP":"MCP","A2A":"A2A"};const query=new URLSearchParams(location.search);const initial=query.get("lang");if(initial&&["en","ar","ru","uk","pl","hi","ko","es","it"].includes(initial))picker.value=initial;function translate(arabic){document.documentElement.lang=arabic?"ar":"en";document.documentElement.dir=arabic?"rtl":"ltr";document.querySelectorAll("body *").forEach(function(el){if(el.tagName==="SCRIPT"||el.tagName==="STYLE"||el.children.length||el.childNodes.length!==1)return;const node=el.firstChild;if(node.nodeType!==3)return;const value=node.nodeValue.trim();if(!value)return;if(!el.dataset.pdaoEn)el.dataset.pdaoEn=value;node.nodeValue=arabic?(pairs[value]||value):el.dataset.pdaoEn;});}picker.addEventListener("change",function(){const locale=picker.value;try{localStorage.setItem("privatedao.locale",locale);localStorage.setItem("privatedao.locale.explicit","1");}catch(error){}if(locale==="ar"||locale==="en"){translate(locale==="ar");return;}location.href="https://privatedao.org/?lang="+encodeURIComponent(locale);});})();</script>`;
 }
@@ -1083,6 +1113,7 @@ async function executeService(id, input) {
 async function createJob(serviceId, input, admin = false, currency = "USDC", metadata = {}) {
   const service = serviceById(serviceId);
   if (!service) throw new Error("unknown service");
+  validateServiceInput(serviceId, input);
   const persistForPaymentRetry = Boolean(service.price && [
     "token.intelligence",
     "risk.score",

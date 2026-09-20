@@ -65,6 +65,32 @@ test("a free job resolves to a public human receipt and verification page", asyn
   }
 });
 
+test("paid jobs validate before quoting and separate payment from target network", async () => {
+  resetForTests();
+  const quote = await request("/api/jobs", "POST", {
+    service_id: "agent.research.report",
+    input: { network: "ethereum-mainnet", asset: "0x0000000000000000000000000000000000000001" },
+  });
+  assert.equal(quote.statusCode, 402);
+  const quoteBody = JSON.parse(quote.body);
+  assert.equal(quoteBody.payment_intent.network, "solana-mainnet-beta");
+  assert.equal(quoteBody.payment_intent.target_network, "ethereum-mainnet");
+
+  const invalidNetwork = await request("/api/jobs", "POST", {
+    service_id: "agent.research.report",
+    input: { network: "unsupported-mainnet", asset: "0x0000000000000000000000000000000000000001" },
+  });
+  assert.equal(invalidNetwork.statusCode, 400);
+  assert.doesNotMatch(invalidNetwork.body, /payment_intent/);
+
+  const invalidAsset = await request("/api/jobs", "POST", {
+    service_id: "agent.research.report",
+    input: { network: "ethereum-mainnet", asset: "not-an-address" },
+  });
+  assert.equal(invalidAsset.statusCode, 400);
+  assert.doesNotMatch(invalidAsset.body, /payment_intent/);
+});
+
 test("every catalog capability has a stable detail page", async () => {
   resetForTests();
   for (const service of SERVICES) {
