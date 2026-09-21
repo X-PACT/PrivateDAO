@@ -2482,6 +2482,8 @@ async function mcp(request) {
         capabilities: { tools: {} },
       },
     });
+  if (request.method === "ping")
+    return json({ jsonrpc: "2.0", id, result: {} });
   const schemas = {
     pdao_services: { type: "object", properties: {}, additionalProperties: false, description: "List available PrivateDAO services." },
     verify_basic: {
@@ -2572,6 +2574,19 @@ async function mcp(request) {
     },
     network_stats: { type: "object", properties: {}, additionalProperties: false },
   };
+  const annotations = {
+    pdao_services: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false },
+    verify_basic: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false },
+    create_paid_job: { readOnlyHint: false, destructiveHint: false, idempotentHint: false, openWorldHint: false },
+    submit_payment: { readOnlyHint: false, destructiveHint: true, idempotentHint: false, openWorldHint: false },
+    job_status: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false },
+    get_receipt: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false },
+    search_agents: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: true },
+    register_agent: { readOnlyHint: false, destructiveHint: false, idempotentHint: true, openWorldHint: true },
+    agent_match: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: true },
+    logistics_request: { readOnlyHint: false, destructiveHint: false, idempotentHint: false, openWorldHint: true },
+    network_stats: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: true },
+  };
   const tools = [
     "pdao_services",
     "verify_basic",
@@ -2586,10 +2601,12 @@ async function mcp(request) {
     "network_stats",
   ].map((name) => ({
     name,
+    title: `PrivateDAO ${name}`,
     description: name === "agent_match"
       ? "Free registry discovery and capability matching. Use create_paid_job for the paid agent.match service."
       : `PrivateDAO ${name}`,
     inputSchema: schemas[name] || { type: "object", additionalProperties: false },
+    annotations: annotations[name],
   }));
   if (request.method === "tools/list")
     return json({ jsonrpc: "2.0", id, result: { tools } });

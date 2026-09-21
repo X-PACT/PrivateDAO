@@ -23,6 +23,44 @@ the game runtime.
 - `/api/network/health?network=ethereum-mainnet` sanitized provider health
 - `/a2a`, `/mcp`, `/openapi.json` machine interfaces
 
+## AI client compatibility
+
+The public MCP endpoint is a remote Streamable HTTP MCP server:
+
+`https://agents.privatedao.org/mcp`
+
+It supports the standard `initialize`, `ping`, notification, `tools/list`, and
+`tools/call` lifecycle. Tool annotations identify read-only tools separately
+from job creation, registration, logistics, and payment-related operations.
+
+Use the endpoint as a custom remote MCP app in ChatGPT developer mode, as a
+remote HTTP MCP server in Claude, or as an OpenClaw `streamable-http` server.
+No client-specific bridge or private credential is required for the public
+read-only tools. Paid calls still follow the existing quote-first Solana
+Mainnet USDC flow and must not be treated as free read operations.
+
+OpenClaw configuration example:
+
+```json5
+{
+  mcp: {
+    servers: {
+      privatedao: {
+        url: "https://agents.privatedao.org/mcp",
+        transport: "streamable-http",
+        toolFilter: {
+          include: ["pdao_services", "verify_basic", "job_status", "get_receipt", "search_agents", "agent_match", "network_stats"]
+        }
+      }
+    }
+  }
+}
+```
+
+Claude and ChatGPT should be configured with the same remote endpoint and
+should refresh the tool catalog after a server update. Write or payment-related
+actions remain subject to the client confirmation and PrivateDAO payment gates.
+
 ## Deployment boundary
 
 Deploy this integration independently. Do not package or replace the main

@@ -245,6 +245,9 @@ test("MCP lifecycle, schemas, errors, and network aliases are protocol-safe", as
   const initialize = await request("/mcp", "POST", { jsonrpc: "2.0", id: 1, method: "initialize", params: { protocolVersion: "2025-06-18", capabilities: {}, clientInfo: { name: "test-client", version: "1" } } });
   assert.equal(initialize.statusCode, 200);
   assert.equal(JSON.parse(initialize.body).result.protocolVersion, "2025-06-18");
+  const ping = await request("/mcp", "POST", { jsonrpc: "2.0", id: 11, method: "ping", params: {} });
+  assert.equal(ping.statusCode, 200);
+  assert.deepEqual(JSON.parse(ping.body).result, {});
 
   const initialized = await request("/mcp", "POST", { jsonrpc: "2.0", method: "notifications/initialized", params: {} });
   assert.equal(initialized.statusCode, 202);
@@ -258,6 +261,8 @@ test("MCP lifecycle, schemas, errors, and network aliases are protocol-safe", as
   for (const tool of listed) {
     assert.equal(tool.inputSchema.type, "object", tool.name);
     assert.ok(tool.inputSchema.properties, tool.name);
+    assert.equal(typeof tool.annotations?.readOnlyHint, "boolean", `${tool.name} readOnlyHint`);
+    assert.equal(typeof tool.annotations?.destructiveHint, "boolean", `${tool.name} destructiveHint`);
   }
   const byName = Object.fromEntries(listed.map((tool) => [tool.name, tool.inputSchema]));
   assert.deepEqual(byName.submit_payment.required, ["job_id", "signature"]);
