@@ -1,4 +1,5 @@
 import { randomUUID } from "node:crypto";
+import { readFileSync } from "node:fs";
 import { getConfig, hydrateConfig } from "./config.mjs";
 import { digest, receiptId } from "./canonical.mjs";
 import { SERVICES, serviceById } from "./catalog.mjs";
@@ -72,6 +73,19 @@ const text = (body, status = 200) => ({
   },
   body,
 });
+function clientAssetResponse(path) {
+  const asset = CLIENT_ASSETS[path];
+  if (!asset) return null;
+  const bytes = readFileSync(asset.file);
+  return {
+    statusCode: 200,
+    headers: {
+      "content-type": asset.contentType,
+      "cache-control": "public, max-age=31536000, immutable",
+    },
+    ...(asset.binary ? { isBase64Encoded: true, body: bytes.toString("base64") } : { body: bytes.toString("utf8") }),
+  };
+}
 const pathOf = (e) =>
   e.rawPath || e.requestContext?.http?.path || e.path || "/";
 const methodOf = (e) => e.requestContext?.http?.method || e.httpMethod || "GET";
@@ -389,7 +403,7 @@ function connectPage() {
   return injectLanguageWidget(lines.join(""));
 }
 function distributionPage(title, description, content, route = "/connect") {
-  return injectLanguageWidget(`<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="${escapeHtml(description)}"><link rel="canonical" href="https://${config.domain}${route}"><title>${escapeHtml(title)} | PrivateDAO</title><style>body{max-width:1080px;margin:auto;padding:28px 24px 70px;color:#081b33;font:16px/1.6 system-ui,sans-serif}a{color:#1769e0;font-weight:700;text-decoration:none}.top,.row{display:flex;justify-content:space-between;gap:18px;align-items:center}.top{margin-bottom:72px}.nav{display:flex;gap:16px;flex-wrap:wrap}.nav a{color:#52657c}.eyebrow{color:#1769e0;font-size:.75rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase}h1{font-size:clamp(2.8rem,7vw,5.8rem);line-height:.95;letter-spacing:-.055em;max-width:850px}h2{font-size:1.35rem}.lead,.muted{color:#52657c}.lead{font-size:1.18rem;max-width:760px}.section{border-top:1px solid #dbe5f0;margin-top:42px;padding-top:26px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}.panel{border:1px solid #dbe5f0;border-radius:16px;padding:20px;box-shadow:0 10px 28px rgba(14,42,78,.05)}.badge,.verified-badge{display:inline-block;border:1px solid #b9dece;border-radius:999px;background:#effbf7;color:#087f5b;padding:5px 10px;font-size:.8rem;font-weight:800;white-space:nowrap}.verified-badge{border-color:#9ac7f6;background:#edf6ff;color:#145db3;letter-spacing:.02em}.client-card-title{display:inline-flex;align-items:center;gap:9px;flex-wrap:wrap}.brand-mark{display:inline-flex;align-items:center;justify-content:center;flex:none;width:34px;height:34px;border:1px solid #dbe5f0;border-radius:9px;background:#fff;overflow:hidden}.brand-mark img{display:block;width:24px;height:24px;object-fit:contain}.brand-mark-fallback{display:inline-flex;align-items:center;justify-content:center;max-width:108px;padding:0 5px;color:#081b33;font-size:9px;line-height:1.1;font-weight:800;text-align:center}.client-guide-brand{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.verified-client-list{display:flex;flex-wrap:wrap;gap:12px;margin-top:18px}.verified-client{display:inline-flex;align-items:center;gap:8px;border:1px solid #dbe5f0;border-radius:12px;padding:10px 12px;background:#fff}.button{border:0;border-radius:999px;background:#081b33;color:#fff;padding:11px 16px;font:inherit;cursor:pointer}.alt{background:#f5f9ff;color:#081b33;border:1px solid #dbe5f0}pre{overflow:auto;padding:16px;background:#f5f9ff;border:1px solid #dbe5f0;border-radius:12px;font:13px/1.55 ui-monospace,monospace;white-space:pre-wrap;overflow-wrap:anywhere}.step{margin:12px 0;padding-left:18px;border-left:3px solid #1769e0}.callout{padding:14px;border-left:4px solid #1769e0;background:#f5f9ff}footer{border-top:1px solid #dbe5f0;margin-top:48px;padding-top:18px;color:#52657c;font-size:.9rem}@media(max-width:700px){body{padding:20px 16px}.top,.row{align-items:flex-start;flex-direction:column}.top{margin-bottom:48px}.button{width:100%}.verified-client-list{display:grid;grid-template-columns:1fr 1fr}}</style></head><body><main><header class="top"><a href="/" style="color:#081b33">PrivateDAO Agent Exchange</a><nav class="nav"><a href="/connect">Connect</a><a href="/mcp">MCP</a><a href="/marketplace">Services</a><a href="/.well-known/agent-card.json">Agent Card</a></nav></header>${content}<footer>PrivateDAO Agent Exchange · <a href="/llms-full.txt">Machine-readable guide</a> · <a href="/openapi.json">OpenAPI</a> · <a href="/a2a">A2A</a></footer></main></body></html>`);
+  return injectLanguageWidget(`<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="${escapeHtml(description)}"><link rel="canonical" href="https://${config.domain}${route}"><title>${escapeHtml(title)} | PrivateDAO</title><style>body{max-width:1080px;margin:auto;padding:28px 24px 70px;color:#081b33;font:16px/1.6 system-ui,sans-serif}a{color:#1769e0;font-weight:700;text-decoration:none}.top,.row{display:flex;justify-content:space-between;gap:18px;align-items:center}.top{margin-bottom:72px}.nav{display:flex;gap:16px;flex-wrap:wrap}.nav a{color:#52657c}.eyebrow{color:#1769e0;font-size:.75rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase}h1{font-size:clamp(2.8rem,7vw,5.8rem);line-height:.95;letter-spacing:-.055em;max-width:850px}h2{font-size:1.35rem}.lead,.muted{color:#52657c}.lead{font-size:1.18rem;max-width:760px}.section{border-top:1px solid #dbe5f0;margin-top:42px;padding-top:26px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}.panel{border:1px solid #dbe5f0;border-radius:16px;padding:20px;box-shadow:0 10px 28px rgba(14,42,78,.05)}.badge,.verified-badge{display:inline-block;border:1px solid #b9dece;border-radius:999px;background:#effbf7;color:#087f5b;padding:5px 10px;font-size:.8rem;font-weight:800;white-space:nowrap}.verified-badge{border-color:#9ac7f6;background:#edf6ff;color:#145db3;letter-spacing:.02em}.client-card-title{display:inline-flex;align-items:center;gap:9px;flex-wrap:wrap}.brand-mark{display:inline-flex;align-items:center;justify-content:center;flex:none;width:34px;height:34px;border:1px solid #dbe5f0;border-radius:9px;background:#fff;overflow:hidden}.brand-mark-dark{background:#081b33;border-color:#081b33}.brand-mark img{display:block;width:32px;height:32px;object-fit:contain}.client-guide-brand{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.verified-client-list{display:flex;flex-wrap:wrap;gap:12px;margin-top:18px}.verified-client{display:inline-flex;align-items:center;gap:8px;border:1px solid #dbe5f0;border-radius:12px;padding:10px 12px;background:#fff}.button{border:0;border-radius:999px;background:#081b33;color:#fff;padding:11px 16px;font:inherit;cursor:pointer}.alt{background:#f5f9ff;color:#081b33;border:1px solid #dbe5f0}pre{overflow:auto;padding:16px;background:#f5f9ff;border:1px solid #dbe5f0;border-radius:12px;font:13px/1.55 ui-monospace,monospace;white-space:pre-wrap;overflow-wrap:anywhere}.step{margin:12px 0;padding-left:18px;border-left:3px solid #1769e0}.callout{padding:14px;border-left:4px solid #1769e0;background:#f5f9ff}footer{border-top:1px solid #dbe5f0;margin-top:48px;padding-top:18px;color:#52657c;font-size:.9rem}@media(max-width:700px){body{padding:20px 16px}.top,.row{align-items:flex-start;flex-direction:column}.top{margin-bottom:48px}.button{width:100%}.verified-client-list{display:grid;grid-template-columns:1fr 1fr}}</style></head><body><main><header class="top"><a href="/" style="color:#081b33">PrivateDAO Agent Exchange</a><nav class="nav"><a href="/connect">Connect</a><a href="/mcp">MCP</a><a href="/marketplace">Services</a><a href="/.well-known/agent-card.json">Agent Card</a></nav></header>${content}<footer>PrivateDAO Agent Exchange · <a href="/llms-full.txt">Machine-readable guide</a> · <a href="/openapi.json">OpenAPI</a> · <a href="/a2a">A2A</a></footer></main></body></html>`);
 }
 function distributionCopy(value, label = "Copy") {
   return `<button class="button alt copy" data-copy="${escapeHtml(value)}">${escapeHtml(label)}</button>`;
@@ -402,10 +416,16 @@ function mcpEndpoint() {
 }
 const VERIFIED_MCP_CLIENTS = new Set(["chatgpt", "claude", "grok", "openclaw"]);
 const CLIENT_BRANDS = {
-  chatgpt: { name: "ChatGPT", fallback: "OpenAI / ChatGPT" },
-  claude: { name: "Claude", fallback: "Claude / Anthropic", src: "https://claude.ai/favicon.ico" },
-  grok: { name: "Grok", fallback: "Grok / xAI", src: "https://grok.com/images/favicon.svg" },
-  openclaw: { name: "OpenClaw", fallback: "OpenClaw" },
+  chatgpt: { name: "ChatGPT", src: "/assets/clients/openai-knot.svg" },
+  claude: { name: "Claude", src: "/assets/clients/claude-symbol.svg", dark: true },
+  grok: { name: "Grok", src: "/assets/clients/grok-symbol.svg", dark: true },
+  openclaw: { name: "OpenClaw", src: "/assets/clients/openclaw-symbol.png" },
+};
+const CLIENT_ASSETS = {
+  "/assets/clients/openai-knot.svg": { file: new URL("../assets/clients/openai-knot.svg", import.meta.url), contentType: "image/svg+xml", binary: false },
+  "/assets/clients/claude-symbol.svg": { file: new URL("../assets/clients/claude-symbol.svg", import.meta.url), contentType: "image/svg+xml", binary: false },
+  "/assets/clients/grok-symbol.svg": { file: new URL("../assets/clients/grok-symbol.svg", import.meta.url), contentType: "image/svg+xml", binary: false },
+  "/assets/clients/openclaw-symbol.png": { file: new URL("../assets/clients/openclaw-symbol.png", import.meta.url), contentType: "image/png", binary: true },
 };
 function verifiedClientBadge() {
   return '<span class="verified-badge" aria-label="MCP interoperability verified">✓ MCP VERIFIED</span>';
@@ -413,8 +433,7 @@ function verifiedClientBadge() {
 function clientBrandMark(client) {
   const brand = CLIENT_BRANDS[client];
   if (!brand) return "";
-  const fallback = `<span class="brand-mark-fallback">${escapeHtml(brand.fallback)}</span>`;
-  return `<span class="brand-mark" aria-label="${escapeHtml(brand.fallback)}">${brand.src ? `<img src="${escapeHtml(brand.src)}" alt="${escapeHtml(brand.name)} logo" loading="lazy" onerror="this.hidden=true;this.nextElementSibling.hidden=false">` : ""}${brand.src ? `<span class="brand-mark-fallback" hidden>${escapeHtml(brand.fallback)}</span>` : fallback}</span>`;
+  return `<span class="brand-mark${brand.dark ? " brand-mark-dark" : ""}"><img src="${escapeHtml(brand.src)}" alt="${escapeHtml(brand.name)} logo" width="32" height="32" decoding="async"></span>`;
 }
 function clientBrandTitle(client) {
   const brand = CLIENT_BRANDS[client];
@@ -2181,6 +2200,7 @@ async function handle(e) {
     path = pathOf(e),
     body = method === "GET" ? {} : parseBody(e);
   if (method === "OPTIONS") return json({}, 204);
+  if (method === "GET" && CLIENT_ASSETS[path]) return clientAssetResponse(path);
   if (method === "GET" && path === "/connect") {
     trackFunnel("developer_page_view");
     return { statusCode: 200, headers: { "content-type": "text/html; charset=utf-8", "cache-control": "no-store" }, body: connectionHubPage() };

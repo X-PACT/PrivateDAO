@@ -240,6 +240,13 @@ test("MCP and A2A machine entrypoints remain callable", async () => {
   assert.match(hub.body, /OpenClaw/);
   assert.ok((hub.body.match(/MCP VERIFIED/g) || []).length >= 8);
   assert.match(hub.body, /Client-Level MCP Verification/);
+  for (const asset of ["openai-knot.svg", "claude-symbol.svg", "grok-symbol.svg", "openclaw-symbol.png"]) {
+    assert.match(hub.body, new RegExp(`/assets/clients/${asset}`));
+    const response = await request(`/assets/clients/${asset}`);
+    assert.equal(response.statusCode, 200, asset);
+    assert.ok(asset.endsWith(".png") ? response.isBase64Encoded : /^<svg/.test(response.body), asset);
+  }
+  assert.doesNotMatch(hub.body, /cdn\.simpleicons|claude\.ai\/favicon|grok\.com\/images\/favicon/);
   for (const path of ["/connect/chatgpt", "/connect/claude", "/connect/grok", "/connect/openclaw"]) {
     const page = await request(path);
     assert.match(page.body, /MCP VERIFIED/, path);

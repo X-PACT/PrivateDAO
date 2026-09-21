@@ -13,6 +13,8 @@ PrivateDAO-tested production MCP interoperability:
 
 Each result means the client connected to `https://agents.privatedao.org/mcp`, completed MCP initialization and tool discovery, called the free `verify_basic` tool, and received `verification_status: "VERIFIED"`. This is a PrivateDAO interoperability test result only. It does not imply a partnership, certification, endorsement, directory placement or official verification by OpenAI, Anthropic, xAI or OpenClaw.
 
+Client marks are bundled locally as symbol-only assets under `assets/clients/`. The OpenAI knot is sourced from the official OpenAI Cookbook repository; Claude and xAI provider symbols and the OpenClaw symbol are sourced from the official OpenClaw repository assets. No favicon captures, wordmarks or generated approximations are used.
+
 ## Canonical message
 
 Connect PrivateDAO Agent Exchange to ChatGPT, Claude, Grok, OpenClaw or any compatible MCP client through:
