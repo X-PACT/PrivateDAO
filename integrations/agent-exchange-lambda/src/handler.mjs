@@ -113,6 +113,14 @@ function card() {
       mcp: `https://${config.domain}/mcp`,
       openapi: `https://${config.domain}/openapi.json`,
     },
+    distribution: {
+      hub: `https://${config.domain}/connect`,
+      chatgpt: `https://${config.domain}/connect/chatgpt`,
+      claude: `https://${config.domain}/connect/claude`,
+      grok: `https://${config.domain}/connect/grok`,
+      openclaw: `https://${config.domain}/connect/openclaw`,
+      mcpGuide: `https://${config.domain}/mcp`,
+    },
     serviceCatalog: `https://${config.domain}/api/services`,
     pricing: `https://${config.domain}/api/pricing`,
     workflow: {
@@ -234,6 +242,12 @@ function openapi() {
     "/verify/receipt/{receiptId}": { get: { operationId: "verifyHumanReceipt" } },
     "/partners": { get: { operationId: "featuredPartnersPage" } },
     "/marketplace/partners": { get: { operationId: "featuredPartnersPage" } },
+    "/connect": { get: { operationId: "connectionHub" } },
+    "/connect/chatgpt": { get: { operationId: "chatgptConnectionGuide" } },
+    "/connect/claude": { get: { operationId: "claudeConnectionGuide" } },
+    "/connect/grok": { get: { operationId: "grokConnectionGuide" } },
+    "/connect/openclaw": { get: { operationId: "openclawConnectionGuide" } },
+    "/mcp": { get: { operationId: "mcpGuide" }, post: { operationId: "mcpJsonRpc" } },
     "/agents/{agentId}": { get: { operationId: "agentProfile" } },
     "/jobs/{jobId}": { get: { operationId: "humanJobReceipt" } },
     ...Object.fromEntries(SERVICES.map((service) => [servicePath(service.id), { get: { operationId: `service_${service.id.replaceAll(".", "_")}` } }])),
@@ -373,6 +387,45 @@ function connectPage() {
     "<p class=\"muted\">Production network: Solana Mainnet. <a href=\"/marketplace\">Browse services</a> · <a href=\"/.well-known/agent-card.json\">Agent Card</a> · <a href=\"/openapi.json\">OpenAPI</a> · <a href=\"/mcp\">MCP</a></p></body></html>",
   ];
   return injectLanguageWidget(lines.join(""));
+}
+function distributionPage(title, description, content) {
+  return injectLanguageWidget(`<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="${escapeHtml(description)}"><title>${escapeHtml(title)} | PrivateDAO</title><style>body{max-width:1080px;margin:auto;padding:28px 24px 70px;color:#081b33;font:16px/1.6 system-ui,sans-serif}a{color:#1769e0;font-weight:700;text-decoration:none}.top,.row{display:flex;justify-content:space-between;gap:18px;align-items:center}.top{margin-bottom:72px}.nav{display:flex;gap:16px;flex-wrap:wrap}.nav a{color:#52657c}.eyebrow{color:#1769e0;font-size:.75rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase}h1{font-size:clamp(2.8rem,7vw,5.8rem);line-height:.95;letter-spacing:-.055em;max-width:850px}h2{font-size:1.35rem}.lead,.muted{color:#52657c}.lead{font-size:1.18rem;max-width:760px}.section{border-top:1px solid #dbe5f0;margin-top:42px;padding-top:26px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}.panel{border:1px solid #dbe5f0;border-radius:16px;padding:20px;box-shadow:0 10px 28px rgba(14,42,78,.05)}.badge{display:inline-block;border:1px solid #b9dece;border-radius:999px;background:#effbf7;color:#087f5b;padding:5px 10px;font-size:.8rem;font-weight:800}.button{border:0;border-radius:999px;background:#081b33;color:#fff;padding:11px 16px;font:inherit;cursor:pointer}.alt{background:#f5f9ff;color:#081b33;border:1px solid #dbe5f0}pre{overflow:auto;padding:16px;background:#f5f9ff;border:1px solid #dbe5f0;border-radius:12px;font:13px/1.55 ui-monospace,monospace;white-space:pre-wrap;overflow-wrap:anywhere}.step{margin:12px 0;padding-left:18px;border-left:3px solid #1769e0}.callout{padding:14px;border-left:4px solid #1769e0;background:#f5f9ff}footer{border-top:1px solid #dbe5f0;margin-top:48px;padding-top:18px;color:#52657c;font-size:.9rem}@media(max-width:700px){body{padding:20px 16px}.top,.row{align-items:flex-start;flex-direction:column}.top{margin-bottom:48px}.button{width:100%}}</style></head><body><main><header class="top"><a href="/" style="color:#081b33">PrivateDAO Agent Exchange</a><nav class="nav"><a href="/connect">Connect</a><a href="/mcp">MCP</a><a href="/marketplace">Services</a><a href="/.well-known/agent-card.json">Agent Card</a></nav></header>${content}<footer>PrivateDAO Agent Exchange · <a href="/llms-full.txt">Machine-readable guide</a> · <a href="/openapi.json">OpenAPI</a> · <a href="/a2a">A2A</a></footer></main></body></html>`);
+}
+function distributionCopy(value, label = "Copy") {
+  return `<button class="button alt copy" data-copy="${escapeHtml(value)}">${escapeHtml(label)}</button>`;
+}
+function distributionScript() {
+  return "<script>document.querySelectorAll('.copy').forEach(function(b){b.onclick=async function(){try{await navigator.clipboard.writeText(b.dataset.copy);var t=b.textContent;b.textContent='Copied';setTimeout(function(){b.textContent=t},1400)}catch(_){b.textContent='Copy manually'}}});</script>";
+}
+function mcpEndpoint() {
+  return `https://${config.domain}/mcp`;
+}
+function connectionHubPage() {
+  const endpoint = mcpEndpoint();
+  const cfg = JSON.stringify({ mcpServers: { "privatedao-agent-exchange": { url: endpoint, transport: "streamable-http" } } }, null, 2);
+  const content = `<div class="eyebrow">Distribution hub</div><h1>Connect PrivateDAO to your agent.</h1><p class="lead">One production MCP endpoint for verification, blockchain intelligence, market data, agent discovery and verifiable receipts.</p><section class="section"><div class="grid"><section class="panel"><h2>ChatGPT</h2><p class="muted">Remote MCP/custom app setup.</p><a href="/connect/chatgpt">Connection guide →</a></section><section class="panel"><h2>Claude</h2><p class="muted">Remote HTTP MCP setup.</p><a href="/connect/claude">Connection guide →</a></section><section class="panel"><h2>Grok</h2><p class="muted">MCP compatibility guide.</p><a href="/connect/grok">Connection guide →</a></section><section class="panel"><h2>OpenClaw</h2><p class="muted">Streamable HTTP registry setup.</p><a href="/connect/openclaw">Connection guide →</a></section><section class="panel"><h2>Any MCP client</h2><p class="muted">Standard initialize, tools/list and tools/call.</p><a href="/mcp">MCP landing page →</a></section></div></section><section class="section"><div class="row"><div><h2>Production endpoint</h2><p class="muted">Transport: Streamable HTTP · Authentication: none for public discovery and free read-only tools.</p></div>${distributionCopy(endpoint,"Copy endpoint")}</div><pre>${escapeHtml(cfg)}</pre>${distributionScript()}</section><section class="section"><h2>Try before paying</h2><div class="step">Initialize and acknowledge notifications/initialized.</div><div class="step">Discover tools, then call verify_basic with a test record.</div><div class="step">For paid services, request a quote before any payment.</div><div class="step">Verify the returned receipt independently.</div></section><section class="section"><h2>Security and payment</h2><p class="muted">No wallet or secret is required for discovery and free read-only tools. Paid calls quote in USDC before execution and use Solana Mainnet USDC; target-network intelligence is read-only where applicable.</p></section>`;
+  return distributionPage("Connect PrivateDAO", "Connect PrivateDAO Agent Exchange to ChatGPT, Claude, Grok, OpenClaw or any compatible MCP client.", content);
+}
+function clientConnectionPage(client) {
+  const endpoint = mcpEndpoint();
+  const cfg = JSON.stringify({ mcpServers: { "privatedao-agent-exchange": { url: endpoint, transport: "streamable-http" } } }, null, 2);
+  const data = {
+    chatgpt: ["ChatGPT", "Add PrivateDAO as a remote MCP/custom app where Developer Mode and your workspace plan allow it.", "Availability and admin approval depend on the ChatGPT plan and workspace. No OpenAI partnership or directory listing is claimed."],
+    claude: ["Claude", "Add PrivateDAO as a remote HTTP MCP server through a supported Claude connector flow.", "Connector availability and approval controls vary by account. No Anthropic partnership or directory listing is claimed."],
+    grok: ["Grok", "Use Grok's MCP connection surface when it is enabled for your account or workspace.", "No Grok account or client runtime was available here, so this is compatibility-ready and not a verified Grok client result. No xAI partnership or directory listing is claimed."],
+    openclaw: ["OpenClaw", "Use OpenClaw's managed MCP registry with native Streamable HTTP transport.", "No OpenClaw installation was available here, so this page does not claim an OpenClaw client verification."],
+  }[client];
+  const command = `openclaw mcp set privatedao '${JSON.stringify({ url: endpoint, transport: "streamable-http" })}'`;
+  const setup = client === "openclaw" ? `<h2>OpenClaw command</h2><pre>${escapeHtml(command)}</pre><p class="muted">Then run openclaw mcp doctor privatedao --probe or openclaw mcp probe privatedao --json.</p>` : `<h2>Configuration</h2><pre>${escapeHtml(cfg)}</pre>`;
+  const content = `<div class="eyebrow">${data[0]} connection</div><h1>Connect PrivateDAO to ${data[0]}.</h1><p class="lead">${escapeHtml(data[1])}</p><section class="section"><div class="grid"><section class="panel"><h2>Endpoint</h2><pre>${escapeHtml(endpoint)}</pre><p class="muted">Transport: <strong>streamable-http</strong><br>Authentication: none for public discovery and free read-only tools.</p>${distributionCopy(endpoint,"Copy endpoint")}</section><section class="panel"><h2>Security and payment</h2><p class="muted">Never paste a private key into an MCP client. Paid tools return a quote first and require finalized Solana Mainnet USDC payment proof.</p><span class="badge">No payment made by this guide</span></section></div></section><section class="section"><h2>Setup</h2><div class="step">Enter the endpoint in the client's remote MCP/custom server settings.</div><div class="step">Select Streamable HTTP when a transport selector is available.</div><div class="step">Refresh tools and call verify_basic first.</div>${setup}${distributionScript()}</section><section class="section"><h2>Verify</h2><div class="callout">Run initialize → notifications/initialized → tools/list → safe tools/call. Then try: list PrivateDAO tools and call verify_basic with {"record":{"claim":"${client}-connection-test"}}.</div><p class="muted">${escapeHtml(data[2])}</p></section><section class="section"><h2>Example prompts</h2><div class="grid"><section class="panel"><h3>Free</h3><p>Use PrivateDAO to verify this record and return the receipt.</p></section><section class="panel"><h3>Paid</h3><p>Get a quote for a market snapshot. Do not pay until I approve the quoted amount.</p></section></div></section>`;
+  return distributionPage("Connect PrivateDAO to " + data[0], data[1], content);
+}
+function mcpLandingPage() {
+  const endpoint = mcpEndpoint();
+  const cfg = JSON.stringify({ mcpServers: { "privatedao-agent-exchange": { url: endpoint, transport: "streamable-http" } } }, null, 2);
+  const paid = SERVICES.filter((service) => service.price).slice(0, 8).map((service) => `<li>${escapeHtml(service.title)} — ${escapeHtml(String(service.price))} ${escapeHtml(service.currency || "USDC")}</li>`).join("");
+  const content = `<div class="eyebrow">MCP distribution</div><h1>PrivateDAO MCP — Multi-chain Services for AI Agents</h1><p class="lead">Connect any MCP-compatible agent to one production endpoint for verification, blockchain intelligence, market data, agent discovery and verifiable receipts.</p><section class="section"><div class="row"><div><h2>Endpoint</h2><p class="muted">Streamable HTTP · public discovery · no authentication for free read-only tools</p></div>${distributionCopy(endpoint,"Copy endpoint")}</div><pre>${escapeHtml(cfg)}</pre>${distributionScript()}</section><section class="section"><h2>What you can ask</h2><div class="grid"><section class="panel"><h3>Research</h3><p>Research this token using PrivateDAO.</p></section><section class="panel"><h3>Analyze</h3><p>Analyze this wallet using PrivateDAO.</p></section><section class="panel"><h3>Market</h3><p>Get a market snapshot for this asset.</p></section><section class="panel"><h3>Verify</h3><p>Verify this PrivateDAO receipt.</p></section><section class="panel"><h3>Discover</h3><p>Find an agent capable of this task.</p></section></div></section><section class="section"><h2>Pricing and boundaries</h2><p class="muted">The catalog exposes ${SERVICES.length} production services. Free tools include basic and receipt verification. Paid services quote in USDC before execution; payment uses Solana Mainnet USDC and target-network intelligence is read-only where applicable.</p><ul>${paid}</ul></section><section class="section"><h2>Examples</h2><pre>curl https://${config.domain}/.well-known/agent-card.json; curl https://${config.domain}/api/services; POST ${endpoint} with JSON-RPC initialize, tools/list or tools/call.</pre><pre>${escapeHtml(cfg)}</pre><p class="muted">Completed jobs return machine-readable results and verifiable receipts. Discovery is not execution evidence. Do not send secrets or private keys.</p><p><a href="/connect/chatgpt">ChatGPT</a> · <a href="/connect/claude">Claude</a> · <a href="/connect/grok">Grok</a> · <a href="/connect/openclaw">OpenClaw</a></p></section>`;
+  return distributionPage("PrivateDAO MCP", "PrivateDAO MCP provides multi-chain services for AI agents through one production endpoint.", content);
 }
 function escapeHtml(value) {
   return String(value)
@@ -2105,7 +2158,15 @@ async function handle(e) {
     path = pathOf(e),
     body = method === "GET" ? {} : parseBody(e);
   if (method === "OPTIONS") return json({}, 204);
-  if (method === "GET" && ["/connect", "/developers"].includes(path)) {
+  if (method === "GET" && path === "/connect") {
+    trackFunnel("developer_page_view");
+    return { statusCode: 200, headers: { "content-type": "text/html; charset=utf-8", "cache-control": "no-store" }, body: connectionHubPage() };
+  }
+  if (method === "GET" && ["/connect/chatgpt", "/connect/claude", "/connect/grok", "/connect/openclaw"].includes(path)) {
+    trackFunnel("client_connection_page_view", { client: path.split("/").at(-1) });
+    return { statusCode: 200, headers: { "content-type": "text/html; charset=utf-8", "cache-control": "no-store" }, body: clientConnectionPage(path.split("/").at(-1)) };
+  }
+  if (method === "GET" && path === "/developers") {
     trackFunnel("developer_page_view");
     return { statusCode: 200, headers: { "content-type": "text/html; charset=utf-8", "cache-control": "no-store" }, body: connectPage() };
   }
@@ -2202,13 +2263,13 @@ async function handle(e) {
     return json(openapi());
   }
   if (method === "GET" && ["/llms.txt", "/llms-full.txt"].includes(path))
-    return text(llms());
+    return text(llms() + String.fromCharCode(10) + "Distribution: https://" + config.domain + "/connect" + String.fromCharCode(10) + "ChatGPT: https://" + config.domain + "/connect/chatgpt" + String.fromCharCode(10) + "Claude: https://" + config.domain + "/connect/claude" + String.fromCharCode(10) + "Grok: https://" + config.domain + "/connect/grok" + String.fromCharCode(10) + "OpenClaw: https://" + config.domain + "/connect/openclaw" + String.fromCharCode(10) + "MCP landing: https://" + config.domain + "/mcp" + String.fromCharCode(10) + "Production services: " + SERVICES.length + String.fromCharCode(10));
   if (method === "GET" && path === "/robots.txt")
-    return text(`User-agent: *\nAllow: /\nAllow: /marketplace\nAllow: /partners\nAllow: /marketplace/partners\nAllow: /connect\nAllow: /.well-known/\nAllow: /api/acquisition\nAllow: /api/services\nAllow: /api/pricing\nAllow: /api/discovery\nAllow: /api/logistics/capabilities\nDisallow: /api/admin/\nDisallow: /api/revenue\nDisallow: /api/treasury/\nSitemap: https://${config.domain}/sitemap.xml\n`);
+    return text(`User-agent: *\nAllow: /\nAllow: /marketplace\nAllow: /partners\nAllow: /marketplace/partners\nAllow: /connect\nAllow: /connect/chatgpt\nAllow: /connect/claude\nAllow: /connect/grok\nAllow: /connect/openclaw\nAllow: /mcp\nAllow: /.well-known/\nAllow: /api/acquisition\nAllow: /api/services\nAllow: /api/pricing\nAllow: /api/discovery\nAllow: /api/logistics/capabilities\nDisallow: /api/admin/\nDisallow: /api/revenue\nDisallow: /api/treasury/\nSitemap: https://${config.domain}/sitemap.xml\n`);
   if (method === "GET" && path === "/favicon.ico")
     return { statusCode: 200, headers: { "content-type": "image/svg+xml", "cache-control": "public, max-age=86400" }, body: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="16" fill="#071a32"/><path d="M18 47V17h17c9 0 15 5 15 13s-6 13-15 13H27v4zm9-12h8c4 0 6-2 6-5s-2-5-6-5h-8z" fill="#fff"/><path d="M18 17h9v30h-9z" fill="#1769e0"/></svg>` };
   if (method === "GET" && path === "/sitemap.xml")
-    return { statusCode: 200, headers: { "content-type": "application/xml; charset=utf-8", "cache-control": "public, max-age=3600" }, body: `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>https://${config.domain}/</loc></url><url><loc>https://${config.domain}/marketplace</loc></url><url><loc>https://${config.domain}/partners</loc></url><url><loc>https://${config.domain}/marketplace/partners</loc></url><url><loc>https://${config.domain}/connect</loc></url><url><loc>https://${config.domain}/.well-known/agent-card.json</loc></url><url><loc>https://${config.domain}/openapi.json</loc></url>${SERVICES.map((service) => `<url><loc>https://${config.domain}${servicePath(service.id)}</loc></url>`).join("")}</urlset>` };
+    return { statusCode: 200, headers: { "content-type": "application/xml; charset=utf-8", "cache-control": "public, max-age=3600" }, body: `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>https://${config.domain}/</loc></url><url><loc>https://${config.domain}/marketplace</loc></url><url><loc>https://${config.domain}/partners</loc></url><url><loc>https://${config.domain}/marketplace/partners</loc></url><url><loc>https://${config.domain}/connect</loc></url><url><loc>https://${config.domain}/connect/chatgpt</loc></url><url><loc>https://${config.domain}/connect/claude</loc></url><url><loc>https://${config.domain}/connect/grok</loc></url><url><loc>https://${config.domain}/connect/openclaw</loc></url><url><loc>https://${config.domain}/mcp</loc></url><url><loc>https://${config.domain}/.well-known/agent-card.json</loc></url><url><loc>https://${config.domain}/openapi.json</loc></url>${SERVICES.map((service) => `<url><loc>https://${config.domain}${servicePath(service.id)}</loc></url>`).join("")}</urlset>` };
   if (method === "GET" && path === "/llms.json")
     return json({
       name: "PrivateDAO Agent Exchange",
@@ -2363,7 +2424,9 @@ async function handle(e) {
     return json(await treasuryStatus());
   const payPage = path.match(/^\/pay\/([^/]+)$/);
   if (method === "GET" && payPage) return { statusCode: 200, headers: { "content-type": "text/html; charset=utf-8", "cache-control": "no-store" }, body: injectLanguageWidget(paymentPage(decodeURIComponent(payPage[1]))) };
-  if (method === "GET" && (path === "/mcp" || path === "/a2a"))
+  if (method === "GET" && path === "/mcp")
+    return { statusCode: 200, headers: { "content-type": "text/html; charset=utf-8", "cache-control": "no-store" }, body: mcpLandingPage() };
+  if (method === "GET" && path === "/a2a")
     return json(card());
   if (method === "POST" && path === "/api/admin/smoke-invoice") {
     const token =

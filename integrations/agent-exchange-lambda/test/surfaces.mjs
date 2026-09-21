@@ -226,6 +226,23 @@ test("crawler files expose the intended public surfaces", async () => {
 
 test("MCP and A2A machine entrypoints remain callable", async () => {
   resetForTests();
+  for (const path of ["/connect", "/connect/chatgpt", "/connect/claude", "/connect/grok", "/connect/openclaw", "/mcp"]) {
+    const page = await request(path);
+    assert.equal(page.statusCode, 200, path);
+    assert.match(page.headers["content-type"], /^text\/html/, path);
+    assert.match(page.body, /agents\.privatedao\.org\/mcp/, path);
+    assert.match(page.body, /streamable-http/, path);
+  }
+  const hub = await request("/connect");
+  assert.match(hub.body, /ChatGPT/);
+  assert.match(hub.body, /Claude/);
+  assert.match(hub.body, /Grok/);
+  assert.match(hub.body, /OpenClaw/);
+  const robots = await request("/robots.txt");
+  assert.match(robots.body, /Allow: \/connect\/grok/);
+  const sitemap = await request("/sitemap.xml");
+  assert.match(sitemap.body, /<loc>https:\/\/agents\.privatedao\.org\/connect\/grok<\/loc>/);
+  assert.match(sitemap.body, /<loc>https:\/\/agents\.privatedao\.org\/mcp<\/loc>/);
   const a2a = await request("/a2a", "POST", { jsonrpc: "2.0", id: 1, method: "message/send", params: { message: { parts: [{ text: "discover" }] } } });
   assert.equal(a2a.statusCode, 200);
   assert.match(a2a.headers["content-type"], /^application\/json/);
