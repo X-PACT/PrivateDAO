@@ -5,8 +5,8 @@ Date: 2026-09-20
 ## Release
 
 - Repository branch: `rebrand/enterprise-white`
-- Deployed runtime commit: `3de3ade9b`
-- Lambda version: `74`
+- Deployed runtime commit: `d91ec8d49`
+- Lambda version: `75`
 - Function: `PrivateDAOAgentExchange-Function-N2zgpQmMN41S`
 - Region: `eu-north-1`
 - Public URL: `https://agents.privatedao.org`
@@ -65,8 +65,9 @@ RPC health is not treated as product execution or payment readiness.
 
 - Agent Card: HTTP 200, 24 skills
 - MCP: HTTP 200, 11 tools, including `pdao_services`
-- MCP lifecycle: external initialize -> initialized notification -> tools/list -> tools/call PASS
+- MCP lifecycle: external initialize -> ping -> initialized notification -> tools/list -> tools/call PASS
 - MCP schemas: all 11 tools publish object schemas with argument contracts
+- MCP tool annotations: all 11 tools declare read-only/destructive/idempotency hints for client permission filtering
 - SingularityAgent: existing registration remains connected and idempotent; refresh succeeds with the required `MCP-Protocol-Version` header and preserves the existing 18-tool registration
 - A2A: published and reachable
 - OpenAPI: HTTP 200, OpenAPI 3.1.0, 56 paths
@@ -114,6 +115,28 @@ The external MCP audit also verified:
 - A fresh SingularityAgent initialize/tools/list/safe-tool sequence succeeds with 18 tools.
 - Direct provider/service calls also normalize EVM aliases such as `base:mainnet` to `base-mainnet`.
 - Transaction simulation schemas reject transaction hashes/signatures before payment and require unsigned transaction data.
+
+## Cross-client compatibility
+
+The production endpoint is a public Streamable HTTP MCP endpoint:
+
+`https://agents.privatedao.org/mcp`
+
+An external protocol client verified:
+
+- `initialize` with protocol `2025-06-18`
+- `ping`
+- `notifications/initialized` with an empty `202`
+- `notifications/cancelled` with an empty `202`
+- `tools/list` with all 11 tools
+- read-only/destructive annotations on every tool
+- `verify_basic` safe tool call returning `VERIFIED`
+
+This is the compatibility surface used by ChatGPT custom remote MCP apps,
+Claude remote MCP clients, and OpenClaw `streamable-http` server definitions.
+Account-level client UI approval was not possible from this environment and is
+not claimed as tested. Paid tools retain their existing quote and confirmation
+gates.
 
 ### 2026-09-20 production service matrix
 
