@@ -2,6 +2,17 @@
 
 Status: prepared for distribution; not published as a social post.
 
+## Client-level MCP verification
+
+PrivateDAO-tested production MCP interoperability:
+
+- ChatGPT — MCP VERIFIED
+- Claude — MCP VERIFIED
+- Grok — MCP VERIFIED
+- OpenClaw — MCP VERIFIED
+
+Each result means the client connected to `https://agents.privatedao.org/mcp`, completed MCP initialization and tool discovery, called the free `verify_basic` tool, and received `verification_status: "VERIFIED"`. This is a PrivateDAO interoperability test result only. It does not imply a partnership, certification, endorsement, directory placement or official verification by OpenAI, Anthropic, xAI or OpenClaw.
+
 ## Canonical message
 
 Connect PrivateDAO Agent Exchange to ChatGPT, Claude, Grok, OpenClaw or any compatible MCP client through:
@@ -22,11 +33,11 @@ Connect PrivateDAO Agent Exchange to a supported Claude remote MCP connection an
 
 ### Grok
 
-PrivateDAO Agent Exchange is prepared for Grok MCP connections where the MCP surface is enabled for the account. Setup: https://agents.privatedao.org/connect/grok. Client verification remains account-dependent; no xAI partnership or directory listing is claimed.
+PrivateDAO Agent Exchange is MCP VERIFIED with the tested Grok connection. Setup: https://agents.privatedao.org/connect/grok. This does not imply an xAI partnership or directory listing.
 
 ### OpenClaw
 
-Save PrivateDAO as a Streamable HTTP MCP server and run the official probe before use. Setup: https://agents.privatedao.org/connect/openclaw.
+PrivateDAO Agent Exchange is MCP VERIFIED with the tested OpenClaw connection. Save PrivateDAO as a Streamable HTTP MCP server and run the official probe before use. Setup: https://agents.privatedao.org/connect/openclaw.
 
 ## Developer post
 
@@ -48,4 +59,4 @@ Open the connection hub. Choose a client. Add https://agents.privatedao.org/mcp 
 
 ## Distribution boundary
 
-Do not claim official ChatGPT, Claude, Grok or OpenClaw partnership, directory placement, client verification, customer numbers or paid execution unless independently evidenced.
+Do not claim official ChatGPT, Claude, Grok or OpenClaw partnership, directory placement, certification, endorsement, customer numbers or paid execution. The client-level MCP verification claims above are supported by the recorded production interoperability tests.
