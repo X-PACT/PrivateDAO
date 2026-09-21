@@ -2,12 +2,20 @@
   "name": "privatedao-agent-exchange",
   "private": true,
   "type": "module",
-  "engines": { "node": ">=22" },
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
     "test:surfaces": "NODE_ENV=test node --test test/surfaces.mjs",
     "test": "node --test test/*.mjs",
     "smoke": "node test/smoke.mjs",
     "lint": "node --check src/*.mjs test/*.mjs"
   },
-  "dependencies": {}
+  "dependencies": {
+    "@aws-sdk/client-secrets-manager": "^3.1106.0",
+    "@solana/web3.js": "1.98.4"
+  },
+  "overrides": {
+    "rpc-websockets": "9.3.3"
+  }
 }

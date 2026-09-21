@@ -19,7 +19,7 @@ export function getConfig(env = process.env) {
     treasury:
       env.SOLANA_TREASURY || "2BJ4ezxqV9YJXc38D9duKBkdn4su4jE1beKUHwH663sL",
     usdcMint:
-      env.SOLANA_USDC_MINT || "EPjFWdd5AufSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+      env.SOLANA_USDC_MINT || "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
     pdaoMint: env.PDAO_MINT || "9isGuumtaqvJeJeyLF44fvfskk2cv5mYsopexMBfpump",
     cluster: "mainnet-beta",
     mainnetGenesisHash: "5eykt4UsFv8P8NJdTREpY1vzqKqZKvdpKuc147dw2N9d",

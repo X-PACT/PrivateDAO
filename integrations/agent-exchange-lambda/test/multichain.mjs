@@ -168,15 +168,15 @@ test("EVM provider retries a transient response without exposing endpoint detail
   }
 });
 
-test("production treasury token account is canonical and alternatives are rejected", async () => {
+test("production treasury token account is canonical and malformed keys are rejected", async () => {
   const canonical = await derivedTreasuryTokenAccount({
     treasury: "2BJ4ezxqV9YJXc38D9duKBkdn4su4jE1beKUHwH663sL",
-    usdcMint: "EPjFWdd5AufSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+    usdcMint: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
   });
-  assert.equal(canonical, "L2iAzRuZZrubxcfkQXqBGpPHWej9vLMbm24cDT2jqbv");
+  assert.equal(canonical, "5RyKShQxSkbUJ9vA2MZ1Qf2TKgnwhhS3m7mj2ZZaVh6t");
   await assert.rejects(
-    () => derivedTreasuryTokenAccount({ treasury: "11111111111111111111111111111111", usdcMint: canonical }),
-    /unsupported production treasury or USDC mint/,
+    () => derivedTreasuryTokenAccount({ treasury: "not-a-solana-key", usdcMint: canonical }),
+    /Invalid public key|Non-base58 character/,
   );
 });
 
@@ -191,7 +191,7 @@ test("payment verification rejects malformed signatures before contacting RPC", 
     const result = await verifyPayment({
       cluster: "mainnet-beta",
       treasury: "2BJ4ezxqV9YJXc38D9duKBkdn4su4jE1beKUHwH663sL",
-      usdcMint: "EPjFWdd5AufSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+      usdcMint: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
       rpcPrimary: "https://rpc.example/primary",
     }, { signature: "not-a-real-solana-signature" }, { amountAtomic: "1" });
     assert.equal(result.ok, false);
@@ -207,8 +207,8 @@ test("payment verification binds a finalized transfer to the quoted payment refe
   const originalFetch = global.fetch;
   const signature = "1".repeat(64);
   const treasuryOwner = "2BJ4ezxqV9YJXc38D9duKBkdn4su4jE1beKUHwH663sL";
-  const treasuryTokenAccount = "L2iAzRuZZrubxcfkQXqBGpPHWej9vLMbm24cDT2jqbv";
-  const mint = "EPjFWdd5AufSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v";
+  const treasuryTokenAccount = "5RyKShQxSkbUJ9vA2MZ1Qf2TKgnwhhS3m7mj2ZZaVh6t";
+  const mint = "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v";
   global.fetch = async (_url, options) => {
     const request = JSON.parse(options.body);
     if (request.method === "getTransaction") {
@@ -273,7 +273,7 @@ test("Solana reads fall back from a rate-limited primary provider", async () => 
     const result = await readRpc({
       cluster: "mainnet-beta",
       treasury: "2BJ4ezxqV9YJXc38D9duKBkdn4su4jE1beKUHwH663sL",
-      usdcMint: "EPjFWdd5AufSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+      usdcMint: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
       rpcPrimary: "https://primary.example",
       rpcSecondary: "https://secondary.example",
       rpcFallback: "https://fallback.example",
@@ -309,7 +309,7 @@ test("Solana health reports the required read-only checks", async () => {
     const health = await solanaHealth({
       cluster: "mainnet-beta",
       treasury: "2BJ4ezxqV9YJXc38D9duKBkdn4su4jE1beKUHwH663sL",
-      usdcMint: "EPjFWdd5AufSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+      usdcMint: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
       rpcPrimary: "https://alchemy.example",
       rpcSecondary: "",
       rpcFallback: "",
@@ -338,7 +338,7 @@ test("Jupiter quote path never broadcasts", async () => {
     const result = await swapQuote({
       cluster: "mainnet-beta",
       treasury: "2BJ4ezxqV9YJXc38D9duKBkdn4su4jE1beKUHwH663sL",
-      usdcMint: "EPjFWdd5AufSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+      usdcMint: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
       rpcPrimary: "https://api.mainnet-beta.solana.com",
       rpcSecondary: "",
       rpcFallback: "https://api.mainnet-beta.solana.com",
@@ -347,7 +347,7 @@ test("Jupiter quote path never broadcasts", async () => {
       jupiterApiKey: "",
     }, {
       inputMint: "So11111111111111111111111111111111111111112",
-      outputMint: "EPjFWdd5AufSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+      outputMint: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
       amount: "1000000",
     });
     assert.equal(result.quote_only, true);
@@ -385,7 +385,7 @@ test("Solana simulation is RPC-backed and never broadcasts", async () => {
     const result = await simulateSolanaTransaction({
       cluster: "mainnet-beta",
       treasury: "2BJ4ezxqV9YJXc38D9duKBkdn4su4jE1beKUHwH663sL",
-      usdcMint: "EPjFWdd5AufSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+      usdcMint: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
       rpcPrimary: "https://rpc.example",
       rpcSecondary: "",
       rpcFallback: "https://rpc.example",
@@ -422,12 +422,12 @@ test("Solana token evidence remains useful when optional methods are unavailable
     const evidence = await mintEvidence({
       cluster: "mainnet-beta",
       treasury: "2BJ4ezxqV9YJXc38D9duKBkdn4su4jE1beKUHwH663sL",
-      usdcMint: "EPjFWdd5AufSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+      usdcMint: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
       rpcPrimary: "https://primary.example",
       rpcSecondary: "",
       rpcFallback: "",
       mainnetGenesisHash: "5eykt4UsFv8P8NJdTREpY1vzqKqZKvdpKuc147dw2N9d",
-    }, "EPjFWdd5AufSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v");
+    }, "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v");
     assert.equal(evidence.valid, true);
     assert.equal(evidence.supply, null);
     assert.equal(evidence.largest_accounts.length, 0);
@@ -462,12 +462,12 @@ test("Solana evidence exposes provider class, never authenticated RPC URLs", asy
     const evidence = await mintEvidence({
       cluster: "mainnet-beta",
       treasury: "2BJ4ezxqV9YJXc38D9duKBkdn4su4jE1beKUHwH663sL",
-      usdcMint: "EPjFWdd5AufSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+      usdcMint: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
       rpcPrimary: "https://solana-mainnet.g.alchemy.com/v2/test-only-key",
       rpcSecondary: "",
       rpcFallback: "",
       mainnetGenesisHash: "5eykt4UsFv8P8NJdTREpY1vzqKqZKvdpKuc147dw2N9d",
-    }, "EPjFWdd5AufSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v");
+    }, "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v");
     assert.equal(evidence.provider_source, "alchemy");
     assert.doesNotMatch(JSON.stringify(evidence), /test-only-key/);
   } finally {

@@ -33,7 +33,7 @@ export function assertMainnetConfig(config) {
     throw new Error("Agent Exchange requires Solana mainnet-beta");
   if (config.treasury !== "2BJ4ezxqV9YJXc38D9duKBkdn4su4jE1beKUHwH663sL")
     throw new Error("production treasury mismatch");
-  if (config.usdcMint !== "EPjFWdd5AufSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v")
+  if (config.usdcMint !== "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v")
     throw new Error("production USDC mint mismatch");
   for (const url of [
     config.rpcPrimary,
@@ -73,12 +73,19 @@ export async function treasuryTokenAccount(config) {
 }
 
 export async function derivedTreasuryTokenAccount(config) {
-  if (
-    config.treasury === "2BJ4ezxqV9YJXc38D9duKBkdn4su4jE1beKUHwH663sL" &&
-    config.usdcMint === "EPjFWdd5AufSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"
-  )
-    return "L2iAzRuZZrubxcfkQXqBGpPHWej9vLMbm24cDT2jqbv";
-  throw new Error("unsupported production treasury or USDC mint");
+  const { PublicKey } = await import("@solana/web3.js");
+  const owner = new PublicKey(config.treasury);
+  const mint = new PublicKey(config.usdcMint);
+  const tokenProgram = new PublicKey(
+    "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+  );
+  const associatedProgram = new PublicKey(
+    "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL",
+  );
+  return PublicKey.findProgramAddressSync(
+    [owner.toBuffer(), tokenProgram.toBuffer(), mint.toBuffer()],
+    associatedProgram,
+  )[0].toBase58();
 }
 
 export async function readRpc(config, method, params = []) {

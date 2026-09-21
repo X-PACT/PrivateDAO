@@ -491,7 +491,7 @@ function capabilityStatus(serviceId) {
 }
 function serviceExample(service) {
   if (service.id === "transaction.simulate") return { network: "ethereum-mainnet", transaction: { to: "0x0000000000000000000000000000000000000000", data: "0x" } };
-  if (service.id === "swap.quote") return { network: "solana-mainnet-beta", inputMint: "So11111111111111111111111111111111111111112", outputMint: "EPjFWdd5AufSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v", amount: "1000000", slippageBps: 50 };
+  if (service.id === "swap.quote") return { network: "solana-mainnet-beta", inputMint: "So11111111111111111111111111111111111111112", outputMint: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v", amount: "1000000", slippageBps: 50 };
   if (service.input.includes("token identifier")) return { network: "ethereum-mainnet", asset: "0x0000000000000000000000000000000000000000" };
   if (service.input.includes("mint")) return { network: "solana-mainnet-beta", mint: "YOUR_SOLANA_MINT" };
   if (service.input.includes("wallet")) return { network: "solana-mainnet-beta", wallet: "YOUR_SOLANA_WALLET" };
@@ -753,7 +753,8 @@ function agentHomePage() {
       label: "Connect an agent",
     },
   ];
-  const cards = serviceCards.map((card) => `<article class="product"><p class="eyebrow">${escapeHtml(card.eyebrow)}</p><h2>${escapeHtml(card.title)}</h2><p>${escapeHtml(card.copy)}</p><p class="service-list">${escapeHtml(card.services)}</p><a href="${card.href}" class="text-link">${escapeHtml(card.label)} <span aria-hidden="true">→</span></a></article>`).join("");
+  const programBadge = `<article class="product" aria-label="IBM watsonx program participation"><p class="eyebrow">Program participation</p><h2>IBM watsonx Orchestrate</h2><p>Agent Connect Partner Program</p><p class="service-list">PrivateDAO has joined the program.</p></article>`;
+  const cards = programBadge + serviceCards.map((card) => `<article class="product"><p class="eyebrow">${escapeHtml(card.eyebrow)}</p><h2>${escapeHtml(card.title)}</h2><p>${escapeHtml(card.copy)}</p><p class="service-list">${escapeHtml(card.services)}</p><a href="${card.href}" class="text-link">${escapeHtml(card.label)} <span aria-hidden="true">→</span></a></article>`).join("");
   const structuredData = JSON.stringify({
     "@context": "https://schema.org",
     "@type": "WebSite",
@@ -829,7 +830,7 @@ buildButton.onclick=build; signButton.onclick=sign;
 async function buildPaymentTransaction(jobId, payerText, sourceTokenAccountText = "") {
   if (!/^[1-9A-HJ-NP-Za-km-z]{32,44}$/.test(payerText || "")) throw new Error("valid payer wallet is required");
   const job = await (await store()).get("Jobs", jobId);
-  const quote = (await (await store()).list("Quotes")).find((item) => item.job_id === jobId);
+  const quote = await quoteForJob(await store(), job);
   if (!job || !quote) throw Object.assign(new Error("invoice not found"), { statusCode: 404 });
   if (job.status !== "awaiting_payment") throw new Error("job is not awaiting payment");
   if (new Date(quote.expires_at) < new Date()) throw new Error("invoice expired");
@@ -884,7 +885,7 @@ async function buildPaymentTransaction(jobId, payerText, sourceTokenAccountText 
       { statusCode: 402 },
     );
   const latest = await readRpc(config, "getLatestBlockhash", [{ commitment: "finalized" }]);
-  return { payer: payerText, sourceTokenAccount: source?.pubkey || null, mint: quote.mint, treasuryTokenAccount: quote.treasuryTokenAccount, amountBaseUnits: String(quote.amountAtomic), paymentReference: quote.paymentReference, recentBlockhash: latest.result.value.blockhash, lastValidBlockHeight: latest.result.value.lastValidBlockHeight, expiresAt: quote.expires_at };
+  return { payer: payerText, sourceTokenAccount: source?.pubkey || null, mint: quote.mint, treasuryOwner: quote.treasuryOwner, treasuryTokenAccount: quote.treasuryTokenAccount, amountBaseUnits: String(quote.amountAtomic), paymentReference: quote.paymentReference, recentBlockhash: latest.result.value.blockhash, lastValidBlockHeight: latest.result.value.lastValidBlockHeight, expiresAt: quote.expires_at };
 }
 const collectionFor = (name) =>
   ({
@@ -971,6 +972,10 @@ async function updatePartnership(id, body) {
 }
 async function partnershipQuote(campaign) {
   const storage = await store();
+  if (campaign.payment_quote_id) {
+    const direct = await storage.get("Quotes", campaign.payment_quote_id);
+    if (direct && Date.parse(direct.expires_at) > Date.now()) return direct;
+  }
   const existing = (await storage.list("Quotes")).find((quote) => quote.partnership_id === campaign.id && Date.parse(quote.expires_at) > Date.now());
   if (existing) return existing;
   const expiresAt = new Date(Date.now() + 30 * 60 * 1000);
@@ -992,7 +997,15 @@ async function partnershipQuote(campaign) {
     created_at: now(),
   };
   await storage.put("Quotes", quote.quote_id, quote, true);
+  await storage.put("Campaigns", campaign.id, { ...campaign, payment_quote_id: quote.quote_id, updated_at: now() });
   return quote;
+}
+async function quoteForJob(storage, job) {
+  if (job?.quote_id) {
+    const direct = await storage.get("Quotes", job.quote_id);
+    if (direct) return direct;
+  }
+  return (await storage.list("Quotes")).find((quote) => quote.job_id === job?.id) || null;
 }
 async function partnershipPaymentIntent(id) {
   const campaign = await (await store()).get("Campaigns", id);
@@ -1023,7 +1036,8 @@ async function submitPartnershipPayment(id, body) {
   if (!campaign || campaign.type !== "featured_partner") throw Object.assign(new Error("partnership not found"), { statusCode: 404 });
   if (campaign.payment_status === "paid") return { status: "paid", campaign };
   if (!body.signature || !body.quoteId) throw Object.assign(new Error("signature and quoteId are required"), { statusCode: 400 });
-  const quote = (await storage.list("Quotes")).find((item) => item.partnership_id === id && item.quote_id === body.quoteId && Date.parse(item.expires_at) > Date.now());
+  const quote = await storage.get("Quotes", body.quoteId);
+  if (quote && (quote.partnership_id !== id || Date.parse(quote.expires_at) <= Date.now())) throw Object.assign(new Error("partnership payment quote not found"), { statusCode: 404 });
   if (!quote) throw Object.assign(new Error("partnership payment quote not found"), { statusCode: 404 });
   const payment = await verifyPayment(config, { signature: body.signature }, quote);
   if (payment.transient) return { status: "verifying", signature: body.signature, message: payment.reason, retryAfterSeconds: 3 };
@@ -1379,20 +1393,18 @@ async function makeQuote(serviceId, jobId, admin = false, currency = "USDC", tar
       ? 0.01
     : Number((service.price * config.priceMultiplier).toFixed(6));
   let ata = null;
+  let ataExists = null;
   if (service.price && currency === "USDC") {
-    try {
-      ata = await treasuryTokenAccount(config);
-    } catch {
-      ata = null;
-    }
-    if (
-      !ata &&
-      config.treasury === "2BJ4ezxqV9YJXc38D9duKBkdn4su4jE1beKUHwH663sL" &&
-      config.usdcMint === "EPjFWdd5AufSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"
-    )
-      ata = "L2iAzRuZZrubxcfkQXqBGpPHWej9vLMbm24cDT2jqbv";
+    ata = await treasuryTokenAccount(config);
+    const account = await readRpc(config, "getAccountInfo", [
+      ata,
+      { commitment: "finalized", encoding: "base64" },
+    ]);
+    ataExists = Boolean(account.result?.value);
   }
-  const expiresAt = new Date(Date.now() + (admin ? 3600000 : 300000));
+  // Give a real wallet enough time to connect, create its ATA if needed, sign,
+  // and reach finalized status; payment verification still requires the quote.
+  const expiresAt = new Date(Date.now() + (admin ? 3600000 : 1800000));
   const quote = {
     quote_id: `q_${randomUUID()}`,
     job_id: jobId,
@@ -1411,7 +1423,7 @@ async function makeQuote(serviceId, jobId, admin = false, currency = "USDC", tar
     expires_at_utc: expiresAt.toISOString(),
     expires_at_epoch_ms: expiresAt.getTime(),
     payment_required: Boolean(service.price),
-    ata_required: !ata,
+    ata_required: ataExists === false,
   };
   await (await store()).put("Quotes", quote.quote_id, quote, true);
   return quote;
@@ -1708,13 +1720,15 @@ async function createJob(serviceId, input, admin = false, currency = "USDC", met
     input_hash: digest(input),
     status: service.price ? "awaiting_payment" : "running",
     created_at: now(),
-    expires_at: new Date(Date.now() + 900000).toISOString(),
+    expires_at: new Date(Date.now() + 1800000).toISOString(),
     ...(persistForPaymentRetry ? { execution_input: input } : {}),
   };
   await (await store()).put("Jobs", job.id, job, true);
   trackFunnel("job_created", { service: serviceId, ...metadata });
   if (service.price) {
     const quote = await makeQuote(serviceId, job.id, admin, currency, input?.network || null);
+    job.quote_id = quote.quote_id;
+    await (await store()).put("Jobs", job.id, job);
     const intent = {
       jobId: job.id,
       status: "awaiting_payment",
@@ -1827,8 +1841,7 @@ async function submitPayment(jobId, body) {
     throw new Error("job is not awaiting payment");
   if (body.input !== undefined && digest(body.input) !== job.input_hash)
     throw Object.assign(new Error("payment input does not match the quoted job"), { statusCode: 400 });
-  const quotes = await storage.list("Quotes");
-  const quote = quotes.find((x) => x.job_id === jobId);
+  const quote = await quoteForJob(storage, job);
   if (!quote)
     throw new Error("quote expired");
   const payment = await verifyPayment(
@@ -2367,7 +2380,7 @@ async function handle(e) {
   const paymentIntent = path.match(/^\/api\/jobs\/([^/]+)\/payment-intent$/);
   if (method === "GET" && paymentIntent) {
     const item = await (await store()).get("Jobs", paymentIntent[1]);
-    const quote = (await (await store()).list("Quotes")).find((x) => x.job_id === paymentIntent[1]);
+    const quote = await quoteForJob(await store(), item);
     if (!item || !quote) return json({ error: "not_found" }, 404);
     return json({ jobId: item.id, status: item.status, paymentIntent: { jobId: item.id, amount: quote.amount.toFixed(6), amountBaseUnits: String(quote.amountAtomic), mint: quote.mint, network: quote.network, target_network: quote.target_network || item.execution_input?.network || "solana-mainnet-beta", treasuryOwner: quote.treasuryOwner, treasuryTokenAccount: quote.treasuryTokenAccount, paymentReference: quote.paymentReference, expiresAtUtc: quote.expires_at_utc || quote.expires_at, expiresAtEpochMs: quote.expires_at_epoch_ms || Date.parse(quote.expires_at) } });
   }
