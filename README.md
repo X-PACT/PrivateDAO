@@ -19,6 +19,16 @@ PrivateDAO helps organizations run payroll, treasury work, governance, procureme
 
 An organization does not have to become a Web3 or crypto company to use PrivateDAO. It can start with a familiar business workflow, then add wallet, network, settlement, or verifiable Web3 capability where it creates value. Data providers, financial services, institutions, and Web3 operators can all use the same model.
 
+## Colosseum Review Access
+
+This is the repository submitted for the Colosseum review:
+
+**https://github.com/X-PACT/PrivateDAO**
+
+The repository is private. Review access is intended for the official Colosseum review account, `colosseum-git`, associated with `hackathon@colosseum.com`. The default review branch is `main`; the repository link above is the canonical URL to use in the submission.
+
+The repository contains the implementation and review documentation only. Secrets, private keys, wallet seed material, and deployment credentials are not part of the review package.
+
 ## Commercial product groups
 
 ### Financial Operations
