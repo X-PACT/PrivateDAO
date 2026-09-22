@@ -55,6 +55,16 @@ value.
   evidence, and coordination. It is a separate product and does not define
   the commercial workflow runtime.
 
+### PDAO token surface
+
+The current published token surface is documented in
+[`docs/pdao-token.md`](docs/pdao-token.md) and the machine-readable
+attestation is [`docs/pdao-attestation.generated.json`](docs/pdao-attestation.generated.json).
+The documented Testnet governance token is `PDAO` with mint
+`DFYvBdivHCe4bSErgCiKm2RhwGEcZYbBPFQzLNr37Bie` and a published initial supply
+of `1,000,000 PDAO`. These references describe the current evidence surface;
+they do not claim Mainnet launch, market liquidity, or speculative returns.
+
 ## How it works
 
 ```text
@@ -152,10 +162,16 @@ gates.
 - PDAO Worlds: <https://game.privatedao.org/game/godot/index.html>
 - Machine-readable guide: <https://privatedao.org/llms.txt>
 - Machine-readable manifest: <https://privatedao.org/ai.json>
+- Site execution route inventory: <https://privatedao.org/documents/site-execution-route-inventory-2026-05-27/>
 
 Historical product links are preserved through the site route inventory. The
 public site is the commercial surface; this repository is the implementation,
 evidence, and review surface.
+
+historical links stay alive as bridges to the consolidated commercial
+surfaces. The current evidence record signs from a Solana Testnet wallet; it
+must not be read as Mainnet execution or as a claim that every network is
+write-enabled.
 
 ## Review and Colosseum access
 
