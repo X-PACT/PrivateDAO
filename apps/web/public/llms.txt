@@ -14,7 +14,7 @@ Commercial Product Lines:
 - Governance and Markets: Private Governance and Confidential Auctions for decisions, procurement, and sealed bids.
 - Verification: Blind Verification, Record Verification, and Private Identity Verification through attestation providers.
 - Ecosystem: Agent Marketplace and PDAO Worlds as independent ecosystem products.
-Chain Strategy: Solana-first. Cross-chain expansion is planned only after real operating use and proof on Solana.
+Chain Strategy: Capability-gated and evidence-first. A network is presented as live for a product only after the corresponding runtime and verification evidence are available; the workflow remains independent of the underlying network.
 Founder: Fahd Kotb
 Official Owner / Operator: Fahd Kotb / Eslam Kotb (X-PACT)
 Website: https://privatedao.org
@@ -133,7 +133,7 @@ Repository access is governed by the current GitHub visibility and permissions. 
 - GoldRush/Covalent decision intelligence
 - Cloak and Umbra-compatible private settlement rails
 - MagicBlock runtime performance route
-- Web and Android wallet-first UX
+- Web and Android workflow-first UX; wallet signing appears only when a workflow requires it
 - Runtime proof routes where chain evidence is relevant
 
 ## Product Category Hierarchy
@@ -175,7 +175,7 @@ PrivateDAO is useful to Web3-native organizations and to established organizatio
 
 ## Discovery keywords
 
-PrivateDAO, Fahd Kotb, privacy, organizational privacy, blockchain privacy, Web3 privacy, crypto privacy, DAO governance, private governance, confidential payroll, private treasury, sealed auctions, procurement, blind verification, record verification, KYC, KYB, zero-knowledge proofs, ZK, Solana, verifiable outcomes, Agent Marketplace, PDAO Worlds.
+PrivateDAO, Fahd Kotb, organizational privacy, private work, verifiable outcomes, enterprise Web3, Web3 capabilities, blockchain privacy, crypto privacy, DAO governance, private governance, confidential payroll, private treasury, treasury approvals, sealed auctions, confidential procurement, blind verification, record verification, KYC, KYB, zero-knowledge proofs, ZK, evidence-bound workflows, Agent Marketplace, PDAO Worlds.
 
 ## Commercial Readiness
 
@@ -185,7 +185,7 @@ Commercial CTAs:
 
 - Start Free Trial: https://privatedao.org/pricing/#commercial-checkout
 - Request Pilot: https://privatedao.org/pilots/
-- Book Discovery Call: mailto:Fahd.kotb@tuta.io?subject=PrivateDAO%20Enterprise%20Discovery
+- Book Discovery Call: mailto:fahd@privatedao.org?subject=PrivateDAO%20Enterprise%20Discovery
 
 License types:
 
@@ -391,11 +391,11 @@ PrivateDAO uses Colosseum sponsor resources as modular product lanes, not as hom
 
 ## Search Concepts
 
-PrivateDAO, Private DAO, Solana private governance, private governance, confidential governance, confidential governance OS, confidential coordination infrastructure, private coordination layer, organizational workflow engine, reviews and approvals, proof center, public verification, transparency report, private DAO voting, private room DAO, public DAO private voting, encrypted treasury coordination, confidential payroll, confidential vesting, encrypted payments, DAO intelligence, QVAC, GoldRush, Covalent, QuickNode Streams, Jupiter treasury, PUSD stablecoin, Torque MCP, MagicBlock, IKA, REFHE, ZK commit reveal, onchain proof, wallet-first DAO, Solana Android DAO.
+PrivateDAO, Private DAO, private organizational work, enterprise Web3, Web3 capabilities, private governance, confidential governance, confidential coordination infrastructure, private coordination layer, organizational workflow engine, reviews and approvals, proof center, public verification, transparency report, private DAO voting, private rooms, treasury coordination, confidential payroll, confidential procurement, sealed auctions, blind verification, record verification, KYC, KYB, privacy-preserving settlement, zero-knowledge proofs, ZK commit reveal, onchain proof, verifiable outcomes, Agent Marketplace, PDAO Worlds.
 
 ## Language Coverage
 
-The site has a language switcher and public metadata for English, Arabic, Russian, Ukrainian, Polish, Hindi, Korean, Spanish, and Italian. Arabic search concepts include برايفيت داو, حوكمة خاصة, تصويت خاص, خزينة مشفرة, رواتب مشفرة, داو خاص على سولانا.
+The site has a language switcher and public metadata for English, Arabic, Russian, Ukrainian, Polish, Hindi, Korean, Spanish, and Italian. Arabic search concepts include برايفيت داو, خصوصية المؤسسات, حوكمة خاصة, تصويت خاص, خزينة خاصة, رواتب سرية, تحقق بدون كشف البيانات, قدرات ويب3 للمؤسسات.
 
 ## Crawl Policy
 

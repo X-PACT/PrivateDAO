@@ -270,7 +270,7 @@ function main() {
     [fs.readFileSync(path.resolve("apps/web/src/app/arena/page.tsx"), "utf8"), 'target="/judge"', "legacy /arena route is not preserved"],
     [fs.readFileSync(path.resolve("apps/web/src/app/colosseum/page.tsx"), "utf8"), 'target="/judge"', "legacy /colosseum route is not preserved"],
     [fs.readFileSync(path.resolve("apps/web/src/app/frontier/page.tsx"), "utf8"), 'target="/services/main-frontier-closure"', "legacy /frontier route is not preserved"],
-    [fs.readFileSync(path.resolve("apps/web/src/app/privacy/page.tsx"), "utf8"), 'target="/services/encrypt-ika-operations"', "legacy /privacy route is not preserved"],
+    [fs.readFileSync(path.resolve("apps/web/src/app/privacy/page.tsx"), "utf8"), 'title: "Privacy"', "commercial /privacy page is missing its current metadata"],
     [fs.readFileSync(path.resolve("apps/web/src/app/payments/page.tsx"), "utf8"), 'target="/services/confidential-payments"', "legacy /payments route is not preserved"],
     [fs.readFileSync(path.resolve("apps/web/src/app/business-model/page.tsx"), "utf8"), "Open infrastructure creates trust. Operational outcomes create revenue.", "/business-model is missing the current commercial narrative"],
     [fs.readFileSync(path.resolve("apps/web/src/app/pricing/page.tsx"), "utf8"), "$2,500", "/pricing is missing the fixed pilot price"],

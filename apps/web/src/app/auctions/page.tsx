@@ -11,7 +11,7 @@ import { cn } from "@/lib/utils";
 export const metadata: Metadata = buildRouteMetadata({
   title: "Sealed Auctions",
   description: "Run fair private auctions where bids stay hidden until the result is ready to share.",
-  path: "/auctions",
+  path: "/sealed-auctions",
   keywords: ["sealed auctions", "private auctions", "confidential procurement", "fair bidding"],
 });
 
@@ -76,7 +76,7 @@ export default function AuctionsPage() {
           ))}
         </div>
         <div className="mt-5 flex flex-wrap gap-3">
-          <a href="mailto:Fahd.kotb@tuta.io?subject=PrivateDAO%20Sealed%20Auction%20Pilot" className={cn(buttonVariants({ size: "sm" }))}>
+          <a href="mailto:fahd@privatedao.org?subject=PrivateDAO%20Sealed%20Auction%20Pilot" className={cn(buttonVariants({ size: "sm" }))}>
             Request Auction Pilot
             <ArrowRight className="h-4 w-4" />
           </a>

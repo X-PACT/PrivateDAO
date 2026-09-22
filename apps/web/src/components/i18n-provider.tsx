@@ -81,7 +81,12 @@ export function I18nProvider({ children }: I18nProviderProps) {
 
   useEffect(() => {
     const browserLocale = resolveExplicitBrowserLocale();
-    setSelectedLocaleState(browserLocale);
+    if (browserLocale === defaultLocale) {
+      return;
+    }
+
+    const frame = window.requestAnimationFrame(() => setSelectedLocaleState(browserLocale));
+    return () => window.cancelAnimationFrame(frame);
   }, []);
 
   useEffect(() => {

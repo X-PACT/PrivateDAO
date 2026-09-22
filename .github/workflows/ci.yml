@@ -2,9 +2,87 @@ name: CI
 
 on:
   push:
-    branches: ["**"]
+    branches: [main]
+    paths:
+      - ".github/workflows/ci.yml"
+      - "package.json"
+      - "package-lock.json"
+      - "yarn.lock"
+      - "tsconfig*.json"
+      - "Cargo.toml"
+      - "Cargo.lock"
+      - "Anchor.toml"
+      - "**/*.js"
+      - "**/*.mjs"
+      - "**/*.cjs"
+      - "**/*.ts"
+      - "**/*.tsx"
+      - "**/*.rs"
+      - "**/*.json"
+      - "**/*.py"
+      - "**/*.sh"
+      - "**/*.sql"
+      - "**/*.sol"
+      - "**/*.yml"
+      - "**/*.yaml"
+      - "**/*.toml"
+      - "**/*.lock"
+      - "**/Dockerfile*"
+      - "Dockerfile"
+      - "deploy.sh"
+      - "programs/**"
+      - "scripts/**"
+      - "packages/**"
+      - "integrations/**"
+      - "apps/**"
+      - "frontend/**"
+      - "proof/**"
+      - "zk/**"
+      - "migrations/**"
+      - "deploy/**"
   pull_request:
+    paths:
+      - ".github/workflows/ci.yml"
+      - "package.json"
+      - "package-lock.json"
+      - "yarn.lock"
+      - "tsconfig*.json"
+      - "Cargo.toml"
+      - "Cargo.lock"
+      - "Anchor.toml"
+      - "**/*.js"
+      - "**/*.mjs"
+      - "**/*.cjs"
+      - "**/*.ts"
+      - "**/*.tsx"
+      - "**/*.rs"
+      - "**/*.json"
+      - "**/*.py"
+      - "**/*.sh"
+      - "**/*.sql"
+      - "**/*.sol"
+      - "**/*.yml"
+      - "**/*.yaml"
+      - "**/*.toml"
+      - "**/*.lock"
+      - "**/Dockerfile*"
+      - "Dockerfile"
+      - "deploy.sh"
+      - "programs/**"
+      - "scripts/**"
+      - "packages/**"
+      - "integrations/**"
+      - "apps/**"
+      - "frontend/**"
+      - "proof/**"
+      - "zk/**"
+      - "migrations/**"
+      - "deploy/**"
   workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   verify:

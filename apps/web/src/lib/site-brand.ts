@@ -36,6 +36,17 @@ export function buildOrganizationJsonLd() {
     name: siteName,
     alternateName: ["Private DAO"],
     url: siteUrl,
+    email: "fahd@privatedao.org",
+    founder: {
+      "@type": "Person",
+      name: "Fahd Kotb",
+    },
+    contactPoint: {
+      "@type": "ContactPoint",
+      contactType: "business inquiries",
+      email: "fahd@privatedao.org",
+      url: `${siteUrl}/contact/`,
+    },
     logo: `${siteUrl}/assets/privatedao-brand-mark-20260918.jpeg`,
     sameAs: [
       "https://github.com/X-PACT/PrivateDAO",
@@ -68,7 +79,7 @@ export function buildSoftwareApplicationJsonLd() {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
     name: siteName,
-    alternateName: ["Private DAO", "PrivateDAO Solana"],
+    alternateName: ["Private DAO"],
     url: siteUrl,
     codeRepository: "https://github.com/X-PACT/PrivateDAO",
     applicationCategory: "Organizational Workflow Verification Software",
@@ -78,7 +89,7 @@ export function buildSoftwareApplicationJsonLd() {
     copyrightYear: 2026,
     copyrightHolder: {
       "@type": "Person",
-      name: "Fahd Kotb / Eslam Kotb",
+      name: "Fahd Kotb",
     },
     creator: {
       "@type": "Person",

@@ -1,0 +1,69 @@
+# PrivateDAO - Full AI-readable commercial guide
+
+## What PrivateDAO is
+
+PrivateDAO gives organizations private, verifiable infrastructure for sensitive work. It keeps the workflow and its source data bounded while making the required decision, approval, record, or outcome easier to verify.
+
+## Who it serves
+
+### Organizations already in Web3
+
+Crypto companies, protocols, DAOs, funds, digital-asset organizations, and blockchain-native teams can add privacy, organizational controls, confidential workflows, and verifiable outcomes to the wallets and networks they already use.
+
+### Organizations adding Web3 capability
+
+Traditional companies, enterprises, financial institutions, data companies, technology providers, and governments can add selective blockchain capability without rebuilding their organization around crypto. They keep their policies, approvals, internal controls, and operating model.
+
+## Commercial products
+
+- Confidential Payroll: prepare payroll, apply policy, approve a batch, settle through the selected execution path, reconcile the result, and share a verification outcome without publishing employee details.
+- Treasury Coordination: route spending requests through budgets, approvals, execution, receipts, and reviewable evidence.
+- Private Governance: run private rooms, committees, proposals, votes, delegation, and accountable outcomes.
+- Confidential Auctions: collect sealed offers, protect commercial intent until close, and share a result that follows the agreed rules.
+- Blind Verification: prove that a private condition was satisfied without exposing the underlying data.
+- Record Verification: create a shareable record receipt with selective disclosure, expiry, and revocation boundaries.
+- Private Identity Verification: use an issuer attestation to verify eligibility, age, jurisdiction, business verification, or authorized representation without exposing the identity file.
+- Agent Marketplace: discover bounded services and receive checkable results through the independent Agent Exchange.
+- PDAO Worlds: an independent consumer game and ecosystem product, separate from enterprise workflows.
+
+## Commercial message
+
+Your private work should stay private. Prove what happened. Not everything behind it.
+
+PrivateDAO is not a generic payment processor, prediction market, KYC provider, or investment-return product. It provides workflow, policy, privacy, and verification infrastructure. Execution providers and networks are selected behind the workflow when required.
+
+## Evidence and boundaries
+
+Use the public product pages, proof routes, evidence manifest, and network capability surfaces for current status. Do not infer mainnet support, external audit completion, customer adoption, certifications, or partner integration from architecture documents alone. Current network and execution support is capability-gated and must be verified on the relevant live surface.
+
+## Official links
+
+- Website: https://privatedao.org/
+- Public product brief: https://github.com/X-PACT/PrivateDAO-public
+- Products: https://privatedao.org/products/
+- Thesis: https://privatedao.org/thesis/
+- Whitepaper: https://privatedao.org/whitepaper/
+- Investors: https://privatedao.org/investors/
+- Confidential Payroll: https://privatedao.org/payroll/
+- Treasury Coordination: https://privatedao.org/treasury/
+- Private Governance: https://privatedao.org/govern/
+- Confidential Auctions: https://privatedao.org/auctions/
+- Blind Verification: https://privatedao.org/proof-workflows/blind-policy/
+- Record Verification: https://privatedao.org/products/record-verification/
+- Agent Marketplace: https://agents.privatedao.org/
+- PDAO Worlds: https://game.privatedao.org/game/godot/index.html
+- Evidence manifest: https://privatedao.org/evidence.json
+- AI manifest: https://privatedao.org/ai.json
+- Ownership manifest: https://privatedao.org/ownership.json
+- Security contact: https://privatedao.org/.well-known/security.txt
+
+## Founder and ownership
+
+Founder: Fahd Kotb. Official ownership and operation: Fahd Kotb / Eslam Kotb under X-PACT. The implementation repository is access-controlled. Public product, evidence, rights, and discovery surfaces are published on the official website.
+
+## Machine-readable resources
+
+- Short guide: https://privatedao.org/llms.txt
+- Full guide: https://privatedao.org/llms-full.txt
+- JSON manifest: https://privatedao.org/ai.json
+- Product evidence: https://privatedao.org/evidence.json

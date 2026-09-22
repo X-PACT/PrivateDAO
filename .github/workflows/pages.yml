@@ -3,10 +3,21 @@ name: Build website
 on:
   push:
     branches: ["main"]
+    paths:
+      - ".github/workflows/pages.yml"
+      - "package.json"
+      - "package-lock.json"
+      - "apps/web/**"
+      - "scripts/build-web-mirror-bundle.sh"
+      - "scripts/build-github-pages-redirect.mjs"
   workflow_dispatch:
 
 permissions:
   contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build:

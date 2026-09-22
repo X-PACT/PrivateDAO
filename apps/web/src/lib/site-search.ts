@@ -328,6 +328,12 @@ export const siteSearchItems: SiteSearchItem[] = [
   },
 ];
 
+// Historical document routes remain addressable for continuity, but they are
+// archive bridges rather than current public search destinations.
+const currentPublicSearchItems = siteSearchItems.filter(
+  (item) => !item.href.startsWith("/documents/") || item.href === "/documents",
+);
+
 const profileAwareSearchRules: ProfileAwareSearchRule[] = [
   {
     keywords: ["pilot funding"],
@@ -902,7 +908,7 @@ function getTokenTruthLeadItems(query: string): SiteSearchItem[] {
 
 export function getSiteSearchResults(query: string): SiteSearchItem[] {
   const normalized = query.trim().toLowerCase();
-  if (!normalized) return siteSearchItems;
+  if (!normalized) return currentPublicSearchItems;
 
   const paymentsTruthLeadItems = getPaymentsTruthLeadItems(normalized);
   const tokenTruthLeadItems = getTokenTruthLeadItems(normalized);
@@ -922,7 +928,7 @@ export function getSiteSearchResults(query: string): SiteSearchItem[] {
       matchKind: item.matchKind ?? "profile-aware",
     })) ?? [];
 
-  const generalResults = siteSearchItems.filter((item) =>
+  const generalResults = currentPublicSearchItems.filter((item) =>
     [item.title, item.summary, item.category].some((field) =>
       field.toLowerCase().includes(normalized),
     ),
@@ -930,6 +936,7 @@ export function getSiteSearchResults(query: string): SiteSearchItem[] {
 
   const seen = new Set<string>();
   return [...tokenTruthLeadItems, ...paymentsTruthLeadItems, ...trackReviewerPacketLeadItems, ...custodyLeadItems, ...telemetryLeadItems, ...strategicOpportunityLeadItems, ...profileTrackLeadItems, ...trackAwareLeadItems, ...proposalLeadItems, ...profileAwareLeadItems, ...generalResults].filter((item) => {
+    if (item.href.startsWith("/documents/") && item.href !== "/documents") return false;
     const key = `${item.category}:${item.href}`;
     if (seen.has(key)) return false;
     seen.add(key);

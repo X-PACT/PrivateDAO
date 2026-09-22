@@ -17,7 +17,11 @@ import {
   siteTitle,
   siteUrl,
 } from "@/lib/site-brand";
+import { JsonLd } from "@/components/seo-structured-data";
 import { supportedLocales } from "@/lib/i18n";
+
+const googleSiteVerification = process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION;
+const bingSiteVerification = process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION;
 
 export const metadata: Metadata = {
   title: {
@@ -29,6 +33,9 @@ export const metadata: Metadata = {
   metadataBase: new URL(`${siteUrl}/`),
   alternates: {
     canonical: "/",
+    languages: Object.fromEntries(
+      supportedLocales.map((locale) => [locale.code, `/?lang=${locale.code}`]),
+    ),
   },
     applicationName: siteName,
     icons: {
@@ -39,6 +46,12 @@ export const metadata: Metadata = {
     apple: [{ url: "/assets/privatedao-brand-mark-20260918.jpeg", type: "image/jpeg" }],
   },
   category: "technology",
+  verification: {
+    ...(googleSiteVerification ? { google: googleSiteVerification } : {}),
+    ...(bingSiteVerification
+      ? { other: { "msvalidate.01": bingSiteVerification } }
+      : {}),
+  },
   openGraph: {
     title: siteTitle,
     description: siteDescription,
@@ -64,6 +77,7 @@ export const metadata: Metadata = {
     "content-language": supportedLocales.map((locale) => locale.code).join(", "),
     "ai-crawl": "allowed",
     "llms-txt": "/llms.txt",
+    "llms-full": "/llms-full.txt",
     "ai-manifest": "/ai.json",
     "evidence-manifest": "/evidence.json",
     "ownership-manifest": "/ownership.json",
@@ -101,24 +115,9 @@ export default function RootLayout({
                 __html: `(function(){var PARAM='__pd_reload';var KEY='privatedao-next-asset-recovery:'+(window.location.pathname||'/');function nextAsset(url){return typeof url==='string'&&url.indexOf('/_next/static/')!==-1;}function once(){try{if(window.sessionStorage.getItem(KEY)==='1'){return false;}window.sessionStorage.setItem(KEY,'1');return true;}catch(_){return true;}}function hardReload(){if(!once()){return;}var url=new URL(window.location.href);url.searchParams.set(PARAM,String(Date.now()));window.location.replace(url.toString());}function maybeRecover(value){var message='';if(typeof value==='string'){message=value;}else if(value&&typeof value.message==='string'){message=value.message;}else if(value&&typeof value.reason==='string'){message=value.reason;}if(message.indexOf('ChunkLoadError')!==-1||message.indexOf('Loading CSS chunk')!==-1||message.indexOf('Failed to fetch dynamically imported module')!==-1){hardReload();}}window.addEventListener('error',function(event){var target=event.target;if(target&&nextAsset(target.src||target.href)){hardReload();}},true);window.addEventListener('unhandledrejection',function(event){maybeRecover(event.reason);});if(window.location.search.indexOf(PARAM+'=')!==-1){window.addEventListener('load',function(){var url=new URL(window.location.href);url.searchParams.delete(PARAM);window.history.replaceState(window.history.state,'',url.toString());},{once:true});}})();`,
               }}
             />
-            <Script
-              id="privatedao-organization-jsonld"
-              type="application/ld+json"
-              strategy="afterInteractive"
-              dangerouslySetInnerHTML={{ __html: JSON.stringify(buildOrganizationJsonLd()) }}
-            />
-            <Script
-              id="privatedao-website-jsonld"
-              type="application/ld+json"
-              strategy="afterInteractive"
-              dangerouslySetInnerHTML={{ __html: JSON.stringify(buildWebSiteJsonLd()) }}
-            />
-            <Script
-              id="privatedao-software-jsonld"
-              type="application/ld+json"
-              strategy="afterInteractive"
-              dangerouslySetInnerHTML={{ __html: JSON.stringify(buildSoftwareApplicationJsonLd()) }}
-            />
+            <JsonLd data={buildOrganizationJsonLd()} />
+            <JsonLd data={buildWebSiteJsonLd()} />
+            <JsonLd data={buildSoftwareApplicationJsonLd()} />
             <div className="relative flex min-h-full flex-col overflow-x-hidden">
               <SiteActivityBeacon />
               <SiteChrome>{children}</SiteChrome>

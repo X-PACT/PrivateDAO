@@ -45,7 +45,7 @@ Set:
 
 ```text
 PRIMARY_DOMAIN=api.privatedao.org
-ACME_EMAIL=ops@privatedao.org
+ACME_EMAIL=fahd@privatedao.org
 PRIMARY_EDGE_HTTP_BIND_PORT=80
 PRIMARY_EDGE_HTTPS_BIND_PORT=443
 PRIVATE_DAO_READ_ALLOWED_ORIGIN=https://privatedao.org

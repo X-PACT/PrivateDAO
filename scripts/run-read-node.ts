@@ -4512,7 +4512,7 @@ async function verifyPayrollUmbraDevnetTransaction(signature: string, optionalDa
   const rpcUrl = process.env.PRIVATE_DAO_PAYROLL_DEVNET_RPC_URL || process.env.SOLANA_DEVNET_RPC_URL || "https://api.devnet.solana.com";
   if (!/^https:\/\//i.test(rpcUrl) || /mainnet|testnet/i.test(rpcUrl)) throw new Error("Payroll settlement RPC must be an HTTPS Solana Devnet endpoint.");
   const connection = new Connection(rpcUrl, "finalized");
-  const status = (await connection.getSignatureStatuses([signature])).value[0];
+  const status = (await connection.getSignatureStatuses([signature], { searchTransactionHistory: true })).value[0];
   if (!status || status.err || status.confirmationStatus !== "finalized") throw new Error("Umbra payroll transaction is not finalized successfully on Solana Devnet.");
   const transaction = await connection.getParsedTransaction(signature, { commitment: "finalized", maxSupportedTransactionVersion: 0 });
   if (!transaction || transaction.meta?.err) throw new Error("Finalized Umbra payroll transaction could not be read successfully.");

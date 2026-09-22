@@ -10,7 +10,7 @@ import { cn } from "@/lib/utils";
 export const metadata: Metadata = buildRouteMetadata({
   title: "Verification",
   description: "Prove a decision was made correctly without exposing the underlying data.",
-  path: "/proof-workflows",
+  path: "/blind-verification",
   keywords: ["proof workflows", "decision proof", "workflow verification", "private audit trail", "underwriting proof"],
 });
 

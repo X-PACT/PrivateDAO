@@ -1,0 +1,18 @@
+{
+  "rail": "arbitrum-delayed-inbox",
+  "sourceNetwork": "ethereum-sepolia",
+  "destinationNetwork": "robinhood-testnet",
+  "sourceChainId": 11155111,
+  "destinationChainId": 46630,
+  "destinationInbox": "0xF2939afA86F6f933A3CE17fCAB007907B6b0B7a4",
+  "amount": "0.01",
+  "asset": "ETH",
+  "sourceTransactionHash": "0xcaa73a9dffeb385ec2ed09b5a18e21250776ecb87ed18f4b4331e55c9c13fed8",
+  "sourceBlockNumber": "11737512",
+  "sourceReceiptStatus": "success",
+  "destinationStatus": "confirmed",
+  "destinationBalanceObserved": "0.01",
+  "destinationObservedAt": "2026-09-19T17:09:00Z",
+  "verifiedAt": "2026-09-19T11:55:03Z",
+  "note": "Destination balance must be observed on Robinhood Testnet before this rail can be used as E2E funding evidence."
+}

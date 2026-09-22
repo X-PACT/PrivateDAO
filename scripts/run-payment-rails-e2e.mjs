@@ -36,16 +36,19 @@ try {
     await save();
   }
   const transport = (url) => http(url, { timeout: 20000, retryCount: 1 });
+  const sourceRpc = process.env.PDAO_EVM_ETHEREUM_SEPOLIA_RPC_URL || "https://ethereum-sepolia-rpc.publicnode.com";
+  const destinationRpc = process.env.PDAO_EVM_BASE_SEPOLIA_RPC_URL || "https://sepolia.base.org";
   const source = rail === "tempo"
-    ? createTempoClient({ account, chain: tempoModerato.extend({ feeToken: TEMPO_PAYMENT_TOKEN }), transport: transport("https://rpc.moderato.tempo.xyz") })
-    : createPublicClient({ chain: sepolia, transport: transport("https://ethereum-sepolia-rpc.publicnode.com") });
-  const signer = rail === "tempo" ? source : createWalletClient({ account, chain: sepolia, transport: transport("https://ethereum-sepolia-rpc.publicnode.com") });
+    ? createTempoClient({ account, chain: tempoModerato.extend({ feeToken: TEMPO_PAYMENT_TOKEN }), transport: transport(process.env.PDAO_EVM_TEMPO_TESTNET_RPC_URL || "https://rpc.moderato.tempo.xyz") })
+    : createPublicClient({ chain: sepolia, transport: transport(sourceRpc) });
+  const signer = rail === "tempo" ? source : createWalletClient({ account, chain: sepolia, transport: transport(sourceRpc) });
   const chainId = await source.getChainId();
   assert.equal(chainId, rail === "tempo" ? 42431 : 11155111);
-  const destination = rail === "base-bridge" ? createPublicClient({ chain: baseSepolia, transport: transport("https://sepolia.base.org") }) : null;
+  const destination = rail === "base-bridge" ? createPublicClient({ chain: baseSepolia, transport: transport(destinationRpc) }) : null;
   if (destination) assert.equal(await destination.getChainId(), 84532);
   const batch = rail === "tempo" ? buildTempoPaymentBatch({ chainId, sender: account.address, batchReference: journal.reference, maxTotal: 3n, lines: journal.recipientKeys.map((recipientKey, index) => ({ reference: keccak256(`0x${(index + 1).toString(16).padStart(64, "0")}${journal.reference.slice(2)}`), recipient: privateKeyToAccount(recipientKey).address, amount: 1n })) }) : null;
-  const deposit = rail === "base-bridge" ? buildBaseTestnetDeposit({ sourceChainId: chainId, destinationChainId: 84532, recipient: account.address, amount: parseEther("0.001"), maxAmount: parseEther("0.001") }) : null;
+  const bridgeAmount = parseEther(process.env.PDAO_BASE_BRIDGE_AMOUNT || "0.001");
+  const deposit = rail === "base-bridge" ? buildBaseTestnetDeposit({ sourceChainId: chainId, destinationChainId: 84532, recipient: account.address, amount: bridgeAmount, maxAmount: bridgeAmount }) : null;
   if (process.argv.includes("--retry-reverted") && journal.sourceHash) {
     const previous = await source.getTransactionReceipt({ hash: journal.sourceHash });
     assert.equal(previous.status, "reverted", "Retry requires a confirmed revert; pending or successful deposits must not be repeated");

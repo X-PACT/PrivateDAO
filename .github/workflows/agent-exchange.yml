@@ -1,0 +1,52 @@
+name: Agent Exchange
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "integrations/agent-exchange-lambda/**"
+      - ".github/workflows/agent-exchange.yml"
+  pull_request:
+    paths:
+      - "integrations/agent-exchange-lambda/**"
+      - ".github/workflows/agent-exchange.yml"
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: integrations/agent-exchange-lambda
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: "22.21.1"
+          cache: npm
+          cache-dependency-path: integrations/agent-exchange-lambda/package-lock.json
+
+      - name: Install Lambda dependencies
+        run: npm ci --ignore-scripts --no-audit --no-fund
+
+      - name: Syntax and tests
+        run: npm run lint && npm test && npm run smoke
+
+      - name: Dependency audit
+        run: npm audit --omit=dev --audit-level=moderate
+
+      - name: Check for committed secrets
+        run: |
+          ! grep -RInE '(BEGIN (RSA|OPENSSH|EC|PGP) PRIVATE KEY|AKIA[0-9A-Z]{16}|BOT_TOKEN=|ALCHEMY_API_KEY=)' \
+            --exclude-dir=.git --exclude-dir=node_modules .

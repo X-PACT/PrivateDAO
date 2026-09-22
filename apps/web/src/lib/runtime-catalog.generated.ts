@@ -2148,6 +2148,7 @@ export const runtimeCatalog = {
       "networks": [
         "solana-devnet",
         "ethereum-sepolia",
+        "arbitrum-sepolia",
         "tempo-testnet"
       ],
       "capabilities": [
@@ -2191,6 +2192,23 @@ export const runtimeCatalog = {
                 "ETH"
               ],
               "provider": "evm-ethereum-sepolia-organizational"
+            },
+            {
+              "network": "arbitrum-sepolia",
+              "mode": "kernel-gateway",
+              "entrypoint": "kernel://treasury.policy.check",
+              "method": null,
+              "note": "Arbitrum Sepolia organizational Treasury passed real funding, budget, Maker/Checker approval, execution, receipt, and state reconciliation checks in the committed E2E artifact.",
+              "evidenceStatus": "testnet_verified",
+              "evidence": "testnet-e2e",
+              "supportsExecution": true,
+              "supportsProof": false,
+              "supportsReceipt": true,
+              "supportsReconciliation": true,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-arbitrum-sepolia-organizational"
             },
             {
               "network": "tempo-testnet",
@@ -2288,11 +2306,11 @@ export const runtimeCatalog = {
               "stage": "available",
               "environment": "testnet",
               "chainId": "421614",
-              "declared": false,
-              "mode": "unbound",
+              "declared": true,
+              "mode": "kernel-gateway",
               "evidenceStatus": "testnet_verified",
               "evidence": "testnet-e2e",
-              "executable": false,
+              "executable": true,
               "supportsProof": false,
               "supportsReceipt": true,
               "supportsReconciliation": true,
@@ -2510,6 +2528,7 @@ export const runtimeCatalog = {
       "networks": [
         "solana-devnet",
         "ethereum-sepolia",
+        "arbitrum-sepolia",
         "tempo-testnet"
       ],
       "capabilities": [
@@ -2553,6 +2572,23 @@ export const runtimeCatalog = {
                 "ETH"
               ],
               "provider": "evm-ethereum-sepolia-organizational"
+            },
+            {
+              "network": "arbitrum-sepolia",
+              "mode": "kernel-gateway",
+              "entrypoint": "kernel://governance.proposal.execute",
+              "method": null,
+              "note": "Arbitrum Sepolia commit/reveal governance passed real proposal creation, early-reveal rejection, vote reveal, finalization, receipt, and state checks in the committed E2E artifact.",
+              "evidenceStatus": "testnet_verified",
+              "evidence": "testnet-e2e",
+              "supportsExecution": true,
+              "supportsProof": false,
+              "supportsReceipt": true,
+              "supportsReconciliation": true,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-arbitrum-sepolia-organizational"
             },
             {
               "network": "tempo-testnet",
@@ -2650,11 +2686,11 @@ export const runtimeCatalog = {
               "stage": "available",
               "environment": "testnet",
               "chainId": "421614",
-              "declared": false,
-              "mode": "unbound",
+              "declared": true,
+              "mode": "kernel-gateway",
               "evidenceStatus": "testnet_verified",
               "evidence": "testnet-e2e",
-              "executable": false,
+              "executable": true,
               "supportsProof": false,
               "supportsReceipt": true,
               "supportsReconciliation": true,
@@ -2872,6 +2908,7 @@ export const runtimeCatalog = {
       "networks": [
         "solana-devnet",
         "ethereum-sepolia",
+        "arbitrum-sepolia",
         "tempo-testnet"
       ],
       "capabilities": [
@@ -2915,6 +2952,23 @@ export const runtimeCatalog = {
                 "ETH"
               ],
               "provider": "evm-ethereum-sepolia-organizational"
+            },
+            {
+              "network": "arbitrum-sepolia",
+              "mode": "kernel-gateway",
+              "entrypoint": "kernel://auction.bid.commit",
+              "method": null,
+              "note": "Arbitrum Sepolia sealed auction passed real commit, altered-reveal rejection, reveal, finalization, settlement, receipt, and state checks in the committed E2E artifact.",
+              "evidenceStatus": "testnet_verified",
+              "evidence": "testnet-e2e",
+              "supportsExecution": true,
+              "supportsProof": false,
+              "supportsReceipt": true,
+              "supportsReconciliation": true,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-arbitrum-sepolia-organizational"
             },
             {
               "network": "tempo-testnet",
@@ -3012,11 +3066,11 @@ export const runtimeCatalog = {
               "stage": "available",
               "environment": "testnet",
               "chainId": "421614",
-              "declared": false,
-              "mode": "unbound",
+              "declared": true,
+              "mode": "kernel-gateway",
               "evidenceStatus": "testnet_verified",
               "evidence": "testnet-e2e",
-              "executable": false,
+              "executable": true,
               "supportsProof": false,
               "supportsReceipt": true,
               "supportsReconciliation": true,
@@ -3267,6 +3321,23 @@ export const runtimeCatalog = {
               "provider": "evm-ethereum-sepolia-organizational"
             },
             {
+              "network": "arbitrum-sepolia",
+              "mode": "kernel-gateway",
+              "entrypoint": "kernel://auction.settle",
+              "method": null,
+              "note": "Arbitrum Sepolia sealed auction settlement is backed by the committed organizational E2E evidence artifact.",
+              "evidenceStatus": "testnet_verified",
+              "evidence": "testnet-e2e",
+              "supportsExecution": true,
+              "supportsProof": false,
+              "supportsReceipt": true,
+              "supportsReconciliation": true,
+              "supportedAssets": [
+                "ETH"
+              ],
+              "provider": "evm-arbitrum-sepolia-organizational"
+            },
+            {
               "network": "tempo-testnet",
               "mode": "kernel-gateway",
               "entrypoint": "kernel://auction.settle",
@@ -3362,11 +3433,11 @@ export const runtimeCatalog = {
               "stage": "available",
               "environment": "testnet",
               "chainId": "421614",
-              "declared": false,
-              "mode": "unbound",
+              "declared": true,
+              "mode": "kernel-gateway",
               "evidenceStatus": "testnet_verified",
               "evidence": "testnet-e2e",
-              "executable": false,
+              "executable": true,
               "supportsProof": false,
               "supportsReceipt": true,
               "supportsReconciliation": true,

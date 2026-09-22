@@ -49,7 +49,6 @@ const redirects = {
   "/services/umbra-private-payments": "/treasury",
   "/services/umbra-confidential-payout": "/treasury",
   "/services/devnet-billing-rehearsal": "/contact",
-  "/about": "/thesis",
   "/business-model": "/thesis",
   "/community": "/contact",
   "/compliance": "/whitepaper",

@@ -111,7 +111,5 @@ private voting, confidential compensation, disciplined treasury execution, and r
 
 ## Direct Contact
 
-- Email: [fahd.kotb@tuta.io](mailto:fahd.kotb@tuta.io)
-- Email: [i.kotb@proton.me](mailto:i.kotb@proton.me)
-- Email: [eslamkotb.fmt@gmail.com](mailto:eslamkotb.fmt@gmail.com)
+- Official email: [fahd@privatedao.org](mailto:fahd@privatedao.org)
 - WhatsApp: [Direct chat](https://wa.me/201124030209)

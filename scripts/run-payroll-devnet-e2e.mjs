@@ -12,8 +12,9 @@ const registration = requireWeb("@umbra-privacy/sdk/registration");
 const { buildPoseidon } = requireWeb("circomlibjs");
 const { groth16 } = requireWeb("snarkjs");
 
-const API = "https://api.privatedao.org/api/v1";
+const API = (process.env.PDAO_PAYROLL_API_BASE_URL || "https://api.privatedao.org/api/v1").replace(/\/+$/, "");
 const RPC = process.env.SOLANA_DEVNET_RPC_URL || "https://api.devnet.solana.com";
+const WS = process.env.SOLANA_DEVNET_WS_URL || RPC.replace(/^http/, "ws");
 const KEYPAIR_PATH = process.env.PDAO_DEVNET_KEYPAIR_PATH || "/home/x-pact/.config/solana/id.json";
 const EXPECTED_WALLET = "4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD";
 const RECIPIENTS = [
@@ -26,6 +27,11 @@ const grossCents = 5;
 const taxCents = 1;
 const deductionsCents = 0;
 const netCents = 4;
+const NET_BASE_UNITS = BigInt(process.env.PDAO_PAYROLL_E2E_NET_BASE_UNITS || "100000");
+const MIN_BALANCE_LAMPORTS = BigInt(process.env.PDAO_PAYROLL_E2E_MIN_BALANCE_LAMPORTS || "50000000");
+if (NET_BASE_UNITS <= 0n) {
+  throw new Error("Devnet E2E amount configuration must be positive and safe.");
+}
 const runId = `devnet-e2e-${Date.now()}-${randomBytes(4).toString("hex")}`;
 
 function sha256(value) { return createHash("sha256").update(value).digest("hex"); }
@@ -145,7 +151,7 @@ async function main() {
   if (wallet !== EXPECTED_WALLET) throw new Error(`Signer mismatch: configured keypair resolves to ${wallet}, expected ${EXPECTED_WALLET}.`);
   const connection = new Connection(RPC, "finalized");
   const balance = await connection.getBalance(keypair.publicKey, "finalized");
-  if (balance < 50000000) throw new Error(`Insufficient Devnet SOL for controlled E2E: ${balance} lamports.`);
+  if (balance < MIN_BALANCE_LAMPORTS) throw new Error(`Insufficient Devnet SOL for controlled E2E: ${balance} lamports.`);
 
   const challenge = await api("/payroll/session", { method: "POST", body: json({ action: "challenge", wallet }) });
   const challengeSignature = nacl.sign.detached(Buffer.from(challenge.challenge.message), keypair.secretKey);
@@ -156,15 +162,15 @@ async function main() {
   const batchCommitment = sha256(json(itemValues.map(({ recipientAddress: _a, employeeRefCiphertext: _b, ...item }) => item)));
   const recipientRoot = sha256(itemValues.map((item) => item.recipientCommitment).sort().join("|"));
   const manifestCommitment = sha256(json({ version: "devnet-e2e-v1", batchCommitment, recipientRoot, encrypted: true }));
-  const intent = await api("/payroll/umbra", { method: "POST", body: json({ action: "prepare", asset: "WSOL", recipientCount: 3, totalAmount: "2.64", manifestCommitment, recipientHash: sha256(RECIPIENTS.slice().sort().join("|")), privacyTier: "selective-disclosure", requiresAudit: true, unlinkabilityRequired: false, encryption: { algorithm: "AES-256-GCM", keyDerivation: "PBKDF2-SHA256-120000", ciphertextHash: sha256("encrypted-devnet-e2e") } }) });
+  const intent = await api("/payroll/umbra", { method: "POST", body: json({ action: "prepare", asset: "WSOL", recipientCount: 3, totalAmount: (Number(NET_BASE_UNITS * 3n) / 1e9).toFixed(9), manifestCommitment, recipientHash: sha256(RECIPIENTS.slice().sort().join("|")), privacyTier: "selective-disclosure", requiresAudit: true, unlinkabilityRequired: false, encryption: { algorithm: "AES-256-GCM", keyDerivation: "PBKDF2-SHA256-120000", ciphertextHash: sha256("encrypted-devnet-e2e") } }) });
   const bootstrap = await api("/payroll", { method: "POST", headers: bearer, body: json({ action: "bootstrap-devnet", manifestCommitment, batchCommitment, recipientRoot, grossCents: grossCents * 3, taxCents: taxCents * 3, deductionsCents: deductionsCents * 3, netCents: netCents * 3, idempotencyKey: `script-${runId}-${sha256(wallet + manifestCommitment).slice(0, 24)}`, items: itemValues, rows: itemValues, payrollItems: itemValues }) });
   const batchId = bootstrap.batch.batch.batch_id;
   const signer = await createSignerFromPrivateKeyBytes(keypair.secretKey);
   const client = await getUmbraClient(
-    { signer, network: "devnet", rpcUrl: RPC, rpcSubscriptionsUrl: RPC.replace(/^http/, "ws"), deferMasterSeedSignature: true },
+    { signer, network: "devnet", rpcUrl: RPC, rpcSubscriptionsUrl: WS, deferMasterSeedSignature: true },
     { computationMonitor: createDevnetCallbackMonitor(connection) },
   );
-  const wrap = await ensureWrappedSol(connection, keypair, BigInt(netCents * RECIPIENTS.length) * 10000000n);
+  const wrap = await ensureWrappedSol(connection, keypair, NET_BASE_UNITS * BigInt(RECIPIENTS.length));
   const register = registration.getUserRegistrationFunction({ client });
   try { await register({ confidential: true, anonymous: false }); } catch (error) { if (!/already|exist|registered/i.test(String(error?.message || error))) throw error; }
   const deposit = depositOps.getATAIntoETADirectDepositorFunction({ client });
@@ -177,9 +183,10 @@ async function main() {
     }
     const binding = sha256(json({ version: "payroll-umbra-binding-v1", batchId, itemId: item.item_id, payoutId: item.payout_id, recipientCommitment: itemValues[index].recipientCommitment, netCents: itemValues[index].netCents }));
     const optionalData = Uint8Array.from(Buffer.from(binding, "hex"));
-    const result = await deposit(RECIPIENTS[index], "So11111111111111111111111111111111111111112", BigInt(netCents) * 10000000n, { optionalData });
+    const result = await deposit(RECIPIENTS[index], "So11111111111111111111111111111111111111112", NET_BASE_UNITS, { optionalData });
     const signature = String(result.queueSignature || result.signatures?.[0] || "");
     if (!signature) throw new Error(`Umbra returned no signature for payout ${index + 1}.`);
+    console.error(JSON.stringify({ stage: "settlement-submitted", index: index + 1, signature }));
     await finalized(connection, signature);
     const settlement = await api("/payroll", { method: "POST", headers: bearer, body: json({ action: "settlement", batchId, itemId: item.item_id, idempotencyKey: `script-${item.item_id}`, state: "CONFIRMED", txSignature: signature, optionalDataHex: binding }) });
     settlements.push({ payoutId: item.payout_id, recipient: RECIPIENTS[index], signature, state: settlement.settlement.state });

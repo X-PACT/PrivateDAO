@@ -176,6 +176,8 @@ export { ViemEvmTransport } from "./evm-viem-transport.js";
 export type { ViemContractWritePayload } from "./evm-viem-transport.js";
 export { ZcashNetworkAdapter, ZcashAdapterError, ZCASH_NETWORK_CONFIGS } from "./zcash-network.js";
 export type { ZcashEnvironment, ZcashNetworkConfig, ZcashTransport, ZcashWalletAdapter } from "./zcash-network.js";
+export { ZalletCliTransport } from "./zallet-cli-transport.js";
+export type { ZalletCliTransportOptions, ZcashRecipient, ZcashSendPayload } from "./zallet-cli-transport.js";
 export { DeploymentRegistry } from "./deployment-registry.js";
 export type { DeploymentRecord } from "./deployment-registry.js";
 export { createHttpBackedPrivateDaoRuntime } from "./http-runtime.js";
@@ -195,6 +197,23 @@ export type {
 } from "./payroll.js";
 export { registerCatalogCapabilities } from "./product-registry.js";
 export { ProductExecutionGateway } from "./product-gateway.js";
+export {
+  EntraIdentityError,
+  EntraTenantAuthorizer,
+  EntraTokenVerifier,
+  MapTenantMembershipStore,
+} from "./identity/entra.js";
+export type {
+  EnterprisePrincipal,
+  EnterpriseRole,
+  EntraIdentityConfig,
+  TenantMembership,
+  TenantMembershipStore,
+} from "./identity/entra.js";
+export { AzureKeyVaultSecretProvider, EnvironmentSecretProvider, createSecretProvider } from "./azure/secrets.js";
+export type { SecretProvider } from "./azure/secrets.js";
+export { initializeAzureMonitor, SafeKernelTelemetry } from "./azure/monitor.js";
+export type { AzureMonitorOptions } from "./azure/monitor.js";
 export { createPrivateDaoRuntime } from "./runtime.js";
 export type { PrivateDaoRuntime } from "./runtime.js";
 export { PayrollCalculationProvider } from "./payroll-provider.js";

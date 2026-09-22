@@ -55,9 +55,7 @@ This should be described honestly as a serious Devnet beta product with reviewer
 
 ## Direct Contact Links
 
-- Primary email: [fahd.kotb@tuta.io](mailto:fahd.kotb@tuta.io)
-- Secondary email: [i.kotb@proton.me](mailto:i.kotb@proton.me)
-- Backup email: [eslamkotb.fmt@gmail.com](mailto:eslamkotb.fmt@gmail.com)
+- Official email: [fahd@privatedao.org](mailto:fahd@privatedao.org)
 - WhatsApp: [Direct chat](https://wa.me/201124030209)
 
 Discord direct link requires a valid Discord invite, username, or numeric user ID.

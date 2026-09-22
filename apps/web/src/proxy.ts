@@ -38,7 +38,6 @@ const legacyRedirects: Record<string, string> = {
   "/txline-settlement": "/treasury",
   "/services/umbra-private-payments": "/treasury",
   "/services/devnet-billing-rehearsal": "/contact",
-  "/about": "/thesis",
   "/business-model": "/thesis",
   "/community": "/contact",
   "/compliance": "/whitepaper",
