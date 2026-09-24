@@ -1454,6 +1454,23 @@ function isActivePartnership(campaign, at = Date.now()) {
 async function activePartnerships() {
   return (await (await store()).list("Campaigns")).filter((campaign) => isActivePartnership(campaign));
 }
+function publicPartnershipCampaign(campaign) {
+  return {
+    id: campaign.id,
+    type: campaign.type,
+    package: campaign.package,
+    package_id: campaign.package_id,
+    agentId: campaign.agentId,
+    agentName: campaign.agentName,
+    price_usd: campaign.price_usd,
+    payment_status: "paid",
+    campaign_status: campaign.campaign_status,
+    start_at: campaign.start_at,
+    end_at: campaign.end_at,
+    deliverables: campaign.deliverables || [],
+    disclosure: campaign.disclosure || "Featured Partner / Sponsored",
+  };
+}
 async function createPartnership(body) {
   const agentId = String(body.agentId || "").trim();
   if (!agentId) throw Object.assign(new Error("agentId is required"), { statusCode: 400 });
@@ -3603,7 +3620,7 @@ async function handle(e) {
           targetCapabilities: ["agent-services", "verification", "logistics"],
           housePlacement: true,
         },
-        ...(await (await store()).list("Campaigns")),
+        ...(await activePartnerships()).map(publicPartnershipCampaign),
       ],
     });
   if (method === "GET" && path === "/api/marketplace/listings")
@@ -3621,7 +3638,7 @@ async function handle(e) {
     return json(await saveMarketplacePolicy(body));
   }
   if (method === "GET" && path === "/api/marketplace/partners")
-    return json({ partners: await activePartnerships() });
+    return json({ partners: (await activePartnerships()).map(publicPartnershipCampaign) });
   if (method === "POST" && path === "/api/admin/partnerships") {
     if (!adminTokenAuthorized(e)) return json({ error: "not_found" }, 404);
     return json(await createPartnership(body), 201);

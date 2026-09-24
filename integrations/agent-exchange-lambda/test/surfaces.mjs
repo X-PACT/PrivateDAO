@@ -741,6 +741,15 @@ test("external seller paid lifecycle quotes, executes once, and records attribut
     assert.equal(promotionReceipt.status, "VERIFIED");
     assert.equal(promotionReceipt.promotion_package, "ecosystem_campaign");
     assert.equal(promotionReceipt.gross_amount, 250);
+    const publicPartners = JSON.parse((await request("/api/marketplace/partners")).body).partners;
+    assert.equal(publicPartners.length, 1);
+    assert.equal(publicPartners[0].payment_status, "paid");
+    assert.equal(Object.hasOwn(publicPartners[0], "payment_signature"), false);
+    assert.equal(Object.hasOwn(publicPartners[0], "payment_quote_id"), false);
+    const publicDiscovery = JSON.parse((await request("/api/discovery")).body).sponsored;
+    const publicCampaign = publicDiscovery.find((item) => item.id === JSON.parse(promotionQuoteResponse.body).campaign.id);
+    assert.equal(publicCampaign.payment_status, "paid");
+    assert.equal(Object.hasOwn(publicCampaign, "payment_signature"), false);
     const edited = await request(`/api/registry/agents/${registeredBody.id}/services`, "PATCH", { owner_token: registeredBody.owner_token, services: [{ id: "read", tool: "read", title: "Read evidence edited", description: "Edited metadata", price: 0.09, asset: "USDC", network: "solana-mainnet-beta" }, { id: "read_extra", tool: "read", title: "Renamed service", description: "Renamed metadata", price: 0.11, asset: "USDC", network: "solana-mainnet-beta" }], accepted_assets: ["USDC"], payout: { address: treasury, network: "solana-mainnet-beta", asset: "USDC" } });
     assert.equal(edited.statusCode, 200);
     const editedQuote = await request("/api/marketplace/seller-listings/quote", "POST", { agent_id: registeredBody.id, owner_token: registeredBody.owner_token, tier: "pro", accept_terms: true, terms_version: "seller-marketplace-v1" });
