@@ -149,7 +149,11 @@ function sellerListingState(agent) {
 }
 function publicRegistryAgent(agent) {
   if (!agent) return agent;
-  const { owner_token_hash: _ownerTokenHash, github_access_token_hash: _githubTokenHash, ...safe } = agent;
+  const safe = {};
+  for (const [key, value] of Object.entries(agent)) {
+    if (/^(?:owner_token(?:_hash)?|github_access_token_hash|connection_token_hash|api_key|secret|password|private_key|credential(?:_hash)?)$/i.test(key)) continue;
+    safe[key] = value;
+  }
   return safe;
 }
 function activeRegistryAgent(agent) {
