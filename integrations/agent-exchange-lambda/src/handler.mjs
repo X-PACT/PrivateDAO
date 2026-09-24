@@ -247,6 +247,12 @@ function sellerPayout(value) {
   if (asset !== "USDC") throw new Error("payout asset must be USDC for the current settlement rail");
   return { address, network, asset };
 }
+function sellerAcceptedAssets(value) {
+  const assets = Array.isArray(value) ? value.map((item) => String(item).toUpperCase()).slice(0, 20) : [];
+  if (assets.some((asset) => asset !== "USDC"))
+    throw new Error("accepted assets must be USDC for the current settlement rail");
+  return assets;
+}
 function paymentWithinQuote(payment, quote) {
   const expiresAt = Date.parse(quote?.expires_at || "");
   const paidAt = Number.isFinite(Number(payment?.blockTime)) ? Number(payment.blockTime) * 1000 : NaN;
@@ -2942,7 +2948,7 @@ async function previewSellerMetadata(body) {
     else if (!safeNames.has(service.tool)) errors.push({ field: `services.${service.id}.tool`, message: "tool is not read-only or is blocked by policy" });
   }
   const payout = body.payout === undefined ? null : sellerPayout(body.payout);
-  const acceptedAssets = Array.isArray(body.accepted_assets || body.acceptedAssets) ? (body.accepted_assets || body.acceptedAssets).map((item) => String(item).toUpperCase()).slice(0, 20) : [];
+  const acceptedAssets = sellerAcceptedAssets(body.accepted_assets || body.acceptedAssets);
   if (!acceptedAssets.length) errors.push({ field: "accepted_assets", message: "at least one accepted asset is required before publication" });
   if (!payout) errors.push({ field: "payout", message: "payout address, network, and asset are required before publication" });
   return {
@@ -3055,7 +3061,9 @@ async function registerMcp(body) {
       resourcesSupported: discovery.resourcesSupported,
       promptsSupported: discovery.promptsSupported,
     },
-    acceptedAssets: Array.isArray(body.acceptedAssets || body.accepted_assets) ? (body.acceptedAssets || body.accepted_assets).map((item) => String(item).toUpperCase()).slice(0, 20) : (existing?.acceptedAssets || []),
+    acceptedAssets: body.acceptedAssets !== undefined || body.accepted_assets !== undefined
+      ? sellerAcceptedAssets(body.acceptedAssets || body.accepted_assets)
+      : (existing?.acceptedAssets || []),
     pricing: body.pricing || existing?.pricing || {},
     commercial_services: commercialServices,
     // A paid listing is eligible for publication, but a technical refresh or
@@ -3201,7 +3209,9 @@ async function updateSellerServices(agentId, body) {
     commercial_services: services,
     commercial_publication_status: alreadyListed ? (agent.commercial_publication_status === "published" ? "published" : "eligible") : "draft",
     listing_fee_status: alreadyListed ? "paid" : "required",
-    acceptedAssets: Array.isArray(body.acceptedAssets || body.accepted_assets) ? (body.acceptedAssets || body.accepted_assets).map((item) => String(item).toUpperCase()).slice(0, 20) : agent.acceptedAssets || [],
+    acceptedAssets: body.acceptedAssets !== undefined || body.accepted_assets !== undefined
+      ? sellerAcceptedAssets(body.acceptedAssets || body.accepted_assets)
+      : agent.acceptedAssets || [],
     payout: body.payout === undefined ? agent.payout || null : sellerPayout(body.payout),
     updated_at: now(),
   };
