@@ -190,6 +190,19 @@ test("agreements require the declared buyer and the production USDC rail", async
   assert.equal(JSON.parse(accepted.body).status, "awaiting_payment");
 });
 
+test("legacy admin listings cannot advertise an unsupported payment asset", async () => {
+  process.env.AGENT_EXCHANGE_TEST_ADMIN_TOKEN = "test-admin-token";
+  resetForTests();
+  const response = await request("/api/marketplace/listings", "POST", {
+    agentId: "missing-fixture",
+    service: "synthetic.service",
+    endpoint: "https://example.com/mcp",
+    asset: "SOL",
+  }, { "x-pdao-admin-smoke": "test-admin-token" });
+  assert.equal(response.statusCode, 400);
+  delete process.env.AGENT_EXCHANGE_TEST_ADMIN_TOKEN;
+});
+
 test("malformed JSON returns a stable public error without parser internals", async () => {
   resetForTests();
   const response = await handler({ requestContext: { http: { method: "POST", path: "/" } }, body: "need_fuck=yes" });

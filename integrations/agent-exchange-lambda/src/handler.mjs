@@ -1745,6 +1745,9 @@ async function listListings(query = {}) {
 async function publishListing(body) {
   if (!body.agentId || !body.service || !body.endpoint)
     throw new Error("agentId, service and endpoint are required");
+  const asset = String(body.asset || "USDC").toUpperCase().trim();
+  if (asset !== "USDC")
+    throw Object.assign(new Error("listing asset must be USDC for the current settlement rail"), { statusCode: 400 });
   const agent = await (await store()).get("Registry", body.agentId);
   if (!agent || agent.status !== "verified")
     throw new Error("verified agent required");
@@ -1765,7 +1768,7 @@ async function publishListing(body) {
     chains,
     networkCapabilities: chains.map((id) => networkCapability(id)),
     price,
-    asset: body.asset || "USDC",
+    asset,
     schema: body.schema || {},
     provenance: body.provenance || "provider-declared",
     status: "active",
