@@ -1782,6 +1782,11 @@ async function sellerListingQuote(body) {
   if (!tier) throw Object.assign(new Error("seller tier is not supported"), { statusCode: 400 });
   const services = (agent.commercial_services || []).filter((service) => service.status !== "retired");
   if (!services.length) throw Object.assign(new Error("at least one commercial service is required before listing"), { statusCode: 400 });
+  if (agent.status !== "connected") throw Object.assign(new Error("MCP verification must be connected before creating a listing quote"), { statusCode: 409 });
+  if (!Array.isArray(agent.acceptedAssets) || !agent.acceptedAssets.length)
+    throw Object.assign(new Error("accepted assets are required before creating a listing quote"), { statusCode: 400 });
+  if (!agent.payout) throw Object.assign(new Error("payout configuration is required before creating a listing quote"), { statusCode: 400 });
+  sellerPayout(agent.payout);
   if (services.length > tier.max_services || services.length > policy.max_services_per_seller)
     throw Object.assign(new Error(`seller tier permits at most ${tier.max_services} services; contact PrivateDAO to increase capacity`), { statusCode: 400 });
   const invalid = services.find((service) => !agent.allowed_tools?.includes(service.tool));

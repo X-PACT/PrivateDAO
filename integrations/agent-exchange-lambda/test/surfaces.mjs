@@ -517,6 +517,11 @@ test("external seller ownership protects mutations and publishes declared servic
   assert.deepEqual(services, []);
   const missingTerms = await request("/api/marketplace/seller-listings/quote", "POST", { agent_id: record.id, owner_token: ownerToken, tier: "pro" });
   assert.equal(missingTerms.statusCode, 400);
+  const missingPayoutTermsAccepted = await request("/api/marketplace/seller-listings/quote", "POST", { agent_id: record.id, owner_token: ownerToken, tier: "pro", accept_terms: true, terms_version: "seller-marketplace-v1" });
+  assert.equal(missingPayoutTermsAccepted.statusCode, 400);
+  assert.match(missingPayoutTermsAccepted.body, /payout configuration is required/);
+  const configuredForQuote = await request(`/api/registry/agents/${record.id}/services`, "PATCH", { owner_token: ownerToken, services: [{ id: "read", title: "Read evidence", description: "A declared read-only seller service", price: 0.03, asset: "USDC", network: "solana-mainnet-beta" }], accepted_assets: ["USDC"], payout: { address: "2BJ4ezxqV9YJXc38D9duKBkdn4su4jE1beKUHwH663sL", network: "solana-mainnet-beta", asset: "USDC" } });
+  assert.equal(configuredForQuote.statusCode, 200);
   const listingQuote = await request("/api/marketplace/seller-listings/quote", "POST", { agent_id: record.id, owner_token: ownerToken, tier: "pro", accept_terms: true, terms_version: "seller-marketplace-v1" });
   assert.equal(listingQuote.statusCode, 201);
   const listingQuoteBody = JSON.parse(listingQuote.body);
