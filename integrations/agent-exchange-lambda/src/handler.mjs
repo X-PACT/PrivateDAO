@@ -1731,13 +1731,14 @@ async function sellerListingQuote(body) {
   const feeItems = existing?.payment_status === "paid"
     ? plan.items
     : services.map((service, index) => ({ service_id: service.id, fee_amount: index < policy.included_services ? 0 : policy.additional_service_fee_usd, included: index < policy.included_services }));
+  const quoteId = `lq_${randomUUID()}`;
   const quote = {
-    quote_id: `lq_${randomUUID()}`, payment_type: existing?.payment_status === "paid" ? "seller_additional_service_fee" : "seller_listing_fee", listing_id: listingId,
+    quote_id: quoteId, payment_type: existing?.payment_status === "paid" ? "seller_additional_service_fee" : "seller_listing_fee", listing_id: listingId,
     seller_agent_id: agent.id, seller_service_ids: quotedServices.map((service) => service.id), commercial_services_hash: digest(quotedServices), fee_items: feeItems, tier: tierId,
     amount, amountAtomic: Math.round(amount * 1e6), currency: "USDC", network: "solana-mainnet-beta",
     target_network: "agent-marketplace", mint: config.usdcMint, treasuryOwner: config.treasury,
     treasuryTokenAccount: await treasuryTokenAccount(config), recipient: config.treasury,
-    paymentReference: `PDAO_LISTING:${listingId}`, expires_at: new Date(Date.now() + 1800000).toISOString(),
+    paymentReference: `PDAO_LISTING:${listingId}:${quoteId}`, expires_at: new Date(Date.now() + 1800000).toISOString(),
     gross_amount: amount, platform_fee_amount: amount, platform_fee_bps: 10000, seller_net_amount: 0,
     terms_version: SELLER_TERMS_VERSION, terms_accepted_at: now(), billing_separation_disclosure: "PrivateDAO listing fees are separate from GitHub Marketplace billing.",
     settlement_status: "platform_collected", included_services: policy.included_services, additional_service_fee_usd: policy.additional_service_fee_usd, created_at: now(),

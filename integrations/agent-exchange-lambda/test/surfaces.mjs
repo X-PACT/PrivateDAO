@@ -596,6 +596,7 @@ test("external seller paid lifecycle quotes, executes once, and records attribut
     assert.equal(additionalQuoteBody.status, "awaiting_payment");
     assert.equal(additionalQuoteBody.quote.amount, 2);
     assert.deepEqual(additionalQuoteBody.quote.seller_service_ids, ["read_extra"]);
+    assert.notEqual(additionalQuoteBody.quote.paymentReference, listingQuote.paymentReference);
     const additionalIntent = await request(`/api/marketplace/seller-listings/${listingId}/payment-intent`);
     assert.equal(additionalIntent.statusCode, 200);
     assert.equal(JSON.parse(additionalIntent.body).status, "awaiting_payment");
