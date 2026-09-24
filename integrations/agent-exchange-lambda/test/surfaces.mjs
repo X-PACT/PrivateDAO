@@ -20,6 +20,8 @@ test("human root is HTML while machine surfaces remain available", async () => {
   assert.match(root.body, /DISCOVER/);
   assert.match(root.body, /IBM watsonx/);
   assert.match(root.body, /pdao-language-picker/);
+  assert.equal(root.headers["x-content-type-options"], "nosniff");
+  assert.equal(root.headers["x-frame-options"], "DENY");
   assert.match(root.body, /href="https:\/\/privatedao\.org\/\?lang=en"/);
   const head = await request("/", "HEAD");
   assert.equal(head.statusCode, 200);

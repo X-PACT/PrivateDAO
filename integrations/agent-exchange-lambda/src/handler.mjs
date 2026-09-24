@@ -3265,6 +3265,18 @@ async function enforcePersistentWriteRateLimit(event, path) {
   }
 }
 
+const DEFAULT_SECURITY_HEADERS = {
+  "x-content-type-options": "nosniff",
+  "referrer-policy": "no-referrer",
+  "permissions-policy": "camera=(), microphone=(), geolocation=()",
+  "x-frame-options": "DENY",
+};
+
+function withSecurityHeaders(response) {
+  if (!response || !response.headers) return response;
+  return { ...response, headers: { ...DEFAULT_SECURITY_HEADERS, ...response.headers } };
+}
+
 async function handle(e) {
   const routePath = pathOf(e);
   if (routePath.startsWith("/api/") || routePath === "/a2a" || routePath === "/mcp")
@@ -4097,7 +4109,7 @@ async function mcp(request) {
 
 export async function handler(event) {
   try {
-    const response = await handle(event);
+    const response = withSecurityHeaders(await handle(event));
     if (methodOf(event) !== "HEAD") return response;
     const headers = { ...(response.headers || {}) };
     delete headers["content-length"];
@@ -4114,7 +4126,7 @@ export async function handler(event) {
       message: String(error.message || "request failed").slice(0, 240),
       upstreamStatus: error.upstreamStatus || null,
     }));
-    return errorResponse(error);
+    return withSecurityHeaders(errorResponse(error));
   }
 }
 export function resetForTests() {
