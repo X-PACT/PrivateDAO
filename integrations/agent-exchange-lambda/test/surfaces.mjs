@@ -145,6 +145,14 @@ test("human root is HTML while machine surfaces remain available", async () => {
   assert.equal((await request("/api/treasury/status")).statusCode, 404);
 });
 
+test("malformed JSON returns a stable public error without parser internals", async () => {
+  resetForTests();
+  const response = await handler({ requestContext: { http: { method: "POST", path: "/" } }, body: "need_fuck=yes" });
+  assert.equal(response.statusCode, 400);
+  assert.match(response.body, /invalid JSON request body/);
+  assert.doesNotMatch(response.body, /No number after minus sign|Unexpected token/);
+});
+
 test("a free job resolves to a public human receipt and verification page", async () => {
   resetForTests();
   const created = await request("/api/jobs", "POST", {

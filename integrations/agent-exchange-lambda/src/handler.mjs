@@ -475,7 +475,11 @@ function parseBody(e) {
     : "{}";
   if (Buffer.byteLength(raw) > config.maxBodyBytes)
     throw new Error("request body too large");
-  return JSON.parse(raw);
+  try {
+    return JSON.parse(raw);
+  } catch (_error) {
+    throw Object.assign(new Error("invalid JSON request body"), { statusCode: 400 });
+  }
 }
 function card() {
   return {
