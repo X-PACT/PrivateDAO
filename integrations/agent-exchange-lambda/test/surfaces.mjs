@@ -211,6 +211,21 @@ test("malformed JSON returns a stable public error without parser internals", as
   assert.doesNotMatch(response.body, /No number after minus sign|Unexpected token/);
 });
 
+test("MCP upstream errors are sanitized without exposing provider details", async () => {
+  const originalFetch = global.fetch;
+  resetForTests();
+  global.fetch = async () => { throw new Error("Solana RPC 401 https://secret-provider.example/key=super-secret"); };
+  try {
+    const response = await request("/mcp", "POST", { jsonrpc: "2.0", id: 7, method: "tools/call", params: { name: "network_stats", arguments: {} } });
+    const body = JSON.parse(response.body);
+    assert.equal(body.result.isError, true);
+    assert.equal(body.result.structuredContent.error, "upstream service temporarily unavailable");
+    assert.doesNotMatch(response.body, /secret-provider|super-secret/);
+  } finally {
+    global.fetch = originalFetch;
+  }
+});
+
 test("a free job resolves to a public human receipt and verification page", async () => {
   resetForTests();
   const created = await request("/api/jobs", "POST", {

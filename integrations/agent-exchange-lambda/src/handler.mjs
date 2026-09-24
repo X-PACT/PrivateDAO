@@ -2115,11 +2115,17 @@ async function recordRevenue(job, payment) {
   );
 }
 const upstreamFailurePattern = /(?:DynamoDB storage unavailable|Solana RPC|Jupiter quote HTTP|market data HTTP|IBM watsonx HTTP|Intel inference HTTP|GitHub (?:API returned|repository API) HTTP|RPC is not configured|fetch failed)/i;
+function publicErrorMessage(error) {
+  const message = String(error?.message || "request failed");
+  return upstreamFailurePattern.test(message)
+    ? "upstream service temporarily unavailable"
+    : message;
+}
 function errorResponse(error) {
   const rawStatus = Number(error?.statusCode);
   const upstreamFailure = !Number.isFinite(rawStatus) && upstreamFailurePattern.test(String(error?.message || ""));
   const status = Number.isFinite(rawStatus) && rawStatus > 0 ? rawStatus : upstreamFailure ? 502 : 400;
-  const message = upstreamFailure ? "upstream service temporarily unavailable" : error?.message || "request failed";
+  const message = publicErrorMessage(error);
   return json(
     {
       error: status === 402 ? "payment_required" : "request_failed",
@@ -4190,7 +4196,7 @@ async function mcp(request) {
       });
     } catch (error) {
       const diagnostic = {
-        error: error.message,
+        error: publicErrorMessage(error),
         statusCode: error.statusCode || 400,
         ...(error.upstreamStatus ? { upstreamStatus: error.upstreamStatus } : {}),
       };
