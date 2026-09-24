@@ -76,8 +76,14 @@ export async function githubGetInstallation(config, installationId) {
 
 export async function githubInstallationRepositories(config, installationId) {
   const token = await githubInstallationToken(config, installationId);
-  const body = (await request(config, "/installation/repositories?per_page=100", { token: token.token })).body;
-  return (body.repositories || []).map((repo) => ({ id: repo.id, full_name: repo.full_name, private: Boolean(repo.private), default_branch: repo.default_branch || null }));
+  const repositories = [];
+  for (let page = 1; page <= 100; page += 1) {
+    const body = (await request(config, `/installation/repositories?per_page=100&page=${page}`, { token: token.token })).body;
+    const pageRepositories = Array.isArray(body.repositories) ? body.repositories : [];
+    repositories.push(...pageRepositories);
+    if (pageRepositories.length < 100) break;
+  }
+  return repositories.map((repo) => ({ id: repo.id, full_name: repo.full_name, private: Boolean(repo.private), default_branch: repo.default_branch || null }));
 }
 
 export function mergeGithubInstallationRepositories(existing = [], added = [], removed = []) {
