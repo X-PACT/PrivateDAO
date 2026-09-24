@@ -459,6 +459,22 @@ test("external seller ownership protects mutations and publishes declared servic
     });
     assert.equal(preview.statusCode, 200);
     assert.equal(JSON.parse(preview.body).status, "ready_for_registration");
+    const unsupportedServiceAsset = await request("/api/seller/metadata/preview", "POST", {
+      mcp_url: "https://example.com/mcp",
+      commercial_services: [{ id: "read", tool: "read", price: 0.03, asset: "SOL", network: "solana-mainnet-beta" }],
+      accepted_assets: ["USDC"],
+      payout: { address: "2BJ4ezxqV9YJXc38D9duKBkdn4su4jE1beKUHwH663sL", network: "solana-mainnet-beta", asset: "USDC" },
+    });
+    assert.equal(unsupportedServiceAsset.statusCode, 400);
+    assert.match(unsupportedServiceAsset.body, /commercial service asset must be USDC/);
+    const unsupportedPayoutRail = await request("/api/seller/metadata/preview", "POST", {
+      mcp_url: "https://example.com/mcp",
+      commercial_services: [{ id: "read", tool: "read", price: 0.03, asset: "USDC", network: "solana-mainnet-beta" }],
+      accepted_assets: ["USDC"],
+      payout: { address: "2BJ4ezxqV9YJXc38D9duKBkdn4su4jE1beKUHwH663sL", network: "ethereum:mainnet", asset: "USDC" },
+    });
+    assert.equal(unsupportedPayoutRail.statusCode, 400);
+    assert.match(unsupportedPayoutRail.body, /payout network must be solana-mainnet-beta/);
     const invalidTool = await request("/api/seller/metadata/preview", "POST", {
       mcp_url: "https://example.com/mcp",
       commercial_services: [{ id: "missing", tool: "missing", price: 0.03, asset: "USDC", network: "solana-mainnet-beta" }],
@@ -474,7 +490,7 @@ test("external seller ownership protects mutations and publishes declared servic
       payout: { address: "2BJ4ezxqV9YJXc38D9duKBkdn4su4jE1beKUHwH663sL", network: "unsupported-network", asset: "USDC" },
     });
     assert.equal(invalidPayout.statusCode, 400);
-    assert.match(invalidPayout.body, /payout network is unsupported/);
+    assert.match(invalidPayout.body, /payout network (?:is unsupported|must be solana-mainnet-beta)/);
     const configuredReadiness = await request(`/api/registry/agents/${record.id}/seller-readiness`);
     assert.equal(configuredReadiness.statusCode, 200);
     assert.equal(JSON.parse(configuredReadiness.body).ready_for_quote, false);

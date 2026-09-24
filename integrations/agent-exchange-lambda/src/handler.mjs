@@ -181,6 +181,13 @@ function normalizeCommercialServices(value) {
     if (price != null && (!Number.isFinite(price) || price < 0)) throw new Error(`invalid price for ${id}`);
     const asset = String(service.asset || service.currency || "USDC").toUpperCase();
     const network = normalizeNetworkId(service.network || service.payment_network || "solana-mainnet-beta");
+    if (asset !== "USDC") throw new Error(`commercial service asset must be USDC; unsupported asset for ${id}`);
+    if (!networkCapability(network)) throw new Error(`commercial service network is unsupported for ${id}`);
+    const acceptedAssets = Array.isArray(service.accepted_assets || service.acceptedAssets)
+      ? (service.accepted_assets || service.acceptedAssets).map((item) => String(item).toUpperCase()).slice(0, 20)
+      : [asset];
+    if (!acceptedAssets.length || acceptedAssets.some((item) => item !== "USDC"))
+      throw new Error(`commercial service accepted assets must be USDC for ${id}`);
     return {
       id,
       tool: String(service.tool || id),
@@ -190,7 +197,7 @@ function normalizeCommercialServices(value) {
       free: price === 0 || service.free === true,
       asset,
       network,
-      accepted_assets: Array.isArray(service.accepted_assets || service.acceptedAssets) ? (service.accepted_assets || service.acceptedAssets).map((item) => String(item).toUpperCase()).slice(0, 20) : [asset],
+      accepted_assets: acceptedAssets,
       input_schema: service.input_schema && typeof service.input_schema === "object" ? service.input_schema : { type: "object" },
       output_schema: service.output_schema && typeof service.output_schema === "object" ? service.output_schema : { type: "object" },
       execution: { protocol: "MCP", tool: String(service.tool || id) },
@@ -235,9 +242,9 @@ function sellerPayout(value) {
   if (address && !/^[1-9A-HJ-NP-Za-km-z]{32,44}$/.test(address)) throw new Error("payout address must be a Solana public address");
   if (!address) return null;
   const network = normalizeNetworkId(value.network || "solana-mainnet-beta");
-  if (!networkCapability(network)) throw new Error("payout network is unsupported");
+  if (network !== "solana-mainnet-beta") throw new Error("payout network must be solana-mainnet-beta for the current payout rail");
   const asset = String(value.asset || "USDC").toUpperCase().trim();
-  if (!/^[A-Z0-9][A-Z0-9._-]{1,31}$/.test(asset)) throw new Error("payout asset is invalid");
+  if (asset !== "USDC") throw new Error("payout asset must be USDC for the current settlement rail");
   return { address, network, asset };
 }
 function paymentWithinQuote(payment, quote) {
