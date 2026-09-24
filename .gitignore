@@ -4,6 +4,7 @@ target/
 .env.local
 .env.*
 !.env.example
+integrations/agent-exchange-lambda/*.env
 apps/web/.env.local
 apps/web/.env.*
 !apps/web/.env.example
@@ -18,6 +19,9 @@ wallets/
 *.pem
 .env
 *.json
+!apps/web/public/ai.json
+!apps/web/public/llms.json
+!apps/web/public/boot.json
 !vendor/bigint-buffer/package.json
 !docs/monitoring-delivery-intake.json
 !docs/generated/evm-rpc-readiness-*.json

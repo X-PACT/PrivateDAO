@@ -1,11 +1,26 @@
 import { supportedLocales } from "@/lib/i18n";
 
 export const siteName = "PrivateDAO";
-export const siteTitle = "PrivateDAO | Private workflows. Trusted outcomes.";
+export const siteTitle = "PrivateDAO | Private decisions. Verifiable outcomes.";
 export const siteDescription =
-  "PrivateDAO helps Web3-native and traditional organizations run sensitive workflows privately while keeping the outcome clear and trusted.";
+  "PrivateDAO is software and Web3 infrastructure for organizations that need private workflows, controlled execution, and verifiable outcomes.";
 export const siteUrl = process.env.NEXT_PUBLIC_LIVE_SITE_URL?.replace(/\/+$/, "") ?? "https://privatedao.org";
 export const defaultOgImage = `${siteUrl}/assets/privatedao-social-card.png`;
+export const companyLocation = "Warsaw, Poland";
+export const founderName = "Fahd Kotb";
+export const agentExchangeUrl = "https://agents.privatedao.org";
+export const contactEmails = {
+  general: "hello@privatedao.org",
+  support: "support@privatedao.org",
+  sales: "sales@privatedao.org",
+  business: "business@privatedao.org",
+  partners: "partners@privatedao.org",
+  developers: "developers@privatedao.org",
+  security: "security@privatedao.org",
+  legal: "legal@privatedao.org",
+  careers: "careers@privatedao.org",
+  billing: "billing@privatedao.org",
+} as const;
 
 export const siteKeywords = [
   "PrivateDAO",
@@ -36,7 +51,12 @@ export function buildOrganizationJsonLd() {
     name: siteName,
     alternateName: ["Private DAO"],
     url: siteUrl,
-    email: "fahd@privatedao.org",
+    email: contactEmails.general,
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: "Warsaw",
+      addressCountry: "PL",
+    },
     founder: {
       "@type": "Person",
       name: "Fahd Kotb",
@@ -44,7 +64,7 @@ export function buildOrganizationJsonLd() {
     contactPoint: {
       "@type": "ContactPoint",
       contactType: "business inquiries",
-      email: "fahd@privatedao.org",
+      email: contactEmails.business,
       url: `${siteUrl}/contact/`,
     },
     logo: `${siteUrl}/assets/privatedao-brand-mark-20260918.jpeg`,
@@ -53,7 +73,6 @@ export function buildOrganizationJsonLd() {
       "https://www.youtube.com/@privatedao",
       "https://discord.gg/GjJykUtTTt",
       "https://discord.gg/dpD5c7Gfcc",
-      "https://discord.gg/PRcD9nFeVf",
       "https://x.com/privateDAOOS",
       "https://t.me/privateDAOOS",
       "https://t.me/PrivateDAOO",

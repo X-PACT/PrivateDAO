@@ -79,10 +79,23 @@ export class ZalletCliTransport implements ZcashTransport {
     const walletHeight = Number(status.wallet_tip?.height ?? -1);
     const fullySyncedHeight = Number(status.fully_synced_height ?? -1);
     const locked = wallet["locked"] === true;
-    // A wallet that is merely past the historical minimum is not ready to
-    // spend: it must have caught up with the validator tip as well.
-    const syncedToNode = nodeHeight >= 0 && walletHeight >= nodeHeight;
-    const ok = syncedToNode && walletHeight >= fullySyncedHeight && !locked;
+    // Zallet's live RPC may omit wallet_tip/fully_synced_height while its
+    // wallet index is catching up. A successful balance query is its stable
+    // spend-readiness signal; keep the richer height check for providers
+    // that expose it.
+    let syncedToNode = nodeHeight >= 0 && walletHeight >= nodeHeight;
+    if (status.wallet_tip?.height === undefined || status.fully_synced_height === undefined) {
+      try {
+        await this.rpc("z_gettotalbalance");
+        syncedToNode = nodeHeight >= 0;
+      } catch {
+        syncedToNode = false;
+      }
+    }
+    const heightReady = status.wallet_tip?.height === undefined || status.fully_synced_height === undefined
+      ? true
+      : walletHeight >= fullySyncedHeight;
+    const ok = syncedToNode && heightReady && !locked;
     return { ok, network: "zcash-testnet", latencyMs: Date.now() - started };
   }
 

@@ -1,5 +1,22 @@
 # PrivateDAO - Full AI-readable commercial guide
 
+Location: Warsaw, Poland
+General contact: hello@privatedao.org
+Business: business@privatedao.org
+Sales: sales@privatedao.org
+Partnerships: partners@privatedao.org
+Developers: developers@privatedao.org
+Support: support@privatedao.org
+Security: security@privatedao.org
+Legal and privacy: legal@privatedao.org
+Careers: careers@privatedao.org
+Billing: billing@privatedao.org
+Agent Exchange: https://agents.privatedao.org/
+MCP endpoint: https://agents.privatedao.org/mcp
+MCP transport: streamable-http
+
+Compatibility with ChatGPT remote MCP, Claude remote MCP, OpenClaw, or any other MCP client must be verified in the relevant client. It does not imply an official partnership, endorsement, or directory listing.
+
 ## What PrivateDAO is
 
 PrivateDAO gives organizations private, verifiable infrastructure for sensitive work. It keeps the workflow and its source data bounded while making the required decision, approval, record, or outcome easier to verify.

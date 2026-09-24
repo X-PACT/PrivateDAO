@@ -43,6 +43,9 @@ jobs:
       - name: Syntax and tests
         run: npm run lint && npm test && npm run smoke
 
+      - name: Verify runtime dependencies
+        run: npm ls @aws-sdk/client-dynamodb @aws-sdk/lib-dynamodb mongodb --depth=0
+
       - name: Dependency audit
         run: npm audit --omit=dev --audit-level=moderate
 

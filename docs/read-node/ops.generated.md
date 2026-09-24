@@ -1,6 +1,6 @@
 # Read Node Ops Snapshot
 
-- Generated at: `2026-05-26T03:04:52.930Z`
+- Generated at: `2026-09-24T15:19:36.731Z`
 - Read path: `backend-indexer`
 - RPC endpoint: `https://api.testnet.solana.com`
 - RPC pool size: `1`
@@ -10,8 +10,8 @@
 
 ## Backend Coverage
 
-- proposals: `17`
-- unique DAOs: `16`
+- proposals: `24`
+- unique DAOs: `23`
 - zk-enforced proposals: `0`
 - confidential payout proposals: `3`
 - REFHE configured: `3`

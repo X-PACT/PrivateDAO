@@ -1,0 +1,25 @@
+[package]
+name = "privatedao-zcash-orchard"
+version = "0.1.0"
+edition = "2021"
+publish = false
+
+[dependencies]
+anyhow = "1"
+async-trait = "0.1"
+hex = "0.4"
+rand = "0.8"
+rustls = { version = "0.23", default-features = false, features = ["ring", "std"] }
+sha2 = "0.10"
+zcash_client_backend = { version = "0.24.0", default-features = false, features = ["orchard", "pczt", "sync", "lightwalletd-tonic-transport", "lightwalletd-tonic-tls-webpki-roots"] }
+zcash_client_sqlite = { version = "0.22.0", default-features = false, features = ["orchard", "pczt-tests", "unstable"] }
+zcash_keys = { version = "0.16.1", default-features = false, features = ["std", "orchard"] }
+zcash_protocol = "0.10.5"
+zip32 = "0.2.1"
+secrecy = "0.8"
+time = "0.3"
+tokio = { version = "1", features = ["macros", "rt-multi-thread"] }
+tonic = { version = "0.14", default-features = false, features = ["transport", "tls-native-roots", "tls-ring"] }
+
+[dev-dependencies]
+tempfile = "3"

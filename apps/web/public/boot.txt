@@ -1,0 +1,33 @@
+PrivateDAO machine-readable entry point
+
+Identity: PrivateDAO
+Location: Warsaw, Poland
+Positioning: Private decisions. Verifiable outcomes.
+Website: https://privatedao.org/
+Agent Exchange: https://agents.privatedao.org/
+MCP endpoint: https://agents.privatedao.org/mcp
+MCP transport: streamable-http
+
+Start here:
+- Products: https://privatedao.org/products/
+- Thesis: https://privatedao.org/thesis/
+- Whitepaper: https://privatedao.org/whitepaper/
+- Investors: https://privatedao.org/investors/
+- Contact: https://privatedao.org/contact/
+- Developers: https://privatedao.org/developers/
+- Privacy: https://privatedao.org/privacy/
+- Terms: https://privatedao.org/terms/
+
+Role contacts:
+- General: hello@privatedao.org
+- Business: business@privatedao.org
+- Sales: sales@privatedao.org
+- Partnerships: partners@privatedao.org
+- Developers: developers@privatedao.org
+- Support: support@privatedao.org
+- Security: security@privatedao.org
+- Legal: legal@privatedao.org
+- Careers: careers@privatedao.org
+- Billing: billing@privatedao.org
+
+Compatibility with an MCP client is not an official partnership or endorsement.

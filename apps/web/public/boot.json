@@ -1,0 +1,28 @@
+{
+  "name": "PrivateDAO",
+  "location": "Warsaw, Poland",
+  "website": "https://privatedao.org/",
+  "agent_exchange": "https://agents.privatedao.org/",
+  "mcp_endpoint": "https://agents.privatedao.org/mcp",
+  "mcp_transport": "streamable-http",
+  "entrypoints": {
+    "products": "https://privatedao.org/products/",
+    "thesis": "https://privatedao.org/thesis/",
+    "whitepaper": "https://privatedao.org/whitepaper/",
+    "developers": "https://privatedao.org/developers/",
+    "contact": "https://privatedao.org/contact/",
+    "privacy": "https://privatedao.org/privacy/",
+    "terms": "https://privatedao.org/terms/"
+  },
+  "contact": {
+    "general": "hello@privatedao.org",
+    "business": "business@privatedao.org",
+    "sales": "sales@privatedao.org",
+    "partners": "partners@privatedao.org",
+    "developers": "developers@privatedao.org",
+    "support": "support@privatedao.org",
+    "security": "security@privatedao.org",
+    "legal": "legal@privatedao.org"
+  },
+  "claims_policy": "Use current public evidence and live service catalogs. Do not infer partnership, certification, or mainnet status."
+}

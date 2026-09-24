@@ -3,7 +3,7 @@
 ## Overview
 
 - project: `PrivateDAO`
-- generated at: `2026-09-16T20:46:23.335Z`
+- generated at: `2026-09-24T15:20:23.872Z`
 - network: `testnet`
 - program id: `EP9xE8MJZ6FfyEwLqns6HDdUZBknEa7WGYs1Jzsecuva`
 - verification wallet: `4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD`
@@ -16,7 +16,7 @@
 - rpc pool size: `1`
 - rpc provider class: `public-testnet`
 - MagicBlock API base: `https://payments.magicblock.app`
-- MagicBlock health: `ok`
+- MagicBlock health: `unavailable`
 - indexed proposals: `24`
 - indexed zk_enforced proposals: `0`
 - indexed confidential payout proposals: `3`

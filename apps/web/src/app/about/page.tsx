@@ -4,6 +4,7 @@ import { ArrowRight, LockKeyhole, Network, ShieldCheck } from "lucide-react";
 
 import { OperationsShell } from "@/components/operations-shell";
 import { buildRouteMetadata } from "@/lib/route-metadata";
+import { companyLocation, contactEmails, founderName } from "@/lib/site-brand";
 
 export const metadata: Metadata = buildRouteMetadata({
   title: "About PrivateDAO",
@@ -40,9 +41,10 @@ export default function AboutPage() {
           </div>
           <div className="rounded-2xl border border-[#dce5f0] bg-[#f7f9fc] p-5">
             <div className="text-[11px] font-bold uppercase tracking-[0.24em] text-[#175cd3]">Founder and owner</div>
-            <div className="mt-3 text-xl font-semibold text-[#10233f]">Fahd Kotb</div>
+            <div className="mt-3 text-xl font-semibold text-[#10233f]">{founderName}</div>
             <p className="mt-2 text-sm leading-6 text-[#5d6d82]">Founder and Owner of the PrivateDAO project.</p>
-            <a className="mt-4 inline-flex text-sm font-semibold text-[#175cd3]" href="mailto:fahd@privatedao.org">fahd@privatedao.org <ArrowRight className="ml-2 h-4 w-4" /></a>
+            <p className="mt-2 text-sm font-medium text-[#5d6d82]">{companyLocation}</p>
+            <a className="mt-4 inline-flex text-sm font-semibold text-[#175cd3]" href={`mailto:${contactEmails.business}`}>{contactEmails.business} <ArrowRight className="ml-2 h-4 w-4" /></a>
           </div>
         </div>
       </section>

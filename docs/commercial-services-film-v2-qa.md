@@ -3,7 +3,7 @@
 ## Deliverables
 
 - `PrivateDAO-flagship-film-2026-09-21-commercial-services-v2.mp4`
-- `PrivateDAO-flagship-film-2026-09-21-commercial-services-v2.png`
+- `assets/private-dao-commercial-services-film-v2-poster.png`
 - `commercial-services-film.html`
 - `COMMERCIAL-SERVICES-STORYBOARD-V2.md`
 

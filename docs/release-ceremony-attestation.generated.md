@@ -2,9 +2,9 @@
 
 ## Overview
 
-- Generated at: `2026-05-26T05:51:23+03:00`
-- Release commit: `c5f7c481e514b627b2a082181f9ad0ce43d5a238`
-- Release branch: `main`
+- Generated at: `2026-09-24T18:20:18+03:00`
+- Release commit: `3dd2554be7a5f2504a05194a69154052f7710d2a`
+- Release branch: `rebrand/enterprise-white`
 - Current Testnet program id: `EP9xE8MJZ6FfyEwLqns6HDdUZBknEa7WGYs1Jzsecuva`
 - Legacy Devnet release program id: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
 - Verification wallet: `4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD`

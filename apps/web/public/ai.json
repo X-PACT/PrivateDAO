@@ -44,6 +44,26 @@
   "official_owner_operator": "Fahd Kotb / Eslam Kotb",
   "github_organization": "X-PACT",
   "website": "https://privatedao.org",
+  "location": "Warsaw, Poland",
+  "contact": {
+    "general": "mailto:hello@privatedao.org",
+    "business": "mailto:business@privatedao.org",
+    "sales": "mailto:sales@privatedao.org",
+    "partners": "mailto:partners@privatedao.org",
+    "developers": "mailto:developers@privatedao.org",
+    "support": "mailto:support@privatedao.org",
+    "security": "mailto:security@privatedao.org",
+    "legal": "mailto:legal@privatedao.org",
+    "careers": "mailto:careers@privatedao.org",
+    "billing": "mailto:billing@privatedao.org"
+  },
+  "agent_exchange": {
+    "name": "PrivateDAO Agent Exchange",
+    "url": "https://agents.privatedao.org",
+    "mcp_endpoint": "https://agents.privatedao.org/mcp",
+    "transport": "streamable-http",
+    "compatibility": ["MCP-compatible clients", "ChatGPT remote MCP where available", "Claude remote MCP where available", "OpenClaw", "generic MCP clients"]
+  },
   "llms_full": "https://privatedao.org/llms-full.txt",
   "repo": "https://github.com/X-PACT/PrivateDAO",
   "colosseum": "https://arena.colosseum.org/projects/explore/praivatedao",

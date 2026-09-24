@@ -1,5 +1,23 @@
 # PrivateDAO
 
+Location: Warsaw, Poland
+General contact: hello@privatedao.org
+Business contact: business@privatedao.org
+Sales: sales@privatedao.org
+Partnerships: partners@privatedao.org
+Developers: developers@privatedao.org
+Support: support@privatedao.org
+Security: security@privatedao.org
+Legal and privacy: legal@privatedao.org
+Careers: careers@privatedao.org
+Billing: billing@privatedao.org
+
+Agent Exchange: https://agents.privatedao.org/
+Agent Exchange MCP: https://agents.privatedao.org/mcp
+MCP transport: streamable-http
+
+PrivateDAO is compatible with standard MCP clients. This does not imply an official partnership, directory listing, endorsement, or approval by any client provider.
+
 PrivateDAO is commercial privacy and proof infrastructure for organizations.
 
 Status: Commercial product ecosystem
@@ -185,7 +203,7 @@ Commercial CTAs:
 
 - Start Free Trial: https://privatedao.org/pricing/#commercial-checkout
 - Request Pilot: https://privatedao.org/pilots/
-- Book Discovery Call: mailto:fahd@privatedao.org?subject=PrivateDAO%20Enterprise%20Discovery
+- Book Discovery Call: mailto:business@privatedao.org?subject=PrivateDAO%20Enterprise%20Discovery
 
 License types:
 

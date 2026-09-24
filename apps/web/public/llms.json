@@ -1,0 +1,39 @@
+{
+  "name": "PrivateDAO",
+  "location": "Warsaw, Poland",
+  "positioning": "Private decisions. Verifiable outcomes.",
+  "description": "Software and Web3 infrastructure for organizations that need private workflows, controlled execution, and verifiable outcomes.",
+  "website": "https://privatedao.org/",
+  "contacts": {
+    "general": "mailto:hello@privatedao.org",
+    "business": "mailto:business@privatedao.org",
+    "sales": "mailto:sales@privatedao.org",
+    "partners": "mailto:partners@privatedao.org",
+    "developers": "mailto:developers@privatedao.org",
+    "support": "mailto:support@privatedao.org",
+    "security": "mailto:security@privatedao.org",
+    "legal": "mailto:legal@privatedao.org",
+    "careers": "mailto:careers@privatedao.org",
+    "billing": "mailto:billing@privatedao.org"
+  },
+  "products": [
+    {"name": "Confidential Payroll", "url": "https://privatedao.org/payroll/"},
+    {"name": "Treasury Coordination", "url": "https://privatedao.org/treasury/"},
+    {"name": "Private Governance", "url": "https://privatedao.org/govern/"},
+    {"name": "Confidential Auctions", "url": "https://privatedao.org/auctions/"},
+    {"name": "Blind Verification", "url": "https://privatedao.org/proof-workflows/blind-policy/"},
+    {"name": "Record Verification", "url": "https://privatedao.org/products/record-verification/"},
+    {"name": "Agent Exchange", "url": "https://agents.privatedao.org/"},
+    {"name": "PDAO Worlds", "url": "https://game.privatedao.org/game/godot/index.html"}
+  ],
+  "agent_exchange": {
+    "mcp": "https://agents.privatedao.org/mcp",
+    "transport": "streamable-http",
+    "status": "Use the live endpoint and service catalog for current capabilities."
+  },
+  "boundaries": [
+    "Do not infer partnerships, certifications, customer numbers, or mainnet execution from documentation alone.",
+    "Network and payment capability claims are evidence-gated.",
+    "Public verification does not publish the private source record."
+  ]
+}
