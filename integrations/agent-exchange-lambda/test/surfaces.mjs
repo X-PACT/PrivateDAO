@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { handler, resetForTests } from "../src/handler.mjs";
+import { handler, publicRegistryAgent, resetForTests } from "../src/handler.mjs";
 import { SERVICES } from "../src/catalog.mjs";
 
 const request = (path, method = "GET", body, headers = {}) =>
@@ -753,6 +753,25 @@ test("external seller ownership is isolated between synthetic sellers", async ()
   } finally {
     globalThis.fetch = originalFetch;
   }
+});
+
+test("public seller metadata removes secret-shaped fields including camelCase variants", () => {
+  const safe = publicRegistryAgent({
+    ownerToken: "secret",
+    apiKey: "secret",
+    clientSecret: "secret",
+    privateKey: "secret",
+    credentialHash: "secret",
+    input_hash: "public-proof",
+    result_hash: "public-proof-2",
+    display_name: "Synthetic Seller",
+  });
+  for (const key of ["ownerToken", "apiKey", "clientSecret", "privateKey", "credentialHash"]) {
+    assert.equal(Object.hasOwn(safe, key), false, key);
+  }
+  assert.equal(safe.input_hash, "public-proof");
+  assert.equal(safe.result_hash, "public-proof-2");
+  assert.equal(safe.display_name, "Synthetic Seller");
 });
 
 test("admin marketplace policy is persisted and controls public terms", async () => {

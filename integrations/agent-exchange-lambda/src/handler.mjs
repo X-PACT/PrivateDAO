@@ -147,11 +147,12 @@ async function saveMarketplacePolicy(value) {
 function sellerListingState(agent) {
   return agent?.commercial_publication_status === "published" && agent?.listing_fee_status === "paid";
 }
-function publicRegistryAgent(agent) {
+export function publicRegistryAgent(agent) {
   if (!agent) return agent;
   const safe = {};
   for (const [key, value] of Object.entries(agent)) {
-    if (/^(?:owner_token(?:_hash)?|github_access_token_hash|connection_token_hash|api_key|secret|password|private_key|credential(?:_hash)?)$/i.test(key)) continue;
+    const normalizedKey = key.replace(/[A-Z]/g, (letter) => `_${letter.toLowerCase()}`);
+    if (/^(?:owner_token(?:_hash)?|github_access_token(?:_hash)?|connection_token(?:_hash)?|api_key|client_secret|secret|password|private_key|credential(?:_hash)?)$/i.test(normalizedKey)) continue;
     safe[key] = value;
   }
   return safe;
