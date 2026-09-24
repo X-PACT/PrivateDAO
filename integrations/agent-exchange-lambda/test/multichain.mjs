@@ -4,7 +4,7 @@ import { createServer } from "node:http";
 import { executeEvmService, evmHealth, evmRpcUrl, evmRuntimeStats } from "../src/evm.mjs";
 import { derivedTreasuryTokenAccount, mintEvidence, readRpc, solanaHealth, swapQuote, simulateSolanaTransaction, verifyPayment } from "../src/solana.mjs";
 import { getConfig } from "../src/config.mjs";
-import { enforceRateLimit, resetRuntimeControls } from "../src/runtime-controls.mjs";
+import { enforceRateLimit, rateLimitKey, resetRuntimeControls } from "../src/runtime-controls.mjs";
 import { researchAsset, researchReport, explainTransaction, portfolioIntelligence } from "../src/intelligence.mjs";
 import { marketData } from "../src/market.mjs";
 
@@ -442,6 +442,18 @@ test("runtime controls enforce bounded request rates", () => {
   enforceRateLimit("test-agent", 2, 60000);
   assert.throws(() => enforceRateLimit("test-agent", 2, 60000), /rate limit exceeded/);
   resetRuntimeControls();
+});
+
+test("rate-limit keys cannot be selected by a caller-supplied agent header", () => {
+  assert.equal(
+    rateLimitKey({ headers: { "x-pdao-agent-id": "attacker-selected", "x-forwarded-for": "198.51.100.4" }, requestContext: { http: { sourceIp: "203.0.113.7" } } }),
+    "203.0.113.7",
+  );
+  assert.equal(
+    rateLimitKey({ headers: { "x-pdao-agent-id": "attacker-selected" }, requestContext: { identity: { sourceIp: "203.0.113.8" } } }),
+    "203.0.113.8",
+  );
+  assert.equal(rateLimitKey({ headers: { "x-pdao-agent-id": "attacker-selected" } }), "anonymous");
 });
 
 test("Solana simulation is RPC-backed and never broadcasts", async () => {

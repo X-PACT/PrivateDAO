@@ -25,11 +25,14 @@ export function enforceRateLimit(key, limit = 120, windowMs = 60000) {
 
 export function rateLimitKey(event) {
   const headers = event.headers || {};
+  // Client-supplied identity headers are metadata, not authentication. Never
+  // let a caller choose a fresh bucket to evade abuse limits. API Gateway's
+  // source IP is authoritative; forwarded-for is only a compatibility
+  // fallback for trusted proxy/test event shapes that lack sourceIp.
   return String(
-    headers["x-pdao-agent-id"] ||
-      headers["x-forwarded-for"]?.split(",")[0]?.trim() ||
-      event.requestContext?.http?.sourceIp ||
+    event.requestContext?.http?.sourceIp ||
       event.requestContext?.identity?.sourceIp ||
+      headers["x-forwarded-for"]?.split(",")[0]?.trim() ||
       "anonymous",
   ).slice(0, 160);
 }
