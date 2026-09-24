@@ -415,7 +415,13 @@ const text = (body, status = 200) => ({
 function clientAssetResponse(path) {
   const asset = ASSETS[path];
   if (!asset) return null;
-  const bytes = readFileSync(asset.file);
+  let bytes;
+  try {
+    bytes = readFileSync(asset.file);
+  } catch (error) {
+    if (error?.code === "ENOENT") return json({ error: "asset_not_found" }, 404);
+    throw error;
+  }
   return {
     statusCode: 200,
     headers: {
