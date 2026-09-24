@@ -49,6 +49,11 @@ async function runViewport(viewport, label) {
     await page.setInputFiles("#metadataFile", { name: "services.json", mimeType: "application/json", buffer: Buffer.from(JSON.stringify([{ id: "read", tool: "read", title: "Browser read", price: 0.02, asset: "USDC", network: "solana-mainnet-beta" }])) });
     assert.match(await page.inputValue("#metadataImport"), /Browser read/);
     assert.match(await page.locator("#notice").textContent(), /Metadata imported/);
+    await page.evaluate(() => {
+      const result = document.querySelector("#paymentResult");
+      result.innerHTML = '<button id="retryPayment" type="button">Retry verification (do not pay again)</button>';
+    });
+    await page.waitForFunction(() => document.querySelector("#retryPayment")?.dataset.retryBound === "1");
     await page.click("#to3");
     await page.fill("#payoutAddress", payout);
     await page.click("#to4");

@@ -63,6 +63,8 @@ test("human root is HTML while machine surfaces remain available", async () => {
   assert.match(sellerPortal.body, /Do not submit another payment/);
   assert.match(sellerPortal.body, /state\.paymentSignature=sent\.signature/);
   assert.match(sellerPortal.body, /Retry verification \(do not pay again\)/);
+  assert.match(sellerPortal.body, /retry\.dataset\.retryBound/);
+  assert.match(sellerPortal.body, /new MutationObserver\(bindPaymentRetry\)/);
   for (const asset of ["ibm-watsonx.svg", "openvino.svg", "mongodb.svg", "github.svg"]) {
     assert.match(root.body, new RegExp(`/assets/ecosystem/${asset}`), asset);
     assert.match(marketplace.body, new RegExp(`/assets/ecosystem/${asset}`), asset);
