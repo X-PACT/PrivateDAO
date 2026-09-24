@@ -34,11 +34,15 @@ test("public installation metadata never exposes repository names or credential 
     id: "github_installation_164152168",
     kind: "github_installation",
     connection_token_hash: "secret-hash",
+    owner_token_hash: "another-secret-hash",
+    github_access_token_hash: "legacy-secret-hash",
     repositories: [{ id: 1, full_name: "X-PACT/private-repo", private: true }],
     status: "active",
   });
   assert.equal(safe.repository_count, 1);
   assert.equal("repositories" in safe, false);
   assert.equal("connection_token_hash" in safe, false);
+  assert.equal("owner_token_hash" in safe, false);
+  assert.equal("github_access_token_hash" in safe, false);
   assert.equal(JSON.stringify(safe).includes("private-repo"), false);
 });

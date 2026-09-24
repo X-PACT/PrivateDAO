@@ -102,8 +102,16 @@ export function mergeGithubInstallationRepositories(existing = [], added = [], r
 }
 
 export function publicGithubInstallationRecord(record) {
-  const { connection_token_hash: _connectionTokenHash, repositories, ...safe } = record || {};
-  return { ...safe, repository_count: Array.isArray(repositories) ? repositories.length : 0 };
+  const source = record || {};
+  const safe = {};
+  for (const key of [
+    "id", "kind", "installation_id", "account", "repository_selection", "authentication",
+    "status", "entitlement_status", "marketplace", "updated_at",
+  ]) {
+    if (source[key] !== undefined) safe[key] = source[key];
+  }
+  safe.repository_count = Array.isArray(source.repositories) ? source.repositories.length : 0;
+  return safe;
 }
 
 export async function githubRepositoryContext(config, installationId, repository) {
