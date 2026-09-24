@@ -2153,7 +2153,7 @@ async function createExternalJob(serviceId, input = {}) {
   const service = await externalServiceById(serviceId);
   if (!service) throw Object.assign(new Error("unknown external service"), { statusCode: 404 });
   const id = `job_${randomUUID()}`;
-  const job = { id, kind: "external", service_id: service.id, seller_agent_id: service.seller_agent_id, seller_tool: service.tool, seller_service_id: service.service_id, seller_name: service.provider, input_hash: digest(input), execution_input: input, status: service.free ? "running" : "awaiting_payment", created_at: now(), payment_network: "solana-mainnet-beta", payment_asset: service.asset };
+  const job = { id, kind: "external", service_id: service.id, seller_agent_id: service.seller_agent_id, seller_tool: service.tool, seller_service_id: service.service_id, seller_name: service.provider, input_hash: digest(input), execution_input: input, status: service.free ? "running" : "awaiting_payment", created_at: now(), payment_network: "solana-mainnet-beta", payment_asset: service.asset, target_network: normalizeNetworkId(service.network) };
   const storage = await store();
   await storage.put("Jobs", id, job, true);
   if (service.free) return completeExternalJob(job, await invokeMcpAgent(await storage.get("Registry", service.seller_agent_id), service.tool, input), null);
@@ -3051,7 +3051,12 @@ async function registerMcp(body) {
     acceptedAssets: Array.isArray(body.acceptedAssets || body.accepted_assets) ? (body.acceptedAssets || body.accepted_assets).map((item) => String(item).toUpperCase()).slice(0, 20) : (existing?.acceptedAssets || []),
     pricing: body.pricing || existing?.pricing || {},
     commercial_services: commercialServices,
-    commercial_publication_status: existingListing?.payment_status === "paid" ? "published" : (commercialServicesChanged || !existing?.commercial_publication_status ? (commercialServices.length ? "draft" : null) : existing.commercial_publication_status),
+    // A paid listing is eligible for publication, but a technical refresh or
+    // metadata update must not silently republish a seller who explicitly
+    // unpublished. Preserve the seller's current publication decision.
+    commercial_publication_status: existingListing?.payment_status === "paid"
+      ? (existing?.commercial_publication_status || existingListing.commercial_publication_status || "eligible")
+      : (commercialServicesChanged || !existing?.commercial_publication_status ? (commercialServices.length ? "draft" : null) : existing.commercial_publication_status),
     listing_fee_status: existingListing?.payment_status === "paid" ? "paid" : (commercialServicesChanged || !existing?.listing_fee_status ? (commercialServices.length ? "required" : null) : existing.listing_fee_status),
     payout,
     owner_token_hash: existing?.owner_token_hash || hashSecret(ownerToken),
@@ -3206,6 +3211,15 @@ async function setSellerPublication(agentId, body, published) {
   if (published && !agent.payout) throw Object.assign(new Error("payout configuration is required before publication"), { statusCode: 400 });
   const next = { ...agent, commercial_publication_status: published ? "published" : "unpublished", updated_at: now() };
   await storage.put("Registry", agent.id, next);
+  const listing = await storage.get("Listings", `seller_listing_${agent.id}`);
+  if (listing?.type === "seller_listing") {
+    await storage.put("Listings", listing.id, {
+      ...listing,
+      commercial_publication_status: next.commercial_publication_status,
+      status: published ? "active" : "unpublished",
+      updated_at: now(),
+    });
+  }
   return publicRegistryAgent(next);
 }
 

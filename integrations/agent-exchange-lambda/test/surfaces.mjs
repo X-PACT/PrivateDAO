@@ -600,6 +600,9 @@ test("external seller paid lifecycle quotes, executes once, and records attribut
     const unpublished = await request(`/api/registry/agents/${registeredBody.id}/unpublish`, "POST", { owner_token: registeredBody.owner_token });
     assert.equal(unpublished.statusCode, 200);
     assert.equal(JSON.parse(unpublished.body).commercial_publication_status, "unpublished");
+    const unpublishedDashboard = JSON.parse((await request(`/api/seller/dashboard/${registeredBody.id}`, "GET", undefined, { "x-pdao-owner-token": registeredBody.owner_token })).body);
+    assert.equal(unpublishedDashboard.listing.commercial_publication_status, "unpublished");
+    assert.equal(unpublishedDashboard.listing.status, "unpublished");
     const payoutCleared = await request(`/api/registry/agents/${registeredBody.id}/services`, "PATCH", { owner_token: registeredBody.owner_token, services: [{ id: "read", tool: "read", title: "Read evidence", description: "Paid read-only seller service", price: 0.03, asset: "USDC", network: "solana-mainnet-beta" }], accepted_assets: ["USDC"], payout: null });
     assert.equal(payoutCleared.statusCode, 200);
     const blockedWithoutPayout = await request(`/api/registry/agents/${registeredBody.id}/publish`, "POST", { owner_token: registeredBody.owner_token });
@@ -610,6 +613,25 @@ test("external seller paid lifecycle quotes, executes once, and records attribut
     const republished = await request(`/api/registry/agents/${registeredBody.id}/publish`, "POST", { owner_token: registeredBody.owner_token });
     assert.equal(republished.statusCode, 200);
     assert.equal(JSON.parse(republished.body).commercial_publication_status, "published");
+    const republishedDashboard = JSON.parse((await request(`/api/seller/dashboard/${registeredBody.id}`, "GET", undefined, { "x-pdao-owner-token": registeredBody.owner_token })).body);
+    assert.equal(republishedDashboard.listing.commercial_publication_status, "published");
+    assert.equal(republishedDashboard.listing.status, "active");
+    const unpublishedBeforeRefresh = await request(`/api/registry/agents/${registeredBody.id}/unpublish`, "POST", { owner_token: registeredBody.owner_token });
+    assert.equal(unpublishedBeforeRefresh.statusCode, 200);
+    const refreshed = await request("/api/registry/register", "POST", {
+      agent_id: registeredBody.id,
+      owner_token: registeredBody.owner_token,
+      name: "Fixture Seller",
+      mcp_url: "https://example.com/mcp",
+      commercial_services: [{ id: "read", tool: "read", title: "Read evidence", description: "Paid read-only seller service", price: 0.03, asset: "USDC", network: "solana-mainnet-beta" }],
+      accepted_assets: ["USDC"],
+      payout: { address: treasury, network: "solana-mainnet-beta", asset: "USDC" },
+    });
+    assert.equal(refreshed.statusCode, 201);
+    assert.equal(JSON.parse(refreshed.body).commercial_publication_status, "unpublished");
+    const republishedAfterRefresh = await request(`/api/registry/agents/${registeredBody.id}/publish`, "POST", { owner_token: registeredBody.owner_token });
+    assert.equal(republishedAfterRefresh.statusCode, 200);
+    assert.equal(JSON.parse(republishedAfterRefresh.body).commercial_publication_status, "published");
     const addedService = await request(`/api/registry/agents/${registeredBody.id}/services`, "PATCH", { owner_token: registeredBody.owner_token, services: [{ id: "read", tool: "read", title: "Read evidence", description: "Paid read-only seller service", price: 0.03, asset: "USDC", network: "solana-mainnet-beta" }, { id: "read_extra", tool: "read", title: "Read evidence extra", description: "Second declared service", price: 0.04, asset: "USDC", network: "solana-mainnet-beta" }], accepted_assets: ["USDC"], payout: { address: treasury, network: "solana-mainnet-beta", asset: "USDC" } });
     assert.equal(addedService.statusCode, 200);
     assert.equal(JSON.parse(addedService.body).listing_fee_status, "paid");
@@ -656,6 +678,7 @@ test("external seller paid lifecycle quotes, executes once, and records attribut
     assert.equal(paidBody.receipt.seller_settlement.platform_fee_bps, 1000);
     assert.equal(paidBody.receipt.seller_settlement.seller_amount, 0.027);
     assert.equal(paidBody.receipt.seller_net_amount, 0.027);
+    assert.equal(paidBody.receipt.target_network, "solana-mainnet-beta");
     assert.equal(paidBody.receipt.payment_signature, paymentSignature);
     assert.equal(mcpCalls, 1);
     const replay = await request(`/api/external/jobs/${paymentIntent.jobId}/payment`, "POST", { signature: paymentSignature });
