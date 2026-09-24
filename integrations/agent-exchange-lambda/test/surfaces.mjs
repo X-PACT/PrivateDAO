@@ -160,6 +160,36 @@ test("human root is HTML while machine surfaces remain available", async () => {
   assert.equal((await request("/api/treasury/status")).statusCode, 404);
 });
 
+test("agreements require the declared buyer and the production USDC rail", async () => {
+  resetForTests();
+  const unsupported = await request("/api/agreements", "POST", {
+    buyerAgent: "buyer-fixture",
+    providerAgent: "provider-fixture",
+    service: "synthetic.service",
+    price: 1,
+    asset: "SOL",
+  });
+  assert.equal(unsupported.statusCode, 400);
+
+  const created = await request("/api/agreements", "POST", {
+    buyerAgent: "buyer-fixture",
+    providerAgent: "provider-fixture",
+    service: "synthetic.service",
+    price: 1,
+    asset: "USDC",
+  });
+  assert.equal(created.statusCode, 201);
+  const agreement = JSON.parse(created.body);
+
+  const missingBuyer = await request(`/api/agreements/${agreement.id}/accept`, "POST", {});
+  assert.equal(missingBuyer.statusCode, 400);
+  const wrongBuyer = await request(`/api/agreements/${agreement.id}/accept`, "POST", { buyerAgent: "other-fixture" });
+  assert.equal(wrongBuyer.statusCode, 403);
+  const accepted = await request(`/api/agreements/${agreement.id}/accept`, "POST", { buyerAgent: "buyer-fixture" });
+  assert.equal(accepted.statusCode, 200);
+  assert.equal(JSON.parse(accepted.body).status, "awaiting_payment");
+});
+
 test("malformed JSON returns a stable public error without parser internals", async () => {
   resetForTests();
   const response = await handler({ requestContext: { http: { method: "POST", path: "/" } }, body: "need_fuck=yes" });

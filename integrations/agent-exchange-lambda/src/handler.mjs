@@ -1968,6 +1968,9 @@ async function createAgreement(body) {
     if (body[field] == null) throw new Error(`${field} is required`);
   const price = Number(body.price);
   if (!Number.isFinite(price) || price < 0) throw Object.assign(new Error("agreement price must be a finite non-negative number"), { statusCode: 400 });
+  const asset = String(body.asset || "USDC").toUpperCase().trim();
+  if (asset !== "USDC")
+    throw Object.assign(new Error("agreement asset must be USDC for the current settlement rail"), { statusCode: 400 });
   const agreement = {
     id: `agr_${randomUUID()}`,
     agreementId: `agr_${randomUUID()}`,
@@ -1976,7 +1979,7 @@ async function createAgreement(body) {
     service: body.service,
     inputCommitment: digest(body.input || {}),
     price,
-    asset: body.asset || "USDC",
+    asset,
     protocolFee: Number(
       ((price * config.marketplaceFeeBps) / 10000).toFixed(6),
     ),
@@ -2000,8 +2003,10 @@ async function acceptAgreement(id, body) {
     throw Object.assign(new Error("agreement not found"), { statusCode: 404 });
   if (agreement.status !== "proposed" && agreement.status !== "quoted")
     throw new Error("agreement cannot be accepted in its current state");
-  if (body.buyerAgent && body.buyerAgent !== agreement.buyerAgent)
-    throw new Error("buyer agent mismatch");
+  if (!body.buyerAgent)
+    throw Object.assign(new Error("buyerAgent is required to accept this agreement"), { statusCode: 400 });
+  if (body.buyerAgent !== agreement.buyerAgent)
+    throw Object.assign(new Error("buyer agent mismatch"), { statusCode: 403 });
   agreement.status = agreement.price > 0 ? "awaiting_payment" : "accepted";
   agreement.acceptedAt = now();
   await (await store()).put("Agreements", id, agreement);
