@@ -3209,6 +3209,11 @@ async function setSellerPublication(agentId, body, published) {
   if (published && !(agent.commercial_services || []).length) throw Object.assign(new Error("at least one commercial service is required before publication"), { statusCode: 400 });
   if (published && !(agent.acceptedAssets || []).length) throw Object.assign(new Error("at least one accepted asset is required before publication"), { statusCode: 400 });
   if (published && !agent.payout) throw Object.assign(new Error("payout configuration is required before publication"), { statusCode: 400 });
+  if (published) {
+    const readiness = await sellerReadiness(agentId);
+    if (readiness.unlisted_service_ids.length)
+      throw Object.assign(new Error("all commercial services must be included in a confirmed listing quote before publication"), { statusCode: 402 });
+  }
   const next = { ...agent, commercial_publication_status: published ? "published" : "unpublished", updated_at: now() };
   await storage.put("Registry", agent.id, next);
   const listing = await storage.get("Listings", `seller_listing_${agent.id}`);

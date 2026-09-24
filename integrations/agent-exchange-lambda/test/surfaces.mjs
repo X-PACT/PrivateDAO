@@ -636,6 +636,9 @@ test("external seller paid lifecycle quotes, executes once, and records attribut
     assert.equal(addedService.statusCode, 200);
     assert.equal(JSON.parse(addedService.body).listing_fee_status, "paid");
     assert.equal(JSON.parse(addedService.body).commercial_publication_status, "published");
+    const publishWithUnlistedService = await request(`/api/registry/agents/${registeredBody.id}/publish`, "POST", { owner_token: registeredBody.owner_token });
+    assert.equal(publishWithUnlistedService.statusCode, 402);
+    assert.match(publishWithUnlistedService.body, /all commercial services must be included/);
     const alreadyPaid = await request("/api/marketplace/seller-listings/quote", "POST", { agent_id: registeredBody.id, owner_token: registeredBody.owner_token, tier: "pro", accept_terms: true, terms_version: "seller-marketplace-v1" });
     assert.equal(alreadyPaid.statusCode, 201);
     const additionalQuoteBody = JSON.parse(alreadyPaid.body);
