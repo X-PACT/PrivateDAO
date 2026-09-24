@@ -165,10 +165,20 @@ export async function verifyPayment(config, payment, quote) {
       return { ok: false, reason: "quote treasury owner is missing" };
     if (!quote.treasuryTokenAccount)
       return { ok: false, reason: "quote treasury token account is missing" };
-    const account = await readRpc(config, "getAccountInfo", [
-      quote.treasuryTokenAccount,
-      { encoding: "jsonParsed", commitment: "finalized" },
-    ]);
+    let account;
+    try {
+      account = await readRpc(config, "getAccountInfo", [
+        quote.treasuryTokenAccount,
+        { encoding: "jsonParsed", commitment: "finalized" },
+      ]);
+    } catch (error) {
+      return {
+        ok: false,
+        transient: true,
+        reason: "payment is submitted; treasury account verification is temporarily retrying",
+        providerError: error?.message || "rpc unavailable",
+      };
+    }
     const info = account.result?.value?.data?.parsed?.info;
     if (!info || info.mint !== config.usdcMint || info.owner !== treasuryOwner)
       return { ok: false, reason: "treasury USDC token account is not initialized or does not match" };
