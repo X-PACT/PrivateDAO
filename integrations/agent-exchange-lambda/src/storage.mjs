@@ -39,8 +39,17 @@ export async function createStore(config) {
         if (!result.Item) return null; return result.Item;
       },
       async list(collection) {
-        const result = await client.send(new ScanCommand({ TableName: table(collection), Limit: 100 }));
-        return result.Items || [];
+        const items = [];
+        let ExclusiveStartKey;
+        do {
+          const result = await client.send(new ScanCommand({
+            TableName: table(collection),
+            ...(ExclusiveStartKey ? { ExclusiveStartKey } : {}),
+          }));
+          items.push(...(result.Items || []));
+          ExclusiveStartKey = result.LastEvaluatedKey;
+        } while (ExclusiveStartKey);
+        return items;
       },
       async update(collection, key, fn) {
         const current = await this.get(collection, key); const next = await fn(current);
