@@ -21,7 +21,6 @@
     "mongodb": "^6.20.0"
   },
   "devDependencies": {
-    "@solana/spl-token": "0.4.14",
     "8004-solana": "0.8.3",
     "esbuild": "0.28.2"
   },
