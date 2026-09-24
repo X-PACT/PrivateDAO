@@ -47,7 +47,9 @@ async function runViewport(viewport, label) {
     assert.equal(await choices.nth(1).isDisabled(), true);
     await choices.nth(0).check();
     await page.setInputFiles("#metadataFile", { name: "services.json", mimeType: "application/json", buffer: Buffer.from(JSON.stringify([{ id: "read", tool: "read", title: "Browser read", price: 0.02, asset: "USDC", network: "solana-mainnet-beta" }])) });
+    await page.waitForFunction(() => document.querySelector("#metadataImport")?.value.includes("Browser read"));
     assert.match(await page.inputValue("#metadataImport"), /Browser read/);
+    await page.waitForFunction(() => document.querySelector("#notice")?.textContent.includes("Metadata imported"));
     assert.match(await page.locator("#notice").textContent(), /Metadata imported/);
     await page.evaluate(() => {
       const result = document.querySelector("#paymentResult");
