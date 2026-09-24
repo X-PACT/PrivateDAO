@@ -49,6 +49,7 @@ test("human root is HTML while machine surfaces remain available", async () => {
   assert.match(sellerPortal.body, /max-width:650px/);
   assert.match(sellerPortal.body, /Select read-only commercial tools/);
   assert.match(sellerPortal.body, /!tool\.annotations\|\|tool\.annotations\.readOnlyHint!==false/);
+  assert.match(sellerPortal.body, /'"':"&quot;"/);
   assert.match(sellerPortal.body, /api\/marketplace\/policy/);
   for (const asset of ["ibm-watsonx.svg", "openvino.svg", "mongodb.svg", "github.svg"]) {
     assert.match(root.body, new RegExp(`/assets/ecosystem/${asset}`), asset);
