@@ -1,6 +1,6 @@
 {
   "project": "PrivateDAO",
-  "generatedAt": "2026-05-26T03:08:53.643Z",
+  "generatedAt": "2026-09-24T15:21:06.814Z",
   "track": {
     "slug": "rpc-infrastructure",
     "title": "Runtime Infrastructure Reviewer Packet",
@@ -9,18 +9,18 @@
   },
   "judgeFirstOpening": {
     "lines": [
-      "What works now: Show diagnostics, runtime evidence, and hosted read/API packaging in one buyer-friendly path. Use the service catalog, SLA, pricing, and trust package as the commercial proof layer. Keep the Fast RPC role explicit in video, deck, README, and services UI.",
+      "What works now: Show diagnostics, runtime evidence, and hosted read/API packaging in one buyer-friendly path. Use the service catalog, SLA, pricing, and trust package as the commercial proof layer. Keep the Hosted reads role explicit in video, deck, README, and services UI.",
       "What is externally proven: Diagnostics via /diagnostics and Core integrations via /documents/frontier-integrations and Treasury reviewer packet via /documents/treasury-reviewer-packet and Reviewer telemetry packet via /documents/reviewer-telemetry-packet.",
       "Exact blocker: production-monitoring-alerts. RPC and hosted-read mainnet claims remain blocked until live monitoring, alert delivery, and tested operator ownership are recorded.",
       "Best product route: open /services first. Lead with /services, then keep proof, custody truth, and the blocker in the same judge flow instead of splitting the product story across routes. Close the route by opening /documents/treasury-reviewer-packet and /documents/reviewer-telemetry-packet so payments readiness and the data corridor stay inside the same proof story."
     ],
-    "voiceoverScript": "What works now: Show diagnostics, runtime evidence, and hosted read/API packaging in one buyer-friendly path. Use the service catalog, SLA, pricing, and trust package as the commercial proof layer. Keep the Fast RPC role explicit in video, deck, README, and services UI. What is externally proven: Diagnostics via /diagnostics and Core integrations via /documents/frontier-integrations and Treasury reviewer packet via /documents/treasury-reviewer-packet and Reviewer telemetry packet via /documents/reviewer-telemetry-packet. Exact blocker: production-monitoring-alerts. RPC and hosted-read mainnet claims remain blocked until live monitoring, alert delivery, and tested operator ownership are recorded. Best product route: open /services first. Lead with /services, then keep proof, custody truth, and the blocker in the same judge flow instead of splitting the product story across routes. Close the route by opening /documents/treasury-reviewer-packet and /documents/reviewer-telemetry-packet so payments readiness and the data corridor stay inside the same proof story."
+    "voiceoverScript": "What works now: Show diagnostics, runtime evidence, and hosted read/API packaging in one buyer-friendly path. Use the service catalog, SLA, pricing, and trust package as the commercial proof layer. Keep the Hosted reads role explicit in video, deck, README, and services UI. What is externally proven: Diagnostics via /diagnostics and Core integrations via /documents/frontier-integrations and Treasury reviewer packet via /documents/treasury-reviewer-packet and Reviewer telemetry packet via /documents/reviewer-telemetry-packet. Exact blocker: production-monitoring-alerts. RPC and hosted-read mainnet claims remain blocked until live monitoring, alert delivery, and tested operator ownership are recorded. Best product route: open /services first. Lead with /services, then keep proof, custody truth, and the blocker in the same judge flow instead of splitting the product story across routes. Close the route by opening /documents/treasury-reviewer-packet and /documents/reviewer-telemetry-packet so payments readiness and the data corridor stay inside the same proof story."
   },
   "proofClosure": {
     "whatWorksNow": [
       "Show diagnostics, runtime evidence, and hosted read/API packaging in one buyer-friendly path.",
       "Use the service catalog, SLA, pricing, and trust package as the commercial proof layer.",
-      "Keep the Fast RPC role explicit in video, deck, README, and services UI."
+      "Keep the Hosted reads role explicit in video, deck, README, and services UI."
     ],
     "externallyProven": [
       {
@@ -69,7 +69,7 @@
     },
     {
       "label": "Story video",
-      "href": "/story"
+      "href": "/products"
     },
     {
       "label": "Reviewer telemetry packet",

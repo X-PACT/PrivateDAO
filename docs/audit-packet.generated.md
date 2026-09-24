@@ -101,7 +101,7 @@
 - PDAO attestation: `docs/pdao-attestation.generated.json`
 - Algorithm: `sha256`
 - Manifest entries: `145`
-- Aggregate sha256: `2b4987108ae9fd9f4671f5e2fb5a58c045090d4a4f9bd789028a151f0e861296`
+- Aggregate sha256: `534643d82c2679f3884f4f286375a0f4ac6f56883dbc087419181b2f77498900`
 
 ## ZK Package
 
@@ -116,11 +116,12 @@
 - ZK transcript: `docs/zk-transcript.generated.md`
 - ZK attestation: `docs/zk-attestation.generated.json`
 - ZK stack version: `1`
-- ZK registry entries: `3`
+- ZK registry entries: `4`
 
 - `vote` -> `private_dao_vote_overlay` | public signals: `6` | build: `npm run zk:build:vote` | verify: `npm run zk:verify:vote`
 - `delegation` -> `private_dao_delegation_overlay` | public signals: `7` | build: `npm run zk:build:delegation` | verify: `npm run zk:verify:delegation`
 - `tally` -> `private_dao_tally_overlay` | public signals: `7` | build: `npm run zk:build:tally` | verify: `npm run zk:verify:tally`
+- `blind-policy` -> `private_dao_blind_policy_overlay` | public signals: `4` | build: `npm run zk:build:blind-policy` | verify: `npm run zk:verify:blind-policy`
 
 ### ZK Review Commands
 

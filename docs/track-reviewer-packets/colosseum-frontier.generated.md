@@ -3,21 +3,21 @@
 ## Overview
 
 - project: `PrivateDAO`
-- generated at: `2026-05-26T03:08:53.632Z`
+- generated at: `2026-09-24T15:21:06.813Z`
 - track slug: `colosseum-frontier`
 - sponsor: `Public-good governance infrastructure`
 - objective: Present PrivateDAO as a startup-quality Solana product that already behaves like a pre-mainnet company rather than a hacked-together prototype.
 
 ## Judge-First Opening
 
-1. What works now: Lead the first 90 seconds from /start into /govern with a real wallet-first path. Use /proof/?judge=1, trust package, diagnostics, and services as the second-stage proof of maturity. Keep the README, deck, story video, and product learning path perfectly aligned with the live site.
+1. What works now: Lead the first 90 seconds from /start into /govern with a real wallet-first path. Use /proof/?judge=1, trust package, diagnostics, and services as the second-stage proof of maturity. Keep the README, deck, live workflow, and product learning path perfectly aligned with the live site.
 2. What is externally proven: Proof center via /proof and Launch trust packet via /documents/launch-trust-packet and Treasury reviewer packet via /documents/treasury-reviewer-packet and Reviewer telemetry packet via /documents/reviewer-telemetry-packet.
 3. Exact blocker: upgrade-authority-multisig. The startup-quality path remains blocked until production multisig, authority transfer signatures, and post-transfer readouts are recorded.
 4. Best product route: open /start first. Lead with /start, then keep proof, custody truth, and the blocker in the same judge flow instead of splitting the product story across routes. Close the route by opening /documents/treasury-reviewer-packet and /documents/reviewer-telemetry-packet so payments readiness and the data corridor stay inside the same proof story.
 
 Voiceover script:
 
-What works now: Lead the first 90 seconds from /start into /govern with a real wallet-first path. Use /proof/?judge=1, trust package, diagnostics, and services as the second-stage proof of maturity. Keep the README, deck, story video, and product learning path perfectly aligned with the live site. What is externally proven: Proof center via /proof and Launch trust packet via /documents/launch-trust-packet and Treasury reviewer packet via /documents/treasury-reviewer-packet and Reviewer telemetry packet via /documents/reviewer-telemetry-packet. Exact blocker: upgrade-authority-multisig. The startup-quality path remains blocked until production multisig, authority transfer signatures, and post-transfer readouts are recorded. Best product route: open /start first. Lead with /start, then keep proof, custody truth, and the blocker in the same judge flow instead of splitting the product story across routes. Close the route by opening /documents/treasury-reviewer-packet and /documents/reviewer-telemetry-packet so payments readiness and the data corridor stay inside the same proof story.
+What works now: Lead the first 90 seconds from /start into /govern with a real wallet-first path. Use /proof/?judge=1, trust package, diagnostics, and services as the second-stage proof of maturity. Keep the README, deck, live workflow, and product learning path perfectly aligned with the live site. What is externally proven: Proof center via /proof and Launch trust packet via /documents/launch-trust-packet and Treasury reviewer packet via /documents/treasury-reviewer-packet and Reviewer telemetry packet via /documents/reviewer-telemetry-packet. Exact blocker: upgrade-authority-multisig. The startup-quality path remains blocked until production multisig, authority transfer signatures, and post-transfer readouts are recorded. Best product route: open /start first. Lead with /start, then keep proof, custody truth, and the blocker in the same judge flow instead of splitting the product story across routes. Close the route by opening /documents/treasury-reviewer-packet and /documents/reviewer-telemetry-packet so payments readiness and the data corridor stay inside the same proof story.
 
 ## Proof Closure
 
@@ -25,7 +25,7 @@ What works now: Lead the first 90 seconds from /start into /govern with a real w
 
 - Lead the first 90 seconds from /start into /govern with a real wallet-first path.
 - Use /proof/?judge=1, trust package, diagnostics, and services as the second-stage proof of maturity.
-- Keep the README, deck, story video, and product learning path perfectly aligned with the live site.
+- Keep the README, deck, live workflow, and product learning path perfectly aligned with the live site.
 
 ### What Is Externally Proven
 
@@ -53,7 +53,7 @@ For the main submission, custody is not a side detail. It is the exact trust gat
 - Track workspace: /tracks/colosseum-frontier
 - Proof route: /documents/reviewer-fast-path
 - Legacy proof mode: /proof/?judge=1
-- Story video: /story
+- Story video: /products
 - Reviewer telemetry packet: /documents/reviewer-telemetry-packet
 - Launch trust packet: /documents/launch-trust-packet
 - Canonical custody proof: /documents/canonical-custody-proof

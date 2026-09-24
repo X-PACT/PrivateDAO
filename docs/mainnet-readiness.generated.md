@@ -96,10 +96,10 @@ This report is generated from the canonical PrivateDAO registries and reviewer a
 - Operational drillbook: `docs/operational-drillbook.md`
 - Go-live attestation: `docs/go-live-attestation.generated.json`
 - ZK stack version: `1`
-- ZK layer count: `3`
+- ZK layer count: `4`
 - Integrity algorithm: `sha256`
 - Integrity entries: `145`
-- Integrity aggregate sha256: `2b4987108ae9fd9f4671f5e2fb5a58c045090d4a4f9bd789028a151f0e861296`
+- Integrity aggregate sha256: `534643d82c2679f3884f4f286375a0f4ac6f56883dbc087419181b2f77498900`
 
 ## Additive Hardening V3
 

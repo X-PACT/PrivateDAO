@@ -3,7 +3,7 @@
 ## Overview
 
 - project: `PrivateDAO`
-- generated at: `2026-05-26T03:08:33.442Z`
+- generated at: `2026-09-24T15:21:05.132Z`
 - purpose: Canonical judge-first copy for track workspaces, reviewer packets, and the first 30 to 45 seconds of track videos.
 
 ## Core Reviewer Packet
@@ -12,13 +12,13 @@
 - sponsor: `Public-good governance infrastructure`
 - best demo route: `/start`
 - proof route: `/documents/reviewer-fast-path`
-- video route: `/story`
+- video route: `/products`
 
 ### What Works Now
 
 - Lead the first 90 seconds from /start into /govern with a real wallet-first path.
 - Use /proof/?judge=1, trust package, diagnostics, and services as the second-stage proof of maturity.
-- Keep the README, deck, story video, and product learning path perfectly aligned with the live site.
+- Keep the README, deck, live workflow, and product learning path perfectly aligned with the live site.
 
 ### What Is Externally Proven
 
@@ -33,14 +33,14 @@
 
 ### First 30 To 45 Seconds
 
-1. What works now: Lead the first 90 seconds from /start into /govern with a real wallet-first path. Use /proof/?judge=1, trust package, diagnostics, and services as the second-stage proof of maturity. Keep the README, deck, story video, and product learning path perfectly aligned with the live site.
+1. What works now: Lead the first 90 seconds from /start into /govern with a real wallet-first path. Use /proof/?judge=1, trust package, diagnostics, and services as the second-stage proof of maturity. Keep the README, deck, live workflow, and product learning path perfectly aligned with the live site.
 2. What is externally proven: Proof center via /proof and Launch trust packet via /documents/launch-trust-packet and Treasury reviewer packet via /documents/treasury-reviewer-packet and Reviewer telemetry packet via /documents/reviewer-telemetry-packet.
 3. Exact blocker: upgrade-authority-multisig. The startup-quality path remains blocked until production multisig, authority transfer signatures, and post-transfer readouts are recorded.
 4. Best product route: open /start first. Lead with /start, then keep proof, custody truth, and the blocker in the same judge flow instead of splitting the product story across routes. Close the route by opening /documents/treasury-reviewer-packet and /documents/reviewer-telemetry-packet so payments readiness and the data corridor stay inside the same proof story.
 
 ### Voiceover Script
 
-What works now: Lead the first 90 seconds from /start into /govern with a real wallet-first path. Use /proof/?judge=1, trust package, diagnostics, and services as the second-stage proof of maturity. Keep the README, deck, story video, and product learning path perfectly aligned with the live site. What is externally proven: Proof center via /proof and Launch trust packet via /documents/launch-trust-packet and Treasury reviewer packet via /documents/treasury-reviewer-packet and Reviewer telemetry packet via /documents/reviewer-telemetry-packet. Exact blocker: upgrade-authority-multisig. The startup-quality path remains blocked until production multisig, authority transfer signatures, and post-transfer readouts are recorded. Best product route: open /start first. Lead with /start, then keep proof, custody truth, and the blocker in the same judge flow instead of splitting the product story across routes. Close the route by opening /documents/treasury-reviewer-packet and /documents/reviewer-telemetry-packet so payments readiness and the data corridor stay inside the same proof story.
+What works now: Lead the first 90 seconds from /start into /govern with a real wallet-first path. Use /proof/?judge=1, trust package, diagnostics, and services as the second-stage proof of maturity. Keep the README, deck, live workflow, and product learning path perfectly aligned with the live site. What is externally proven: Proof center via /proof and Launch trust packet via /documents/launch-trust-packet and Treasury reviewer packet via /documents/treasury-reviewer-packet and Reviewer telemetry packet via /documents/reviewer-telemetry-packet. Exact blocker: upgrade-authority-multisig. The startup-quality path remains blocked until production multisig, authority transfer signatures, and post-transfer readouts are recorded. Best product route: open /start first. Lead with /start, then keep proof, custody truth, and the blocker in the same judge flow instead of splitting the product story across routes. Close the route by opening /documents/treasury-reviewer-packet and /documents/reviewer-telemetry-packet so payments readiness and the data corridor stay inside the same proof story.
 
 ## Confidential Governance Reviewer Packet
 
@@ -48,11 +48,11 @@ What works now: Lead the first 90 seconds from /start into /govern with a real w
 - sponsor: `MagicBlock and privacy-aligned partners`
 - best demo route: `/story`
 - proof route: `/documents/live-proof-v3`
-- video route: `/story`
+- video route: `/products`
 
 ### What Works Now
 
-- Use the comprehensive story video as the first-pass product walkthrough for judges.
+- Use the live workflow as the first-pass product walkthrough for judges.
 - Lead the click path from /security to the ZK matrix, confidence engine, and V3 proof packet.
 - Keep the pitch deck anchored around private governance, confidential payouts, and clear release boundaries.
 
@@ -69,14 +69,14 @@ What works now: Lead the first 90 seconds from /start into /govern with a real w
 
 ### First 30 To 45 Seconds
 
-1. What works now: Use the comprehensive story video as the first-pass product walkthrough for judges. Lead the click path from /security to the ZK matrix, confidence engine, and V3 proof packet. Keep the pitch deck anchored around private governance, confidential payouts, and clear release boundaries.
+1. What works now: Use the live workflow as the first-pass product walkthrough for judges. Lead the click path from /security to the ZK matrix, confidence engine, and V3 proof packet. Keep the pitch deck anchored around private governance, confidential payouts, and clear release boundaries.
 2. What is externally proven: Live Proof V3 via /documents/live-proof-v3 and ZK capability matrix via /documents/zk-capability-matrix and Treasury reviewer packet via /documents/treasury-reviewer-packet and Reviewer telemetry packet via /documents/reviewer-telemetry-packet.
 3. Exact blocker: magicblock-refhe-source-receipts. Testnet REFHE and MagicBlock receipts are closed; real-funds mainnet still requires verifier CPI or externally audited residual-trust acceptance.
 4. Best product route: open /story first. Lead with /story, then keep proof, custody truth, and the blocker in the same judge flow instead of splitting the product story across routes. Close the route by opening /documents/treasury-reviewer-packet and /documents/reviewer-telemetry-packet so payments readiness and the data corridor stay inside the same proof story.
 
 ### Voiceover Script
 
-What works now: Use the comprehensive story video as the first-pass product walkthrough for judges. Lead the click path from /security to the ZK matrix, confidence engine, and V3 proof packet. Keep the pitch deck anchored around private governance, confidential payouts, and clear release boundaries. What is externally proven: Live Proof V3 via /documents/live-proof-v3 and ZK capability matrix via /documents/zk-capability-matrix and Treasury reviewer packet via /documents/treasury-reviewer-packet and Reviewer telemetry packet via /documents/reviewer-telemetry-packet. Exact blocker: magicblock-refhe-source-receipts. Testnet REFHE and MagicBlock receipts are closed; real-funds mainnet still requires verifier CPI or externally audited residual-trust acceptance. Best product route: open /story first. Lead with /story, then keep proof, custody truth, and the blocker in the same judge flow instead of splitting the product story across routes. Close the route by opening /documents/treasury-reviewer-packet and /documents/reviewer-telemetry-packet so payments readiness and the data corridor stay inside the same proof story.
+What works now: Use the live workflow as the first-pass product walkthrough for judges. Lead the click path from /security to the ZK matrix, confidence engine, and V3 proof packet. Keep the pitch deck anchored around private governance, confidential payouts, and clear release boundaries. What is externally proven: Live Proof V3 via /documents/live-proof-v3 and ZK capability matrix via /documents/zk-capability-matrix and Treasury reviewer packet via /documents/treasury-reviewer-packet and Reviewer telemetry packet via /documents/reviewer-telemetry-packet. Exact blocker: magicblock-refhe-source-receipts. Testnet REFHE and MagicBlock receipts are closed; real-funds mainnet still requires verifier CPI or externally audited residual-trust acceptance. Best product route: open /story first. Lead with /story, then keep proof, custody truth, and the blocker in the same judge flow instead of splitting the product story across routes. Close the route by opening /documents/treasury-reviewer-packet and /documents/reviewer-telemetry-packet so payments readiness and the data corridor stay inside the same proof story.
 
 ## Runtime Infrastructure Reviewer Packet
 
@@ -84,13 +84,13 @@ What works now: Use the comprehensive story video as the first-pass product walk
 - sponsor: `RPC infrastructure sponsors`
 - best demo route: `/services`
 - proof route: `/documents/frontier-integrations`
-- video route: `/story`
+- video route: `/products`
 
 ### What Works Now
 
 - Show diagnostics, runtime evidence, and hosted read/API packaging in one buyer-friendly path.
 - Use the service catalog, SLA, pricing, and trust package as the commercial proof layer.
-- Keep the Fast RPC role explicit in video, deck, README, and services UI.
+- Keep the Hosted reads role explicit in video, deck, README, and services UI.
 
 ### What Is Externally Proven
 
@@ -105,11 +105,11 @@ What works now: Use the comprehensive story video as the first-pass product walk
 
 ### First 30 To 45 Seconds
 
-1. What works now: Show diagnostics, runtime evidence, and hosted read/API packaging in one buyer-friendly path. Use the service catalog, SLA, pricing, and trust package as the commercial proof layer. Keep the Fast RPC role explicit in video, deck, README, and services UI.
+1. What works now: Show diagnostics, runtime evidence, and hosted read/API packaging in one buyer-friendly path. Use the service catalog, SLA, pricing, and trust package as the commercial proof layer. Keep the Hosted reads role explicit in video, deck, README, and services UI.
 2. What is externally proven: Diagnostics via /diagnostics and Core integrations via /documents/frontier-integrations and Treasury reviewer packet via /documents/treasury-reviewer-packet and Reviewer telemetry packet via /documents/reviewer-telemetry-packet.
 3. Exact blocker: production-monitoring-alerts. RPC and hosted-read mainnet claims remain blocked until live monitoring, alert delivery, and tested operator ownership are recorded.
 4. Best product route: open /services first. Lead with /services, then keep proof, custody truth, and the blocker in the same judge flow instead of splitting the product story across routes. Close the route by opening /documents/treasury-reviewer-packet and /documents/reviewer-telemetry-packet so payments readiness and the data corridor stay inside the same proof story.
 
 ### Voiceover Script
 
-What works now: Show diagnostics, runtime evidence, and hosted read/API packaging in one buyer-friendly path. Use the service catalog, SLA, pricing, and trust package as the commercial proof layer. Keep the Fast RPC role explicit in video, deck, README, and services UI. What is externally proven: Diagnostics via /diagnostics and Core integrations via /documents/frontier-integrations and Treasury reviewer packet via /documents/treasury-reviewer-packet and Reviewer telemetry packet via /documents/reviewer-telemetry-packet. Exact blocker: production-monitoring-alerts. RPC and hosted-read mainnet claims remain blocked until live monitoring, alert delivery, and tested operator ownership are recorded. Best product route: open /services first. Lead with /services, then keep proof, custody truth, and the blocker in the same judge flow instead of splitting the product story across routes. Close the route by opening /documents/treasury-reviewer-packet and /documents/reviewer-telemetry-packet so payments readiness and the data corridor stay inside the same proof story.
+What works now: Show diagnostics, runtime evidence, and hosted read/API packaging in one buyer-friendly path. Use the service catalog, SLA, pricing, and trust package as the commercial proof layer. Keep the Hosted reads role explicit in video, deck, README, and services UI. What is externally proven: Diagnostics via /diagnostics and Core integrations via /documents/frontier-integrations and Treasury reviewer packet via /documents/treasury-reviewer-packet and Reviewer telemetry packet via /documents/reviewer-telemetry-packet. Exact blocker: production-monitoring-alerts. RPC and hosted-read mainnet claims remain blocked until live monitoring, alert delivery, and tested operator ownership are recorded. Best product route: open /services first. Lead with /services, then keep proof, custody truth, and the blocker in the same judge flow instead of splitting the product story across routes. Close the route by opening /documents/treasury-reviewer-packet and /documents/reviewer-telemetry-packet so payments readiness and the data corridor stay inside the same proof story.

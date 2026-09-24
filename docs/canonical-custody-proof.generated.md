@@ -3,7 +3,7 @@
 ## Overview
 
 - project: `PrivateDAO`
-- generated at: `2026-05-26T03:08:18.185Z`
+- generated at: `2026-09-24T15:21:03.348Z`
 - status: `ready-for-transfer`
 - production mainnet claim allowed: `false`
 - network: `testnet`
@@ -110,7 +110,7 @@ Explorer links:
 - last deploy slot: `410689759`
 - balance sol: `10.35334104`
 - explorer: `https://explorer.solana.com/address/EP9xE8MJZ6FfyEwLqns6HDdUZBknEa7WGYs1Jzsecuva?cluster=testnet`
-- observed at: `2026-05-26T03:08:02.746Z`
+- observed at: `2026-09-24T15:20:51.016Z`
 - command: `solana program show EP9xE8MJZ6FfyEwLqns6HDdUZBknEa7WGYs1Jzsecuva --url testnet`
 - error: `pending`
 - note: `Current reviewer-facing Anchor 1.0.1 Testnet program. This is the live custody surface for judging; archived Devnet readouts are no longer the current program baseline.`
@@ -126,7 +126,7 @@ Explorer links:
 - last deploy slot: `pending`
 - balance sol: `0.00235248`
 - explorer: `https://explorer.solana.com/address/FEz2hCLGpDhJ3cdAm5CCWFzrKv8vDDzmmt9UjdF2fApZ?cluster=testnet`
-- observed at: `2026-05-26T03:08:03.512Z`
+- observed at: `2026-09-24T15:20:55.942Z`
 - command: `solana account FEz2hCLGpDhJ3cdAm5CCWFzrKv8vDDzmmt9UjdF2fApZ --url testnet --output json`
 - error: `pending`
 - note: `Canonical Testnet DAO PDA used for the post-timelock DAO authority handoff.`
@@ -142,7 +142,7 @@ Explorer links:
 - last deploy slot: `pending`
 - balance sol: `pending`
 - explorer: `https://explorer.solana.com/address/46F4oV4edtepPTGqLBfFJeBKdccgfnkk9e4WK7Z1MZD3?cluster=testnet`
-- observed at: `2026-05-26T03:08:04.262Z`
+- observed at: `2026-09-24T15:20:59.821Z`
 - command: `solana account 46F4oV4edtepPTGqLBfFJeBKdccgfnkk9e4WK7Z1MZD3 --url testnet --output json`
 - error: `Error: AccountNotFound: pubkey=46F4oV4edtepPTGqLBfFJeBKdccgfnkk9e4WK7Z1MZD3`
 - note: `Derived Testnet treasury PDA for the canonical DAO. It may remain uninitialized until the DAO receives a deposit.`
@@ -158,7 +158,7 @@ Explorer links:
 - last deploy slot: `pending`
 - balance sol: `pending`
 - explorer: `https://explorer.solana.com/address/EP9xE8MJZ6FfyEwLqns6HDdUZBknEa7WGYs1Jzsecuva`
-- observed at: `2026-05-26T03:08:04.777Z`
+- observed at: `2026-09-24T15:21:00.545Z`
 - command: `solana program show EP9xE8MJZ6FfyEwLqns6HDdUZBknEa7WGYs1Jzsecuva --url mainnet-beta`
 - error: `Error: Unable to find the account EP9xE8MJZ6FfyEwLqns6HDdUZBknEa7WGYs1Jzsecuva`
 - note: `Mainnet is not claimed for the current product. This readout exists only to prove the public packet is Testnet-scoped and does not imply production mainnet deployment.`
@@ -174,7 +174,7 @@ Explorer links:
 - last deploy slot: `pending`
 - balance sol: `pending`
 - explorer: `https://explorer.solana.com/address/46F4oV4edtepPTGqLBfFJeBKdccgfnkk9e4WK7Z1MZD3`
-- observed at: `2026-05-26T03:08:05.220Z`
+- observed at: `2026-09-24T15:21:01.881Z`
 - command: `solana account 46F4oV4edtepPTGqLBfFJeBKdccgfnkk9e4WK7Z1MZD3 --url mainnet-beta --output json`
 - error: `Error: AccountNotFound: pubkey=46F4oV4edtepPTGqLBfFJeBKdccgfnkk9e4WK7Z1MZD3`
 - note: `Mainnet treasury visibility is intentionally not claimed. Real-funds production readiness requires a separate mainnet cutover packet.`
