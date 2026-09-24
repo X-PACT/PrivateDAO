@@ -279,6 +279,33 @@ test("payment verification accepts only the canonical production USDC ATA", asyn
   }
 });
 
+test("payment verification rejects a finalized transaction that predates its quote", async () => {
+  const originalFetch = global.fetch;
+  const signature = "2".repeat(64);
+  const treasuryOwner = "2BJ4ezxqV9YJXc38D9duKBkdn4su4jE1beKUHwH663sL";
+  const treasuryTokenAccount = "5RyKShQxSkbUJ9vA2MZ1Qf2TKgnwhhS3m7mj2ZZaVh6t";
+  const mint = "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v";
+  global.fetch = async (_url, options) => {
+    const request = JSON.parse(options.body);
+    if (request.method === "getTransaction") return new Response(JSON.stringify({ jsonrpc: "2.0", id: 1, result: { slot: 10, blockTime: 1700000000, transaction: { message: { instructions: [
+      { program: "spl-token", parsed: { type: "transferChecked", info: { destination: treasuryTokenAccount, amount: "100", mint } } },
+      { program: "spl-memo", parsed: "PDAOJOB:expected-job" },
+    ] } }, meta: { err: null } } }), { status: 200 });
+    if (request.method === "getAccountInfo") return new Response(JSON.stringify({ jsonrpc: "2.0", id: 1, result: { value: { data: { parsed: { info: { owner: treasuryOwner, mint } } } } } }), { status: 200 });
+    throw new Error(`unexpected RPC method: ${request.method}`);
+  };
+  try {
+    const result = await verifyPayment({ cluster: "mainnet-beta", treasury: treasuryOwner, usdcMint: mint, rpcPrimary: "https://rpc.example/primary" }, { signature }, {
+      amountAtomic: "100", currency: "USDC", network: "solana-mainnet-beta", mint, treasuryOwner, treasuryTokenAccount,
+      paymentReference: "PDAOJOB:expected-job", created_at: new Date((1700000000 + 600) * 1000).toISOString(),
+    });
+    assert.equal(result.ok, false);
+    assert.equal(result.reason, "payment transaction predates the quote");
+  } finally {
+    global.fetch = originalFetch;
+  }
+});
+
 test("Solana reads fall back from a rate-limited primary provider", async () => {
   const originalFetch = global.fetch;
   const originalNodeEnv = process.env.NODE_ENV;

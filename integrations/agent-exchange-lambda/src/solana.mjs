@@ -16,6 +16,7 @@ const mainnetAttestation = new Map();
 const forbiddenNetwork = /(devnet|testnet|localhost|127\.0\.0\.1)/i;
 const solanaSignaturePattern = /^[1-9A-HJ-NP-Za-km-z]{64,128}$/;
 const memoProgramId = "MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr";
+const quoteClockSkewMs = 120000;
 
 function paymentReferenceMatches(instructions, expectedReference) {
   if (!expectedReference) return true;
@@ -150,6 +151,10 @@ export async function verifyPayment(config, payment, quote) {
       transient: true,
       reason: "transaction is not finalized or was not found",
     };
+  const issuedAt = Date.parse(quote.created_at || quote.issued_at || "");
+  const paidAt = Number.isFinite(Number(tx.blockTime)) ? Number(tx.blockTime) * 1000 : NaN;
+  if (Number.isFinite(issuedAt) && Number.isFinite(paidAt) && paidAt + quoteClockSkewMs < issuedAt)
+    return { ok: false, reason: "payment transaction predates the quote" };
   const instructions = tx.transaction?.message?.instructions || [];
   if (!paymentReferenceMatches(instructions, quote.paymentReference))
     return { ok: false, reason: "payment reference does not match quote" };

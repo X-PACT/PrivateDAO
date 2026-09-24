@@ -2072,6 +2072,7 @@ async function makeQuote(serviceId, jobId, admin = false, currency = "USDC", tar
   // and reach finalized status; payment verification still requires the quote.
   const expiresAt = new Date(Date.now() + (admin ? 3600000 : 1800000));
   const quote = {
+    created_at: now(),
     quote_id: `q_${randomUUID()}`,
     job_id: jobId,
     service_id: serviceId,
@@ -2117,7 +2118,7 @@ async function createExternalJob(serviceId, input = {}) {
   const platformFee = Number(((amount * policy.platform_fee_bps) / 10000).toFixed(6));
   const sellerNet = Number((amount - platformFee).toFixed(6));
   const ata = await treasuryTokenAccount(config);
-  const quote = { quote_id: `q_${randomUUID()}`, job_id: id, service_id: service.id, external: true, seller_agent_id: service.seller_agent_id, seller_service_id: service.service_id, seller_tool: service.tool, amount, amountAtomic: Math.round(amount * 1e6), gross_amount: amount, platform_fee_bps: policy.platform_fee_bps, platform_fee_amount: platformFee, protocol_fee: platformFee, seller_net_amount: sellerNet, seller_amount: sellerNet, currency: service.asset, network: "solana-mainnet-beta", target_network: service.network, mint: config.usdcMint, treasuryOwner: config.treasury, treasuryTokenAccount: ata, recipient: config.treasury, paymentReference: `PDAOJOB:${id}`, expires_at: new Date(Date.now() + 1800000).toISOString(), payment_required: true, seller_payout: service.payout || (await storage.get("Registry", service.seller_agent_id))?.payout || null };
+  const quote = { created_at: now(), quote_id: `q_${randomUUID()}`, job_id: id, service_id: service.id, external: true, seller_agent_id: service.seller_agent_id, seller_service_id: service.service_id, seller_tool: service.tool, amount, amountAtomic: Math.round(amount * 1e6), gross_amount: amount, platform_fee_bps: policy.platform_fee_bps, platform_fee_amount: platformFee, protocol_fee: platformFee, seller_net_amount: sellerNet, seller_amount: sellerNet, currency: service.asset, network: "solana-mainnet-beta", target_network: service.network, mint: config.usdcMint, treasuryOwner: config.treasury, treasuryTokenAccount: ata, recipient: config.treasury, paymentReference: `PDAOJOB:${id}`, expires_at: new Date(Date.now() + 1800000).toISOString(), payment_required: true, seller_payout: service.payout || (await storage.get("Registry", service.seller_agent_id))?.payout || null };
   job.platform_fee_bps = policy.platform_fee_bps;
   await storage.put("Quotes", quote.quote_id, quote, true);
   job.quote_id = quote.quote_id;
