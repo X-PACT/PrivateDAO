@@ -37,6 +37,9 @@ test("human root is HTML while machine surfaces remain available", async () => {
   assert.match(integrationPage.body, /https:\/\/github\.com\/apps\/privatedao-agent-exchange/);
   const sellerPortal = await request("/sellers");
   assert.equal(sellerPortal.statusCode, 200);
+  assert.match(sellerPortal.headers["content-security-policy"], /frame-ancestors 'none'/);
+  assert.equal(sellerPortal.headers["x-content-type-options"], "nosniff");
+  assert.equal(sellerPortal.headers["referrer-policy"], "no-referrer");
   assert.match(sellerPortal.body, /id="listingFee"/);
   assert.match(sellerPortal.body, /id="platformFee"/);
   assert.match(sellerPortal.body, /id="serviceLimit"/);
