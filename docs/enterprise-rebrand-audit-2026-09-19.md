@@ -1,8 +1,8 @@
 # PrivateDAO Enterprise Rebrand Audit
 
-Date: 2026-09-19  
-Branch: `rebrand/enterprise-white`  
-Production: `https://privatedao.org/`  
+Date: 2026-09-19
+Branch: `rebrand/enterprise-white`
+Production: `https://privatedao.org/`
 Latest release: `fd37fdb8b` (website release r40)
 
 This audit records the current evidence-backed state of the 63-point
