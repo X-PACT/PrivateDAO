@@ -476,6 +476,10 @@ test("rate-limit keys cannot be selected by a caller-supplied agent header", () 
     rateLimitKey({ headers: { "x-pdao-agent-id": "attacker-selected" }, requestContext: { identity: { sourceIp: "203.0.113.8" } } }),
     "203.0.113.8",
   );
+  assert.equal(
+    rateLimitKey({ headers: { "x-forwarded-for": "198.51.100.4" } }),
+    "anonymous",
+  );
   assert.equal(rateLimitKey({ headers: { "x-pdao-agent-id": "attacker-selected" } }), "anonymous");
 });
 
