@@ -130,7 +130,7 @@ jobs:
           test -f "$GITHUB_WORKSPACE/package.json"
           for attempt in 1 2 3; do
             rm -rf "$GITHUB_WORKSPACE/node_modules"
-            if npm install --prefix "$GITHUB_WORKSPACE" --package-lock=false --include=dev --include=optional --ignore-scripts --no-audit --no-fund --legacy-peer-deps; then
+            if npm ci --prefix "$GITHUB_WORKSPACE" --include=dev --include=optional --ignore-scripts --no-audit --no-fund --legacy-peer-deps; then
               break
             fi
             if [ "$attempt" -eq 3 ]; then

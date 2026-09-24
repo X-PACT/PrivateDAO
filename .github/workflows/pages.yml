@@ -34,7 +34,7 @@ jobs:
           node-version: "22.21.1"
 
       - name: Install root dependencies
-        run: npm install
+        run: npm ci --ignore-scripts --no-audit --no-fund --legacy-peer-deps
 
       - name: Install web dependencies
         run: npm --prefix apps/web ci --ignore-scripts --no-audit --no-fund --legacy-peer-deps
