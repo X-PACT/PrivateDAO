@@ -8,6 +8,8 @@ run sensitive work without making every detail public. It helps teams define
 rules, run workflows, approve actions, execute through the appropriate
 infrastructure, and share evidence of the outcome.
 
+Live Testnet program: `EP9xE8MJZ6FfyEwLqns6HDdUZBknEa7WGYs1Jzsecuva`
+
 An organization does **not** need to become a Web3 or crypto company to use
 PrivateDAO. A company, institution, financial team, DAO, data provider, or
 Web3 operator can start with a familiar business workflow and add wallets,
@@ -118,6 +120,56 @@ package does not store private keys, contain a wallet signer, or invent a
 successful receipt. A configured network is not considered supported merely
 because it appears in a UI or configuration file; it needs a real adapter and
 independent evidence.
+
+## Review and operating references
+
+The repository keeps security, release, runtime, and operating evidence
+available for reviewers. These documents describe engineering evidence and
+boundaries; they are not claims of incorporation, certification, partnership,
+or mainnet readiness unless the referenced document says so explicitly.
+
+- [Security review](docs/security-review.md)
+- [Threat model](docs/threat-model.md)
+- [Security coverage map](docs/security-coverage-map.md)
+- [Failure modes](docs/failure-modes.md)
+- [Replay analysis](docs/replay-analysis.md)
+- [Live proof](docs/live-proof.md)
+- [Devnet release manifest](docs/devnet-release-manifest.md)
+- [Verification gates](docs/verification-gates.md)
+- [Mainnet readiness](docs/mainnet-readiness.md)
+- [Generated mainnet readiness](docs/mainnet-readiness.generated.md)
+- [Deployment attestation](docs/deployment-attestation.generated.json)
+- [Go-live criteria](docs/go-live-criteria.md)
+- [Operational drillbook](docs/operational-drillbook.md)
+- [Runtime attestation](docs/runtime-attestation.generated.md)
+- [Generated runtime attestation](docs/runtime-attestation.generated.json)
+- [Frontier integrations](docs/frontier-integrations.generated.md)
+- [Frontier guided flow](docs/frontier-guided-flow.md)
+- [Test-wallet live proof](docs/test-wallet-live-proof-v3.generated.md)
+- [Governance hardening](docs/governance-hardening-v3.md)
+- [Settlement hardening](docs/settlement-hardening-v3.md)
+- [Real-device runtime](docs/runtime/real-device.md)
+- [Generated real-device runtime](docs/runtime/real-device.generated.md)
+- [Launch trust packet](docs/launch-trust-packet.generated.md)
+- [Production custody ceremony](docs/production-custody-ceremony.md)
+- [External audit engagement](docs/external-audit-engagement.md)
+- [Pilot onboarding playbook](docs/pilot-onboarding-playbook.md)
+- [Go-live attestation](docs/go-live-attestation.generated.json)
+- [Production operations](docs/production-operations.md)
+- [Fair voting](docs/fair-voting.md)
+- [Wallet runtime](docs/wallet-runtime.md)
+- [Operational evidence](docs/operational-evidence.generated.md)
+- [PDAO attestation](docs/pdao-attestation.generated.json)
+- [Strategy operations](docs/strategy-operations.md)
+- [Reviewer fast path](docs/reviewer-fast-path.md)
+- [Reviewer surface map](docs/reviewer-surface-map.md)
+- [Cryptographic integrity](docs/cryptographic-integrity.md)
+- [Cryptographic manifest](docs/cryptographic-manifest.generated.json)
+
+Reviewer entry points:
+
+- [Judge Mode](https://privatedao.org/proof/?judge=1)
+- [Wallet Diagnostics](https://privatedao.org/diagnostics/)
 
 ## Network status
 
