@@ -427,7 +427,7 @@ pub fn finalize_proposal_state(
 pub fn parse_token_account(info: &AccountInfo, expected_program: &Pubkey) -> Result<TokenAccount> {
     require!(*info.owner == *expected_program, Error::InvalidTokenProgram);
     let mut data: &[u8] = &info.try_borrow_data()?;
-    TokenAccount::try_deserialize_unchecked(&mut data).map_err(Into::into)
+    TokenAccount::try_deserialize_unchecked(&mut data)
 }
 
 pub fn validate_supported_token_program(program_id: &Pubkey) -> Result<()> {
@@ -526,7 +526,7 @@ pub fn validate_confidential_payout_plan(
 }
 
 pub fn validate_refhe_envelope(
-    model_uri: &String,
+    model_uri: &str,
     policy_hash: &[u8; 32],
     input_ciphertext_hash: &[u8; 32],
     evaluation_key_hash: &[u8; 32],

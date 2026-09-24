@@ -1,7 +1,12 @@
+#![allow(unexpected_cfgs)]
+#![allow(clippy::diverging_sub_expression)]
+#![allow(clippy::too_many_arguments)]
+
 use anchor_lang::prelude::*;
 
 declare_id!("GGqZKsdEwH9YVAqWYqjMgCmZ5nNbvGc8RkiMee3S6SdK");
 
+#[cfg(target_os = "solana")]
 const ALT_BN128_PAIRING: u64 = 3;
 const ALT_BN128_PAIRING_ELEMENT_LEN: usize = 192;
 const ALT_BN128_PAIRING_OUTPUT_LEN: usize = 32;
@@ -20,7 +25,7 @@ pub mod zk_groth16_verifier {
         pairing_input: Vec<u8>,
     ) -> Result<()> {
         require!(
-            pairing_input.len() % ALT_BN128_PAIRING_ELEMENT_LEN == 0,
+            pairing_input.len().is_multiple_of(ALT_BN128_PAIRING_ELEMENT_LEN),
             ZkVerifierError::InvalidPairingInputLength
         );
         require!(
@@ -187,10 +192,9 @@ pub enum ZkVerifierError {
 }
 
 fn alt_bn128_pairing_check(input: &[u8]) -> Result<[u8; ALT_BN128_PAIRING_OUTPUT_LEN]> {
-    let mut result = [0u8; ALT_BN128_PAIRING_OUTPUT_LEN];
-
     #[cfg(target_os = "solana")]
     {
+        let mut result = [0u8; ALT_BN128_PAIRING_OUTPUT_LEN];
         let code = unsafe {
             solana_define_syscall::definitions::sol_alt_bn128_group_op(
                 ALT_BN128_PAIRING,
@@ -200,13 +204,12 @@ fn alt_bn128_pairing_check(input: &[u8]) -> Result<[u8; ALT_BN128_PAIRING_OUTPUT
             )
         };
         require!(code == 0, ZkVerifierError::PairingSyscallFailed);
+        Ok(result)
     }
 
     #[cfg(not(target_os = "solana"))]
     {
         let _ = input;
-        result = PAIRING_TRUE;
+        Ok(PAIRING_TRUE)
     }
-
-    Ok(result)
 }

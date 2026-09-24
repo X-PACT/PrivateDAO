@@ -1,4 +1,8 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
+#![allow(unexpected_cfgs)]
+#![allow(clippy::diverging_sub_expression)]
+#![allow(clippy::too_many_arguments)]
+
 use anchor_lang::prelude::*;
 use anchor_spl::token_interface::{Mint, TokenAccount, TokenInterface};
 

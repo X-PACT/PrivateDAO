@@ -1,3 +1,7 @@
+#![allow(unexpected_cfgs)]
+#![allow(clippy::diverging_sub_expression)]
+#![allow(clippy::too_many_arguments)]
+
 use anchor_lang::prelude::*;
 use ephemeral_rollups_sdk::access_control::{
     instructions::{
@@ -152,7 +156,7 @@ pub mod privatedao_auction {
     }
 
     pub fn init_permission(ctx: Context<PermissionContext>) -> Result<()> {
-        validate_permission_accounts(&ctx.accounts)?;
+        validate_permission_accounts(ctx.accounts)?;
         if ctx.accounts.permission.lamports() > 0 {
             return Ok(());
         }
@@ -181,7 +185,7 @@ pub mod privatedao_auction {
     }
 
     pub fn set_private(ctx: Context<PermissionContext>, is_private: bool) -> Result<()> {
-        validate_permission_accounts(&ctx.accounts)?;
+        validate_permission_accounts(ctx.accounts)?;
         let members = if is_private {
             permission_members(&ctx)?
         } else {
@@ -209,7 +213,7 @@ pub mod privatedao_auction {
     }
 
     pub fn close_permission(ctx: Context<PermissionContext>) -> Result<()> {
-        validate_permission_accounts(&ctx.accounts)?;
+        validate_permission_accounts(ctx.accounts)?;
         let config_key = ctx.accounts.config.key();
         let signer_seeds: &[&[u8]] = &[
             SESSION_SEED,
