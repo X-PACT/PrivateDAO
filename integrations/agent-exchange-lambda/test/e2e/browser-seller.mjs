@@ -46,6 +46,9 @@ async function runViewport(viewport, label) {
     assert.equal(await choices.nth(0).isDisabled(), false);
     assert.equal(await choices.nth(1).isDisabled(), true);
     await choices.nth(0).check();
+    await page.setInputFiles("#metadataFile", { name: "services.json", mimeType: "application/json", buffer: Buffer.from(JSON.stringify([{ id: "read", tool: "read", title: "Browser read", price: 0.02, asset: "USDC", network: "solana-mainnet-beta" }])) });
+    assert.match(await page.inputValue("#metadataImport"), /Browser read/);
+    assert.match(await page.locator("#notice").textContent(), /Metadata imported/);
     await page.click("#to3");
     await page.fill("#payoutAddress", payout);
     await page.click("#to4");

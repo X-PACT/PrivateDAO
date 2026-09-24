@@ -42,6 +42,8 @@ test("human root is HTML while machine surfaces remain available", async () => {
   assert.match(sellerPortal.body, /id="serviceLimit"/);
   assert.match(sellerPortal.body, /id="toolPicker"/);
   assert.match(sellerPortal.body, /id="metadataFile"/);
+  assert.match(sellerPortal.body, /id="chooseMetadata"/);
+  assert.match(sellerPortal.body, /metadataFile\.onchange=async/);
   assert.match(sellerPortal.body, /id="rotateCredential"/);
   assert.match(sellerPortal.body, /loadMarketplacePolicy/);
   assert.match(sellerPortal.body, /id="metadataFile"/);

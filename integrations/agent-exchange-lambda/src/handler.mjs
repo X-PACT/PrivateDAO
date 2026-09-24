@@ -3322,7 +3322,11 @@ async function handle(e) {
   }
   if (method === "GET" && (path === "/sellers" || path === "/list-your-agent")) {
     trackFunnel("seller_portal_view");
-    return { statusCode: 200, headers: { "content-type": "text/html; charset=utf-8", "cache-control": "no-store" }, body: sellerPortalPageV5().replace("</style>", "@media(max-width:650px){.shell{padding:10px}}</style>") };
+    const sellerPortal = sellerPortalPageV5()
+      .replace("</style>", "@media(max-width:650px){.shell{padding:10px}}</style>")
+      .replace('<input id="metadataFile" type="file" accept="application/json" hidden>', '<div class="actions" style="margin-top:12px"><button id="chooseMetadata" class="secondary" type="button">Import metadata JSON</button><input id="metadataFile" type="file" accept="application/json" hidden></div>')
+      .replace("</script></body></html>", 'const metadataFile=document.querySelector("#metadataFile"),chooseMetadata=document.querySelector("#chooseMetadata");if(metadataFile&&chooseMetadata){chooseMetadata.onclick=()=>metadataFile.click();metadataFile.onchange=async()=>{const file=metadataFile.files&&metadataFile.files[0];if(!file)return;try{$("metadataImport").value=await file.text();notice("Metadata imported and ready for validation.","success")}catch(error){notice("Metadata import failed: "+(error.message||String(error)),"error")}}}</script></body></html>');
+    return { statusCode: 200, headers: { "content-type": "text/html; charset=utf-8", "cache-control": "no-store" }, body: sellerPortal };
   }
   if (method === "GET" && path === "/marketplace") {
     trackFunnel("marketplace_view");
