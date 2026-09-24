@@ -30,7 +30,7 @@ import {
 import { intelProviderStatus, runIntelInference } from "./intel.mjs";
 import { ibmProviderStatus, runWatsonxInference } from "./ibm.mjs";
 import { githubProviderStatus, repositoryEvidence } from "./github.mjs";
-import { githubAppConfigured, githubGetInstallation, githubInstallationRepositories, githubRepositoryContext, mergeGithubInstallationRepositories, verifyGithubWebhook } from "./github-app.mjs";
+import { githubAppConfigured, githubGetInstallation, githubInstallationRepositories, githubRepositoryContext, mergeGithubInstallationRepositories, publicGithubInstallationRecord, verifyGithubWebhook } from "./github-app.mjs";
 import { mongoProviderStatus, persistEvidence } from "./mongodb.mjs";
 import { assertPublicHttps } from "./url-safety.mjs";
 import { integrationDirectory, serviceDetails, serviceRecommendation, SERVICE_CATEGORIES } from "./exchange-metadata.mjs";
@@ -3251,7 +3251,7 @@ async function handle(e) {
   const githubInstallationRoute = path.match(/^\/api\/github\/installations\/([^/]+)$/);
   if (method === "GET" && githubInstallationRoute) {
     const item = await (await store()).get("Registry", githubRecordId(decodeURIComponent(githubInstallationRoute[1])));
-    return item?.kind === "github_installation" ? json(publicRegistryAgent(item)) : json({ error: "not_found" }, 404);
+    return item?.kind === "github_installation" ? json(publicGithubInstallationRecord(item)) : json({ error: "not_found" }, 404);
   }
   if (method === "POST" && path === "/api/github/context") {
     const installationId = String(body.installation_id || "");

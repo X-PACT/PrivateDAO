@@ -101,6 +101,11 @@ export function mergeGithubInstallationRepositories(existing = [], added = [], r
   return [...repositories.values()].sort((left, right) => String(left.full_name || "").localeCompare(String(right.full_name || "")));
 }
 
+export function publicGithubInstallationRecord(record) {
+  const { connection_token_hash: _connectionTokenHash, repositories, ...safe } = record || {};
+  return { ...safe, repository_count: Array.isArray(repositories) ? repositories.length : 0 };
+}
+
 export async function githubRepositoryContext(config, installationId, repository) {
   const match = String(repository || "").trim().match(/^(?:https:\/\/github\.com\/)?([A-Za-z0-9_.-]{1,100})\/([A-Za-z0-9_.-]{1,100})(?:\/)?$/);
   if (!match) throw Object.assign(new Error("repository must be owner/name or a GitHub repository URL"), { statusCode: 400 });
