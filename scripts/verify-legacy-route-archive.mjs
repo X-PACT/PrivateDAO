@@ -54,8 +54,21 @@ function assertOnlyIndex(relativeDir) {
   }
 }
 
+function assertRedirectSurface(relativeDir, allowedEntries) {
+  const absoluteDir = path.join(root, relativeDir);
+  if (!fs.existsSync(absoluteDir) || !fs.statSync(absoluteDir).isDirectory()) {
+    errors.push(`missing route directory: ${relativeDir}`);
+    return;
+  }
+  const entries = fs.readdirSync(absoluteDir).sort();
+  const expected = [...allowedEntries].sort();
+  if (JSON.stringify(entries) !== JSON.stringify(expected)) {
+    errors.push(`${relativeDir} contains unexpected content: ${entries.join(", ") || "empty"}`);
+  }
+}
+
 requireRedirect("integrations/index.html");
-assertOnlyIndex("integrations");
+assertRedirectSurface("integrations", ["agent-exchange-lambda", "index.html"]);
 requireRedirect("tracks/index.html");
 const trackEntries = fs.readdirSync(path.join(root, "tracks")).sort();
 const expectedTrackEntries = ["index.html", ...archivedTracks].sort();
