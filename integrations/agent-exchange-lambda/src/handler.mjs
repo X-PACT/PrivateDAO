@@ -147,15 +147,20 @@ async function saveMarketplacePolicy(value) {
 function sellerListingState(agent) {
   return agent?.commercial_publication_status === "published" && agent?.listing_fee_status === "paid";
 }
-export function publicRegistryAgent(agent) {
-  if (!agent) return agent;
+const publicSecretKeyPattern = /^(?:owner_token(?:_hash)?|github_access_token(?:_hash)?|connection_token(?:_hash)?|api_key|client_secret|secret|password|private_key|credential(?:_hash)?)$/i;
+function redactPublicValue(value) {
+  if (Array.isArray(value)) return value.map(redactPublicValue);
+  if (!value || typeof value !== "object") return value;
   const safe = {};
-  for (const [key, value] of Object.entries(agent)) {
+  for (const [key, nestedValue] of Object.entries(value)) {
     const normalizedKey = key.replace(/[A-Z]/g, (letter) => `_${letter.toLowerCase()}`);
-    if (/^(?:owner_token(?:_hash)?|github_access_token(?:_hash)?|connection_token(?:_hash)?|api_key|client_secret|secret|password|private_key|credential(?:_hash)?)$/i.test(normalizedKey)) continue;
-    safe[key] = value;
+    if (publicSecretKeyPattern.test(normalizedKey)) continue;
+    safe[key] = redactPublicValue(nestedValue);
   }
   return safe;
+}
+export function publicRegistryAgent(agent) {
+  return agent == null ? agent : redactPublicValue(agent);
 }
 function activeRegistryAgent(agent) {
   return agent && !agent.kind && !agent.retired_at && ["connected", "verified"].includes(agent.status);

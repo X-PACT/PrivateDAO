@@ -764,6 +764,7 @@ test("public seller metadata removes secret-shaped fields including camelCase va
     credentialHash: "secret",
     input_hash: "public-proof",
     result_hash: "public-proof-2",
+    nested: { ownerToken: "nested-secret", metadata: [{ apiKey: "nested-key", label: "safe" }] },
     display_name: "Synthetic Seller",
   });
   for (const key of ["ownerToken", "apiKey", "clientSecret", "privateKey", "credentialHash"]) {
@@ -771,6 +772,7 @@ test("public seller metadata removes secret-shaped fields including camelCase va
   }
   assert.equal(safe.input_hash, "public-proof");
   assert.equal(safe.result_hash, "public-proof-2");
+  assert.deepEqual(safe.nested, { metadata: [{ label: "safe" }] });
   assert.equal(safe.display_name, "Synthetic Seller");
 });
 
