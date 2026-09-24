@@ -3029,7 +3029,7 @@ async function registerMcp(body) {
   const requested = Array.isArray(body.allowedTools) ? body.allowedTools.map(String) : null;
   const discoveredNames = new Set(discovery.tools.map((tool) => tool.name));
   const safeByName = new Map(discovery.tools.map((tool) => [tool.name, tool]));
-  const allowedTools = (requested || defaultMcpAllowlist(discovery.tools)).filter((name) => discoveredNames.has(name) && safeMcpTool(safeByName.get(name)));
+  const allowedTools = (requested || existing?.allowed_tools || defaultMcpAllowlist(discovery.tools)).filter((name) => discoveredNames.has(name) && safeMcpTool(safeByName.get(name)));
   const agent = {
     id,
     name: body.name || discovery.serverInfo.name,
@@ -3247,8 +3247,14 @@ async function invokeAgent(body) {
   const agent = await (await store()).get("Registry", body.agentId);
   if (!agent || !["verified", "connected"].includes(agent.status))
     throw new Error("verified agent required");
-  if (agent.protocol === "MCP" || agent.transport === "streamable-http")
+  if (agent.protocol === "MCP" || agent.transport === "streamable-http") {
+    const service = (agent.commercial_services || []).find((item) => item.status !== "retired" && item.tool === body.tool);
+    if (!sellerListingState(agent) || !service)
+      throw Object.assign(new Error("MCP seller services require a confirmed published marketplace listing"), { statusCode: 403 });
+    if (!service.free && Number(service.price || 0) > 0)
+      throw Object.assign(new Error("paid MCP services require a marketplace quote and finalized payment"), { statusCode: 402 });
     return invokeMcpAgent(agent, body.tool, body.arguments || body.payload || {});
+  }
   const response = await fetch(agent.url, {
     method: "POST",
     redirect: "manual",

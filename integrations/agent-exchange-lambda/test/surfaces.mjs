@@ -419,15 +419,18 @@ test("external seller ownership protects mutations and publishes declared servic
       return new Response(JSON.stringify({ jsonrpc: "2.0", id: payload.id, result: { protocolVersion: "2025-06-18", serverInfo: { name: "Fixture Seller", version: "1.0.0" }, capabilities: { tools: {} } } }), { status: 200, headers: { "content-type": "application/json", "mcp-session-id": "fixture-session" } });
     if (payload.method === "notifications/initialized") return new Response("", { status: 202 });
     if (payload.method === "tools/list")
-      return new Response(JSON.stringify({ jsonrpc: "2.0", id: payload.id, result: { tools: [{ name: "read", description: "Read-only fixture service", inputSchema: { type: "object", properties: {} }, annotations: { readOnlyHint: true } }] } }), { status: 200, headers: { "content-type": "application/json", "mcp-session-id": "fixture-session" } });
+      return new Response(JSON.stringify({ jsonrpc: "2.0", id: payload.id, result: { tools: [{ name: "read", description: "Read-only fixture service", inputSchema: { type: "object", properties: {} }, annotations: { readOnlyHint: true } }, { name: "inspect", description: "Second safe fixture tool", inputSchema: { type: "object", properties: {} }, annotations: { readOnlyHint: true } }] } }), { status: 200, headers: { "content-type": "application/json", "mcp-session-id": "fixture-session" } });
     return new Response(JSON.stringify({ jsonrpc: "2.0", id: payload.id, error: { code: -32601, message: "not supported in fixture" } }), { status: 404, headers: { "content-type": "application/json" } });
   };
   try {
-    const registered = await request("/api/registry/register", "POST", { name: "Fixture Seller", mcp_url: "https://example.com/mcp" });
+    const registered = await request("/api/registry/register", "POST", { name: "Fixture Seller", mcp_url: "https://example.com/mcp", allowed_tools: ["read"] });
     assert.equal(registered.statusCode, 201);
     const record = JSON.parse(registered.body);
     assert.match(record.owner_token, /^[A-Za-z0-9_-]{32}$/);
     let ownerToken = record.owner_token;
+    const directBeforeListing = await request("/api/agents/invoke", "POST", { agentId: record.id, tool: "read", arguments: {} });
+    assert.equal(directBeforeListing.statusCode, 403);
+    assert.match(directBeforeListing.body, /confirmed published marketplace listing/);
     const initialReadiness = await request(`/api/registry/agents/${record.id}/seller-readiness`);
     assert.equal(initialReadiness.statusCode, 200);
     assert.equal(JSON.parse(initialReadiness.body).ready_for_quote, false);
@@ -505,6 +508,7 @@ test("external seller ownership protects mutations and publishes declared servic
     const refreshed = await request(`/api/registry/agents/${record.id}/refresh`, "POST", { owner_token: ownerToken });
     assert.equal(refreshed.statusCode, 200);
     assert.equal(JSON.parse(refreshed.body).id, record.id);
+    assert.deepEqual(JSON.parse(refreshed.body).allowed_tools, ["read"]);
     const rotated = await request(`/api/registry/agents/${record.id}/owner-token/rotate`, "POST", { owner_token: ownerToken });
     assert.equal(rotated.statusCode, 200);
     const rotatedBody = JSON.parse(rotated.body);
@@ -655,6 +659,9 @@ test("external seller paid lifecycle quotes, executes once, and records attribut
     const profile = JSON.parse((await request(`/api/registry/agents/${registeredBody.id}`)).body);
     assert.equal(profile.acceptedAssets[0], "USDC");
     assert.equal(profile.payout.address, treasury);
+    const directPaidInvoke = await request("/api/agents/invoke", "POST", { agentId: registeredBody.id, tool: "read", arguments: { subject: "bypass-attempt" } });
+    assert.equal(directPaidInvoke.statusCode, 402);
+    assert.match(directPaidInvoke.body, /quote and finalized payment/);
     assert.equal(JSON.parse((await request("/mcp", "POST", { jsonrpc: "2.0", id: 2, method: "tools/call", params: { name: "external_services", arguments: {} } })).body).result.isError, undefined);
     const created = await request("/api/external/jobs", "POST", { service_id: service.id, input: { subject: "fixture" } });
     assert.equal(created.statusCode, 201);
