@@ -54,16 +54,16 @@ function secretMatches(supplied, storedHash) {
 const MARKETPLACE_POLICY_ID = "platform_settings_marketplace";
 const SELLER_TERMS_VERSION = "seller-marketplace-v1";
 const DEFAULT_MARKETPLACE_POLICY = {
-  version: 1,
+  version: 2,
   listing_fee_usd: 10,
   platform_fee_bps: 1000,
   included_services: 5,
-  additional_service_fee_usd: 2,
-  max_services_per_seller: 100,
+  additional_service_fee_usd: 0,
+  max_services_per_seller: 5,
   seller_tiers: {
-    free: { label: "Free Seller", max_services: 100, listing_fee_usd: 10, monthly_fee_usd: 0 },
-    basic: { label: "Basic Listing", max_services: 100, listing_fee_usd: 10, monthly_fee_usd: 0 },
-    pro: { label: "Pro Seller", max_services: 100, listing_fee_usd: 10, monthly_fee_usd: 0 },
+    free: { label: "Free Seller", max_services: 5, listing_fee_usd: 10, monthly_fee_usd: 0 },
+    basic: { label: "Basic Listing", max_services: 5, listing_fee_usd: 10, monthly_fee_usd: 0 },
+    pro: { label: "Pro Seller", max_services: 5, listing_fee_usd: 10, monthly_fee_usd: 0 },
   },
   promotion_packages: {
     featured_listing: { label: "Featured Listing", price_usd: 75, duration_days: 30, deliverables: ["Paid featured listing", "Sponsored placement inside Agent Exchange", "Partners spotlight"], channels: ["PrivateDAO Agent Exchange"], availability: "subject_to_capacity", capacity: 10, approval_required: false, third_party_controlled: false },
@@ -80,12 +80,12 @@ function normalizeMarketplacePolicy(value = {}) {
   const packages = source.promotion_packages && typeof source.promotion_packages === "object" ? source.promotion_packages : {};
   const policy = {
     ...DEFAULT_MARKETPLACE_POLICY,
-    version: 1,
+    version: 2,
     listing_fee_usd: boundedNumber(source.listing_fee_usd, 10, 0, 10000),
     platform_fee_bps: Math.floor(boundedNumber(source.platform_fee_bps, 1000, 0, 10000)),
     included_services: Math.floor(boundedNumber(source.included_services, 5, 1, 1000)),
-    additional_service_fee_usd: boundedNumber(source.additional_service_fee_usd, 2, 0.01, 10000),
-    max_services_per_seller: Math.floor(boundedNumber(source.max_services_per_seller, 100, 6, 1000)),
+    additional_service_fee_usd: boundedNumber(source.additional_service_fee_usd, 0, 0, 10000),
+    max_services_per_seller: Math.floor(boundedNumber(source.max_services_per_seller, 5, 1, 1000)),
     seller_tiers: {},
     promotion_packages: {},
   };
@@ -94,7 +94,7 @@ function normalizeMarketplacePolicy(value = {}) {
     policy.seller_tiers[id] = {
       ...defaults,
       label: String(item.label || defaults.label).slice(0, 100),
-      max_services: Math.floor(boundedNumber(item.max_services, defaults.max_services, Math.max(6, policy.included_services + 1), policy.max_services_per_seller)),
+      max_services: Math.floor(boundedNumber(item.max_services, defaults.max_services, 1, policy.max_services_per_seller)),
       listing_fee_usd: boundedNumber(item.listing_fee_usd, policy.listing_fee_usd, 0, 10000),
       monthly_fee_usd: boundedNumber(item.monthly_fee_usd, defaults.monthly_fee_usd, 0, 10000),
     };
@@ -118,10 +118,29 @@ function normalizeMarketplacePolicy(value = {}) {
 }
 async function marketplacePolicy() {
   const saved = await (await store()).get("Registry", MARKETPLACE_POLICY_ID);
+  if (saved?.policy && Number(saved.policy.version || 0) < 2) {
+    const migrated = normalizeMarketplacePolicy({
+      ...saved.policy,
+      version: 2,
+      additional_service_fee_usd: 0,
+      max_services_per_seller: 5,
+      included_services: 5,
+      seller_tiers: Object.fromEntries(Object.entries(saved.policy.seller_tiers || {}).map(([id, tier]) => [id, { ...tier, max_services: 5 }])),
+    });
+    await (await store()).put("Registry", MARKETPLACE_POLICY_ID, { ...saved, policy: migrated, updated_at: now() });
+    return migrated;
+  }
   return normalizeMarketplacePolicy(saved?.policy || { platform_fee_bps: config.marketplaceFeeBps });
 }
 async function saveMarketplacePolicy(value) {
-  const policy = normalizeMarketplacePolicy(value);
+  const current = await marketplacePolicy();
+  const incoming = value && typeof value === "object" ? value : {};
+  const policy = normalizeMarketplacePolicy({
+    ...current,
+    ...incoming,
+    seller_tiers: { ...current.seller_tiers, ...(incoming.seller_tiers || {}) },
+    promotion_packages: { ...current.promotion_packages, ...(incoming.promotion_packages || {}) },
+  });
   await (await store()).put("Registry", MARKETPLACE_POLICY_ID, { id: MARKETPLACE_POLICY_ID, kind: "platform_settings", policy, updated_at: now() });
   return policy;
 }
@@ -1725,6 +1744,13 @@ async function sellerListingQuote(body) {
   const listingId = `seller_listing_${agent.id}`;
   const existing = await storage.get("Listings", listingId);
   const plan = sellerListingPlan(agent, services, policy, existing);
+  if (existing?.payment_status === "paid" && plan.newServices.length && plan.amount === 0) {
+    const nextLedger = [...plan.ledger, ...plan.newServices.map((service) => ({ service_id: service.id, status: "paid", fee_amount: 0, included: true, paid_at: now() }))];
+    const nextListing = { ...existing, service_ids: [...new Set([...(existing.service_ids || []), ...plan.newServices.map((service) => service.id)])], pending_service_ids: [], commercial_services_hash: digest(services), updated_at: now() };
+    await storage.put("Listings", listingId, nextListing);
+    await storage.put("Registry", agent.id, { ...agent, listing_fee_ledger: nextLedger, updated_at: now() });
+    return { listing: nextListing, status: "paid", policy, tier, fee_plan: { ...plan, amount: 0, items: plan.newServices.map((service) => ({ service_id: service.id, fee_amount: 0, included: true })) } };
+  }
   if (existing?.payment_status === "paid" && !plan.newServices.length) return { listing: existing, status: "paid", policy, tier, fee_plan: plan };
   const amount = Number((existing?.payment_status === "paid" ? plan.amount : Number(tier.listing_fee_usd) + plan.items.reduce((sum, item) => sum + Number(item.fee_amount), 0)).toFixed(6));
   const quotedServices = existing?.payment_status === "paid" ? plan.newServices : services;

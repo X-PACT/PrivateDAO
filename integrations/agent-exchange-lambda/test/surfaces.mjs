@@ -593,22 +593,12 @@ test("external seller paid lifecycle quotes, executes once, and records attribut
     const alreadyPaid = await request("/api/marketplace/seller-listings/quote", "POST", { agent_id: registeredBody.id, owner_token: registeredBody.owner_token, tier: "pro", accept_terms: true, terms_version: "seller-marketplace-v1" });
     assert.equal(alreadyPaid.statusCode, 201);
     const additionalQuoteBody = JSON.parse(alreadyPaid.body);
-    assert.equal(additionalQuoteBody.status, "awaiting_payment");
-    assert.equal(additionalQuoteBody.quote.amount, 2);
-    assert.deepEqual(additionalQuoteBody.quote.seller_service_ids, ["read_extra"]);
-    assert.notEqual(additionalQuoteBody.quote.paymentReference, listingQuote.paymentReference);
+    assert.equal(additionalQuoteBody.status, "paid");
+    assert.equal(additionalQuoteBody.quote, undefined);
+    assert.ok(additionalQuoteBody.listing.service_ids.includes("read_extra"));
     const additionalIntent = await request(`/api/marketplace/seller-listings/${listingId}/payment-intent`);
     assert.equal(additionalIntent.statusCode, 200);
-    assert.equal(JSON.parse(additionalIntent.body).status, "awaiting_payment");
-    expectedPaymentReference = additionalQuoteBody.quote.paymentReference;
-    expectedTreasuryTokenAccount = additionalQuoteBody.quote.treasuryTokenAccount;
-    expectedAmountAtomic = String(additionalQuoteBody.quote.amountAtomic);
-    const additionalPaid = await request(`/api/marketplace/seller-listings/${listingId}/payment`, "POST", { quote_id: additionalQuoteBody.quote.quote_id, signature: "5".repeat(88) });
-    assert.equal(additionalPaid.statusCode, 200);
-    assert.equal(JSON.parse(additionalPaid.body).receipt.fee_type, "seller_additional_service_fee");
-    const additionalReplay = await request(`/api/marketplace/seller-listings/${listingId}/payment`, "POST", { quote_id: additionalQuoteBody.quote.quote_id, signature: "5".repeat(88) });
-    assert.equal(additionalReplay.statusCode, 200);
-    assert.equal(JSON.parse(additionalReplay.body).status, "paid");
+    assert.equal(JSON.parse(additionalIntent.body).status, "paid");
     const service = JSON.parse((await request("/api/registry/services")).body).services[0];
     assert.equal(service.price, 0.03);
     assert.equal(service.asset, "USDC");
@@ -683,8 +673,8 @@ test("external seller paid lifecycle quotes, executes once, and records attribut
     const newService = await request(`/api/registry/agents/${registeredBody.id}/services`, "PATCH", { owner_token: registeredBody.owner_token, services: [{ id: "read", tool: "read", title: "Read evidence edited", price: 0.09, asset: "USDC", network: "solana-mainnet-beta" }, { id: "read_extra", tool: "read", title: "Recreated service", price: 0.11, asset: "USDC", network: "solana-mainnet-beta" }, { id: "read_new", tool: "read", title: "New service", price: 0.12, asset: "USDC", network: "solana-mainnet-beta" }], accepted_assets: ["USDC"], payout: { address: treasury, network: "solana-mainnet-beta", asset: "USDC" } });
     assert.equal(newService.statusCode, 200);
     const newServiceQuote = await request("/api/marketplace/seller-listings/quote", "POST", { agent_id: registeredBody.id, owner_token: registeredBody.owner_token, tier: "pro", accept_terms: true, terms_version: "seller-marketplace-v1" });
-    assert.equal(JSON.parse(newServiceQuote.body).quote.amount, 2);
-    assert.deepEqual(JSON.parse(newServiceQuote.body).quote.seller_service_ids, ["read_new"]);
+    assert.equal(JSON.parse(newServiceQuote.body).status, "paid");
+    assert.ok(JSON.parse(newServiceQuote.body).listing.service_ids.includes("read_new"));
   } finally {
     globalThis.fetch = originalFetch;
   }
@@ -710,13 +700,16 @@ test("external seller listing pricing includes five services and bills each addi
     assert.equal(firstPartyBody.seller_net_amount, null);
     const registered = JSON.parse((await request("/api/registry/register", "POST", { name: "Pricing Fixture", mcp_url: "https://example.com/mcp" })).body);
     const serviceSet = (count) => Array.from({ length: count }, (_item, index) => ({ id: `service_${index + 1}`, tool: "read", title: `Service ${index + 1}`, price: 0.01, asset: "USDC", network: "solana-mainnet-beta" }));
-    for (const [count, expected] of [[1, 10], [5, 10], [6, 12], [7, 14], [10, 20]]) {
+    for (const [count, expected] of [[1, 10], [5, 10]]) {
       const updated = await request(`/api/registry/agents/${registered.id}/services`, "PATCH", { owner_token: registered.owner_token, services: serviceSet(count), accepted_assets: ["USDC"], payout: { address: "2BJ4ezxqV9YJXc38D9duKBkdn4su4jE1beKUHwH663sL", network: "solana-mainnet-beta", asset: "USDC" } });
       assert.equal(updated.statusCode, 200, updated.body);
       const quoteResponse = await request("/api/marketplace/seller-listings/quote", "POST", { agent_id: registered.id, owner_token: registered.owner_token, tier: "pro", accept_terms: true, terms_version: "seller-marketplace-v1" });
       assert.equal(quoteResponse.statusCode, 201);
       assert.equal(JSON.parse(quoteResponse.body).quote.amount, expected);
     }
+    const tooMany = await request(`/api/registry/agents/${registered.id}/services`, "PATCH", { owner_token: registered.owner_token, services: serviceSet(6), accepted_assets: ["USDC"], payout: { address: "2BJ4ezxqV9YJXc38D9duKBkdn4su4jE1beKUHwH663sL", network: "solana-mainnet-beta", asset: "USDC" } });
+    assert.equal(tooMany.statusCode, 400);
+    assert.match(tooMany.body, /at most 5 services/);
   } finally {
     globalThis.fetch = originalFetch;
   }
@@ -759,6 +752,8 @@ test("admin marketplace policy is persisted and controls public terms", async ()
     const initial = JSON.parse((await request("/api/marketplace/policy")).body);
     assert.equal(initial.listing_fee_usd, 10);
     assert.equal(initial.platform_fee_bps, 1000);
+    assert.equal(initial.additional_service_fee_usd, 0);
+    assert.equal(initial.max_services_per_seller, 5);
     assert.equal(initial.promotion_packages.featured_listing.price_usd, 75);
     const updated = await request("/api/admin/marketplace/policy", "PATCH", { listing_fee_usd: 12, platform_fee_bps: 900 }, { "x-pdao-admin-smoke": "test-admin-token" });
     assert.equal(updated.statusCode, 200);
@@ -767,6 +762,8 @@ test("admin marketplace policy is persisted and controls public terms", async ()
     const publicPolicy = JSON.parse((await request("/api/marketplace/policy")).body);
     assert.equal(publicPolicy.listing_fee_usd, 12);
     assert.equal(publicPolicy.platform_fee_bps, 900);
+    assert.equal(publicPolicy.additional_service_fee_usd, 0);
+    assert.equal(publicPolicy.promotion_packages.featured_listing.price_usd, 75);
   } finally {
     delete process.env.AGENT_EXCHANGE_TEST_ADMIN_TOKEN;
   }
