@@ -184,6 +184,15 @@ export const SERVICES = Object.freeze([
     output: "receipt integrity result",
   },
   {
+    id: "github.repository",
+    title: "GitHub repository evidence",
+    price: 0.08,
+    currency: "USDC",
+    access: "paid",
+    input: "public GitHub repository URL",
+    output: "repository metadata, provenance and release-relevant evidence",
+  },
+  {
     id: "forensics.trace",
     title: "Solana transaction trace",
     price: 0.75,

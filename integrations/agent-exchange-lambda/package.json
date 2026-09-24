@@ -6,14 +6,18 @@
     "node": ">=22"
   },
   "scripts": {
-    "test:surfaces": "NODE_ENV=test node --test test/surfaces.mjs",
-    "test": "node --test test/*.mjs",
-    "smoke": "node test/smoke.mjs",
+    "test:surfaces": "AGENT_EXCHANGE_ALLOW_TEST_STORAGE=true node --test test/surfaces.mjs",
+    "test:browser": "node test/e2e/browser-seller.mjs",
+    "test": "AGENT_EXCHANGE_ALLOW_TEST_STORAGE=true node --test --test-concurrency=1 test/*.mjs",
+    "smoke": "AGENT_EXCHANGE_ALLOW_TEST_STORAGE=true node test/smoke.mjs",
     "lint": "node --check src/*.mjs test/*.mjs"
   },
   "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.1136.0",
+    "@aws-sdk/lib-dynamodb": "^3.1136.0",
     "@aws-sdk/client-secrets-manager": "^3.1106.0",
-    "@solana/web3.js": "1.98.4"
+    "@solana/web3.js": "1.98.4",
+    "mongodb": "^6.20.0"
   },
   "overrides": {
     "rpc-websockets": "9.3.3",

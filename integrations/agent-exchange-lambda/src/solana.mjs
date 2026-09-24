@@ -107,6 +107,25 @@ export async function verifyPayment(config, payment, quote) {
     return { ok: false, reason: "signature and quote are required" };
   if (typeof payment.signature !== "string" || !solanaSignaturePattern.test(payment.signature))
     return { ok: false, reason: "invalid Solana transaction signature" };
+  try {
+    assertMainnetConfig(config);
+    if (quote.network !== "solana-mainnet-beta")
+      return { ok: false, reason: "payment network does not match Solana Mainnet" };
+    if (quote.currency === "USDC") {
+      if (quote.mint !== config.usdcMint || quote.treasuryOwner !== config.treasury)
+        return { ok: false, reason: "payment treasury or USDC mint does not match production configuration" };
+      const canonicalAta = await derivedTreasuryTokenAccount(config);
+      if (quote.treasuryTokenAccount !== canonicalAta)
+        return { ok: false, reason: "payment treasury token account is not canonical" };
+    } else if (quote.currency === "SOL") {
+      if (quote.recipient !== config.treasury)
+        return { ok: false, reason: "payment recipient does not match production treasury" };
+    } else {
+      return { ok: false, reason: "unsupported payment asset" };
+    }
+  } catch (error) {
+    return { ok: false, reason: "payment configuration is invalid" };
+  }
   let tx;
   try {
     ({ result: tx } = await readRpc(config, "getTransaction", [
@@ -135,21 +154,19 @@ export async function verifyPayment(config, payment, quote) {
   if (!paymentReferenceMatches(instructions, quote.paymentReference))
     return { ok: false, reason: "payment reference does not match quote" };
   const expected = Number(quote.amountAtomic);
-  let tokenAccounts = [];
   if (quote.currency === "USDC") {
     const treasuryOwner = quote.treasuryOwner || quote.recipient;
     if (!treasuryOwner)
       return { ok: false, reason: "quote treasury owner is missing" };
     if (!quote.treasuryTokenAccount)
       return { ok: false, reason: "quote treasury token account is missing" };
-    const accounts = await readRpc(config, "getTokenAccountsByOwner", [
-      treasuryOwner,
-      { mint: quote.mint },
-      { encoding: "jsonParsed" },
+    const account = await readRpc(config, "getAccountInfo", [
+      quote.treasuryTokenAccount,
+      { encoding: "jsonParsed", commitment: "finalized" },
     ]);
-    tokenAccounts = (accounts.result?.value || []).map(
-      (account) => account.pubkey,
-    );
+    const info = account.result?.value?.data?.parsed?.info;
+    if (!info || info.mint !== config.usdcMint || info.owner !== treasuryOwner)
+      return { ok: false, reason: "treasury USDC token account is not initialized or does not match" };
   }
   const match = instructions.some((instruction) => {
     const info = instruction.parsed?.info;
@@ -164,7 +181,6 @@ export async function verifyPayment(config, payment, quote) {
       instruction.program === "spl-token" &&
       ["transfer", "transferChecked"].includes(instruction.parsed?.type) &&
       info.destination === quote.treasuryTokenAccount &&
-      tokenAccounts.includes(info.destination) &&
       Number(info.amount ?? info.tokenAmount?.amount) === expected &&
       (!quote.mint || info.mint === quote.mint)
     );

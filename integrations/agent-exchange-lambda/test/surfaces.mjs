@@ -3,10 +3,11 @@ import test from "node:test";
 import { handler, resetForTests } from "../src/handler.mjs";
 import { SERVICES } from "../src/catalog.mjs";
 
-const request = (path, method = "GET", body) =>
+const request = (path, method = "GET", body, headers = {}) =>
   handler({
     requestContext: { http: { method, path } },
     body: body ? JSON.stringify(body) : undefined,
+    headers,
   });
 
 test("human root is HTML while machine surfaces remain available", async () => {
@@ -16,6 +17,8 @@ test("human root is HTML while machine surfaces remain available", async () => {
   assert.match(root.headers["content-type"], /^text\/html/);
   assert.match(root.body, /PrivateDAO Agents/);
   assert.match(root.body, /Evidence for/);
+  assert.match(root.body, /DISCOVER/);
+  assert.match(root.body, /IBM watsonx/);
   assert.match(root.body, /pdao-language-picker/);
   assert.match(root.body, /href="https:\/\/privatedao\.org\/\?lang=en"/);
   const head = await request("/", "HEAD");
@@ -27,6 +30,46 @@ test("human root is HTML while machine surfaces remain available", async () => {
   }
   const marketplace = await request("/marketplace");
   assert.match(marketplace.body, /https:\/\/privatedao\.org\/\?lang=en/);
+  const integrationPage = await request("/integrations");
+  assert.equal(integrationPage.statusCode, 200);
+  assert.match(integrationPage.body, /Recognize the stack at a glance/);
+  assert.doesNotMatch(integrationPage.body, /https:\/\/github\.com\/marketplace\/privatedao-agent-exchange/);
+  assert.match(integrationPage.body, /https:\/\/github\.com\/apps\/privatedao-agent-exchange/);
+  const sellerPortal = await request("/sellers");
+  assert.equal(sellerPortal.statusCode, 200);
+  assert.match(sellerPortal.body, /id="listingFee"/);
+  assert.match(sellerPortal.body, /id="platformFee"/);
+  assert.match(sellerPortal.body, /id="serviceLimit"/);
+  assert.match(sellerPortal.body, /id="toolPicker"/);
+  assert.match(sellerPortal.body, /id="metadataFile"/);
+  assert.match(sellerPortal.body, /id="rotateCredential"/);
+  assert.match(sellerPortal.body, /loadMarketplacePolicy/);
+  assert.match(sellerPortal.body, /id="metadataFile"/);
+  assert.match(sellerPortal.body, /viewport/);
+  assert.match(sellerPortal.body, /max-width:650px/);
+  assert.match(sellerPortal.body, /Select read-only commercial tools/);
+  assert.match(sellerPortal.body, /api\/marketplace\/policy/);
+  for (const asset of ["ibm-watsonx.svg", "openvino.svg", "mongodb.svg", "github.svg"]) {
+    assert.match(root.body, new RegExp(`/assets/ecosystem/${asset}`), asset);
+    assert.match(marketplace.body, new RegExp(`/assets/ecosystem/${asset}`), asset);
+    assert.match(integrationPage.body, new RegExp(`/assets/ecosystem/${asset}`), asset);
+    const response = await request(`/assets/ecosystem/${asset}`);
+    assert.equal(response.statusCode, 200, asset);
+    assert.match(response.body, /<svg\b/, asset);
+  }
+  for (const surface of [root.body, marketplace.body, integrationPage.body])
+    assert.match(surface, /\/assets\/brand\/privatedao-official-logo\.jpg/);
+  assert.match(integrationPage.body, /\/assets\/brand\/privatedao-official-banner\.jpg/);
+  for (const asset of ["privatedao-official-logo.jpg", "privatedao-official-banner.jpg"]) {
+    const response = await request(`/assets/brand/${asset}`);
+    assert.equal(response.statusCode, 200, asset);
+    assert.equal(response.headers["content-type"], "image/jpeg", asset);
+    assert.equal(response.isBase64Encoded, true, asset);
+  }
+  for (const client of ["openai-knot.svg", "claude-symbol.svg", "grok-symbol.svg", "openclaw-symbol.png"]) {
+    assert.match(root.body, new RegExp(`/assets/clients/${client}`), client);
+    assert.match(marketplace.body, new RegExp(`/assets/clients/${client}`), client);
+  }
   const catalog = JSON.parse((await request("/api/services")).body);
   const tokenService = catalog.services.find((service) => service.id === "token.intelligence");
   assert.equal(tokenService.payment_network, "solana-mainnet-beta");
@@ -87,6 +130,18 @@ test("human root is HTML while machine surfaces remain available", async () => {
     assert.equal(response.statusCode, 200, path);
     assert.match(response.headers["content-type"], /^application\/json/, path);
   }
+  const openapi = JSON.parse((await request("/openapi.json")).body);
+  assert.ok(openapi.paths["/api/admin/registry/agents/{agentId}/owner-token/rotate"]);
+  const providers = await request("/api/providers/status");
+  assert.equal(providers.statusCode, 200);
+  assert.ok(JSON.parse(providers.body).providers.some((provider) => provider.provider === "github"));
+  const integrations = await request("/api/integrations");
+  assert.equal(integrations.statusCode, 200);
+  assert.equal(JSON.parse(integrations.body).integrations.length, 6);
+  const githubService = catalog.services.find((service) => service.id === "github.repository");
+  assert.ok(githubService.input_schema.anyOf.some((branch) => branch.required.includes("repository")));
+  assert.equal((await request("/api/revenue")).statusCode, 404);
+  assert.equal((await request("/api/treasury/status")).statusCode, 404);
 });
 
 test("a free job resolves to a public human receipt and verification page", async () => {
@@ -288,7 +343,7 @@ test("MCP lifecycle, schemas, errors, and network aliases are protocol-safe", as
   assert.equal(cancelled.body, "");
 
   const listed = JSON.parse((await request("/mcp", "POST", { jsonrpc: "2.0", id: 2, method: "tools/list", params: {} })).body).result.tools;
-  assert.equal(listed.length, 11);
+  assert.equal(listed.length, 20);
   for (const tool of listed) {
     assert.equal(tool.inputSchema.type, "object", tool.name);
     assert.ok(tool.inputSchema.properties, tool.name);
@@ -299,6 +354,8 @@ test("MCP lifecycle, schemas, errors, and network aliases are protocol-safe", as
   assert.deepEqual(byName.submit_payment.required, ["job_id", "signature"]);
   assert.deepEqual(byName.register_agent.anyOf, [{ required: ["mcpUrl"] }, { required: ["mcp_url"] }, { required: ["endpoint"] }]);
   assert.deepEqual(byName.logistics_request.required, ["capability"]);
+  for (const toolName of ["exchange_overview", "service_recommendation", "provider_integrations", "payment_guide", "execution_guide"])
+    assert.ok(byName[toolName], `${toolName} discovery tool`);
 
   const safe = JSON.parse((await request("/mcp", "POST", { jsonrpc: "2.0", id: 3, method: "tools/call", params: { name: "verify_basic", arguments: { record: { test: "mcp" } } } })).body);
   assert.equal(safe.result.isError, undefined);
@@ -312,4 +369,404 @@ test("MCP lifecycle, schemas, errors, and network aliases are protocol-safe", as
 
   const match = JSON.parse((await request("/mcp", "POST", { jsonrpc: "2.0", id: 5, method: "tools/call", params: { name: "agent_match", arguments: { capabilities: ["chains"], network: "solana:mainnet-beta" } } })).body);
   assert.equal(match.result.isError, undefined);
+});
+
+test("GitHub App and external seller boundaries fail closed without credentials or declarations", async () => {
+  resetForTests();
+  const setup = await request("/github/setup");
+  assert.equal(setup.statusCode, 200);
+  assert.match(setup.body, /Connect GitHub/);
+  const webhook = await request("/api/github/webhook", "POST", { action: "ping" }, { "x-github-event": "ping" });
+  assert.equal(webhook.statusCode, 503);
+  assert.doesNotMatch(webhook.body, /PRIVATE_KEY|access_token|client_secret/i);
+  const services = JSON.parse((await request("/api/registry/services")).body);
+  assert.deepEqual(services.services, []);
+  const mcp = JSON.parse((await request("/mcp", "POST", { jsonrpc: "2.0", id: 1, method: "tools/list" })).body).result.tools;
+  assert.ok(mcp.some((tool) => tool.name === "external_services"));
+  assert.ok(mcp.some((tool) => tool.name === "seller_update_services"));
+});
+
+test("external seller ownership protects mutations and publishes declared services", async () => {
+  resetForTests();
+  const originalFetch = globalThis.fetch;
+  globalThis.fetch = async (_url, options = {}) => {
+    const payload = JSON.parse(options.body || "{}");
+    if (payload.method === "initialize")
+      return new Response(JSON.stringify({ jsonrpc: "2.0", id: payload.id, result: { protocolVersion: "2025-06-18", serverInfo: { name: "Fixture Seller", version: "1.0.0" }, capabilities: { tools: {} } } }), { status: 200, headers: { "content-type": "application/json", "mcp-session-id": "fixture-session" } });
+    if (payload.method === "notifications/initialized") return new Response("", { status: 202 });
+    if (payload.method === "tools/list")
+      return new Response(JSON.stringify({ jsonrpc: "2.0", id: payload.id, result: { tools: [{ name: "read", description: "Read-only fixture service", inputSchema: { type: "object", properties: {} }, annotations: { readOnlyHint: true } }] } }), { status: 200, headers: { "content-type": "application/json", "mcp-session-id": "fixture-session" } });
+    return new Response(JSON.stringify({ jsonrpc: "2.0", id: payload.id, error: { code: -32601, message: "not supported in fixture" } }), { status: 404, headers: { "content-type": "application/json" } });
+  };
+  try {
+    const registered = await request("/api/registry/register", "POST", { name: "Fixture Seller", mcp_url: "https://example.com/mcp" });
+    assert.equal(registered.statusCode, 201);
+    const record = JSON.parse(registered.body);
+    assert.match(record.owner_token, /^[A-Za-z0-9_-]{32}$/);
+    let ownerToken = record.owner_token;
+    const initialReadiness = await request(`/api/registry/agents/${record.id}/seller-readiness`);
+    assert.equal(initialReadiness.statusCode, 200);
+    assert.equal(JSON.parse(initialReadiness.body).ready_for_quote, false);
+    assert.ok(JSON.parse(initialReadiness.body).missing.includes("commercial_services"));
+    const technicalOnlyListings = JSON.parse((await request("/api/marketplace/listings")).body).listings;
+    assert.equal(technicalOnlyListings.some((listing) => listing.agentId === record.id && listing.external), false);
+
+    const withoutToken = await request("/api/registry/register", "POST", { agent_id: record.id, mcp_url: "https://example.com/mcp", commercial_services: [] });
+    assert.equal(withoutToken.statusCode, 403);
+    assert.match(withoutToken.body, /owner_token is required/);
+
+    const updated = await request("/api/registry/register", "POST", {
+      agent_id: record.id,
+      mcp_url: "https://example.com/mcp",
+      owner_token: ownerToken,
+      commercial_services: [{ id: "read", title: "Read evidence", description: "A declared read-only seller service", price: 0.03, asset: "USDC", network: "solana-mainnet-beta" }],
+      accepted_assets: ["USDC"],
+    });
+    assert.equal(updated.statusCode, 201);
+    assert.equal(JSON.parse(updated.body).commercial_services[0].id, "read");
+    const preview = await request("/api/seller/metadata/preview", "POST", {
+      mcp_url: "https://example.com/mcp",
+      commercial_services: [{ id: "read", tool: "read", price: 0.03, asset: "USDC", network: "solana-mainnet-beta" }],
+      accepted_assets: ["USDC"],
+      payout: { address: "2BJ4ezxqV9YJXc38D9duKBkdn4su4jE1beKUHwH663sL", network: "solana-mainnet-beta", asset: "USDC" },
+    });
+    assert.equal(preview.statusCode, 200);
+    assert.equal(JSON.parse(preview.body).status, "ready_for_registration");
+    const invalidTool = await request("/api/seller/metadata/preview", "POST", {
+      mcp_url: "https://example.com/mcp",
+      commercial_services: [{ id: "missing", tool: "missing", price: 0.03, asset: "USDC", network: "solana-mainnet-beta" }],
+      accepted_assets: ["USDC"],
+      payout: { address: "2BJ4ezxqV9YJXc38D9duKBkdn4su4jE1beKUHwH663sL", network: "solana-mainnet-beta", asset: "USDC" },
+    });
+    assert.equal(invalidTool.statusCode, 200);
+    assert.match(invalidTool.body, /tool was not returned by tools\/list/);
+    const invalidPayout = await request("/api/seller/metadata/preview", "POST", {
+      mcp_url: "https://example.com/mcp",
+      commercial_services: [{ id: "read", tool: "read", price: 0.03, asset: "USDC", network: "solana-mainnet-beta" }],
+      accepted_assets: ["USDC"],
+      payout: { address: "2BJ4ezxqV9YJXc38D9duKBkdn4su4jE1beKUHwH663sL", network: "unsupported-network", asset: "USDC" },
+    });
+    assert.equal(invalidPayout.statusCode, 400);
+    assert.match(invalidPayout.body, /payout network is unsupported/);
+    const configuredReadiness = await request(`/api/registry/agents/${record.id}/seller-readiness`);
+    assert.equal(configuredReadiness.statusCode, 200);
+    assert.equal(JSON.parse(configuredReadiness.body).ready_for_quote, false);
+    assert.ok(JSON.parse(configuredReadiness.body).missing.includes("payout"));
+
+  const services = JSON.parse((await request("/api/registry/services")).body).services;
+  assert.deepEqual(services, []);
+  const missingTerms = await request("/api/marketplace/seller-listings/quote", "POST", { agent_id: record.id, owner_token: ownerToken, tier: "pro" });
+  assert.equal(missingTerms.statusCode, 400);
+  const listingQuote = await request("/api/marketplace/seller-listings/quote", "POST", { agent_id: record.id, owner_token: ownerToken, tier: "pro", accept_terms: true, terms_version: "seller-marketplace-v1" });
+  assert.equal(listingQuote.statusCode, 201);
+  const listingQuoteBody = JSON.parse(listingQuote.body);
+  assert.equal(listingQuoteBody.quote.amount, 10);
+  assert.equal(listingQuoteBody.status, "awaiting_payment");
+  const changedAfterQuote = await request(`/api/registry/agents/${record.id}/services`, "PATCH", { owner_token: ownerToken, services: [{ id: "read", title: "Read evidence v2", description: "Changed after quote", price: 0.03, asset: "USDC", network: "solana-mainnet-beta" }], accepted_assets: ["USDC"] });
+  assert.equal(changedAfterQuote.statusCode, 200);
+  const staleListingPayment = await request(`/api/marketplace/seller-listings/${listingQuoteBody.listing.id}/payment`, "POST", { quote_id: listingQuoteBody.quote.quote_id, signature: "3".repeat(88) });
+  assert.equal(staleListingPayment.statusCode, 409);
+  assert.match(staleListingPayment.body, /services changed after this listing quote/);
+  const listings = JSON.parse((await request("/api/marketplace/listings")).body).listings;
+  assert.equal(listings.some((listing) => listing.agentId === record.id && listing.externalSeller), false);
+
+    const invalid = await request("/api/registry/register", "POST", { agent_id: record.id, mcp_url: "https://example.com/mcp", owner_token: "invalid-token-000000" });
+    assert.equal(invalid.statusCode, 403);
+    assert.match(invalid.body, /seller ownership token is invalid/);
+
+    const refreshWithoutToken = await request(`/api/registry/agents/${record.id}/refresh`, "POST", {});
+    assert.equal(refreshWithoutToken.statusCode, 403);
+    assert.match(refreshWithoutToken.body, /valid owner_token is required/);
+
+    const refreshed = await request(`/api/registry/agents/${record.id}/refresh`, "POST", { owner_token: ownerToken });
+    assert.equal(refreshed.statusCode, 200);
+    assert.equal(JSON.parse(refreshed.body).id, record.id);
+    const rotated = await request(`/api/registry/agents/${record.id}/owner-token/rotate`, "POST", { owner_token: ownerToken });
+    assert.equal(rotated.statusCode, 200);
+    const rotatedBody = JSON.parse(rotated.body);
+    assert.match(rotatedBody.owner_token, /^[A-Za-z0-9_-]{32}$/);
+    const oldAfterRotation = await request(`/api/registry/agents/${record.id}/services`, "PATCH", { owner_token: ownerToken, services: [] });
+    assert.equal(oldAfterRotation.statusCode, 403);
+    ownerToken = rotatedBody.owner_token;
+    const rotatedUpdate = await request(`/api/registry/agents/${record.id}/services`, "PATCH", { owner_token: ownerToken, services: [] });
+    assert.equal(rotatedUpdate.statusCode, 200);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
+
+test("external seller paid lifecycle quotes, executes once, and records attribution", async () => {
+  resetForTests();
+  const sellerPortal = await request("/sellers");
+  assert.equal(sellerPortal.statusCode, 200);
+  assert.match(sellerPortal.body, /Verify MCP and preview services/);
+  assert.match(sellerPortal.body, /Select read-only commercial tools/);
+  assert.match(sellerPortal.body, /Pay listing fee with wallet/);
+  const originalFetch = globalThis.fetch;
+  const treasury = "2BJ4ezxqV9YJXc38D9duKBkdn4su4jE1beKUHwH663sL";
+  const mint = "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v";
+  const paymentSignature = "1".repeat(88);
+  const listingPaymentSignature = "2".repeat(88);
+  let expectedPaymentReference = "";
+  let expectedTreasuryTokenAccount = "";
+  let expectedAmountAtomic = "30000";
+  let mcpCalls = 0;
+  globalThis.fetch = async (url, options = {}) => {
+    const target = String(url);
+    if (target === "https://example.com/mcp") {
+      const payload = JSON.parse(options.body || "{}");
+      if (payload.method === "initialize")
+        return new Response(JSON.stringify({ jsonrpc: "2.0", id: payload.id, result: { protocolVersion: "2025-06-18", serverInfo: { name: "Fixture Seller", version: "1.0.0" }, capabilities: { tools: {} } } }), { status: 200, headers: { "content-type": "application/json", "mcp-session-id": "fixture-session" } });
+      if (payload.method === "notifications/initialized") return new Response("", { status: 202 });
+      if (payload.method === "tools/list")
+        return new Response(JSON.stringify({ jsonrpc: "2.0", id: payload.id, result: { tools: [
+          { name: "read", description: "Read-only fixture service", inputSchema: { type: "object", properties: {} }, annotations: { readOnlyHint: true } },
+          { name: "build_transfer", description: "Must never be enabled", inputSchema: { type: "object", properties: {} }, annotations: { readOnlyHint: true } },
+        ] } }), { status: 200, headers: { "content-type": "application/json", "mcp-session-id": "fixture-session" } });
+      if (payload.method === "tools/call") {
+        mcpCalls += 1;
+        return new Response(JSON.stringify({ jsonrpc: "2.0", id: payload.id, result: { content: [{ type: "text", text: "fixture evidence" }] } }), { status: 200, headers: { "content-type": "application/json", "mcp-session-id": "fixture-session" } });
+      }
+    }
+    const rpc = JSON.parse(options.body || "{}");
+    if (rpc.method === "getTransaction") {
+      return new Response(JSON.stringify({ jsonrpc: "2.0", id: rpc.id, result: { slot: 1, blockTime: Math.floor(Date.now() / 1000), meta: { err: null }, transaction: { message: { instructions: [
+        { program: "spl-memo", parsed: expectedPaymentReference },
+        { program: "spl-token", parsed: { type: "transferChecked", info: { destination: expectedTreasuryTokenAccount, amount: expectedAmountAtomic, mint } } },
+      ] } } } }), { status: 200, headers: { "content-type": "application/json" } });
+    }
+    if (rpc.method === "getAccountInfo")
+      return new Response(JSON.stringify({ jsonrpc: "2.0", id: rpc.id, result: { value: { data: { parsed: { info: { owner: treasury, mint } } } } } }), { status: 200, headers: { "content-type": "application/json" } });
+    if (rpc.method === "getTokenAccountsByOwner")
+      return new Response(JSON.stringify({ jsonrpc: "2.0", id: rpc.id, result: { value: [{ pubkey: expectedTreasuryTokenAccount }] } }), { status: 200, headers: { "content-type": "application/json" } });
+    throw new Error(`unexpected fixture request: ${target}`);
+  };
+  try {
+    const registered = await request("/api/registry/register", "POST", { name: "Fixture Seller", mcp_url: "https://example.com/mcp" });
+    const registeredBody = JSON.parse(registered.body);
+    const updated = await request(`/api/registry/agents/${registeredBody.id}/services`, "PATCH", {
+      owner_token: registeredBody.owner_token,
+      services: [{ id: "read", tool: "read", title: "Read evidence", description: "Paid read-only seller service", price: 0.03, asset: "USDC", network: "solana-mainnet-beta" }],
+      accepted_assets: ["USDC"],
+      payout: { address: treasury, network: "solana-mainnet-beta", asset: "USDC" },
+    });
+    assert.equal(updated.statusCode, 200);
+    const listingQuoteResponse = await request("/api/marketplace/seller-listings/quote", "POST", { agent_id: registeredBody.id, owner_token: registeredBody.owner_token, tier: "pro", accept_terms: true, terms_version: "seller-marketplace-v1" });
+    assert.equal(listingQuoteResponse.statusCode, 201);
+    const listingQuote = JSON.parse(listingQuoteResponse.body).quote;
+    expectedPaymentReference = listingQuote.paymentReference;
+    expectedTreasuryTokenAccount = listingQuote.treasuryTokenAccount;
+    expectedAmountAtomic = String(listingQuote.amountAtomic);
+    const listingId = JSON.parse(listingQuoteResponse.body).listing.id;
+    const listed = await request(`/api/marketplace/seller-listings/${listingId}/payment`, "POST", { quote_id: listingQuote.quote_id, signature: listingPaymentSignature });
+    assert.equal(listed.statusCode, 200);
+    assert.equal(JSON.parse(listed.body).receipt.status, "VERIFIED");
+    assert.equal(JSON.parse(listed.body).listing.commercial_publication_status, "eligible");
+    const notYetPublic = JSON.parse((await request("/api/marketplace/listings")).body).listings;
+    assert.equal(notYetPublic.some((item) => item.agentId === registeredBody.id), false);
+    const listingReplay = await request(`/api/marketplace/seller-listings/${listingId}/payment`, "POST", { quote_id: listingQuote.quote_id, signature: listingPaymentSignature });
+    assert.equal(listingReplay.statusCode, 200);
+    assert.equal(JSON.parse(listingReplay.body).status, "paid");
+    const dashboard = await request(`/api/seller/dashboard/${registeredBody.id}`, "GET", undefined, { "x-pdao-owner-token": registeredBody.owner_token });
+    assert.equal(dashboard.statusCode, 200);
+    assert.equal(JSON.parse(dashboard.body).listing.payment_status, "paid");
+    const listingIntent = await request(`/api/marketplace/seller-listings/${listingId}/payment-intent`);
+    assert.equal(listingIntent.statusCode, 200);
+    assert.equal(JSON.parse(listingIntent.body).status, "paid");
+    const unpublished = await request(`/api/registry/agents/${registeredBody.id}/unpublish`, "POST", { owner_token: registeredBody.owner_token });
+    assert.equal(unpublished.statusCode, 200);
+    assert.equal(JSON.parse(unpublished.body).commercial_publication_status, "unpublished");
+    const payoutCleared = await request(`/api/registry/agents/${registeredBody.id}/services`, "PATCH", { owner_token: registeredBody.owner_token, services: [{ id: "read", tool: "read", title: "Read evidence", description: "Paid read-only seller service", price: 0.03, asset: "USDC", network: "solana-mainnet-beta" }], accepted_assets: ["USDC"], payout: null });
+    assert.equal(payoutCleared.statusCode, 200);
+    const blockedWithoutPayout = await request(`/api/registry/agents/${registeredBody.id}/publish`, "POST", { owner_token: registeredBody.owner_token });
+    assert.equal(blockedWithoutPayout.statusCode, 400);
+    assert.match(blockedWithoutPayout.body, /payout configuration is required/);
+    const payoutRestored = await request(`/api/registry/agents/${registeredBody.id}/services`, "PATCH", { owner_token: registeredBody.owner_token, services: [{ id: "read", tool: "read", title: "Read evidence", description: "Paid read-only seller service", price: 0.03, asset: "USDC", network: "solana-mainnet-beta" }], accepted_assets: ["USDC"], payout: { address: treasury, network: "solana-mainnet-beta", asset: "USDC" } });
+    assert.equal(payoutRestored.statusCode, 200);
+    const republished = await request(`/api/registry/agents/${registeredBody.id}/publish`, "POST", { owner_token: registeredBody.owner_token });
+    assert.equal(republished.statusCode, 200);
+    assert.equal(JSON.parse(republished.body).commercial_publication_status, "published");
+    const addedService = await request(`/api/registry/agents/${registeredBody.id}/services`, "PATCH", { owner_token: registeredBody.owner_token, services: [{ id: "read", tool: "read", title: "Read evidence", description: "Paid read-only seller service", price: 0.03, asset: "USDC", network: "solana-mainnet-beta" }, { id: "read_extra", tool: "read", title: "Read evidence extra", description: "Second declared service", price: 0.04, asset: "USDC", network: "solana-mainnet-beta" }], accepted_assets: ["USDC"], payout: { address: treasury, network: "solana-mainnet-beta", asset: "USDC" } });
+    assert.equal(addedService.statusCode, 200);
+    assert.equal(JSON.parse(addedService.body).listing_fee_status, "paid");
+    assert.equal(JSON.parse(addedService.body).commercial_publication_status, "published");
+    const alreadyPaid = await request("/api/marketplace/seller-listings/quote", "POST", { agent_id: registeredBody.id, owner_token: registeredBody.owner_token, tier: "pro", accept_terms: true, terms_version: "seller-marketplace-v1" });
+    assert.equal(alreadyPaid.statusCode, 201);
+    const additionalQuoteBody = JSON.parse(alreadyPaid.body);
+    assert.equal(additionalQuoteBody.status, "awaiting_payment");
+    assert.equal(additionalQuoteBody.quote.amount, 2);
+    assert.deepEqual(additionalQuoteBody.quote.seller_service_ids, ["read_extra"]);
+    const additionalIntent = await request(`/api/marketplace/seller-listings/${listingId}/payment-intent`);
+    assert.equal(additionalIntent.statusCode, 200);
+    assert.equal(JSON.parse(additionalIntent.body).status, "awaiting_payment");
+    expectedPaymentReference = additionalQuoteBody.quote.paymentReference;
+    expectedTreasuryTokenAccount = additionalQuoteBody.quote.treasuryTokenAccount;
+    expectedAmountAtomic = String(additionalQuoteBody.quote.amountAtomic);
+    const additionalPaid = await request(`/api/marketplace/seller-listings/${listingId}/payment`, "POST", { quote_id: additionalQuoteBody.quote.quote_id, signature: "5".repeat(88) });
+    assert.equal(additionalPaid.statusCode, 200);
+    assert.equal(JSON.parse(additionalPaid.body).receipt.fee_type, "seller_additional_service_fee");
+    const additionalReplay = await request(`/api/marketplace/seller-listings/${listingId}/payment`, "POST", { quote_id: additionalQuoteBody.quote.quote_id, signature: "5".repeat(88) });
+    assert.equal(additionalReplay.statusCode, 200);
+    assert.equal(JSON.parse(additionalReplay.body).status, "paid");
+    const service = JSON.parse((await request("/api/registry/services")).body).services[0];
+    assert.equal(service.price, 0.03);
+    assert.equal(service.asset, "USDC");
+    assert.equal(service.seller_agent_id, registeredBody.id);
+    const profile = JSON.parse((await request(`/api/registry/agents/${registeredBody.id}`)).body);
+    assert.equal(profile.acceptedAssets[0], "USDC");
+    assert.equal(profile.payout.address, treasury);
+    assert.equal(JSON.parse((await request("/mcp", "POST", { jsonrpc: "2.0", id: 2, method: "tools/call", params: { name: "external_services", arguments: {} } })).body).result.isError, undefined);
+    const created = await request("/api/external/jobs", "POST", { service_id: service.id, input: { subject: "fixture" } });
+    assert.equal(created.statusCode, 201);
+    const paymentIntent = JSON.parse(created.body).payment_intent;
+    assert.equal(JSON.parse(created.body).status, "awaiting_payment");
+    assert.equal(paymentIntent.amount, "0.030000");
+    assert.equal(paymentIntent.network, "solana-mainnet-beta");
+    assert.equal(paymentIntent.target_network, "solana-mainnet-beta");
+    expectedPaymentReference = paymentIntent.paymentReference;
+    expectedTreasuryTokenAccount = paymentIntent.treasuryTokenAccount;
+    expectedAmountAtomic = String(Math.round(0.03 * 1e6));
+
+    const paid = await request(`/api/external/jobs/${paymentIntent.jobId}/payment`, "POST", { signature: paymentSignature });
+    assert.equal(paid.statusCode, 200, paid.body);
+    const paidBody = JSON.parse(paid.body);
+    assert.equal(paidBody.status, "completed");
+    assert.equal(paidBody.receipt.status, "VERIFIED");
+    assert.equal(paidBody.receipt.seller_agent_id, registeredBody.id);
+    assert.equal(paidBody.receipt.seller_service_id, "read");
+    assert.equal(paidBody.receipt.seller_settlement.status, "payable_pending_admin_settlement");
+    assert.equal(paidBody.receipt.seller_settlement.gross_amount, 0.03);
+    assert.equal(paidBody.receipt.seller_settlement.protocol_fee, 0.003);
+    assert.equal(paidBody.receipt.seller_settlement.platform_fee_amount, 0.003);
+    assert.equal(paidBody.receipt.seller_settlement.platform_fee_bps, 1000);
+    assert.equal(paidBody.receipt.seller_settlement.seller_amount, 0.027);
+    assert.equal(paidBody.receipt.seller_net_amount, 0.027);
+    assert.equal(paidBody.receipt.payment_signature, paymentSignature);
+    assert.equal(mcpCalls, 1);
+    const replay = await request(`/api/external/jobs/${paymentIntent.jobId}/payment`, "POST", { signature: paymentSignature });
+    assert.equal(replay.statusCode, 200);
+    assert.equal(JSON.parse(replay.body).status, "completed");
+    assert.equal(mcpCalls, 1);
+
+    const concurrentJob = await request("/api/external/jobs", "POST", { service_id: service.id, input: { subject: "concurrent-fixture" } });
+    const concurrentIntent = JSON.parse(concurrentJob.body).payment_intent;
+    expectedPaymentReference = concurrentIntent.paymentReference;
+    expectedTreasuryTokenAccount = concurrentIntent.treasuryTokenAccount;
+    expectedAmountAtomic = String(Math.round(0.03 * 1e6));
+    const concurrentPayments = await Promise.all(Array.from({ length: 3 }, () => request(`/api/external/jobs/${concurrentIntent.jobId}/payment`, "POST", { signature: "4".repeat(88) })));
+    assert.ok(concurrentPayments.every((response) => [200, 202].includes(response.statusCode)));
+    assert.equal(mcpCalls, 2);
+
+    const promotionQuoteResponse = await request("/api/marketplace/promotions/quote", "POST", { agent_id: registeredBody.id, owner_token: registeredBody.owner_token, package_id: "ecosystem_campaign" });
+    assert.equal(promotionQuoteResponse.statusCode, 201);
+    const promotionQuote = JSON.parse(promotionQuoteResponse.body).quote;
+    assert.equal(promotionQuote.amount, 250);
+    expectedPaymentReference = promotionQuote.paymentReference;
+    expectedAmountAtomic = String(promotionQuote.amountAtomic);
+    const promotionPayment = await request(`/api/partnerships/${JSON.parse(promotionQuoteResponse.body).campaign.id}/payment`, "POST", { quoteId: promotionQuote.quote_id, signature: "3".repeat(88) });
+    assert.equal(promotionPayment.statusCode, 200);
+    const promotionReceipt = JSON.parse(promotionPayment.body).receipt;
+    assert.equal(promotionReceipt.status, "VERIFIED");
+    assert.equal(promotionReceipt.promotion_package, "ecosystem_campaign");
+    assert.equal(promotionReceipt.gross_amount, 250);
+    const edited = await request(`/api/registry/agents/${registeredBody.id}/services`, "PATCH", { owner_token: registeredBody.owner_token, services: [{ id: "read", tool: "read", title: "Read evidence edited", description: "Edited metadata", price: 0.09, asset: "USDC", network: "solana-mainnet-beta" }, { id: "read_extra", tool: "read", title: "Renamed service", description: "Renamed metadata", price: 0.11, asset: "USDC", network: "solana-mainnet-beta" }], accepted_assets: ["USDC"], payout: { address: treasury, network: "solana-mainnet-beta", asset: "USDC" } });
+    assert.equal(edited.statusCode, 200);
+    const editedQuote = await request("/api/marketplace/seller-listings/quote", "POST", { agent_id: registeredBody.id, owner_token: registeredBody.owner_token, tier: "pro", accept_terms: true, terms_version: "seller-marketplace-v1" });
+    assert.equal(JSON.parse(editedQuote.body).status, "paid");
+    const removed = await request(`/api/registry/agents/${registeredBody.id}/services`, "PATCH", { owner_token: registeredBody.owner_token, services: [{ id: "read", tool: "read", title: "Read evidence edited", price: 0.09, asset: "USDC", network: "solana-mainnet-beta" }], accepted_assets: ["USDC"], payout: { address: treasury, network: "solana-mainnet-beta", asset: "USDC" } });
+    assert.equal(removed.statusCode, 200);
+    const recreated = await request(`/api/registry/agents/${registeredBody.id}/services`, "PATCH", { owner_token: registeredBody.owner_token, services: [{ id: "read", tool: "read", title: "Read evidence edited", price: 0.09, asset: "USDC", network: "solana-mainnet-beta" }, { id: "read_extra", tool: "read", title: "Recreated service", price: 0.11, asset: "USDC", network: "solana-mainnet-beta" }], accepted_assets: ["USDC"], payout: { address: treasury, network: "solana-mainnet-beta", asset: "USDC" } });
+    assert.equal(recreated.statusCode, 200);
+    const recreatedQuote = await request("/api/marketplace/seller-listings/quote", "POST", { agent_id: registeredBody.id, owner_token: registeredBody.owner_token, tier: "pro", accept_terms: true, terms_version: "seller-marketplace-v1" });
+    assert.equal(JSON.parse(recreatedQuote.body).status, "paid");
+    const newService = await request(`/api/registry/agents/${registeredBody.id}/services`, "PATCH", { owner_token: registeredBody.owner_token, services: [{ id: "read", tool: "read", title: "Read evidence edited", price: 0.09, asset: "USDC", network: "solana-mainnet-beta" }, { id: "read_extra", tool: "read", title: "Recreated service", price: 0.11, asset: "USDC", network: "solana-mainnet-beta" }, { id: "read_new", tool: "read", title: "New service", price: 0.12, asset: "USDC", network: "solana-mainnet-beta" }], accepted_assets: ["USDC"], payout: { address: treasury, network: "solana-mainnet-beta", asset: "USDC" } });
+    assert.equal(newService.statusCode, 200);
+    const newServiceQuote = await request("/api/marketplace/seller-listings/quote", "POST", { agent_id: registeredBody.id, owner_token: registeredBody.owner_token, tier: "pro", accept_terms: true, terms_version: "seller-marketplace-v1" });
+    assert.equal(JSON.parse(newServiceQuote.body).quote.amount, 2);
+    assert.deepEqual(JSON.parse(newServiceQuote.body).quote.seller_service_ids, ["read_new"]);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
+
+test("external seller listing pricing includes five services and bills each additional service once", async () => {
+  resetForTests();
+  const originalFetch = globalThis.fetch;
+  globalThis.fetch = async (_url, options = {}) => {
+    const payload = JSON.parse(options.body || "{}");
+    if (payload.method === "initialize") return new Response(JSON.stringify({ jsonrpc: "2.0", id: payload.id, result: { protocolVersion: "2025-06-18", serverInfo: { name: "Pricing Fixture", version: "1.0.0" }, capabilities: { tools: {} } } }), { status: 200, headers: { "content-type": "application/json", "mcp-session-id": "pricing-session" } });
+    if (payload.method === "notifications/initialized") return new Response("", { status: 202 });
+    if (payload.method === "tools/list") return new Response(JSON.stringify({ jsonrpc: "2.0", id: payload.id, result: { tools: [{ name: "read", description: "Safe fixture", inputSchema: { type: "object" }, annotations: { readOnlyHint: true } }] } }), { status: 200, headers: { "content-type": "application/json", "mcp-session-id": "pricing-session" } });
+    if (payload.method === "getAccountInfo") return new Response(JSON.stringify({ jsonrpc: "2.0", id: payload.id, result: { value: null } }), { status: 200 });
+    throw new Error(`unexpected pricing fixture request: ${payload.method}`);
+  };
+  try {
+    const firstPartyQuote = await request("/api/payments/quote", "POST", { service_id: "verify.deep", job_id: "first_party_fixture" });
+    assert.equal(firstPartyQuote.statusCode, 200);
+    const firstPartyBody = JSON.parse(firstPartyQuote.body);
+    assert.equal(firstPartyBody.revenue_class, "first_party_service");
+    assert.equal(firstPartyBody.platform_fee_bps, 0);
+    assert.equal(firstPartyBody.seller_net_amount, null);
+    const registered = JSON.parse((await request("/api/registry/register", "POST", { name: "Pricing Fixture", mcp_url: "https://example.com/mcp" })).body);
+    const serviceSet = (count) => Array.from({ length: count }, (_item, index) => ({ id: `service_${index + 1}`, tool: "read", title: `Service ${index + 1}`, price: 0.01, asset: "USDC", network: "solana-mainnet-beta" }));
+    for (const [count, expected] of [[1, 10], [5, 10], [6, 12], [7, 14], [10, 20]]) {
+      const updated = await request(`/api/registry/agents/${registered.id}/services`, "PATCH", { owner_token: registered.owner_token, services: serviceSet(count), accepted_assets: ["USDC"], payout: { address: "2BJ4ezxqV9YJXc38D9duKBkdn4su4jE1beKUHwH663sL", network: "solana-mainnet-beta", asset: "USDC" } });
+      assert.equal(updated.statusCode, 200, updated.body);
+      const quoteResponse = await request("/api/marketplace/seller-listings/quote", "POST", { agent_id: registered.id, owner_token: registered.owner_token, tier: "pro", accept_terms: true, terms_version: "seller-marketplace-v1" });
+      assert.equal(quoteResponse.statusCode, 201);
+      assert.equal(JSON.parse(quoteResponse.body).quote.amount, expected);
+    }
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
+
+test("external seller ownership is isolated between synthetic sellers", async () => {
+  resetForTests();
+  const originalFetch = globalThis.fetch;
+  globalThis.fetch = async (url, options = {}) => {
+    const payload = JSON.parse(options.body || "{}");
+    if (payload.method === "initialize")
+      return new Response(JSON.stringify({ jsonrpc: "2.0", id: payload.id, result: { protocolVersion: "2025-06-18", serverInfo: { name: String(url).includes("seller-b") ? "Seller B" : "Seller A", version: "1.0.0" }, capabilities: { tools: {} } } }), { status: 200, headers: { "content-type": "application/json", "mcp-session-id": "isolated-session" } });
+    if (payload.method === "notifications/initialized") return new Response("", { status: 202 });
+    if (payload.method === "tools/list")
+      return new Response(JSON.stringify({ jsonrpc: "2.0", id: payload.id, result: { tools: [{ name: "read", description: "Synthetic read-only tool", inputSchema: { type: "object" }, annotations: { readOnlyHint: true } }] } }), { status: 200, headers: { "content-type": "application/json", "mcp-session-id": "isolated-session" } });
+    return new Response(JSON.stringify({ jsonrpc: "2.0", id: payload.id, error: { code: -32601, message: "not supported" } }), { status: 404, headers: { "content-type": "application/json" } });
+  };
+  try {
+    const first = JSON.parse((await request("/api/registry/register", "POST", { name: "Seller A", mcp_url: "https://example.com/mcp/seller-a" })).body);
+    const second = JSON.parse((await request("/api/registry/register", "POST", { name: "Seller B", mcp_url: "https://example.com/mcp/seller-b" })).body);
+    assert.notEqual(first.id, second.id);
+    const publicSecond = JSON.parse((await request(`/api/registry/agents/${second.id}`)).body);
+    assert.equal(Object.hasOwn(publicSecond, "owner_token_hash"), false);
+    assert.equal(Object.hasOwn(publicSecond, "owner_token"), false);
+    const crossMutation = await request(`/api/registry/agents/${second.id}/services`, "PATCH", { owner_token: first.owner_token, services: [] });
+    assert.equal(crossMutation.statusCode, 403);
+    const noToken = await request(`/api/registry/agents/${second.id}/services`, "PATCH", { services: [] });
+    assert.equal(noToken.statusCode, 403);
+    const unauthorizedAdmin = await request("/api/admin/marketplace/policy", "PATCH", { platform_fee_bps: 1 });
+    assert.equal(unauthorizedAdmin.statusCode, 404);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
+
+test("admin marketplace policy is persisted and controls public terms", async () => {
+  process.env.AGENT_EXCHANGE_TEST_ADMIN_TOKEN = "test-admin-token";
+  resetForTests();
+  try {
+    const initial = JSON.parse((await request("/api/marketplace/policy")).body);
+    assert.equal(initial.listing_fee_usd, 10);
+    assert.equal(initial.platform_fee_bps, 1000);
+    assert.equal(initial.promotion_packages.featured_listing.price_usd, 75);
+    const updated = await request("/api/admin/marketplace/policy", "PATCH", { listing_fee_usd: 12, platform_fee_bps: 900 }, { "x-pdao-admin-smoke": "test-admin-token" });
+    assert.equal(updated.statusCode, 200);
+    assert.equal(JSON.parse(updated.body).listing_fee_usd, 12);
+    assert.equal(JSON.parse(updated.body).platform_fee_bps, 900);
+    const publicPolicy = JSON.parse((await request("/api/marketplace/policy")).body);
+    assert.equal(publicPolicy.listing_fee_usd, 12);
+    assert.equal(publicPolicy.platform_fee_bps, 900);
+  } finally {
+    delete process.env.AGENT_EXCHANGE_TEST_ADMIN_TOKEN;
+  }
 });

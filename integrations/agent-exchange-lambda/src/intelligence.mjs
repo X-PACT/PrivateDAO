@@ -2,6 +2,7 @@ import { digest } from "./canonical.mjs";
 import { evmNetwork, executeEvmService, evmRead } from "./evm.mjs";
 import { mintEvidence, readRpc, simulateSolanaTransaction } from "./solana.mjs";
 import { runIntelInference } from "./intel.mjs";
+import { ibmProviderStatus, runWatsonxInference } from "./ibm.mjs";
 import { marketData } from "./market.mjs";
 import { normalizeNetworkId } from "./network-capabilities.mjs";
 
@@ -217,11 +218,18 @@ export async function researchReport(config, input = {}) {
     ? await researchWallet(config, input)
     : await researchAsset(config, input);
   const anomaly = await detectAnomaly(config, input);
-  const inference = await runIntelInference(config, {
+  let inference = await runIntelInference(config, {
     facts: subject.facts,
     signals: anomaly.signals,
     network: subject.network,
   });
+  if (inference.status !== "completed" && ibmProviderStatus(config).status === "configured") {
+    try {
+      inference = await runWatsonxInference(config, { facts: subject.facts, signals: anomaly.signals, network: subject.network });
+    } catch (error) {
+      inference = { ...inference, fallback: { provider: "ibm-watsonx", status: "unavailable", reason: error.message } };
+    }
+  }
   return {
     report_type: "agent-research-report",
     network: subject.network,

@@ -46,6 +46,23 @@ export function getConfig(env = process.env) {
     bedrockModel: env.BEDROCK_MODEL_ID || "amazon.nova-micro-v1:0",
     intelInferenceUrl: env.PDAO_INTEL_INFERENCE_URL || "",
     intelOpenvinoModel: env.PDAO_INTEL_OPENVINO_MODEL || "",
+    mongoSecretId: env.AGENT_EXCHANGE_MONGODB_SECRET_ID || "",
+    mongoUri: env.MONGODB_URI || "",
+    mongoDatabase: env.MONGODB_DATABASE || "privatedao_agent_exchange",
+    mongoCollection: env.MONGODB_COLLECTION || "evidence",
+    ibmSecretId: env.AGENT_EXCHANGE_IBM_SECRET_ID || "",
+    ibmApiKey: env.IBM_WATSONX_API_KEY || "",
+    ibmUrl: env.IBM_WATSONX_URL || "",
+    ibmProjectId: env.IBM_WATSONX_PROJECT_ID || "",
+    ibmModel: env.IBM_WATSONX_MODEL_ID || "ibm/granite-13b-chat-v2",
+    githubSecretId: env.AGENT_EXCHANGE_GITHUB_SECRET_ID || "",
+    githubAppId: Number(env.GITHUB_APP_ID || env.AGENT_EXCHANGE_GITHUB_APP_ID || 5049917),
+    githubAppPrivateKey: env.GITHUB_APP_PRIVATE_KEY || "",
+    githubWebhookSecret: env.GITHUB_WEBHOOK_SECRET || "",
+    githubAppSlug: env.GITHUB_APP_SLUG || "private-dao-agent-exchange",
+    githubToken: env.GITHUB_TOKEN || "",
+    githubApiUrl: env.GITHUB_API_URL || "https://api.github.com",
+    githubRepository: env.GITHUB_REPOSITORY || "",
     marketDataUrl: env.PDAO_MARKET_DATA_URL || "https://api.dexscreener.com/latest/dex",
     telegramNotifications: bool(env.PDAO_TELEGRAM_NOTIFICATIONS_ENABLED),
     discordNotifications: bool(env.PDAO_DISCORD_NOTIFICATIONS_ENABLED),
@@ -61,12 +78,14 @@ export function getConfig(env = process.env) {
       Agreements: env.AGENT_EXCHANGE_AGREEMENTS_TABLE || "",
       Logistics: env.AGENT_EXCHANGE_LOGISTICS_TABLE || "",
       Revenue: env.AGENT_EXCHANGE_REVENUE_TABLE || "",
+      Telemetry: env.AGENT_EXCHANGE_TELEMETRY_TABLE || "",
+      RateLimits: env.AGENT_EXCHANGE_RATE_LIMITS_TABLE || "",
     },
     allowTestStorage: bool(env.AGENT_EXCHANGE_ALLOW_TEST_STORAGE),
-    maxBodyBytes: Number(env.AGENT_EXCHANGE_MAX_BODY_BYTES || 262144),
+    maxBodyBytes: Math.min(1048576, Math.max(4096, Number(env.AGENT_EXCHANGE_MAX_BODY_BYTES || 262144))),
     rateLimitPerMinute: Math.min(1000, Math.max(10, Number(env.AGENT_EXCHANGE_RATE_LIMIT_PER_MINUTE || 120))),
     priceMultiplier: Number(env.AGENT_EXCHANGE_PRICE_MULTIPLIER || 1),
-    marketplaceFeeBps: Math.min(10000, Math.max(0, Number(env.AGENT_EXCHANGE_MARKETPLACE_FEE_BPS || 500))),
+    marketplaceFeeBps: Math.min(10000, Math.max(0, Number(env.AGENT_EXCHANGE_MARKETPLACE_FEE_BPS || 1000))),
   };
 }
 
@@ -76,14 +95,24 @@ export async function hydrateConfig(config, env = process.env) {
     import("@aws-sdk/client-secrets-manager"),
   ]);
   const client = new SecretsManagerClient({ region: config.region });
-  const parseSecret = (secret) => Object.fromEntries(
-    (secret || "").split(/\r?\n/)
-      .filter((line) => line && !line.trim().startsWith("#"))
-      .map((line) => {
-        const i = line.indexOf("=");
-        return i > 0 ? [line.slice(0, i).trim(), line.slice(i + 1).trim()] : null;
-      }).filter(Boolean),
-  );
+  const parseSecret = (secret) => {
+    const raw = String(secret || "").trim();
+    if (!raw) return {};
+    try {
+      const parsed = JSON.parse(raw);
+      if (parsed && typeof parsed === "object" && !Array.isArray(parsed)) return parsed;
+    } catch {
+      // Secrets stored as dotenv text remain supported for existing integrations.
+    }
+    return Object.fromEntries(
+      raw.split(/\r?\n/)
+        .filter((line) => line && !line.trim().startsWith("#"))
+        .map((line) => {
+          const i = line.indexOf("=");
+          return i > 0 ? [line.slice(0, i).trim(), line.slice(i + 1).trim()] : null;
+        }).filter(Boolean),
+    );
+  };
   const values = env.AGENT_EXCHANGE_SOLANA_RPC_SECRET_ID
     ? parseSecret((await client.send(new GetSecretValueCommand({ SecretId: env.AGENT_EXCHANGE_SOLANA_RPC_SECRET_ID }))).SecretString)
     : {};
@@ -120,6 +149,17 @@ export async function hydrateConfig(config, env = process.env) {
       }),
     );
     config.adminSmokeToken = admin.SecretString || "";
+  }
+  const parseOptional = (secret) => parseSecret(secret);
+  const optionalSecrets = [
+    [config.mongoSecretId, (values) => { if (values.MONGODB_URI) config.mongoUri = values.MONGODB_URI; if (values.MONGODB_DATABASE) config.mongoDatabase = values.MONGODB_DATABASE; if (values.MONGODB_COLLECTION) config.mongoCollection = values.MONGODB_COLLECTION; }],
+    [config.ibmSecretId, (values) => { if (values.IBM_WATSONX_API_KEY) config.ibmApiKey = values.IBM_WATSONX_API_KEY; if (values.IBM_WATSONX_URL) config.ibmUrl = values.IBM_WATSONX_URL; if (values.IBM_WATSONX_PROJECT_ID) config.ibmProjectId = values.IBM_WATSONX_PROJECT_ID; if (values.IBM_WATSONX_MODEL_ID) config.ibmModel = values.IBM_WATSONX_MODEL_ID; }],
+    [config.githubSecretId, (values) => { if (values.GITHUB_TOKEN) config.githubToken = values.GITHUB_TOKEN; if (values.GITHUB_REPOSITORY) config.githubRepository = values.GITHUB_REPOSITORY; if (values.GITHUB_APP_ID) config.githubAppId = Number(values.GITHUB_APP_ID); if (values.GITHUB_APP_PRIVATE_KEY) config.githubAppPrivateKey = values.GITHUB_APP_PRIVATE_KEY; if (values.GITHUB_WEBHOOK_SECRET) config.githubWebhookSecret = values.GITHUB_WEBHOOK_SECRET; if (values.GITHUB_APP_SLUG) config.githubAppSlug = values.GITHUB_APP_SLUG; }],
+  ];
+  for (const [secretId, apply] of optionalSecrets) {
+    if (!secretId) continue;
+    const optional = await client.send(new GetSecretValueCommand({ SecretId: secretId }));
+    apply(parseOptional(optional.SecretString));
   }
   return config;
 }

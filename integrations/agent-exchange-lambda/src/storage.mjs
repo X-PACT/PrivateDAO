@@ -1,7 +1,7 @@
 import { randomUUID } from "node:crypto";
 
 export class MemoryStore {
-  constructor() { this.maps = new Map(); }
+  constructor() { this.maps = new Map(); this.rateLimits = new Map(); }
   map(name) { if (!this.maps.has(name)) this.maps.set(name, new Map()); return this.maps.get(name); }
   async put(collection, key, value, condition = false) {
     const map = this.map(collection);
@@ -11,6 +11,14 @@ export class MemoryStore {
   async get(collection, key) { const value = this.map(collection).get(key); return value ? structuredClone(value) : null; }
   async list(collection) { return [...this.map(collection).values()].map((v) => structuredClone(v)); }
   async update(collection, key, fn) { const current = await this.get(collection, key); const next = await fn(current); return this.put(collection, key, next); }
+  async consumeRateLimit(key, limit, windowMs) {
+    const now = Date.now();
+    const current = this.rateLimits.get(key);
+    const entry = current && current.expiresAt > now ? current : { count: 0, expiresAt: now + windowMs };
+    entry.count += 1;
+    this.rateLimits.set(key, entry);
+    return { allowed: entry.count <= limit, retryAfterSeconds: Math.max(1, Math.ceil((entry.expiresAt - now) / 1000)) };
+  }
 }
 
 export async function createStore(config) {
@@ -36,8 +44,22 @@ export async function createStore(config) {
       },
       async update(collection, key, fn) {
         const current = await this.get(collection, key); const next = await fn(current);
-        await client.send(new UpdateCommand({ TableName: table(collection), Key: { id: key }, UpdateExpression: "SET #v = :v", ExpressionAttributeNames: { "#v": "value" }, ExpressionAttributeValues: { ":v": next } }));
+        await this.put(collection, key, next);
         return next;
+      },
+      async consumeRateLimit(key, limit, windowMs) {
+        const bucket = Math.floor(Date.now() / windowMs);
+        const expiresAt = Math.floor(((bucket + 1) * windowMs) / 1000);
+        const result = await client.send(new UpdateCommand({
+          TableName: table("RateLimits"),
+          Key: { id: `${key}:${expiresAt}` },
+          UpdateExpression: "ADD #count :one SET #expiresAt = :expiresAt",
+          ExpressionAttributeNames: { "#count": "count", "#expiresAt": "expiresAt" },
+          ExpressionAttributeValues: { ":one": 1, ":expiresAt": expiresAt },
+          ReturnValues: "UPDATED_NEW",
+        }));
+        const count = Number(result.Attributes?.count || 0);
+        return { allowed: count <= limit, retryAfterSeconds: Math.max(1, expiresAt - Math.floor(Date.now() / 1000)) };
       }
     };
   } catch (error) {

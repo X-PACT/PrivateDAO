@@ -242,6 +242,7 @@ test("payment verification binds a finalized transfer to the quoted payment refe
     }, { signature }, {
       amountAtomic: "100",
       currency: "USDC",
+      network: "solana-mainnet-beta",
       mint,
       treasuryOwner,
       treasuryTokenAccount,
@@ -250,6 +251,29 @@ test("payment verification binds a finalized transfer to the quoted payment refe
     assert.equal(result.ok, false);
     assert.equal(result.transient, undefined);
     assert.equal(result.reason, "payment reference does not match quote");
+  } finally {
+    global.fetch = originalFetch;
+  }
+});
+
+test("payment verification accepts only the canonical production USDC ATA", async () => {
+  const originalFetch = global.fetch;
+  const signature = "1".repeat(64);
+  const treasuryOwner = "2BJ4ezxqV9YJXc38D9duKBkdn4su4jE1beKUHwH663sL";
+  const treasuryTokenAccount = "5RyKShQxSkbUJ9vA2MZ1Qf2TKgnwhhS3m7mj2ZZaVh6t";
+  const mint = "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v";
+  global.fetch = async (_url, options) => {
+    const request = JSON.parse(options.body);
+    if (request.method === "getTransaction") return new Response(JSON.stringify({ jsonrpc: "2.0", id: 1, result: { slot: 10, blockTime: 1700000000, transaction: { message: { instructions: [
+      { program: "spl-token", parsed: { type: "transferChecked", info: { destination: treasuryTokenAccount, amount: "100", mint } } },
+      { program: "spl-memo", parsed: "PDAOJOB:expected-job" },
+    ] } }, meta: { err: null } } }), { status: 200 });
+    if (request.method === "getAccountInfo") return new Response(JSON.stringify({ jsonrpc: "2.0", id: 1, result: { value: { data: { parsed: { info: { owner: treasuryOwner, mint } } } } } }), { status: 200 });
+    throw new Error(`unexpected RPC method: ${request.method}`);
+  };
+  try {
+    const result = await verifyPayment({ cluster: "mainnet-beta", treasury: treasuryOwner, usdcMint: mint, rpcPrimary: "https://rpc.example/primary" }, { signature }, { amountAtomic: "100", currency: "USDC", mint, treasuryOwner, treasuryTokenAccount, network: "solana-mainnet-beta", paymentReference: "PDAOJOB:expected-job" });
+    assert.equal(result.ok, true);
   } finally {
     global.fetch = originalFetch;
   }
