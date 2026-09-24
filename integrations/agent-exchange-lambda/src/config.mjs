@@ -1,5 +1,9 @@
 const bool = (value, fallback = false) =>
   value == null ? fallback : value === "true" || value === "1";
+const boundedNumber = (value, fallback, min, max) => {
+  const number = Number(value);
+  return Number.isFinite(number) ? Math.min(max, Math.max(min, number)) : fallback;
+};
 
 function alchemySolanaRpcUrl(apiKey) {
   return apiKey ? `https://solana-mainnet.g.alchemy.com/v2/${apiKey}` : "";
@@ -82,10 +86,10 @@ export function getConfig(env = process.env) {
       RateLimits: env.AGENT_EXCHANGE_RATE_LIMITS_TABLE || "",
     },
     allowTestStorage: bool(env.AGENT_EXCHANGE_ALLOW_TEST_STORAGE),
-    maxBodyBytes: Math.min(1048576, Math.max(4096, Number(env.AGENT_EXCHANGE_MAX_BODY_BYTES || 262144))),
-    rateLimitPerMinute: Math.min(1000, Math.max(10, Number(env.AGENT_EXCHANGE_RATE_LIMIT_PER_MINUTE || 120))),
-    priceMultiplier: Number(env.AGENT_EXCHANGE_PRICE_MULTIPLIER || 1),
-    marketplaceFeeBps: Math.min(10000, Math.max(0, Number(env.AGENT_EXCHANGE_MARKETPLACE_FEE_BPS || 1000))),
+    maxBodyBytes: boundedNumber(env.AGENT_EXCHANGE_MAX_BODY_BYTES || 262144, 262144, 4096, 1048576),
+    rateLimitPerMinute: boundedNumber(env.AGENT_EXCHANGE_RATE_LIMIT_PER_MINUTE || 120, 120, 10, 1000),
+    priceMultiplier: boundedNumber(env.AGENT_EXCHANGE_PRICE_MULTIPLIER || 1, 1, 0.000001, 1000),
+    marketplaceFeeBps: boundedNumber(env.AGENT_EXCHANGE_MARKETPLACE_FEE_BPS || 1000, 1000, 0, 10000),
   };
 }
 

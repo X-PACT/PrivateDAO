@@ -110,6 +110,29 @@ test("Alchemy URLs are constructed without exposing the key in results", () => {
   assert.equal(getConfig({ ALCHEMY_API_KEY: "test-only-key" }).rpcSecondary, "https://solana-mainnet.g.alchemy.com/v2/test-only-key");
 });
 
+test("malformed runtime numeric settings fall back to bounded safe values", () => {
+  const config = getConfig({
+    AGENT_EXCHANGE_MAX_BODY_BYTES: "not-a-number",
+    AGENT_EXCHANGE_RATE_LIMIT_PER_MINUTE: "NaN",
+    AGENT_EXCHANGE_PRICE_MULTIPLIER: "invalid",
+    AGENT_EXCHANGE_MARKETPLACE_FEE_BPS: "oops",
+  });
+  assert.equal(config.maxBodyBytes, 262144);
+  assert.equal(config.rateLimitPerMinute, 120);
+  assert.equal(config.priceMultiplier, 1);
+  assert.equal(config.marketplaceFeeBps, 1000);
+  const bounded = getConfig({
+    AGENT_EXCHANGE_MAX_BODY_BYTES: "999999999",
+    AGENT_EXCHANGE_RATE_LIMIT_PER_MINUTE: "1",
+    AGENT_EXCHANGE_PRICE_MULTIPLIER: "999999999",
+    AGENT_EXCHANGE_MARKETPLACE_FEE_BPS: "999999999",
+  });
+  assert.equal(bounded.maxBodyBytes, 1048576);
+  assert.equal(bounded.rateLimitPerMinute, 10);
+  assert.equal(bounded.priceMultiplier, 1000);
+  assert.equal(bounded.marketplaceFeeBps, 10000);
+});
+
 test("EVM health verifies every production read-only chain ID", async () => {
   const originalFetch = global.fetch;
   const chainIds = {
