@@ -183,23 +183,42 @@ export async function verifyPayment(config, payment, quote) {
     if (!info || info.mint !== config.usdcMint || info.owner !== treasuryOwner)
       return { ok: false, reason: "treasury USDC token account is not initialized or does not match" };
   }
-  const match = instructions.some((instruction) => {
+  let match = false;
+  let sourceInspectionTransient = false;
+  for (const instruction of instructions) {
+    // jsonParsed SPL `transfer` instructions do not include the token mint.
+    // Prove the source token account instead of rejecting valid wallet
+    // transfers or trusting an unverified instruction shape.
     const info = instruction.parsed?.info;
-    if (!info) return false;
+    if (!info) continue;
     if (quote.currency === "SOL")
-      return (
+      match = (
         instruction.program === "system" &&
         info.destination === quote.recipient &&
         Number(info.lamports) === expected
       );
-    return (
-      instruction.program === "spl-token" &&
-      ["transfer", "transferChecked"].includes(instruction.parsed?.type) &&
-      info.destination === quote.treasuryTokenAccount &&
-      Number(info.amount ?? info.tokenAmount?.amount) === expected &&
-      (!quote.mint || info.mint === quote.mint)
-    );
-  });
+    else {
+      if (instruction.program !== "spl-token" || !["transfer", "transferChecked"].includes(instruction.parsed?.type)) continue;
+      if (info.destination !== quote.treasuryTokenAccount || Number(info.amount ?? info.tokenAmount?.amount) !== expected) continue;
+      if (quote.mint && info.mint === quote.mint) match = true;
+      else if (quote.mint && info.mint) continue;
+      else if (info.source) {
+        try {
+          const sourceAccount = await readRpc(config, "getAccountInfo", [
+            info.source,
+            { encoding: "jsonParsed", commitment: "finalized" },
+          ]);
+          match = sourceAccount.result?.value?.data?.parsed?.info?.mint === quote.mint;
+        } catch (_error) {
+          sourceInspectionTransient = true;
+          match = false;
+        }
+      }
+    }
+    if (match) break;
+  }
+  if (!match && sourceInspectionTransient)
+    return { ok: false, transient: true, reason: "payment is submitted; source token account verification is temporarily retrying" };
   return {
     ok: match && tx.meta?.err == null,
     slot: tx.slot,

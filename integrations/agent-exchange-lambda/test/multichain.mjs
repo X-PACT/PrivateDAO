@@ -302,6 +302,32 @@ test("payment verification accepts only the canonical production USDC ATA", asyn
   }
 });
 
+test("payment verification accepts a parsed SPL transfer after proving the source account mint", async () => {
+  const originalFetch = global.fetch;
+  const signature = "4".repeat(64);
+  const treasuryOwner = "2BJ4ezxqV9YJXc38D9duKBkdn4su4jE1beKUHwH663sL";
+  const treasuryTokenAccount = "5RyKShQxSkbUJ9vA2MZ1Qf2TKgnwhhS3m7mj2ZZaVh6t";
+  const sourceTokenAccount = "7sZ8r8YgM5Qv6Nw8Jw7m7Kf3m3yQ8Q3fL3dQv4b6Hf2";
+  const mint = "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v";
+  global.fetch = async (_url, options) => {
+    const request = JSON.parse(options.body);
+    if (request.method === "getTransaction") return new Response(JSON.stringify({ jsonrpc: "2.0", id: 1, result: { slot: 10, blockTime: 1700000000, transaction: { message: { instructions: [
+      { program: "spl-token", parsed: { type: "transfer", info: { source: sourceTokenAccount, destination: treasuryTokenAccount, amount: "100" } } },
+      { program: "spl-memo", parsed: "PDAOJOB:expected-job" },
+    ] } }, meta: { err: null } } }), { status: 200 });
+    if (request.method === "getAccountInfo") return new Response(JSON.stringify({ jsonrpc: "2.0", id: 1, result: { value: { data: { parsed: { info: request.params[0] === treasuryTokenAccount ? { owner: treasuryOwner, mint } : { mint } } } } } }), { status: 200 });
+    throw new Error(`unexpected RPC method: ${request.method}`);
+  };
+  try {
+    const result = await verifyPayment({ cluster: "mainnet-beta", treasury: treasuryOwner, usdcMint: mint, rpcPrimary: "https://rpc.example/primary" }, { signature }, {
+      amountAtomic: "100", currency: "USDC", network: "solana-mainnet-beta", mint, treasuryOwner, treasuryTokenAccount, paymentReference: "PDAOJOB:expected-job",
+    });
+    assert.equal(result.ok, true);
+  } finally {
+    global.fetch = originalFetch;
+  }
+});
+
 test("payment verification retries when finalized treasury ATA inspection is temporarily unavailable", async () => {
   const originalFetch = global.fetch;
   const signature = "3".repeat(64);
