@@ -43,6 +43,7 @@ echo "[mainnet] checking repository hygiene"
 git diff --check
 
 echo "[mainnet] building program"
+bash scripts/verify-anchor-program-keypairs.sh
 anchor build >/dev/null
 
 echo "[mainnet] running Rust unit tests"

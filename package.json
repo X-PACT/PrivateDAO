@@ -3,7 +3,7 @@
   "version": "0.3.0",
   "description": "Solana private governance system with commit-reveal voting, confidential payroll and bonus batches, timelocked execution, Groth16 companion proofs, and reviewer-visible security evidence",
   "scripts": {
-    "build": "PATH=\"$HOME/.avm/bin:$PATH\" anchor build",
+    "build": "bash scripts/verify-anchor-program-keypairs.sh && PATH=\"$HOME/.avm/bin:$PATH\" anchor build",
     "web:dev": "npm --prefix apps/web run dev",
     "test:record-verification": "node --import tsx scripts/test-record-verification.mjs",
     "test:payroll:domain": "node --experimental-strip-types scripts/test-payroll-domain.mjs",

@@ -69,6 +69,23 @@ jobs:
           solana config get
           solana balance "$ANCHOR_WALLET" || true
 
+      - name: Restore and verify program deploy keypairs
+        env:
+          PRIVATE_DAO_PROGRAM_KEYPAIR: ${{ secrets.PRIVATE_DAO_PROGRAM_KEYPAIR }}
+          PRIVATEDAO_AUCTION_PROGRAM_KEYPAIR: ${{ secrets.PRIVATEDAO_AUCTION_PROGRAM_KEYPAIR }}
+          ZK_GROTH16_VERIFIER_PROGRAM_KEYPAIR: ${{ secrets.ZK_GROTH16_VERIFIER_PROGRAM_KEYPAIR }}
+        run: |
+          mkdir -p target/deploy
+          if [ -z "$PRIVATE_DAO_PROGRAM_KEYPAIR" ] || [ -z "$PRIVATEDAO_AUCTION_PROGRAM_KEYPAIR" ] || [ -z "$ZK_GROTH16_VERIFIER_PROGRAM_KEYPAIR" ]; then
+            echo "Program deploy keypair secrets are required; refusing to generate or deploy new program identities." >&2
+            exit 1
+          fi
+          printf '%s' "$PRIVATE_DAO_PROGRAM_KEYPAIR" > target/deploy/private_dao-keypair.json
+          printf '%s' "$PRIVATEDAO_AUCTION_PROGRAM_KEYPAIR" > target/deploy/privatedao_auction-keypair.json
+          printf '%s' "$ZK_GROTH16_VERIFIER_PROGRAM_KEYPAIR" > target/deploy/zk_groth16_verifier-keypair.json
+          chmod 600 target/deploy/*-keypair.json
+          bash scripts/verify-anchor-program-keypairs.sh
+
       - name: Build and deploy
         run: |
           anchor build
