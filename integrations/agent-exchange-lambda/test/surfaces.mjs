@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { handler, publicRegistryAgent, resetForTests } from "../src/handler.mjs";
+import { handler, paymentStatusCode, publicRegistryAgent, resetForTests } from "../src/handler.mjs";
 import { SERVICES } from "../src/catalog.mjs";
 
 const request = (path, method = "GET", body, headers = {}) =>
@@ -772,6 +772,13 @@ test("public seller metadata removes secret-shaped fields including camelCase va
   assert.equal(safe.input_hash, "public-proof");
   assert.equal(safe.result_hash, "public-proof-2");
   assert.equal(safe.display_name, "Synthetic Seller");
+});
+
+test("payment finality responses are non-success until activation is complete", () => {
+  assert.equal(paymentStatusCode({ status: "verifying" }), 202);
+  assert.equal(paymentStatusCode({ status: "processing" }), 202);
+  assert.equal(paymentStatusCode({ status: "paid" }), 200);
+  assert.equal(paymentStatusCode({ status: "completed" }), 200);
 });
 
 test("admin marketplace policy is persisted and controls public terms", async () => {
