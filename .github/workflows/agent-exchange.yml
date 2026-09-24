@@ -46,6 +46,9 @@ jobs:
       - name: Build deployment package and verify bundled assets
         run: npm run package -- /tmp/privatedao-agent-exchange.zip
 
+      - name: Verify browser payment bundles are local
+        run: '! grep -RInE "(esm\\.sh|cdn\\.jsdelivr\\.net)" src assets scripts/browser'
+
       - name: Verify runtime dependencies
         run: npm ls @aws-sdk/client-dynamodb @aws-sdk/lib-dynamodb mongodb --depth=0
 
