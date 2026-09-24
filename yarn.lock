@@ -1041,10 +1041,10 @@
   resolved "https://registry.npmjs.org/@js-sdsl/ordered-map/-/ordered-map-4.4.2.tgz"
   integrity sha512-iUKgm52T8HOE/makSxjqoWhe95ZJA1/G1sYsGev2JDKUSS14KAgg1LHb+Ba+IPow0xflbnSkOsZcO08C7w1gYw==
 
-"@magicblock-labs/ephemeral-rollups-kit@^0.16.2":
-  version "0.16.2"
-  resolved "https://registry.npmjs.org/@magicblock-labs/ephemeral-rollups-kit/-/ephemeral-rollups-kit-0.16.2.tgz"
-  integrity sha512-++cBpKvpxNlmD4uQv/ghLVu4JQjBCfIhLuRHhs0j8x8f4L9Nwp2VaAO2olXyo9miSghQeUjBvVPJez2/uTsY7g==
+"@magicblock-labs/ephemeral-rollups-kit@^0.17.3":
+  version "0.17.3"
+  resolved "https://registry.npmjs.org/@magicblock-labs/ephemeral-rollups-kit/-/ephemeral-rollups-kit-0.17.3.tgz"
+  integrity sha512-pR5W9+H6483N1gGRGeRdj3E1pzbvaNFH80O59678OcdwSkx7THgGLih25Y2/c/yUPvIEHs83gh6+JhIHIeRRDA==
   dependencies:
     "@noble/curves" "^1.4.2"
     "@noble/hashes" "^1.4.0"
@@ -1057,10 +1057,10 @@
     tweetnacl "^1.0.3"
     typescript "^5.3.0"
 
-"@magicblock-labs/ephemeral-rollups-sdk@^0.16.2":
-  version "0.16.2"
-  resolved "https://registry.npmjs.org/@magicblock-labs/ephemeral-rollups-sdk/-/ephemeral-rollups-sdk-0.16.2.tgz"
-  integrity sha512-rXeIlGjwCrgfKwJ/vU4A7rLd1aYJoo05c+GkhJmH/B08WYCpDL6Kabo3lztsJ/tiaFaeLCZc0/8FgKrFBd1mZQ==
+"@magicblock-labs/ephemeral-rollups-sdk@^0.17.3":
+  version "0.17.3"
+  resolved "https://registry.npmjs.org/@magicblock-labs/ephemeral-rollups-sdk/-/ephemeral-rollups-sdk-0.17.3.tgz"
+  integrity sha512-KR7wZmAM71U+MzaLna9LGZc0HDR1R54LZJ8FSfeTMiop/L4NTsGUVxhAY+IslzzW73iybkJsdWs2o/YBbCaRaw==
   dependencies:
     "@noble/curves" "^1.4.2"
     "@noble/hashes" "^1.4.0"
