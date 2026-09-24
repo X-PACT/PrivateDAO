@@ -2114,12 +2114,16 @@ async function recordRevenue(job, payment) {
     true,
   );
 }
+const upstreamFailurePattern = /(?:DynamoDB storage unavailable|Solana RPC|Jupiter quote HTTP|market data HTTP|IBM watsonx HTTP|Intel inference HTTP|GitHub (?:API returned|repository API) HTTP|RPC is not configured|fetch failed)/i;
 function errorResponse(error) {
-  const status = error.statusCode || 400;
+  const rawStatus = Number(error?.statusCode);
+  const upstreamFailure = !Number.isFinite(rawStatus) && upstreamFailurePattern.test(String(error?.message || ""));
+  const status = Number.isFinite(rawStatus) && rawStatus > 0 ? rawStatus : upstreamFailure ? 502 : 400;
+  const message = upstreamFailure ? "upstream service temporarily unavailable" : error?.message || "request failed";
   return json(
     {
       error: status === 402 ? "payment_required" : "request_failed",
-      message: error.message,
+      message,
       ...(error.payment_intent ? { payment_intent: error.payment_intent } : {}),
       ...(error.quote ? { quote: error.quote } : {}),
       ...(error.retryAfterSeconds ? { retry_after_seconds: error.retryAfterSeconds } : {}),

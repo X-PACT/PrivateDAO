@@ -7,6 +7,7 @@ import { getConfig } from "../src/config.mjs";
 import { enforceRateLimit, rateLimitKey, resetRuntimeControls } from "../src/runtime-controls.mjs";
 import { researchAsset, researchReport, explainTransaction, portfolioIntelligence } from "../src/intelligence.mjs";
 import { marketData } from "../src/market.mjs";
+import { handler, resetForTests } from "../src/handler.mjs";
 
 test("EVM services are read-only and use the configured provider", async () => {
   const server = createServer(async (request, response) => {
@@ -67,6 +68,20 @@ test("EVM services are read-only and use the configured provider", async () => {
   assert.equal(portfolio.requested_assets, 2);
   assert.equal(portfolio.completed_assets, 1);
   server.close();
+});
+
+test("upstream infrastructure errors are sanitized and classified as temporary", async () => {
+  const originalFetch = global.fetch;
+  resetForTests();
+  global.fetch = async () => { throw new Error("Solana RPC 401 https://secret-provider.example/key=super-secret"); };
+  try {
+    const response = await handler({ requestContext: { http: { method: "GET", path: "/api/network/stats" } } });
+    assert.equal(response.statusCode, 502);
+    assert.match(response.body, /upstream service temporarily unavailable/);
+    assert.doesNotMatch(response.body, /secret-provider|super-secret/);
+  } finally {
+    global.fetch = originalFetch;
+  }
 });
 
 test("direct service and provider calls normalize EVM network aliases", async () => {
