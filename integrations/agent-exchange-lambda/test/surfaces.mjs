@@ -451,6 +451,15 @@ test("external seller ownership protects mutations and publishes declared servic
     });
     assert.equal(updated.statusCode, 201);
     assert.equal(JSON.parse(updated.body).commercial_services[0].id, "read");
+    const invalidDeclaredRegistration = await request("/api/registry/register", "POST", {
+      agent_id: record.id,
+      mcp_url: "https://example.com/mcp",
+      owner_token: ownerToken,
+      commercial_services: [{ id: "missing", tool: "missing", price: 0.03, asset: "USDC", network: "solana-mainnet-beta" }],
+      accepted_assets: ["USDC"],
+    });
+    assert.equal(invalidDeclaredRegistration.statusCode, 400);
+    assert.match(invalidDeclaredRegistration.body, /commercial service tool was not returned by tools\/list/);
     const preview = await request("/api/seller/metadata/preview", "POST", {
       mcp_url: "https://example.com/mcp",
       commercial_services: [{ id: "read", tool: "read", price: 0.03, asset: "USDC", network: "solana-mainnet-beta" }],

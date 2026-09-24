@@ -2947,6 +2947,15 @@ function safeMcpTool(tool) {
   if (!tool || MCP_RISKY_TOOL_PATTERN.test(tool.name)) return false;
   return tool.annotations?.readOnlyHint !== false;
 }
+function validateMcpCommercialServices(discovery, services) {
+  const safeNames = new Set(discovery.tools.filter(safeMcpTool).map((tool) => tool.name));
+  for (const service of services) {
+    if (!discovery.tools.some((tool) => tool.name === service.tool))
+      throw Object.assign(new Error(`commercial service tool was not returned by tools/list: ${service.tool}`), { statusCode: 400 });
+    if (!safeNames.has(service.tool))
+      throw Object.assign(new Error(`commercial service tool is not read-only or is blocked by policy: ${service.tool}`), { statusCode: 400 });
+  }
+}
 
 async function previewSellerMetadata(body) {
   const endpoint = body.mcp_url || body.mcpUrl || body.endpoint;
@@ -3059,6 +3068,7 @@ async function registerMcp(body) {
   const requested = Array.isArray(body.allowedTools) ? body.allowedTools.map(String) : null;
   const discoveredNames = new Set(discovery.tools.map((tool) => tool.name));
   const safeByName = new Map(discovery.tools.map((tool) => [tool.name, tool]));
+  validateMcpCommercialServices(discovery, commercialServices);
   const allowedTools = (requested || existing?.allowed_tools || defaultMcpAllowlist(discovery.tools)).filter((name) => discoveredNames.has(name) && safeMcpTool(safeByName.get(name)));
   const agent = {
     id,
@@ -3218,6 +3228,14 @@ async function updateSellerServices(agentId, body) {
   const services = normalizeCommercialServices(body.services || body.commercialServices || body.commercial_services || []);
   if (services.length > policy.max_services_per_seller)
     throw Object.assign(new Error(`seller supports at most ${policy.max_services_per_seller} services`), { statusCode: 400 });
+  let discovery;
+  try {
+    discovery = await discoverMcp(agent.endpoint);
+    validateMcpCommercialServices(discovery, services);
+  } catch (error) {
+    if (error.statusCode) throw error;
+    throw Object.assign(new Error(`MCP verification is required before service changes: ${error.message}`), { statusCode: 503 });
+  }
   const ledger = sellerServiceLedger(agent, listing);
   const paidIds = new Set(ledger.filter((item) => item.status === "paid").map((item) => item.service_id));
   const pendingIds = alreadyListed ? services.map((service) => service.id).filter((id) => !paidIds.has(id)) : [];
@@ -3244,6 +3262,13 @@ async function setSellerPublication(agentId, body, published) {
   if (published && !(agent.acceptedAssets || []).length) throw Object.assign(new Error("at least one accepted asset is required before publication"), { statusCode: 400 });
   if (published && !agent.payout) throw Object.assign(new Error("payout configuration is required before publication"), { statusCode: 400 });
   if (published) {
+    try {
+      const discovery = await discoverMcp(agent.endpoint);
+      validateMcpCommercialServices(discovery, (agent.commercial_services || []).filter((service) => service.status !== "retired"));
+    } catch (error) {
+      if (error.statusCode) throw error;
+      throw Object.assign(new Error(`MCP verification is required before publication: ${error.message}`), { statusCode: 503 });
+    }
     const readiness = await sellerReadiness(agentId);
     if (readiness.unlisted_service_ids.length)
       throw Object.assign(new Error("all commercial services must be included in a confirmed listing quote before publication"), { statusCode: 402 });
