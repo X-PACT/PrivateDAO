@@ -30,7 +30,7 @@ import {
 import { intelProviderStatus, runIntelInference } from "./intel.mjs";
 import { ibmProviderStatus, runWatsonxInference } from "./ibm.mjs";
 import { githubProviderStatus, repositoryEvidence } from "./github.mjs";
-import { githubAppConfigured, githubGetInstallation, githubInstallationRepositories, githubRepositoryContext, verifyGithubWebhook } from "./github-app.mjs";
+import { githubAppConfigured, githubGetInstallation, githubInstallationRepositories, githubRepositoryContext, mergeGithubInstallationRepositories, verifyGithubWebhook } from "./github-app.mjs";
 import { mongoProviderStatus, persistEvidence } from "./mongodb.mjs";
 import { assertPublicHttps } from "./url-safety.mjs";
 import { integrationDirectory, serviceDetails, serviceRecommendation, SERVICE_CATEGORIES } from "./exchange-metadata.mjs";
@@ -324,9 +324,11 @@ async function githubWebhook(body, rawBody, signature, eventName) {
     return { ok: true, event: eventName, action, installation_id: String(installationId) };
   }
   if (eventName === "installation_repositories" && installationId) {
-    const repos = (body.repositories || []).concat(body.repositories_removed || []).map((repo) => ({ id: repo.id, full_name: repo.full_name, removed: (body.repositories_removed || []).some((item) => item.id === repo.id) }));
+    const added = body.repositories_added || body.repositories || [];
+    const removed = body.repositories_removed || [];
+    const repos = mergeGithubInstallationRepositories(existing?.repositories || [], added, removed);
     await storage.put("Registry", id, { ...(existing || { id, kind: "github_installation", installation_id: String(installationId) }), repositories: repos, updated_at: now() });
-    return { ok: true, event: eventName, installation_id: String(installationId), repository_count: repos.length };
+    return { ok: true, event: eventName, installation_id: String(installationId), repository_count: repos.length, added_count: added.length, removed_count: removed.length };
   }
   if (eventName === "marketplace_purchase" && installationId) {
     const purchase = body.marketplace_purchase || {};

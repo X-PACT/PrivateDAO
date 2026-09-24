@@ -80,6 +80,21 @@ export async function githubInstallationRepositories(config, installationId) {
   return (body.repositories || []).map((repo) => ({ id: repo.id, full_name: repo.full_name, private: Boolean(repo.private), default_branch: repo.default_branch || null }));
 }
 
+export function mergeGithubInstallationRepositories(existing = [], added = [], removed = []) {
+  const key = (repo) => String(repo?.id ?? "");
+  const repositories = new Map(
+    (Array.isArray(existing) ? existing : [])
+      .filter((repo) => repo && repo.removed !== true && key(repo))
+      .map((repo) => [key(repo), { id: repo.id, full_name: repo.full_name, private: Boolean(repo.private), default_branch: repo.default_branch || null }]),
+  );
+  for (const repo of Array.isArray(removed) ? removed : []) repositories.delete(key(repo));
+  for (const repo of Array.isArray(added) ? added : []) {
+    if (!key(repo)) continue;
+    repositories.set(key(repo), { id: repo.id, full_name: repo.full_name, private: Boolean(repo.private), default_branch: repo.default_branch || null });
+  }
+  return [...repositories.values()].sort((left, right) => String(left.full_name || "").localeCompare(String(right.full_name || "")));
+}
+
 export async function githubRepositoryContext(config, installationId, repository) {
   const match = String(repository || "").trim().match(/^(?:https:\/\/github\.com\/)?([A-Za-z0-9_.-]{1,100})\/([A-Za-z0-9_.-]{1,100})(?:\/)?$/);
   if (!match) throw Object.assign(new Error("repository must be owner/name or a GitHub repository URL"), { statusCode: 400 });
