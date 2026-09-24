@@ -10,6 +10,10 @@ infrastructure, and share evidence of the outcome.
 
 Live Testnet program: `EP9xE8MJZ6FfyEwLqns6HDdUZBknEa7WGYs1Jzsecuva`
 
+Historical Devnet proof registry program: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
+(`docs/proof-registry.json`); this is retained as provenance and is not the
+current Testnet deployment.
+
 An organization does **not** need to become a Web3 or crypto company to use
 PrivateDAO. A company, institution, financial team, DAO, data provider, or
 Web3 operator can start with a familiar business workflow and add wallets,
@@ -144,6 +148,7 @@ or mainnet readiness unless the referenced document says so explicitly.
 - [Runtime attestation](docs/runtime-attestation.generated.md)
 - [Generated runtime attestation](docs/runtime-attestation.generated.json)
 - [Frontier integrations](docs/frontier-integrations.generated.md)
+- [Frontier track closure matrix](docs/frontier-track-closure-matrix-2026-05-25.md)
 - [Frontier guided flow](docs/frontier-guided-flow.md)
 - [Test-wallet live proof](docs/test-wallet-live-proof-v3.generated.md)
 - [Governance hardening](docs/governance-hardening-v3.md)
