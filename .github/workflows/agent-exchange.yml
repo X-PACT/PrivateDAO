@@ -43,6 +43,9 @@ jobs:
       - name: Syntax and tests
         run: npm run lint && npm test && npm run smoke
 
+      - name: Build deployment package and verify bundled assets
+        run: npm run package -- /tmp/privatedao-agent-exchange.zip
+
       - name: Verify runtime dependencies
         run: npm ls @aws-sdk/client-dynamodb @aws-sdk/lib-dynamodb mongodb --depth=0
 
