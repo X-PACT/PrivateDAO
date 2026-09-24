@@ -1514,8 +1514,10 @@ async function updatePartnership(id, body) {
   if (!current || current.type !== "featured_partner") throw Object.assign(new Error("partnership not found"), { statusCode: 404 });
   const next = { ...current };
   if (body.priceUsd !== undefined) {
+    const policy = await marketplacePolicy();
+    const minimumPrice = Number(policy.promotion_packages[current.package_id]?.price_usd || 0.01);
     const price = Number(body.priceUsd);
-    if (!Number.isFinite(price) || price < 100) throw Object.assign(new Error("Featured Partner price must be at least 100 USD"), { statusCode: 400 });
+    if (!Number.isFinite(price) || price < minimumPrice) throw Object.assign(new Error(`promotion price must be at least ${minimumPrice} USD`), { statusCode: 400 });
     next.price_usd = price;
   }
   if (body.paymentStatus !== undefined) {
@@ -1750,6 +1752,8 @@ async function publishListing(body) {
     ? body.chains.filter((id) => networkCapability(id))
     : ["solana:mainnet-beta"];
   if (!chains.length) throw new Error("at least one supported network is required");
+  const price = body.price == null ? 0 : Number(body.price);
+  if (!Number.isFinite(price) || price < 0) throw Object.assign(new Error("listing price must be a finite non-negative number"), { statusCode: 400 });
   const listing = {
     id: body.listingId || `listing_${randomUUID()}`,
     agentId: agent.id,
@@ -1760,7 +1764,7 @@ async function publishListing(body) {
     protocols: body.protocols || agent.protocols || ["HTTP"],
     chains,
     networkCapabilities: chains.map((id) => networkCapability(id)),
-    price: Number(body.price || 0),
+    price,
     asset: body.asset || "USDC",
     schema: body.schema || {},
     provenance: body.provenance || "provider-declared",
@@ -1962,6 +1966,8 @@ async function requestLogistics(body) {
 async function createAgreement(body) {
   for (const field of ["buyerAgent", "providerAgent", "service", "price"])
     if (body[field] == null) throw new Error(`${field} is required`);
+  const price = Number(body.price);
+  if (!Number.isFinite(price) || price < 0) throw Object.assign(new Error("agreement price must be a finite non-negative number"), { statusCode: 400 });
   const agreement = {
     id: `agr_${randomUUID()}`,
     agreementId: `agr_${randomUUID()}`,
@@ -1969,13 +1975,13 @@ async function createAgreement(body) {
     providerAgent: body.providerAgent,
     service: body.service,
     inputCommitment: digest(body.input || {}),
-    price: Number(body.price),
+    price,
     asset: body.asset || "USDC",
     protocolFee: Number(
-      ((Number(body.price) * config.marketplaceFeeBps) / 10000).toFixed(6),
+      ((price * config.marketplaceFeeBps) / 10000).toFixed(6),
     ),
     providerAmount: Number(
-      (Number(body.price) - (Number(body.price) * config.marketplaceFeeBps) / 10000).toFixed(6),
+      (price - (price * config.marketplaceFeeBps) / 10000).toFixed(6),
     ),
     deadline: body.deadline || null,
     deliveryRequirements: body.deliveryRequirements || {},

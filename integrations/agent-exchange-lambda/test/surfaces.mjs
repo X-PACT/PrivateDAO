@@ -515,6 +515,9 @@ test("external seller ownership protects mutations and publishes declared servic
 
   const services = JSON.parse((await request("/api/registry/services")).body).services;
   assert.deepEqual(services, []);
+  const invalidAgreement = await request("/api/agreements", "POST", { buyerAgent: "buyer", providerAgent: "provider", service: "read", price: "not-a-number" });
+  assert.equal(invalidAgreement.statusCode, 400);
+  assert.match(invalidAgreement.body, /agreement price must be a finite non-negative number/);
   const missingTerms = await request("/api/marketplace/seller-listings/quote", "POST", { agent_id: record.id, owner_token: ownerToken, tier: "pro" });
   assert.equal(missingTerms.statusCode, 400);
   const missingPayoutTermsAccepted = await request("/api/marketplace/seller-listings/quote", "POST", { agent_id: record.id, owner_token: ownerToken, tier: "pro", accept_terms: true, terms_version: "seller-marketplace-v1" });
