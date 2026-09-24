@@ -2179,9 +2179,16 @@ async function submitExternalPayment(jobId, body) {
     }
   }
   if (!claimedByThisInvocation && claim) {
-    const claimedAt = Date.parse(claim.consumed_at || "");
-    if (Number.isFinite(claimedAt) && Date.now() - claimedAt < 30000)
-      return { job_id: jobId, status: "processing", message: "payment accepted; job execution is already in progress", retryAfterSeconds: 3 };
+    // Never replay an external MCP call from a stale payment claim. The
+    // provider may have completed the side effect before Lambda crashed, so
+    // a buyer retry must remain non-executing.
+    return {
+      job_id: jobId,
+      status: "processing",
+      recovery_required: true,
+      message: "payment accepted; execution state is being recovered without replaying the external service",
+      retryAfterSeconds: 10,
+    };
   }
   const agent = await storage.get("Registry", job.seller_agent_id);
   if (!activeRegistryAgent(agent)) throw new Error("seller is no longer active");
@@ -2702,16 +2709,16 @@ async function submitPayment(jobId, body) {
   if (currentJob?.status === "completed" && currentJob.receipt_id)
     return completeJob(currentJob, currentJob.result, null);
   if (!claimedByThisInvocation && paymentClaim) {
-    const claimedAt = Date.parse(paymentClaim.consumed_at || "");
-    if (Number.isFinite(claimedAt) && Date.now() - claimedAt < 30000)
-      return {
-        job_id: jobId,
-        status: "processing",
-        message: "payment accepted; job execution is already in progress",
-        retryAfterSeconds: 3,
-      };
-    // Recover a payment claim left behind by a crashed invocation. The
-    // signature remains bound to this job, so no second payment is accepted.
+    // Never replay an external service from a stale payment claim. The
+    // provider may have completed the side effect before Lambda crashed, so
+    // a buyer retry must remain non-executing.
+    return {
+      job_id: jobId,
+      status: "processing",
+      recovery_required: true,
+      message: "payment accepted; execution state is being recovered without replaying the external service",
+      retryAfterSeconds: 10,
+    };
   }
   job.execution_started_at = now();
   await storage.put("Jobs", job.id, job);
