@@ -6,14 +6,17 @@ const SOLANA_SIGNATURE_PATTERN = /^[1-9A-HJ-NP-Za-km-z]{64,96}$/;
 const SOLANA_PUBLIC_KEY_PATTERN = /^[1-9A-HJ-NP-Za-km-z]{32,44}$/;
 const allowedStatuses = new Set(["submitted", "confirmed", "finalized"]);
 
+function createSessionId() {
+  if (typeof crypto.randomUUID === "function") return crypto.randomUUID();
+  const bytes = crypto.getRandomValues(new Uint8Array(16));
+  return Array.from(bytes, (byte) => byte.toString(16).padStart(2, "0")).join("");
+}
+
 function getSessionId() {
   try {
     const existing = window.localStorage.getItem(SESSION_KEY);
     if (existing) return existing;
-    const next =
-      typeof crypto.randomUUID === "function"
-        ? crypto.randomUUID()
-        : `${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}`;
+    const next = createSessionId();
     window.localStorage.setItem(SESSION_KEY, next);
     return next;
   } catch {

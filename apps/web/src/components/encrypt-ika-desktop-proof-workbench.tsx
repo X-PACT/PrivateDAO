@@ -62,7 +62,9 @@ function getVisitorSessionId() {
   if (typeof window === "undefined") return "server-render";
   const existing = window.localStorage.getItem(VISITOR_SESSION_KEY);
   if (existing) return existing;
-  const generated = crypto.randomUUID ? crypto.randomUUID() : `visitor-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+  const generated = typeof crypto.randomUUID === "function"
+    ? crypto.randomUUID()
+    : `visitor-${Array.from(crypto.getRandomValues(new Uint8Array(16)), (byte) => byte.toString(16).padStart(2, "0")).join("")}`;
   window.localStorage.setItem(VISITOR_SESSION_KEY, generated);
   return generated;
 }
