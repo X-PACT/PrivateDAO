@@ -85,7 +85,9 @@ export function getConfig(env = process.env) {
       Telemetry: env.AGENT_EXCHANGE_TELEMETRY_TABLE || "",
       RateLimits: env.AGENT_EXCHANGE_RATE_LIMITS_TABLE || "",
     },
-    allowTestStorage: bool(env.AGENT_EXCHANGE_ALLOW_TEST_STORAGE),
+    // Test storage must be explicitly enabled in a test process. A stray
+    // storage flag in Lambda must never silently replace DynamoDB with memory.
+    allowTestStorage: env.AGENT_EXCHANGE_TEST_MODE === "true" && bool(env.AGENT_EXCHANGE_ALLOW_TEST_STORAGE),
     maxBodyBytes: boundedNumber(env.AGENT_EXCHANGE_MAX_BODY_BYTES || 262144, 262144, 4096, 1048576),
     rateLimitPerMinute: boundedNumber(env.AGENT_EXCHANGE_RATE_LIMIT_PER_MINUTE || 120, 120, 10, 1000),
     priceMultiplier: boundedNumber(env.AGENT_EXCHANGE_PRICE_MULTIPLIER || 1, 1, 0.000001, 1000),

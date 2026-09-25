@@ -47,7 +47,9 @@ export function assertMainnetConfig(config) {
 }
 
 async function attestMainnetRpc(url, config) {
-  if (process.env.NODE_ENV === "test") return;
+  // Only deterministic test RPC fixtures may bypass the network attestation.
+  // Production never relies on NODE_ENV or storage flags for this decision.
+  if (process.env.AGENT_EXCHANGE_RPC_FIXTURE === "true") return;
   if (mainnetAttestation.get(url) === config.mainnetGenesisHash) return;
   const genesis = await rpcCall(url, "getGenesisHash");
   if (genesis !== config.mainnetGenesisHash)

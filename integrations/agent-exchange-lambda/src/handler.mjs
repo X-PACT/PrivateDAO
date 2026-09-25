@@ -3507,7 +3507,7 @@ async function handle(e) {
   }
   if (method === "GET" && path === "/api/health") {
     const stats =
-      process.env.NODE_ENV === "test" || config.allowTestStorage ? null : await networkStats(config);
+      config.allowTestStorage ? null : await networkStats(config);
     return json({
       status: "ok",
       service: "pdao-agent-exchange",

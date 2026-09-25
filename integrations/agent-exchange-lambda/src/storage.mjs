@@ -72,7 +72,7 @@ export async function createStore(config) {
       }
     };
   } catch (error) {
-    if (process.env.NODE_ENV === "test") return new MemoryStore();
+    if (process.env.AGENT_EXCHANGE_TEST_MODE === "true") return new MemoryStore();
     throw new Error(`DynamoDB storage unavailable: ${error.message}`);
   }
 }

@@ -526,6 +526,8 @@ test("rate-limit keys cannot be selected by a caller-supplied agent header", () 
 
 test("Solana simulation is RPC-backed and never broadcasts", async () => {
   const originalFetch = global.fetch;
+  const originalRpcFixture = process.env.AGENT_EXCHANGE_RPC_FIXTURE;
+  delete process.env.AGENT_EXCHANGE_RPC_FIXTURE;
   const calls = [];
   global.fetch = async (_url, options) => {
     const request = JSON.parse(options.body);
@@ -555,6 +557,8 @@ test("Solana simulation is RPC-backed and never broadcasts", async () => {
     assert.deepEqual(calls, ["getGenesisHash", "simulateTransaction"]);
   } finally {
     global.fetch = originalFetch;
+    if (originalRpcFixture == null) delete process.env.AGENT_EXCHANGE_RPC_FIXTURE;
+    else process.env.AGENT_EXCHANGE_RPC_FIXTURE = originalRpcFixture;
   }
 });
 
