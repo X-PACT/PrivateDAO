@@ -467,7 +467,9 @@ const json = (body, status = 200, headers = {}) => ({
   },
   body: JSON.stringify(body),
 });
-export const paymentStatusCode = (result) => ["verifying", "processing"].includes(result?.status) ? 202 : 200;
+export const paymentStatusCode = (result) => result?.status === "recovery_required"
+  ? 409
+  : ["verifying", "processing"].includes(result?.status) ? 202 : 200;
 const text = (body, status = 200) => ({
   statusCode: status,
   headers: {

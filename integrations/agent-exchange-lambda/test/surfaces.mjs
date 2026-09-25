@@ -801,7 +801,8 @@ test("external seller paid lifecycle quotes, executes once, and records attribut
     expectedTreasuryTokenAccount = concurrentIntent.treasuryTokenAccount;
     expectedAmountAtomic = String(Math.round(0.03 * 1e6));
     const concurrentPayments = await Promise.all(Array.from({ length: 3 }, () => request(`/api/external/jobs/${concurrentIntent.jobId}/payment`, "POST", { signature: "4".repeat(88) })));
-    assert.ok(concurrentPayments.every((response) => [200, 202].includes(response.statusCode)));
+    assert.ok(concurrentPayments.every((response) => [200, 202, 409].includes(response.statusCode)));
+    assert.ok(concurrentPayments.some((response) => response.statusCode === 200));
     assert.equal(mcpCalls, 2);
 
     const promotionQuoteResponse = await request("/api/marketplace/promotions/quote", "POST", { agent_id: registeredBody.id, owner_token: registeredBody.owner_token, package_id: "ecosystem_campaign" });
@@ -934,6 +935,7 @@ test("public seller metadata removes secret-shaped fields including camelCase va
 test("payment finality responses are non-success until activation is complete", () => {
   assert.equal(paymentStatusCode({ status: "verifying" }), 202);
   assert.equal(paymentStatusCode({ status: "processing" }), 202);
+  assert.equal(paymentStatusCode({ status: "recovery_required" }), 409);
   assert.equal(paymentStatusCode({ status: "paid" }), 200);
   assert.equal(paymentStatusCode({ status: "completed" }), 200);
 });
