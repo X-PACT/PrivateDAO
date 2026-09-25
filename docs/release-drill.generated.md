@@ -2,9 +2,9 @@
 
 ## Overview
 
-- Generated at: `2026-09-24T18:21:06+03:00`
+- Generated at: `2026-09-25T04:33:22+03:00`
 - Mode: `repository-simulated-drill`
-- Release commit: `3dd2554be7a5f2504a05194a69154052f7710d2a`
+- Release commit: `ea09fbe728fcbf1741470f59b800ac1e11260baf`
 - Release branch: `rebrand/enterprise-white`
 - Program id: `5AhUsbQ4mJ8Xh7QJEomuS85qGgmK9iNvFqzF669Y7Psx`
 - Verification wallet: `4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD`
@@ -42,7 +42,7 @@
 
 - reviewed-commit-freeze: `simulated-pass`
   category: `operator-check`
-  evidence: `3dd2554be7a5f2504a05194a69154052f7710d2a`
+  evidence: `ea09fbe728fcbf1741470f59b800ac1e11260baf`
   note: The reviewed repository commit becomes the release anchor before any cutover activity.
 
 - release-ceremony-attestation: `simulated-pass`

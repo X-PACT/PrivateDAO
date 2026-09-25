@@ -1,6 +1,6 @@
 {
   "project": "PrivateDAO",
-  "generatedAt": "2026-09-24T15:20:23.872Z",
+  "generatedAt": "2026-09-25T01:38:25.862Z",
   "network": "testnet",
   "programId": "EP9xE8MJZ6FfyEwLqns6HDdUZBknEa7WGYs1Jzsecuva",
   "verificationWallet": "4Mm5YTRbJuyA8NcWM85wTnx6ZQMXNph2DSnzCCKLhsMD",
@@ -11,9 +11,9 @@
     "rpcPoolSize": 1,
     "rpcProviderClass": "public-testnet",
     "magicBlockApiBase": "https://payments.magicblock.app",
-    "magicBlockHealth": "unavailable",
+    "magicBlockHealth": "ok",
     "overview": {
-      "generatedAt": "2026-09-24T15:19:53.293Z",
+      "generatedAt": "2026-09-25T01:38:06.306Z",
       "proposals": 24,
       "uniqueDaos": 23,
       "zkEnforced": 0,
