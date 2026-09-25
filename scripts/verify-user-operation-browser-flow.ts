@@ -73,7 +73,7 @@ function createStaticServer() {
       fs.createReadStream(filePath).pipe(res);
     } catch (error) {
       res.writeHead(500);
-      res.end(error instanceof Error ? error.message : String(error));
+      res.end("Internal test server error.");
     }
   });
 }
