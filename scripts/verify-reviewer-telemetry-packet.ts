@@ -110,9 +110,9 @@ function main() {
   assert(packet.linkedDocs.includes("docs/runtime-evidence.generated.md"), "telemetry packet missing runtime evidence doc");
   assert(packet.linkedDocs.includes("docs/frontier-integrations.generated.md"), "telemetry packet missing frontier integrations doc");
   assert(packet.linkedDocs.includes("docs/read-node/snapshot.generated.md"), "telemetry packet missing read-node snapshot doc");
-  assert(packet.liveRoutes.includes("https://privatedao.org/services/"), "telemetry packet missing services route");
-  assert(packet.liveRoutes.includes("https://privatedao.org/diagnostics/"), "telemetry packet missing diagnostics route");
-  assert(packet.liveRoutes.includes("https://privatedao.org/analytics/"), "telemetry packet missing analytics route");
+  assert(hasExactPublicRoute(packet.liveRoutes, "https://privatedao.org/services/"), "telemetry packet missing services route");
+  assert(hasExactPublicRoute(packet.liveRoutes, "https://privatedao.org/diagnostics/"), "telemetry packet missing diagnostics route");
+  assert(hasExactPublicRoute(packet.liveRoutes, "https://privatedao.org/analytics/"), "telemetry packet missing analytics route");
   assert(packet.commands.includes("npm run build:reviewer-telemetry-packet"), "telemetry packet missing build command");
   assert(packet.commands.includes("npm run verify:reviewer-telemetry-packet"), "telemetry packet missing verify command");
 
@@ -134,6 +134,19 @@ function main() {
   }
 
   console.log("Reviewer telemetry packet verification: PASS");
+}
+
+function hasExactPublicRoute(routes: unknown, expected: string): boolean {
+  if (!Array.isArray(routes)) return false;
+  const target = new URL(expected);
+  return routes.some((route) => {
+    try {
+      const candidate = new URL(String(route));
+      return candidate.origin === target.origin && candidate.pathname === target.pathname;
+    } catch {
+      return false;
+    }
+  });
 }
 
 function assert(condition: unknown, message: string): asserts condition {

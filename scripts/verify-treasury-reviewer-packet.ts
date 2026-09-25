@@ -76,7 +76,7 @@ function main() {
     "treasury reviewer packet missing apply route",
   );
   assert(
-    packet.liveRoutes.includes("https://privatedao.org/services/"),
+    hasExactPublicRoute(packet.liveRoutes, "https://privatedao.org/services/"),
     "treasury reviewer packet missing services route",
   );
 
@@ -94,6 +94,19 @@ function main() {
   }
 
   console.log("Treasury reviewer packet verification: PASS");
+}
+
+function hasExactPublicRoute(routes: unknown, expected: string): boolean {
+  if (!Array.isArray(routes)) return false;
+  const target = new URL(expected);
+  return routes.some((route) => {
+    try {
+      const candidate = new URL(String(route));
+      return candidate.origin === target.origin && candidate.pathname === target.pathname;
+    } catch {
+      return false;
+    }
+  });
 }
 
 function assert(condition: unknown, message: string): asserts condition {

@@ -56,7 +56,7 @@ function main() {
   assert(packet.linkedDocs.includes("docs/launch-trust-packet.generated.md"), "reviewer packet missing launch trust packet doc");
   assert(packet.canonicalCommands.includes("npm run verify:custody-proof-reviewer-packet"), "reviewer packet missing self verification command");
   assert(packet.canonicalCommands.includes("npm run verify:track-judge-first-openings"), "reviewer packet missing judge-first verification command");
-  assert(packet.liveRoutes.includes("https://privatedao.org/custody/"), "reviewer packet missing custody route");
+  assert(hasExactPublicRoute(packet.liveRoutes, "https://privatedao.org/custody/"), "reviewer packet missing custody route");
 
   for (const token of [
     "# Custody Proof Reviewer Packet",
@@ -75,6 +75,19 @@ function main() {
   }
 
   console.log("Custody proof reviewer packet verification: PASS");
+}
+
+function hasExactPublicRoute(routes: unknown, expected: string): boolean {
+  if (!Array.isArray(routes)) return false;
+  const target = new URL(expected);
+  return routes.some((route) => {
+    try {
+      const candidate = new URL(String(route));
+      return candidate.origin === target.origin && candidate.pathname === target.pathname;
+    } catch {
+      return false;
+    }
+  });
 }
 
 function assert(condition: unknown, message: string): asserts condition {

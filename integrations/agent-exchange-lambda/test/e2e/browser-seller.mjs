@@ -21,10 +21,15 @@ globalThis.fetch = async (url, options = {}) => {
 const server = createServer(async (request, response) => {
   const chunks = [];
   for await (const chunk of request) chunks.push(chunk);
-  const result = await handler({ rawPath: request.url, requestContext: { http: { method: request.method, path: request.url } }, headers: request.headers, body: Buffer.concat(chunks).toString() || undefined });
+  const parsedUrl = new URL(request.url || "/", "http://127.0.0.1");
+  const safePath = parsedUrl.pathname
+    .split("/")
+    .map((segment) => /^[A-Za-z0-9._-]+$/.test(segment) ? segment : "")
+    .join("/") || "/";
+  const result = await handler({ rawPath: safePath, requestContext: { http: { method: request.method, path: safePath } }, headers: request.headers, body: Buffer.concat(chunks).toString() || undefined });
   const headers = Object.fromEntries(Object.entries(result.headers || {}).filter(([, value]) => value !== undefined && value !== null));
   response.writeHead(result.statusCode || 200, headers);
-  response.end(result.body || "");
+  response.end(result.body ? Buffer.from(result.body, "utf8") : "");
 });
 
 await new Promise((resolve) => server.listen(0, "127.0.0.1", resolve));
