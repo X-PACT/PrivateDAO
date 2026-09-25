@@ -238,6 +238,7 @@ test("A2A upstream errors are sanitized without exposing provider details", asyn
       params: { message: { metadata: { service_id: "verify.basic", input: { mint: "So11111111111111111111111111111111111111112", network: "solana-mainnet-beta" } } } },
     });
     const body = JSON.parse(response.body);
+    assert.equal(response.statusCode, 502);
     assert.equal(body.error.code, -32000);
     assert.equal(body.error.message, "upstream service temporarily unavailable");
     assert.doesNotMatch(response.body, /ValidationException|secret-table|provided key element/i);
@@ -482,6 +483,10 @@ test("MCP lifecycle, schemas, errors, and network aliases are protocol-safe", as
   assert.match(failed.result.content[0].text, /mint or record is required/);
   assert.equal(failed.result.structuredContent.statusCode, 400);
   assert.equal(failed.result.structuredContent.upstreamStatus, undefined);
+
+  const a2aValidation = await request("/a2a", "POST", { jsonrpc: "2.0", id: 6, method: "message/send", params: { message: { metadata: { service_id: "verify.basic", input: {} } } } });
+  assert.equal(a2aValidation.statusCode, 400);
+  assert.match(a2aValidation.body, /mint or record is required/);
 
   const match = JSON.parse((await request("/mcp", "POST", { jsonrpc: "2.0", id: 5, method: "tools/call", params: { name: "agent_match", arguments: { capabilities: ["chains"], network: "solana:mainnet-beta" } } })).body);
   assert.equal(match.result.isError, undefined);

@@ -3959,7 +3959,11 @@ async function handle(e) {
         const result = await createJob(serviceId, message.metadata?.input || {}, false);
         return json({ jsonrpc: "2.0", id: body.id ?? null, result: { id: result.job_id, status: { state: "completed" }, artifacts: [{ parts: [{ type: "data", data: result.result }] }], receipt: result.receipt } });
       } catch (error) {
-        return json({ jsonrpc: "2.0", id: body.id ?? null, error: { code: -32000, message: publicErrorMessage(error) } }, error.statusCode || 500);
+        const rawStatus = Number(error?.statusCode);
+        const status = Number.isFinite(rawStatus) && rawStatus > 0
+          ? rawStatus
+          : upstreamFailurePattern.test(String(error?.message || "")) ? 502 : 400;
+        return json({ jsonrpc: "2.0", id: body.id ?? null, error: { code: -32000, message: publicErrorMessage(error) } }, status);
       }
     }
     const result = await createJob(
