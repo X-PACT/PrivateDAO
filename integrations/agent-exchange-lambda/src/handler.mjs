@@ -44,6 +44,7 @@ const now = () => new Date().toISOString();
 const githubSetupStateTtlMs = 15 * 60 * 1000;
 const githubRecordId = (installationId) => `github_installation_${String(installationId)}`;
 const githubStateId = (state) => `github_setup_state_${state}`;
+const githubStateClaimId = (stateId) => `${stateId}:claim`;
 const hashSecret = (value) => digest(String(value || ""));
 function secretMatches(supplied, storedHash) {
   if (!supplied || !storedHash) return false;
@@ -389,6 +390,27 @@ async function githubWebhook(body, rawBody, signature, eventName) {
 async function completeGithubInstallation(storage, stateRecord, installationId) {
   await githubGetInstallation(config, installationId);
   const repositories = await githubInstallationRepositories(config, installationId);
+  const claimId = githubStateClaimId(stateRecord.id);
+  try {
+    // The callback may be delivered more than once or concurrently. Claim the
+    // one-time state before issuing a new connection credential so a later
+    // callback can never invalidate the credential returned to the first one.
+    await storage.put("Registry", claimId, {
+      id: claimId,
+      kind: "github_setup_claim",
+      state_id: stateRecord.id,
+      installation_id: String(installationId),
+      created_at: now(),
+    }, true);
+  } catch (_error) {
+    const existing = await storage.get("Registry", githubRecordId(installationId));
+    return githubSetupPage(
+      existing?.status === "active"
+        ? `GitHub installation ${installationId} is already connected. Start a new setup URL for another installation.`
+        : "GitHub setup is already being completed. Start again from the setup URL if it does not finish.",
+      installationId,
+    );
+  }
   const connectionToken = randomBytes(24).toString("base64url");
   const record = {
     id: githubRecordId(installationId), kind: "github_installation", installation_id: installationId,
