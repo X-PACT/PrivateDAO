@@ -168,8 +168,9 @@ async function main() {
     `${JSON.stringify(report, null, 2)}\n`,
   );
 
+  const escapeMarkdownCell = (value) => String(value).replace(/[|<>`\\\r\n]/g, (character) => ({ "|": "\\|", "<": "&lt;", ">": "&gt;", "`": "\\`", "\\": "\\\\", "\r": " ", "\n": " " }[character]));
   const rows = capabilityMatrix
-    .map((row) => `| ${row.group} | ${row.status} | ${row.reason.replace(/\|/g, "\\|")} |`)
+    .map((row) => `| ${escapeMarkdownCell(row.group)} | ${escapeMarkdownCell(row.status)} | ${escapeMarkdownCell(row.reason)} |`)
     .join("\n");
   const statusRows = report.live.devnetStatus
     .map((entry) => `| ${entry.server} | ${entry.live ? "yes" : "no"} | ${Object.entries(entry.services).map(([name, live]) => `${name}:${live ? "live" : "off"}`).join(", ")} |`)

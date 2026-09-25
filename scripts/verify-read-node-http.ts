@@ -1,4 +1,6 @@
 import { spawn, ChildProcess } from "child_process";
+import { mkdtempSync, rmSync } from "fs";
+import { tmpdir } from "os";
 import path from "path";
 import "dotenv/config";
 
@@ -20,7 +22,8 @@ type ReadNodeConfigResponse = {
 };
 
 async function main() {
-  const child = startServer();
+  const runtimeStateDir = mkdtempSync(path.join(tmpdir(), "privatedao-read-node-http-"));
+  const child = startServer(runtimeStateDir);
   try {
     const config = await waitForServer();
     const health = await getJson<{ ok: boolean; health: string; runtime: { readPath: string; programId: string } }>("/healthz");
@@ -152,10 +155,11 @@ async function main() {
   } finally {
     child.kill("SIGTERM");
     await onceExit(child);
+    rmSync(runtimeStateDir, { recursive: true, force: true });
   }
 }
 
-function startServer() {
+function startServer(runtimeStateDir: string) {
   const tsNodeBin = path.resolve("node_modules/ts-node/dist/bin.js");
   const child = spawn(process.execPath, [tsNodeBin, "scripts/run-read-node.ts"], {
     cwd: process.cwd(),
@@ -163,6 +167,7 @@ function startServer() {
       ...process.env,
       PRIVATE_DAO_READ_NODE_HOST: host,
       PRIVATE_DAO_READ_NODE_PORT: String(port),
+      PRIVATE_DAO_RUNTIME_STATE_DIR: runtimeStateDir,
       PRIVATE_DAO_READ_ALLOWED_ORIGIN: "*",
       PRIVATE_DAO_RPC_TIMEOUT_MS: process.env.PRIVATE_DAO_RPC_TIMEOUT_MS || "12000",
       PRIVATE_DAO_GET_MULTIPLE_ACCOUNTS_CHUNK_SIZE: process.env.PRIVATE_DAO_GET_MULTIPLE_ACCOUNTS_CHUNK_SIZE || "5",

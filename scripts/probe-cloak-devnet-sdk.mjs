@@ -322,8 +322,9 @@ async function main() {
   await writeFile(jsonPath, `${JSON.stringify(report, bigintJson, 2)}\n`);
 
   const markdownPath = resolve(repoRoot, "docs/cloak-devnet-sdk-live-probe.generated.md");
+  const escapeMarkdownCell = (value) => String(value).replace(/[|<>`\\\r\n]/g, (character) => ({ "|": "\\|", "<": "&lt;", ">": "&gt;", "`": "\\`", "\\": "\\\\", "\r": " ", "\n": " " }[character]));
   const rows = capabilityMatrix
-    .map((row) => `| ${row.group} | ${row.status} | ${row.reason.replace(/\|/g, "\\|")} |`)
+    .map((row) => `| ${escapeMarkdownCell(row.group)} | ${escapeMarkdownCell(row.status)} | ${escapeMarkdownCell(row.reason)} |`)
     .join("\n");
   const exportsRows = exportsChecked.map((entry) => `| \`${entry.name}\` | ${entry.present ? "yes" : "no"} |`).join("\n");
   const intentExecutionReference =

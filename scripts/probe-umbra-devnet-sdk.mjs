@@ -198,8 +198,9 @@ async function main() {
     `${JSON.stringify(report, jsonReplacer, 2)}\n`,
   );
 
+  const escapeMarkdownCell = (value) => String(value).replace(/[|<>`\\\r\n]/g, (character) => ({ "|": "\\|", "<": "&lt;", ">": "&gt;", "`": "\\`", "\\": "\\\\", "\r": " ", "\n": " " }[character]));
   const rows = capabilityMatrix
-    .map((row) => `| ${row.group} | ${row.status} | ${row.reason.replace(/\|/g, "\\|")} |`)
+    .map((row) => `| ${escapeMarkdownCell(row.group)} | ${escapeMarkdownCell(row.status)} | ${escapeMarkdownCell(row.reason)} |`)
     .join("\n");
   const exportsRows = exportsChecked.map((entry) => `| \`${entry.name}\` | ${entry.present ? "yes" : "no"} |`).join("\n");
   const executionReference = report.live.privateDaoIntentReceipt.executionReference || "unknown";
