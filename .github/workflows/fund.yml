@@ -16,6 +16,8 @@ on:
         required: false
         default: '1000000000'
 
+permissions: {}
+
 jobs:
   fund:
     runs-on: ubuntu-latest
