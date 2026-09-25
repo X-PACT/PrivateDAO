@@ -9,7 +9,7 @@ the game runtime.
 - Function: `PrivateDAOAgentExchange-Function-N2zgpQmMN41S`
 - Runtime: Node.js 22
 - Handler: `src/handler.handler`
-- Release: `1.6.0` (Lambda version 107)
+- Release: `1.6.0` (CloudFormation-managed `$LATEST` revision)
 - Domain: `agents.privatedao.org`
 - Production execution network: Solana Mainnet
 - Mainnet read-only intelligence: Ethereum Mainnet, Base Mainnet, and Arbitrum One

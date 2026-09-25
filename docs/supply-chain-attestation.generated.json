@@ -33,7 +33,7 @@
     },
     {
       "path": "Cargo.lock",
-      "sha256": "16930dab9ac7d5b13ccf8621b0282f96b876bc4bef72397f1663abbfc43a83e7",
+      "sha256": "e5d5c3f673ff85dd8ef7d2b56ce4465fd169c9176a0c3b57859fc13c7267198e",
       "bytes": 164838
     },
     {
@@ -57,7 +57,7 @@
       "bytes": 426187
     }
   ],
-  "aggregateSha256": "89ac3876d81789672a99a85497cd756d5707e9c0d7edf3dbd01c061f06a52ccc",
+  "aggregateSha256": "45449a1a0eadf53847df04141e9158ad9f68b83c9ea96469aa121586389869a9",
   "reviewCommands": [
     "npm run build:supply-chain-attestation",
     "npm run verify:supply-chain-attestation",
