@@ -112,9 +112,9 @@ jobs:
 
       - name: Install Anchor CLI
         run: |
-          cargo install --git https://github.com/coral-xyz/anchor avm --locked --force
+          timeout --signal=TERM --kill-after=30s 10m cargo install --git https://github.com/coral-xyz/anchor avm --locked --force
           for attempt in 1 2 3; do
-            if avm install 1.0.1; then
+            if timeout --signal=TERM --kill-after=30s 3m avm install 1.0.1; then
               avm use 1.0.1
               anchor --version
               exit 0
