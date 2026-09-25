@@ -1997,6 +1997,8 @@ async function createAgreement(body) {
   const asset = String(body.asset || "USDC").toUpperCase().trim();
   if (asset !== "USDC")
     throw Object.assign(new Error("agreement asset must be USDC for the current settlement rail"), { statusCode: 400 });
+  const policy = await marketplacePolicy();
+  const platformFeeBps = Number(policy.platform_fee_bps);
   const agreement = {
     id: `agr_${randomUUID()}`,
     agreementId: `agr_${randomUUID()}`,
@@ -2006,11 +2008,10 @@ async function createAgreement(body) {
     inputCommitment: digest(body.input || {}),
     price,
     asset,
-    protocolFee: Number(
-      ((price * config.marketplaceFeeBps) / 10000).toFixed(6),
-    ),
+    platformFeeBps,
+    protocolFee: Number(((price * platformFeeBps) / 10000).toFixed(6)),
     providerAmount: Number(
-      (price - (price * config.marketplaceFeeBps) / 10000).toFixed(6),
+      (price - (price * platformFeeBps) / 10000).toFixed(6),
     ),
     deadline: body.deadline || null,
     deliveryRequirements: body.deliveryRequirements || {},

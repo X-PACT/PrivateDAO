@@ -190,6 +190,29 @@ test("agreements require the declared buyer and the production USDC rail", async
   assert.equal(JSON.parse(accepted.body).status, "awaiting_payment");
 });
 
+test("agreements use the persisted marketplace platform fee policy", async () => {
+  process.env.AGENT_EXCHANGE_TEST_ADMIN_TOKEN = "test-admin-token";
+  resetForTests();
+  try {
+    const updated = await request("/api/admin/marketplace/policy", "PATCH", { platform_fee_bps: 900 }, { "x-pdao-admin-smoke": "test-admin-token" });
+    assert.equal(updated.statusCode, 200, updated.body);
+    const created = await request("/api/agreements", "POST", {
+      buyerAgent: "buyer-policy-fixture",
+      providerAgent: "provider-policy-fixture",
+      service: "synthetic.service",
+      price: 1,
+      asset: "USDC",
+    });
+    assert.equal(created.statusCode, 201, created.body);
+    const agreement = JSON.parse(created.body);
+    assert.equal(agreement.platformFeeBps, 900);
+    assert.equal(agreement.protocolFee, 0.09);
+    assert.equal(agreement.providerAmount, 0.91);
+  } finally {
+    delete process.env.AGENT_EXCHANGE_TEST_ADMIN_TOKEN;
+  }
+});
+
 test("legacy admin listings cannot advertise an unsupported payment asset", async () => {
   process.env.AGENT_EXCHANGE_TEST_ADMIN_TOKEN = "test-admin-token";
   resetForTests();
