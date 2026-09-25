@@ -3679,8 +3679,10 @@ async function handle(e) {
     return json({ jobId: item.id, status: item.status, paymentIntent: { jobId: item.id, amount: quote.amount.toFixed(6), amountBaseUnits: String(quote.amountAtomic), mint: quote.mint, network: quote.network, target_network: quote.target_network || item.execution_input?.network || "solana-mainnet-beta", treasuryOwner: quote.treasuryOwner, treasuryTokenAccount: quote.treasuryTokenAccount, paymentReference: quote.paymentReference, expiresAtUtc: quote.expires_at_utc || quote.expires_at, expiresAtEpochMs: quote.expires_at_epoch_ms || Date.parse(quote.expires_at) } });
   }
   const payment = path.match(/^\/api\/jobs\/([^/]+)\/payment$/);
-  if (method === "POST" && payment)
-    return json(await submitPayment(payment[1], body));
+  if (method === "POST" && payment) {
+    const result = await submitPayment(payment[1], body);
+    return json(result, paymentStatusCode(result));
+  }
   const paymentTransaction = path.match(/^\/api\/jobs\/([^/]+)\/payment-transaction$/);
   if (method === "POST" && paymentTransaction)
     return json(await buildPaymentTransaction(paymentTransaction[1], body.payer, body.sourceTokenAccount));
