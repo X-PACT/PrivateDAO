@@ -3391,7 +3391,10 @@ async function retireSeller(agentId, body) {
 }
 
 async function invokeAgent(body) {
-  const agent = await (await store()).get("Registry", body.agentId);
+  const agentId = String(body.agentId || body.agent_id || "").trim();
+  if (!agentId)
+    throw Object.assign(new Error("agent_id is required"), { statusCode: 400 });
+  const agent = await (await store()).get("Registry", agentId);
   if (!agent || !["verified", "connected"].includes(agent.status))
     throw new Error("verified agent required");
   if (agent.protocol === "MCP" || agent.transport === "streamable-http") {

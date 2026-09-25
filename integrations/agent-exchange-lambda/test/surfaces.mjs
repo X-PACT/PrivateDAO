@@ -467,6 +467,19 @@ test("MCP lifecycle, schemas, errors, and network aliases are protocol-safe", as
   assert.equal(match.result.isError, undefined);
 });
 
+test("agent invocation rejects malformed identifiers without leaking storage errors", async () => {
+  resetForTests();
+  const missing = await request("/api/agents/invoke", "POST", { tool: "read", arguments: {} });
+  assert.equal(missing.statusCode, 400);
+  assert.match(missing.body, /agent_id is required/);
+  assert.doesNotMatch(missing.body, /DynamoDB|schema|provided key element/i);
+
+  const unknown = await request("/api/agents/invoke", "POST", { agent_id: "missing-fixture", tool: "read", arguments: {} });
+  assert.equal(unknown.statusCode, 400);
+  assert.match(unknown.body, /verified agent required/);
+  assert.doesNotMatch(unknown.body, /DynamoDB|schema|provided key element/i);
+});
+
 test("GitHub App and external seller boundaries fail closed without credentials or declarations", async () => {
   resetForTests();
   const setup = await request("/github/setup");
