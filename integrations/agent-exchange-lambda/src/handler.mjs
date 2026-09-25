@@ -2137,7 +2137,7 @@ async function recordRevenue(job, payment) {
     true,
   );
 }
-const upstreamFailurePattern = /(?:DynamoDB storage unavailable|Solana RPC|Jupiter quote HTTP|market data HTTP|IBM watsonx HTTP|Intel inference HTTP|GitHub (?:API returned|repository API) HTTP|RPC is not configured|fetch failed)/i;
+const upstreamFailurePattern = /(?:DynamoDB storage unavailable|DynamoDB|provided key element|ValidationException|Solana RPC|Jupiter quote HTTP|market data HTTP|IBM watsonx HTTP|Intel inference HTTP|GitHub (?:API returned|repository API) HTTP|RPC is not configured|fetch failed)/i;
 function publicErrorMessage(error) {
   const message = String(error?.message || "request failed");
   return Number(error?.statusCode) >= 500 || upstreamFailurePattern.test(message)
@@ -3959,7 +3959,7 @@ async function handle(e) {
         const result = await createJob(serviceId, message.metadata?.input || {}, false);
         return json({ jsonrpc: "2.0", id: body.id ?? null, result: { id: result.job_id, status: { state: "completed" }, artifacts: [{ parts: [{ type: "data", data: result.result }] }], receipt: result.receipt } });
       } catch (error) {
-        return json({ jsonrpc: "2.0", id: body.id ?? null, error: { code: -32000, message: error.message } }, error.statusCode || 500);
+        return json({ jsonrpc: "2.0", id: body.id ?? null, error: { code: -32000, message: publicErrorMessage(error) } }, error.statusCode || 500);
       }
     }
     const result = await createJob(

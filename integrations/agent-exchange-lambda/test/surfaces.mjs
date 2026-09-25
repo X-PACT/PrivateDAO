@@ -226,6 +226,26 @@ test("MCP upstream errors are sanitized without exposing provider details", asyn
   }
 });
 
+test("A2A upstream errors are sanitized without exposing provider details", async () => {
+  const originalFetch = global.fetch;
+  resetForTests();
+  global.fetch = async () => { throw new Error("DynamoDB ValidationException: The provided key element does not match the schema; table=secret-table"); };
+  try {
+    const response = await request("/a2a", "POST", {
+      jsonrpc: "2.0",
+      id: 8,
+      method: "message/send",
+      params: { message: { metadata: { service_id: "verify.basic", input: { mint: "So11111111111111111111111111111111111111112", network: "solana-mainnet-beta" } } } },
+    });
+    const body = JSON.parse(response.body);
+    assert.equal(body.error.code, -32000);
+    assert.equal(body.error.message, "upstream service temporarily unavailable");
+    assert.doesNotMatch(response.body, /ValidationException|secret-table|provided key element/i);
+  } finally {
+    global.fetch = originalFetch;
+  }
+});
+
 test("a free job resolves to a public human receipt and verification page", async () => {
   resetForTests();
   const created = await request("/api/jobs", "POST", {
