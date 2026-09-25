@@ -68,9 +68,7 @@ function main() {
     throw new Error("README is missing Judge Mode entry point");
   }
 
-  const hasDiagnosticsEntry =
-    readme.includes("https://privatedao.org/diagnostics/") ||
-    readme.includes("https://privatedao.org/diagnostics/");
+  const hasDiagnosticsEntry = containsExactPublicUrl(readme, "https://privatedao.org/diagnostics/");
   if (!hasDiagnosticsEntry) {
     throw new Error("README is missing Wallet Diagnostics entry point");
   }
@@ -91,6 +89,18 @@ function main() {
   }
 
   console.log("Review link verification: PASS");
+}
+
+function containsExactPublicUrl(document: string, expected: string): boolean {
+  const target = new URL(expected);
+  return document.split(/[\s"'`()<>]+/).some((token) => {
+    try {
+      const candidate = new URL(token.replace(/[\],.;:]+$/g, ""));
+      return candidate.origin === target.origin && candidate.pathname === target.pathname;
+    } catch {
+      return false;
+    }
+  });
 }
 
 function assertContains(body: string, fragment: string, message: string) {

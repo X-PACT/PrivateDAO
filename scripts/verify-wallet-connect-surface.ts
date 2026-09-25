@@ -120,12 +120,7 @@ async function main() {
         return;
       }
       const requestUrl = request.url();
-      if (
-        requestUrl.includes("api.privatedao.org/api/v1/freshness/") ||
-        requestUrl.includes("api.privatedao.org/api/v1/visitors/") ||
-        requestUrl.includes("fonts.googleapis.com/") ||
-        requestUrl.includes("fonts.gstatic.com/")
-      ) {
+      if (isAllowedExternalRequest(requestUrl)) {
         return;
       }
       const errorText = request.failure()?.errorText || "";
@@ -168,6 +163,17 @@ async function main() {
   } finally {
     await browser?.close().catch(() => undefined);
     await close(server);
+  }
+}
+
+function isAllowedExternalRequest(requestUrl: string): boolean {
+  try {
+    const url = new URL(requestUrl);
+    if (url.hostname === "fonts.googleapis.com" || url.hostname === "fonts.gstatic.com") return true;
+    if (url.hostname !== "api.privatedao.org") return false;
+    return url.pathname.startsWith("/api/v1/freshness/") || url.pathname.startsWith("/api/v1/visitors/");
+  } catch {
+    return false;
   }
 }
 

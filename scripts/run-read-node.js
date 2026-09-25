@@ -61,9 +61,8 @@ function writeJson(res, statusCode, payload) {
     });
     res.end(JSON.stringify(payload, null, 2));
 }
-function publicReadNodeError(error) {
-    const message = String(error?.message || error || "");
-    return message === "Request body too large" ? message : "Request could not be completed.";
+function publicReadNodeError() {
+    return "Request could not be completed.";
 }
 function normalizeIp(req) {
     const forwarded = String(req.headers["x-forwarded-for"] || "").split(",")[0].trim();
@@ -253,7 +252,7 @@ async function handle(req, res) {
         metrics.requestsFailed += 1;
         writeJson(res, 500, {
             ok: false,
-            error: publicReadNodeError(error),
+            error: publicReadNodeError(),
             source: "backend-indexer",
         });
     }
