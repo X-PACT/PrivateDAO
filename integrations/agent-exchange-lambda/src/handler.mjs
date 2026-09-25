@@ -2117,7 +2117,7 @@ async function recordRevenue(job, payment) {
 const upstreamFailurePattern = /(?:DynamoDB storage unavailable|Solana RPC|Jupiter quote HTTP|market data HTTP|IBM watsonx HTTP|Intel inference HTTP|GitHub (?:API returned|repository API) HTTP|RPC is not configured|fetch failed)/i;
 function publicErrorMessage(error) {
   const message = String(error?.message || "request failed");
-  return upstreamFailurePattern.test(message)
+  return Number(error?.statusCode) >= 500 || upstreamFailurePattern.test(message)
     ? "upstream service temporarily unavailable"
     : message;
 }
