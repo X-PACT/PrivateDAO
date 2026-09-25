@@ -908,21 +908,21 @@ mod tests {
         let non_zero_hash = [2u8; 32];
 
         assert!(validate_refhe_envelope(
-            &"box://refhe/model".to_string(),
+            "box://refhe/model",
             &non_zero_hash,
             &non_zero_hash,
             &non_zero_hash,
         )
         .is_ok());
         assert!(validate_refhe_envelope(
-            &"".to_string(),
+            "",
             &non_zero_hash,
             &non_zero_hash,
             &non_zero_hash,
         )
         .is_err());
         assert!(validate_refhe_envelope(
-            &"box://refhe/model".to_string(),
+            "box://refhe/model",
             &[0u8; 32],
             &non_zero_hash,
             &non_zero_hash,
