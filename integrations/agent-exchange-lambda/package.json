@@ -6,10 +6,10 @@
     "node": ">=22"
   },
   "scripts": {
-    "test:surfaces": "AGENT_EXCHANGE_ALLOW_TEST_STORAGE=true node --test test/surfaces.mjs",
-    "test:browser": "node test/e2e/browser-seller.mjs",
-    "test": "AGENT_EXCHANGE_ALLOW_TEST_STORAGE=true node --test --test-concurrency=1 test/*.mjs",
-    "smoke": "AGENT_EXCHANGE_ALLOW_TEST_STORAGE=true node test/smoke.mjs",
+    "test:surfaces": "AGENT_EXCHANGE_ALLOW_TEST_STORAGE=true AGENT_EXCHANGE_MCP_FETCH_FIXTURE=true node --test test/surfaces.mjs",
+    "test:browser": "AGENT_EXCHANGE_MCP_FETCH_FIXTURE=true node test/e2e/browser-seller.mjs",
+    "test": "AGENT_EXCHANGE_ALLOW_TEST_STORAGE=true AGENT_EXCHANGE_MCP_FETCH_FIXTURE=true node --test --test-concurrency=1 test/*.mjs",
+    "smoke": "AGENT_EXCHANGE_ALLOW_TEST_STORAGE=true AGENT_EXCHANGE_MCP_FETCH_FIXTURE=true node test/smoke.mjs",
     "lint": "node --check src/*.mjs test/*.mjs",
     "package": "bash scripts/package-lambda.sh"
   },

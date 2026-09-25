@@ -44,7 +44,9 @@ export async function assertPublicHttps(urlText) {
 // validation and the request to an external seller endpoint.
 export async function fetchPublicHttps(url, options = {}) {
   url = url instanceof URL ? url : new URL(url);
-  if (process.env.NODE_ENV === "test" || process.env.AGENT_EXCHANGE_ALLOW_TEST_STORAGE === "true")
+  // Tests use deterministic local MCP fixtures. Keep this bypass explicit so
+  // NODE_ENV alone can never disable DNS-rebinding protection.
+  if (process.env.AGENT_EXCHANGE_MCP_FETCH_FIXTURE === "true")
     return fetch(url, options);
   const host = url.hostname.toLowerCase().replace(/^\[|\]$/g, "");
   const addresses = isIP(host)
