@@ -50,7 +50,11 @@ function createStaticServer() {
               ? url.pathname.slice("/PrivateDAO".length)
               : url.pathname;
       const requestedPath = decodeURIComponent(normalizedPath);
-      const resolvedPath = path.resolve(SURFACE_DIR, `.${requestedPath}`);
+      const candidatePath = path.resolve(SURFACE_DIR, `.${requestedPath}`);
+      const resolvedPath =
+        fs.existsSync(candidatePath) && fs.statSync(candidatePath).isDirectory()
+          ? path.join(candidatePath, "index.html")
+          : candidatePath;
 
       if (!resolvedPath.startsWith(`${SURFACE_DIR}${path.sep}`) && resolvedPath !== SURFACE_DIR) {
         res.writeHead(403);
@@ -98,7 +102,10 @@ async function main() {
   const chrome = findChrome();
   const server = createStaticServer();
   const port = await listen(server);
-  const url = `http://127.0.0.1:${port}/PrivateDAO/`;
+  // The brand home is intentionally wallet-free. Verify the dedicated
+  // wallet-first product route instead of waiting for a control that cannot
+  // exist on the home page.
+  const url = `http://127.0.0.1:${port}/PrivateDAO/services/eitherway-live-dapp/`;
   let browser: Browser | undefined;
 
   try {
@@ -146,11 +153,12 @@ async function main() {
     }
 
     await button.click();
-    await page.getByText("Solflare").first().waitFor({ state: "visible", timeout: 5000 });
+    const walletModal = page.locator(".wallet-adapter-modal:visible").first();
+    await walletModal.waitFor({ state: "visible", timeout: 5000 });
+    const walletModalText = await walletModal.innerText();
 
     for (const walletName of ["Solflare", "Phantom", "Glow", "Backpack"]) {
-      const walletOption = page.getByText(walletName).first();
-      if (!(await walletOption.isVisible())) {
+      if (!walletModalText.includes(walletName)) {
         throw new Error(`Wallet modal is missing ${walletName}.`);
       }
     }
