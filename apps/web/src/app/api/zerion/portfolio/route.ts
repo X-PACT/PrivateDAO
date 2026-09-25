@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { normalizeEvmWallet } from "@/lib/api/wallet-validation";
 
 export const dynamic = "force-static";
 
@@ -13,14 +14,6 @@ const ZERION_BASE = "https://api.zerion.io/v1";
 
 function buildBasicAuth(apiKey: string) {
   return Buffer.from(`${apiKey}:`).toString("base64");
-}
-
-function normalizeWalletAddress(value: string | undefined) {
-  const wallet = value?.trim() ?? "";
-  if (!wallet || wallet.length < 32 || wallet.length > 64) {
-    throw new Error("Invalid wallet address.");
-  }
-  return wallet;
 }
 
 function normalizeCurrency(value: string | undefined) {
@@ -40,7 +33,7 @@ export async function POST(request: Request) {
 
   try {
     const body = (await request.json()) as ZerionPortfolioRequest;
-    const walletAddress = normalizeWalletAddress(
+    const walletAddress = normalizeEvmWallet(
       body.walletAddress ?? process.env.PRIVATE_DAO_TESTNET_WALLET_PUBLIC_KEY,
     );
     const currency = normalizeCurrency(body.currency);

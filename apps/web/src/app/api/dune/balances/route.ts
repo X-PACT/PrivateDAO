@@ -1,15 +1,12 @@
 import { NextResponse } from "next/server";
+import { normalizeSolanaWallet } from "@/lib/api/wallet-validation";
 
 export const dynamic = "force-static";
 
 const DUNE_SIM_BASE = "https://api.sim.dune.com/beta/svm";
 
 function parseWallet(searchParams: URLSearchParams) {
-  const wallet = searchParams.get("wallet")?.trim() ?? "";
-  if (!wallet || wallet.length < 32 || wallet.length > 64) {
-    throw new Error("Invalid wallet address.");
-  }
-  return wallet;
+  return normalizeSolanaWallet(searchParams.get("wallet") ?? undefined);
 }
 
 export async function GET(request: Request) {
