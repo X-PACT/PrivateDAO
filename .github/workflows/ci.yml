@@ -160,6 +160,12 @@ jobs:
       - name: Anchor test
         run: bash scripts/verify.sh test
 
+      - name: Diagnose lockfile mutation
+        run: |
+          echo "Tracked lockfile changes after Anchor test:"
+          git diff --name-only -- Cargo.lock yarn.lock
+          sha256sum Cargo.lock yarn.lock
+
       - name: Non-real-code scan
         run: bash scripts/verify.sh scan
 
