@@ -74,7 +74,10 @@ export class EntraTokenVerifier {
   }
 
   async verifyBearerToken(authorizationHeader: string | undefined): Promise<EnterprisePrincipal> {
-    const token = authorizationHeader?.match(/^Bearer\s+(.+)$/i)?.[1]?.trim();
+    const bearerPrefix = "bearer ";
+    const token = authorizationHeader?.slice(0, bearerPrefix.length).toLowerCase() === bearerPrefix
+      ? authorizationHeader.slice(bearerPrefix.length).trim()
+      : undefined;
     if (!token) throw new EntraIdentityError("INVALID_TOKEN", "A Bearer token is required.");
     const issuer = this.config.issuer || issuerFor(this.config.tenantId);
     try {

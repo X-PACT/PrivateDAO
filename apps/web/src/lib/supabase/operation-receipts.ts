@@ -1,7 +1,7 @@
 import { createOptionalSupabaseBrowserClient } from "@/lib/supabase/client";
 
-const LOCAL_RECEIPTS_STORAGE_KEY = "pdao.operation_receipts.v1";
 const LOCAL_RECEIPTS_MAX = 60;
+let localReceiptRows: OperationReceiptTimelineRow[] = [];
 const REVIEWER_SEED_RECEIPTS: OperationReceiptTimelineRow[] = [
   {
     id: "seed-anchor-1-governance",
@@ -310,18 +310,7 @@ function createLocalReceiptRow(input: OperationReceiptInsert): OperationReceiptT
 }
 
 function readLocalReceiptRows(): OperationReceiptTimelineRow[] {
-  if (typeof window === "undefined") return [];
-  try {
-    const raw = window.localStorage.getItem(LOCAL_RECEIPTS_STORAGE_KEY);
-    if (!raw) return [];
-    const parsed = JSON.parse(raw) as OperationReceiptTimelineRow[];
-    if (!Array.isArray(parsed)) return [];
-    return parsed
-      .filter((entry) => typeof entry?.id === "string" && typeof entry?.created_at === "string")
-      .sort((a, b) => Date.parse(b.created_at) - Date.parse(a.created_at));
-  } catch {
-    return [];
-  }
+  return localReceiptRows;
 }
 
 function getReviewerSeedReceipts(limit: number): OperationReceiptTimelineRow[] {
@@ -331,12 +320,7 @@ function getReviewerSeedReceipts(limit: number): OperationReceiptTimelineRow[] {
 function persistLocalReceiptRow(input: OperationReceiptInsert) {
   if (typeof window === "undefined") return;
   const nextRow = createLocalReceiptRow(input);
-  const nextRows = [nextRow, ...readLocalReceiptRows()].slice(0, LOCAL_RECEIPTS_MAX);
-  try {
-    window.localStorage.setItem(LOCAL_RECEIPTS_STORAGE_KEY, JSON.stringify(nextRows));
-  } catch {
-    // Keep non-blocking path even when storage quota is full.
-  }
+  localReceiptRows = [nextRow, ...readLocalReceiptRows()].slice(0, LOCAL_RECEIPTS_MAX);
 }
 
 export async function fetchOperationReceiptTimeline(limit = 20): Promise<OperationReceiptTimelineResult> {
