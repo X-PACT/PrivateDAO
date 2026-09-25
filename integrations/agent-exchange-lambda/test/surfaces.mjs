@@ -405,6 +405,7 @@ test("MCP and A2A machine entrypoints remain callable", async () => {
   assert.ok(api.components.schemas.ServiceInput_token_intelligence);
   assert.deepEqual(api.components.schemas.PaymentRequest.required, ["signature"]);
   assert.ok(api.paths["/api/jobs"].post.requestBody);
+  assert.equal(api.paths["/api/jobs/{jobId}"].get.responses["409"].description, "Job requires non-replaying recovery");
   assert.ok(api.paths["/api/jobs/{jobId}/payment"].post.requestBody);
   assert.equal(api.paths["/api/jobs/{jobId}/payment"].post.responses["409"].description.includes("non-replaying recovery"), true);
   assert.equal(api.paths["/api/external/jobs/{jobId}/payment"].post.responses["409"].description.includes("non-replaying recovery"), true);

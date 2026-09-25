@@ -654,7 +654,7 @@ function openapi() {
     "/api/services": { get: { operationId: "services" } },
     "/api/pricing": { get: { operationId: "pricing" } },
     "/api/jobs": { post: { operationId: "createJob", requestBody: { required: true, content: { "application/json": { schema: { $ref: "#/components/schemas/CreateJobRequest" } } } } } },
-    "/api/jobs/{jobId}": { get: { operationId: "jobStatus", parameters: [{ $ref: "#/components/parameters/JobId" }] } },
+    "/api/jobs/{jobId}": { get: { operationId: "jobStatus", parameters: [{ $ref: "#/components/parameters/JobId" }], responses: { "200": { description: "Current job status" }, "409": { description: "Job requires non-replaying recovery" } } } },
     "/api/jobs/{jobId}/payment": { post: { operationId: "submitPayment", parameters: [{ $ref: "#/components/parameters/JobId" }], responses: { "200": { description: "Payment accepted or job completed" }, "202": { description: "Payment verification or processing is still in progress" }, "409": { description: "Payment was accepted but execution requires non-replaying recovery" } }, requestBody: { required: true, content: { "application/json": { schema: { $ref: "#/components/schemas/PaymentRequest" } } } } } },
     "/api/receipts/{receiptId}": { get: { operationId: "getReceipt", parameters: [{ $ref: "#/components/parameters/ReceiptId" }] } },
     "/api/network/health": { get: { operationId: "networkHealth", parameters: [{ name: "network", in: "query", schema: { type: "string" } }] } },
@@ -3547,7 +3547,7 @@ async function handle(e) {
   if (method === "GET" && humanJob) {
     const job = await (await store()).get("Jobs", decodeURIComponent(humanJob[1]));
     if (!job) return json({ error: "not_found" }, 404);
-    if (!job.receipt_id) return json({ job_id: job.id, status: job.status, message: "receipt is not available yet" }, 202);
+    if (!job.receipt_id) return json({ job_id: job.id, status: job.status, message: job.status === "recovery_required" ? "payment was accepted but execution requires recovery; do not replay the service" : "receipt is not available yet" }, job.status === "recovery_required" ? 409 : 202);
     const receipt = await (await store()).get("Receipts", job.receipt_id);
     if (!receipt) return json({ error: "receipt_not_found" }, 404);
     return { statusCode: 200, headers: { "content-type": "text/html; charset=utf-8", "cache-control": "no-store" }, body: publicReceiptPage(receipt) };
