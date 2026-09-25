@@ -37,5 +37,5 @@ test -f "$PACKAGE_DIR/assets/clients/openclaw-symbol.png"
 
 test -s "$OUTPUT_PATH"
 unzip -tq "$OUTPUT_PATH"
-unzip -l "$OUTPUT_PATH" | grep -Eq '[[:space:]]src/handler\.mjs$'
+unzip -l "$OUTPUT_PATH" | awk '$NF == "src/handler.mjs" { found = 1 } END { exit found ? 0 : 1 }'
 echo "Lambda package created: $OUTPUT_PATH"
