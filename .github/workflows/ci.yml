@@ -172,6 +172,11 @@ jobs:
       - name: Verify legacy route archive boundary
         run: npm run verify:legacy-route-archive
 
+      - name: Verify repository lockfiles remain stable
+        run: |
+          git diff --exit-code -- Cargo.lock yarn.lock
+          sha256sum Cargo.lock yarn.lock
+
       - name: Unified review and ops verification
         run: npm run verify:all
 
