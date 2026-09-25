@@ -1,5 +1,6 @@
 import { randomUUID, randomBytes, timingSafeEqual } from "node:crypto";
 import { readFileSync } from "node:fs";
+import { PublicKey } from "@solana/web3.js";
 import { getConfig, hydrateConfig } from "./config.mjs";
 import { digest, receiptId } from "./canonical.mjs";
 import { SERVICES, serviceById } from "./catalog.mjs";
@@ -250,6 +251,11 @@ function sellerPayout(value) {
   const address = String(value.address || value.wallet || "").trim();
   if (address && !/^[1-9A-HJ-NP-Za-km-z]{32,44}$/.test(address)) throw new Error("payout address must be a Solana public address");
   if (!address) return null;
+  try {
+    new PublicKey(address);
+  } catch {
+    throw new Error("payout address must be a valid Solana public address");
+  }
   const network = normalizeNetworkId(value.network || "solana-mainnet-beta");
   if (network !== "solana-mainnet-beta") throw new Error("payout network must be solana-mainnet-beta for the current payout rail");
   const asset = String(value.asset || "USDC").toUpperCase().trim();
