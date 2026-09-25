@@ -135,10 +135,19 @@ async function marketplacePolicy() {
 async function saveMarketplacePolicy(value) {
   const current = await marketplacePolicy();
   const incoming = value && typeof value === "object" ? value : {};
+  const incomingTiers = incoming.seller_tiers && typeof incoming.seller_tiers === "object" ? incoming.seller_tiers : {};
+  const listingFeeChanged = Object.hasOwn(incoming, "listing_fee_usd");
+  const mergedTiers = { ...current.seller_tiers, ...incomingTiers };
+  const sellerTiers = Object.fromEntries(Object.entries(mergedTiers).map(([id, tier]) => {
+    const explicitTier = incomingTiers[id] && typeof incomingTiers[id] === "object" ? incomingTiers[id] : {};
+    return [id, listingFeeChanged && !Object.hasOwn(explicitTier, "listing_fee_usd")
+      ? { ...tier, listing_fee_usd: incoming.listing_fee_usd }
+      : tier];
+  }));
   const policy = normalizeMarketplacePolicy({
     ...current,
     ...incoming,
-    seller_tiers: { ...current.seller_tiers, ...(incoming.seller_tiers || {}) },
+    seller_tiers: sellerTiers,
     promotion_packages: { ...current.promotion_packages, ...(incoming.promotion_packages || {}) },
   });
   await (await store()).put("Registry", MARKETPLACE_POLICY_ID, { id: MARKETPLACE_POLICY_ID, kind: "platform_settings", policy, updated_at: now() });

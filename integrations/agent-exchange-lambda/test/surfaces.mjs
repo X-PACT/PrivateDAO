@@ -925,6 +925,7 @@ test("external seller paid lifecycle quotes, executes once, and records attribut
 });
 
 test("external seller listing pricing includes five services and bills each additional service once", async () => {
+  process.env.AGENT_EXCHANGE_TEST_ADMIN_TOKEN = "test-admin-token";
   resetForTests();
   const originalFetch = globalThis.fetch;
   globalThis.fetch = async (_url, options = {}) => {
@@ -936,6 +937,8 @@ test("external seller listing pricing includes five services and bills each addi
     throw new Error(`unexpected pricing fixture request: ${payload.method}`);
   };
   try {
+    const policyUpdate = await request("/api/admin/marketplace/policy", "PATCH", { listing_fee_usd: 12 }, { "x-pdao-admin-smoke": "test-admin-token" });
+    assert.equal(policyUpdate.statusCode, 200, policyUpdate.body);
     const firstPartyQuote = await request("/api/payments/quote", "POST", { service_id: "verify.deep", job_id: "first_party_fixture" });
     assert.equal(firstPartyQuote.statusCode, 200);
     const firstPartyBody = JSON.parse(firstPartyQuote.body);
@@ -944,7 +947,7 @@ test("external seller listing pricing includes five services and bills each addi
     assert.equal(firstPartyBody.seller_net_amount, null);
     const registered = JSON.parse((await request("/api/registry/register", "POST", { name: "Pricing Fixture", mcp_url: "https://example.com/mcp" })).body);
     const serviceSet = (count) => Array.from({ length: count }, (_item, index) => ({ id: `service_${index + 1}`, tool: "read", title: `Service ${index + 1}`, price: 0.01, asset: "USDC", network: "solana-mainnet-beta" }));
-    for (const [count, expected] of [[1, 10], [5, 10]]) {
+    for (const [count, expected] of [[1, 12], [5, 12]]) {
       const updated = await request(`/api/registry/agents/${registered.id}/services`, "PATCH", { owner_token: registered.owner_token, services: serviceSet(count), accepted_assets: ["USDC"], payout: { address: "2BJ4ezxqV9YJXc38D9duKBkdn4su4jE1beKUHwH663sL", network: "solana-mainnet-beta", asset: "USDC" } });
       assert.equal(updated.statusCode, 200, updated.body);
       const quoteResponse = await request("/api/marketplace/seller-listings/quote", "POST", { agent_id: registered.id, owner_token: registered.owner_token, tier: "pro", accept_terms: true, terms_version: "seller-marketplace-v1" });
@@ -956,6 +959,7 @@ test("external seller listing pricing includes five services and bills each addi
     assert.match(tooMany.body, /at most 5 services/);
   } finally {
     globalThis.fetch = originalFetch;
+    delete process.env.AGENT_EXCHANGE_TEST_ADMIN_TOKEN;
   }
 });
 
