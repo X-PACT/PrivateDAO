@@ -1,6 +1,6 @@
 import fs from "fs";
 import path from "path";
-import { execSync } from "child_process";
+import { spawnSync } from "child_process";
 
 const LAMPORTS_PER_SOL = 1_000_000_000;
 const WORKSPACE_ROOT = path.resolve(process.cwd(), "..");
@@ -61,14 +61,19 @@ function readJson<T>(relativePath: string): T {
 
 function runSolanaJson(args: string[]) {
   const command = ["solana", ...args].join(" ");
-  const commandWithConfig = `SOLANA_CONFIG_PATH=${SOLANA_CONFIG_PATH} ${command}`;
   try {
-    const stdout = execSync(commandWithConfig, {
+    const result = spawnSync("solana", args, {
       encoding: "utf8",
       stdio: ["ignore", "pipe", "pipe"],
-      shell: "/bin/bash",
       cwd: WORKSPACE_ROOT,
+      env: { ...process.env, SOLANA_CONFIG_PATH },
     });
+    if (result.error) throw result.error;
+    if (result.status !== 0) {
+      const error = result.stderr?.trim() || `solana exited with status ${result.status}`;
+      return { ok: false as const, command, error };
+    }
+    const stdout = result.stdout;
     return { ok: true as const, command, stdout };
   } catch (error) {
     const stderr = error instanceof Error && "stderr" in error
