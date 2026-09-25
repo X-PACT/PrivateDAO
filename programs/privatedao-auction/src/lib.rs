@@ -5,8 +5,7 @@
 use anchor_lang::prelude::*;
 use ephemeral_rollups_sdk::access_control::{
     instructions::{
-        CloseEphemeralPermissionCpi, CreateEphemeralPermissionCpi,
-        UpdateEphemeralPermissionCpi,
+        CloseEphemeralPermissionCpi, CreateEphemeralPermissionCpi, UpdateEphemeralPermissionCpi,
     },
     structs::{
         EphemeralMembersArgs, EphemeralPermission, Member, TX_BALANCES_FLAG, TX_LOGS_FLAG,
@@ -14,10 +13,10 @@ use ephemeral_rollups_sdk::access_control::{
     },
 };
 use ephemeral_rollups_sdk::anchor::{delegate, ephemeral};
-use ephemeral_rollups_sdk::cpi::DelegateConfig;
 use ephemeral_rollups_sdk::consts::{EPHEMERAL_VAULT_ID, MAGIC_PROGRAM_ID, PERMISSION_PROGRAM_ID};
-use ephemeral_rollups_sdk::ephemeral_accounts::rent as ephemeral_rent;
+use ephemeral_rollups_sdk::cpi::DelegateConfig;
 use ephemeral_rollups_sdk::ephem::MagicIntentBundleBuilder;
+use ephemeral_rollups_sdk::ephemeral_accounts::rent as ephemeral_rent;
 use sha2::{Digest, Sha256};
 
 declare_id!("4Z7AeFRZHBCok68hhbUgVLC3uFaEP2aDWozsYVksPuQd");
@@ -46,7 +45,10 @@ pub mod privatedao_auction {
     ) -> Result<()> {
         let now = Clock::get()?.unix_timestamp;
         require!(bidding_start >= now, AuctionError::StartInPast);
-        require!(bidding_deadline > bidding_start, AuctionError::InvalidDeadline);
+        require!(
+            bidding_deadline > bidding_start,
+            AuctionError::InvalidDeadline
+        );
         require!(!is_zero(&auction_id), AuctionError::InvalidAuctionId);
         require!(!is_zero(&rules_digest), AuctionError::InvalidRulesDigest);
         require!(!is_zero(&policy_digest), AuctionError::InvalidPolicyDigest);
@@ -110,9 +112,18 @@ pub mod privatedao_auction {
 
     pub fn activate_auction(ctx: Context<ManageAuction>) -> Result<()> {
         let now = Clock::get()?.unix_timestamp;
-        require!(ctx.accounts.config.status == AuctionStatus::Scheduled, AuctionError::InvalidStatus);
-        require!(now >= ctx.accounts.config.bidding_start, AuctionError::TooEarly);
-        require!(now < ctx.accounts.config.bidding_deadline, AuctionError::DeadlinePassed);
+        require!(
+            ctx.accounts.config.status == AuctionStatus::Scheduled,
+            AuctionError::InvalidStatus
+        );
+        require!(
+            now >= ctx.accounts.config.bidding_start,
+            AuctionError::TooEarly
+        );
+        require!(
+            now < ctx.accounts.config.bidding_deadline,
+            AuctionError::DeadlinePassed
+        );
         ctx.accounts.config.status = AuctionStatus::Active;
         ctx.accounts.session.status = AuctionStatus::Active;
         Ok(())
@@ -123,8 +134,15 @@ pub mod privatedao_auction {
         bidder_commitment: [u8; 32],
         bidder_wallet: Pubkey,
     ) -> Result<()> {
-        require!(!is_zero(&bidder_commitment), AuctionError::InvalidBidderCommitment);
-        require!(ctx.accounts.config.status == AuctionStatus::Scheduled || ctx.accounts.config.status == AuctionStatus::Active, AuctionError::InvalidStatus);
+        require!(
+            !is_zero(&bidder_commitment),
+            AuctionError::InvalidBidderCommitment
+        );
+        require!(
+            ctx.accounts.config.status == AuctionStatus::Scheduled
+                || ctx.accounts.config.status == AuctionStatus::Active,
+            AuctionError::InvalidStatus
+        );
         let auth = &mut ctx.accounts.authorization;
         auth.auction = ctx.accounts.config.key();
         auth.bidder_commitment = bidder_commitment;
@@ -137,13 +155,19 @@ pub mod privatedao_auction {
     }
 
     pub fn revoke_bidder(ctx: Context<RevokeBidder>) -> Result<()> {
-        require!(ctx.accounts.config.status != AuctionStatus::Finalized, AuctionError::InvalidStatus);
+        require!(
+            ctx.accounts.config.status != AuctionStatus::Finalized,
+            AuctionError::InvalidStatus
+        );
         ctx.accounts.authorization.active = false;
         Ok(())
     }
 
     pub fn delegate_auction_session(ctx: Context<DelegateAuctionSession>) -> Result<()> {
-        require!(ctx.accounts.config.status == AuctionStatus::Active, AuctionError::InvalidStatus);
+        require!(
+            ctx.accounts.config.status == AuctionStatus::Active,
+            AuctionError::InvalidStatus
+        );
         ctx.accounts.delegate_session(
             &ctx.accounts.payer,
             &[SESSION_SEED, ctx.accounts.config.key().as_ref()],
@@ -206,7 +230,10 @@ pub mod privatedao_auction {
             permission_program: ctx.accounts.permission_program.to_account_info(),
             authority: ctx.accounts.session.to_account_info(),
             authority_is_signer: false,
-            args: EphemeralMembersArgs { is_private, members },
+            args: EphemeralMembersArgs {
+                is_private,
+                members,
+            },
         }
         .invoke_signed(&[signer_seeds])?;
         Ok(())
@@ -243,17 +270,41 @@ pub mod privatedao_auction {
     ) -> Result<()> {
         let now = Clock::get()?.unix_timestamp;
         let session = &mut ctx.accounts.session;
-        require!(session.status == AuctionStatus::Active, AuctionError::InvalidStatus);
-        require!(now >= session.bidding_start && now < session.bidding_deadline, AuctionError::DeadlinePassed);
+        require!(
+            session.status == AuctionStatus::Active,
+            AuctionError::InvalidStatus
+        );
+        require!(
+            now >= session.bidding_start && now < session.bidding_deadline,
+            AuctionError::DeadlinePassed
+        );
         require!(amount > 0, AuctionError::InvalidAmount);
-        require!(!is_zero(&bidder_commitment) && !is_zero(&salt), AuctionError::InvalidBidderCommitment);
-        require!(ctx.accounts.authorization.active, AuctionError::BidderNotAuthorized);
-        require!(ctx.accounts.authorization.bidder_wallet == ctx.accounts.bidder.key(), AuctionError::BidderWalletMismatch);
-        require!(ctx.accounts.authorization.auction == session.auction, AuctionError::AuthorizationMismatch);
-        require!(ctx.accounts.authorization.bidder_commitment == bidder_commitment, AuctionError::BidderCommitmentMismatch);
+        require!(
+            !is_zero(&bidder_commitment) && !is_zero(&salt),
+            AuctionError::InvalidBidderCommitment
+        );
+        require!(
+            ctx.accounts.authorization.active,
+            AuctionError::BidderNotAuthorized
+        );
+        require!(
+            ctx.accounts.authorization.bidder_wallet == ctx.accounts.bidder.key(),
+            AuctionError::BidderWalletMismatch
+        );
+        require!(
+            ctx.accounts.authorization.auction == session.auction,
+            AuctionError::AuthorizationMismatch
+        );
+        require!(
+            ctx.accounts.authorization.bidder_commitment == bidder_commitment,
+            AuctionError::BidderCommitmentMismatch
+        );
 
         let allow_bid_updates = session.allow_bid_updates;
-        let existing = session.bids.iter_mut().find(|bid| bid.bidder_commitment == bidder_commitment);
+        let existing = session
+            .bids
+            .iter_mut()
+            .find(|bid| bid.bidder_commitment == bidder_commitment);
         match existing {
             Some(bid) => {
                 require!(allow_bid_updates, AuctionError::BidUpdatesDisabled);
@@ -265,7 +316,10 @@ pub mod privatedao_auction {
             }
             None => {
                 require!(revision == 0, AuctionError::InvalidRevision);
-                require!(session.bids.len() < MAX_BIDS, AuctionError::BidCapacityReached);
+                require!(
+                    session.bids.len() < MAX_BIDS,
+                    AuctionError::BidCapacityReached
+                );
                 session.bids.push(PrivateBid {
                     bidder_commitment,
                     amount,
@@ -273,34 +327,57 @@ pub mod privatedao_auction {
                     revision,
                     submitted_at: now,
                 });
-                session.bid_count = session.bid_count.checked_add(1).ok_or(AuctionError::ArithmeticOverflow)?;
+                session.bid_count = session
+                    .bid_count
+                    .checked_add(1)
+                    .ok_or(AuctionError::ArithmeticOverflow)?;
             }
         }
-        session.revision = session.revision.checked_add(1).ok_or(AuctionError::ArithmeticOverflow)?;
+        session.revision = session
+            .revision
+            .checked_add(1)
+            .ok_or(AuctionError::ArithmeticOverflow)?;
         Ok(())
     }
 
     pub fn close_bidding(ctx: Context<ClosePrivateBidding>) -> Result<()> {
         let now = Clock::get()?.unix_timestamp;
-        require!(ctx.accounts.session.status == AuctionStatus::Active, AuctionError::InvalidStatus);
-        require!(now >= ctx.accounts.session.bidding_deadline, AuctionError::TooEarly);
+        require!(
+            ctx.accounts.session.status == AuctionStatus::Active,
+            AuctionError::InvalidStatus
+        );
+        require!(
+            now >= ctx.accounts.session.bidding_deadline,
+            AuctionError::TooEarly
+        );
         ctx.accounts.session.status = AuctionStatus::Closed;
         Ok(())
     }
 
     pub fn finalize_private_result(ctx: Context<FinalizePrivateResult>) -> Result<()> {
-        require!(ctx.accounts.session.status == AuctionStatus::Closed, AuctionError::InvalidStatus);
+        require!(
+            ctx.accounts.session.status == AuctionStatus::Closed,
+            AuctionError::InvalidStatus
+        );
         let session = &mut ctx.accounts.session;
         require!(!session.bids.is_empty(), AuctionError::NoValidBids);
         let winner = session
             .bids
             .iter()
-            .max_by(|left, right| left.amount.cmp(&right.amount).then_with(|| right.bidder_commitment.cmp(&left.bidder_commitment)))
+            .max_by(|left, right| {
+                left.amount
+                    .cmp(&right.amount)
+                    .then_with(|| right.bidder_commitment.cmp(&left.bidder_commitment))
+            })
             .copied()
             .ok_or(AuctionError::NoValidBids)?;
 
         session.winner_commitment = winner.bidder_commitment;
-        session.public_winning_amount = if session.disclose_winning_amount { Some(winner.amount) } else { None };
+        session.public_winning_amount = if session.disclose_winning_amount {
+            Some(winner.amount)
+        } else {
+            None
+        };
         session.result_commitment = result_commitment(
             &session.auction_id,
             &session.rules_digest,
@@ -318,7 +395,10 @@ pub mod privatedao_auction {
     }
 
     pub fn commit_final_result(ctx: Context<CommitSession>) -> Result<()> {
-        require!(ctx.accounts.session.status == AuctionStatus::Finalized, AuctionError::InvalidStatus);
+        require!(
+            ctx.accounts.session.status == AuctionStatus::Finalized,
+            AuctionError::InvalidStatus
+        );
         ctx.accounts.session.exit(&crate::ID)?;
         MagicIntentBundleBuilder::new(
             ctx.accounts.payer.to_account_info(),
@@ -331,7 +411,10 @@ pub mod privatedao_auction {
     }
 
     pub fn commit_and_undelegate_session(ctx: Context<CommitSession>) -> Result<()> {
-        require!(ctx.accounts.session.status == AuctionStatus::Finalized, AuctionError::InvalidStatus);
+        require!(
+            ctx.accounts.session.status == AuctionStatus::Finalized,
+            AuctionError::InvalidStatus
+        );
         ctx.accounts.session.exit(&crate::ID)?;
         MagicIntentBundleBuilder::new(
             ctx.accounts.payer.to_account_info(),
@@ -343,11 +426,26 @@ pub mod privatedao_auction {
         Ok(())
     }
 
-    pub fn finalize_receipt(ctx: Context<FinalizeReceipt>, receipt_id: [u8; 32], solana_signature: String, slot: u64, finality: u8) -> Result<()> {
-        require!(ctx.accounts.session.status == AuctionStatus::Finalized, AuctionError::InvalidStatus);
-        require!(ctx.accounts.session.private_state_cleared, AuctionError::PrivateStateNotCleared);
+    pub fn finalize_receipt(
+        ctx: Context<FinalizeReceipt>,
+        receipt_id: [u8; 32],
+        solana_signature: String,
+        slot: u64,
+        finality: u8,
+    ) -> Result<()> {
+        require!(
+            ctx.accounts.session.status == AuctionStatus::Finalized,
+            AuctionError::InvalidStatus
+        );
+        require!(
+            ctx.accounts.session.private_state_cleared,
+            AuctionError::PrivateStateNotCleared
+        );
         require!(!is_zero(&receipt_id), AuctionError::InvalidReceiptId);
-        require!(solana_signature.len() <= 128, AuctionError::SignatureTooLong);
+        require!(
+            solana_signature.len() <= 128,
+            AuctionError::SignatureTooLong
+        );
         require!(finality > 0, AuctionError::ReceiptNotFinal);
         let receipt = &mut ctx.accounts.receipt;
         receipt.auction = ctx.accounts.config.key();
@@ -367,8 +465,15 @@ pub mod privatedao_auction {
 
     pub fn recover_stale_session(ctx: Context<ManageAuction>) -> Result<()> {
         let now = Clock::get()?.unix_timestamp;
-        require!(now > ctx.accounts.config.bidding_deadline, AuctionError::DeadlineNotReached);
-        require!(ctx.accounts.config.status == AuctionStatus::Active || ctx.accounts.config.status == AuctionStatus::Closed, AuctionError::InvalidStatus);
+        require!(
+            now > ctx.accounts.config.bidding_deadline,
+            AuctionError::DeadlineNotReached
+        );
+        require!(
+            ctx.accounts.config.status == AuctionStatus::Active
+                || ctx.accounts.config.status == AuctionStatus::Closed,
+            AuctionError::InvalidStatus
+        );
         ctx.accounts.config.status = AuctionStatus::RecoveryPending;
         ctx.accounts.session.status = AuctionStatus::RecoveryPending;
         Ok(())
@@ -512,7 +617,9 @@ pub struct AuctionConfig {
     pub created_at: i64,
     pub bump: u8,
 }
-impl AuctionConfig { pub const SPACE: usize = 32 + 32 + 33 + 8 + 8 + 32 + 32 + 1 + 1 + 1 + 8 + 1; }
+impl AuctionConfig {
+    pub const SPACE: usize = 32 + 32 + 33 + 8 + 8 + 32 + 32 + 1 + 1 + 1 + 8 + 1;
+}
 
 #[account]
 pub struct AuctionSession {
@@ -537,7 +644,29 @@ pub struct AuctionSession {
     pub bids: Vec<PrivateBid>,
     pub bump: u8,
 }
-impl AuctionSession { pub const SPACE: usize = 32 + 32 + 32 + 32 + 32 + 32 + 8 + 8 + 1 + 1 + 32 + 32 + 32 + 9 + 4 + 4 + 1 + 1 + 4 + MAX_BIDS * PrivateBid::SPACE + 1; }
+impl AuctionSession {
+    pub const SPACE: usize = 32
+        + 32
+        + 32
+        + 32
+        + 32
+        + 32
+        + 8
+        + 8
+        + 1
+        + 1
+        + 32
+        + 32
+        + 32
+        + 9
+        + 4
+        + 4
+        + 1
+        + 1
+        + 4
+        + MAX_BIDS * PrivateBid::SPACE
+        + 1;
+}
 
 #[derive(AnchorSerialize, AnchorDeserialize, Clone, Copy, Default)]
 pub struct PrivateBid {
@@ -547,7 +676,9 @@ pub struct PrivateBid {
     pub revision: u32,
     pub submitted_at: i64,
 }
-impl PrivateBid { pub const SPACE: usize = 32 + 8 + 32 + 4 + 8; }
+impl PrivateBid {
+    pub const SPACE: usize = 32 + 8 + 32 + 4 + 8;
+}
 
 #[account]
 pub struct BidderAuthorization {
@@ -559,7 +690,9 @@ pub struct BidderAuthorization {
     pub active: bool,
     pub bump: u8,
 }
-impl BidderAuthorization { pub const SPACE: usize = 32 + 32 + 32 + 32 + 8 + 1 + 1; }
+impl BidderAuthorization {
+    pub const SPACE: usize = 32 + 32 + 32 + 32 + 8 + 1 + 1;
+}
 
 #[account]
 pub struct SettlementReceipt {
@@ -576,51 +709,103 @@ pub struct SettlementReceipt {
     pub created_at: i64,
     pub bump: u8,
 }
-impl SettlementReceipt { pub const SPACE: usize = 32 + 32 + 32 + 32 + 32 + 32 + 32 + 4 + 128 + 8 + 1 + 8 + 1; }
+impl SettlementReceipt {
+    pub const SPACE: usize = 32 + 32 + 32 + 32 + 32 + 32 + 32 + 4 + 128 + 8 + 1 + 8 + 1;
+}
 
 #[derive(AnchorSerialize, AnchorDeserialize, Clone, Copy, PartialEq, Eq, Default)]
-pub enum AuctionStatus { #[default] Scheduled, Active, Closed, Finalized, RecoveryPending, Cancelled }
+pub enum AuctionStatus {
+    #[default]
+    Scheduled,
+    Active,
+    Closed,
+    Finalized,
+    RecoveryPending,
+    Cancelled,
+}
 
 #[event]
-pub struct AuctionInitialized { pub auction: Pubkey, pub auction_id: [u8; 32], pub authority: Pubkey, pub bidding_start: i64, pub bidding_deadline: i64, pub rules_digest: [u8; 32], pub policy_digest: [u8; 32] }
+pub struct AuctionInitialized {
+    pub auction: Pubkey,
+    pub auction_id: [u8; 32],
+    pub authority: Pubkey,
+    pub bidding_start: i64,
+    pub bidding_deadline: i64,
+    pub rules_digest: [u8; 32],
+    pub policy_digest: [u8; 32],
+}
 
 #[error_code]
 pub enum AuctionError {
-    #[msg("Auction start is in the past")] StartInPast,
-    #[msg("Auction deadline is invalid")] InvalidDeadline,
-    #[msg("Auction id is invalid")] InvalidAuctionId,
-    #[msg("Rules digest is invalid")] InvalidRulesDigest,
-    #[msg("Policy digest is invalid")] InvalidPolicyDigest,
-    #[msg("Invalid auction status")] InvalidStatus,
-    #[msg("Auction has not started")] TooEarly,
-    #[msg("Auction deadline has passed")] DeadlinePassed,
-    #[msg("Bidder commitment is invalid")] InvalidBidderCommitment,
-    #[msg("Bidder is not authorized")] BidderNotAuthorized,
-    #[msg("Bidder commitment does not match authorization")] BidderCommitmentMismatch,
-    #[msg("Bidder wallet does not match authorization")] BidderWalletMismatch,
-    #[msg("Bidder authorization belongs to another auction")] AuthorizationMismatch,
-    #[msg("Bid amount is invalid")] InvalidAmount,
-    #[msg("Bid updates are disabled")] BidUpdatesDisabled,
-    #[msg("Bid revision is replayed")] RevisionReplay,
-    #[msg("Initial bid revision must be zero")] InvalidRevision,
-    #[msg("Bid capacity reached")] BidCapacityReached,
-    #[msg("Arithmetic overflow")] ArithmeticOverflow,
-    #[msg("No valid bids exist")] NoValidBids,
-    #[msg("Private state was not cleared")] PrivateStateNotCleared,
-    #[msg("Receipt id is invalid")] InvalidReceiptId,
-    #[msg("Signature is too long")] SignatureTooLong,
-    #[msg("Receipt is not final")] ReceiptNotFinal,
-    #[msg("Deadline has not been reached")] DeadlineNotReached,
-    #[msg("Invalid MagicBlock permission account")] InvalidPermissionAccount,
-    #[msg("Invalid MagicBlock account")] InvalidMagicBlockAccount,
-    #[msg("Invalid MagicBlock permission program")] InvalidPermissionProgram,
-    #[msg("Session belongs to another auction")] SessionAuctionMismatch,
-    #[msg("Invalid bidder authorization account")] InvalidAuthorizationAccount,
-    #[msg("Duplicate permission member")] DuplicatePermissionMember,
-    #[msg("Permission member capacity reached")] PermissionMemberCapacityReached,
+    #[msg("Auction start is in the past")]
+    StartInPast,
+    #[msg("Auction deadline is invalid")]
+    InvalidDeadline,
+    #[msg("Auction id is invalid")]
+    InvalidAuctionId,
+    #[msg("Rules digest is invalid")]
+    InvalidRulesDigest,
+    #[msg("Policy digest is invalid")]
+    InvalidPolicyDigest,
+    #[msg("Invalid auction status")]
+    InvalidStatus,
+    #[msg("Auction has not started")]
+    TooEarly,
+    #[msg("Auction deadline has passed")]
+    DeadlinePassed,
+    #[msg("Bidder commitment is invalid")]
+    InvalidBidderCommitment,
+    #[msg("Bidder is not authorized")]
+    BidderNotAuthorized,
+    #[msg("Bidder commitment does not match authorization")]
+    BidderCommitmentMismatch,
+    #[msg("Bidder wallet does not match authorization")]
+    BidderWalletMismatch,
+    #[msg("Bidder authorization belongs to another auction")]
+    AuthorizationMismatch,
+    #[msg("Bid amount is invalid")]
+    InvalidAmount,
+    #[msg("Bid updates are disabled")]
+    BidUpdatesDisabled,
+    #[msg("Bid revision is replayed")]
+    RevisionReplay,
+    #[msg("Initial bid revision must be zero")]
+    InvalidRevision,
+    #[msg("Bid capacity reached")]
+    BidCapacityReached,
+    #[msg("Arithmetic overflow")]
+    ArithmeticOverflow,
+    #[msg("No valid bids exist")]
+    NoValidBids,
+    #[msg("Private state was not cleared")]
+    PrivateStateNotCleared,
+    #[msg("Receipt id is invalid")]
+    InvalidReceiptId,
+    #[msg("Signature is too long")]
+    SignatureTooLong,
+    #[msg("Receipt is not final")]
+    ReceiptNotFinal,
+    #[msg("Deadline has not been reached")]
+    DeadlineNotReached,
+    #[msg("Invalid MagicBlock permission account")]
+    InvalidPermissionAccount,
+    #[msg("Invalid MagicBlock account")]
+    InvalidMagicBlockAccount,
+    #[msg("Invalid MagicBlock permission program")]
+    InvalidPermissionProgram,
+    #[msg("Session belongs to another auction")]
+    SessionAuctionMismatch,
+    #[msg("Invalid bidder authorization account")]
+    InvalidAuthorizationAccount,
+    #[msg("Duplicate permission member")]
+    DuplicatePermissionMember,
+    #[msg("Permission member capacity reached")]
+    PermissionMemberCapacityReached,
 }
 
-fn is_zero(value: &[u8; 32]) -> bool { value.iter().all(|byte| *byte == 0) }
+fn is_zero(value: &[u8; 32]) -> bool {
+    value.iter().all(|byte| *byte == 0)
+}
 
 fn session_reference(auction_id: &[u8; 32]) -> [u8; 32] {
     let mut hasher = Sha256::new();
@@ -629,7 +814,15 @@ fn session_reference(auction_id: &[u8; 32]) -> [u8; 32] {
     hasher.finalize().into()
 }
 
-fn result_commitment(auction_id: &[u8; 32], rules: &[u8; 32], policy: &[u8; 32], winner: &[u8; 32], amount: u64, bid_count: u32, deadline: i64) -> [u8; 32] {
+fn result_commitment(
+    auction_id: &[u8; 32],
+    rules: &[u8; 32],
+    policy: &[u8; 32],
+    winner: &[u8; 32],
+    amount: u64,
+    bid_count: u32,
+    deadline: i64,
+) -> [u8; 32] {
     let mut hasher = Sha256::new();
     hasher.update(b"privatedao-auction-result-v1");
     hasher.update(auction_id);
@@ -655,11 +848,31 @@ fn state_commitment(session: &AuctionSession) -> [u8; 32] {
 
 fn validate_permission_accounts(accounts: &PermissionContext) -> Result<()> {
     let (permission, _) = EphemeralPermission::find_pda(&accounts.session.key());
-    require_keys_eq!(accounts.permission.key(), permission, AuctionError::InvalidPermissionAccount);
-    require_keys_eq!(accounts.ephemeral_vault.key(), EPHEMERAL_VAULT_ID, AuctionError::InvalidMagicBlockAccount);
-    require_keys_eq!(accounts.magic_program.key(), MAGIC_PROGRAM_ID, AuctionError::InvalidMagicBlockAccount);
-    require_keys_eq!(accounts.permission_program.key(), PERMISSION_PROGRAM_ID, AuctionError::InvalidPermissionProgram);
-    require_keys_eq!(accounts.session.auction, accounts.config.key(), AuctionError::SessionAuctionMismatch);
+    require_keys_eq!(
+        accounts.permission.key(),
+        permission,
+        AuctionError::InvalidPermissionAccount
+    );
+    require_keys_eq!(
+        accounts.ephemeral_vault.key(),
+        EPHEMERAL_VAULT_ID,
+        AuctionError::InvalidMagicBlockAccount
+    );
+    require_keys_eq!(
+        accounts.magic_program.key(),
+        MAGIC_PROGRAM_ID,
+        AuctionError::InvalidMagicBlockAccount
+    );
+    require_keys_eq!(
+        accounts.permission_program.key(),
+        PERMISSION_PROGRAM_ID,
+        AuctionError::InvalidPermissionProgram
+    );
+    require_keys_eq!(
+        accounts.session.auction,
+        accounts.config.key(),
+        AuctionError::SessionAuctionMismatch
+    );
     Ok(())
 }
 
@@ -672,15 +885,23 @@ fn permission_members(ctx: &Context<PermissionContext>) -> Result<Vec<Member>> {
     for account_info in ctx.remaining_accounts.iter() {
         let authorization = Account::<BidderAuthorization>::try_from(account_info)
             .map_err(|_| error!(AuctionError::InvalidAuthorizationAccount))?;
-        require!(authorization.auction == ctx.accounts.config.key(), AuctionError::AuthorizationMismatch);
+        require!(
+            authorization.auction == ctx.accounts.config.key(),
+            AuctionError::AuthorizationMismatch
+        );
         if !authorization.active {
             continue;
         }
         require!(
-            !members.iter().any(|member| member.pubkey == authorization.bidder_wallet),
+            !members
+                .iter()
+                .any(|member| member.pubkey == authorization.bidder_wallet),
             AuctionError::DuplicatePermissionMember
         );
-        require!(members.len() < MAX_PERMISSION_MEMBERS, AuctionError::PermissionMemberCapacityReached);
+        require!(
+            members.len() < MAX_PERMISSION_MEMBERS,
+            AuctionError::PermissionMemberCapacityReached
+        );
         members.push(Member {
             flags: viewer_flags,
             pubkey: authorization.bidder_wallet,

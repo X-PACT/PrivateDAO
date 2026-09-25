@@ -25,7 +25,9 @@ pub mod zk_groth16_verifier {
         pairing_input: Vec<u8>,
     ) -> Result<()> {
         require!(
-            pairing_input.len().is_multiple_of(ALT_BN128_PAIRING_ELEMENT_LEN),
+            pairing_input
+                .len()
+                .is_multiple_of(ALT_BN128_PAIRING_ELEMENT_LEN),
             ZkVerifierError::InvalidPairingInputLength
         );
         require!(
