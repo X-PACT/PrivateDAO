@@ -28,6 +28,7 @@ test -f "$PACKAGE_DIR/assets/clients/openclaw-symbol.png"
   rm -rf .browser
   npm prune --omit=dev --ignore-scripts --no-audit --no-fund
   node --check src/handler.mjs
+  node --input-type=module -e 'import("./src/handler.mjs").then(({ handler }) => { if (typeof handler !== "function") throw new Error("src/handler.handler export is missing"); })'
   test -s assets/browser/solana-web3.mjs
   test -s assets/browser/spl-token.mjs
   test -s assets/browser/8004-solana.mjs
@@ -35,4 +36,6 @@ test -f "$PACKAGE_DIR/assets/clients/openclaw-symbol.png"
 )
 
 test -s "$OUTPUT_PATH"
+unzip -tq "$OUTPUT_PATH"
+unzip -l "$OUTPUT_PATH" | grep -Eq '[[:space:]]src/handler\.mjs$'
 echo "Lambda package created: $OUTPUT_PATH"
