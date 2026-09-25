@@ -823,10 +823,6 @@ export function TreasuryReceiveSurface() {
     setCopied("structured-request-download");
   }
 
-  const encodedPurpose = encodeURIComponent(purpose);
-  const encodedAmount = encodeURIComponent(amount);
-  const encodedProfile = encodeURIComponent(activeProfile.value);
-  const engagePrimaryHref = `/engage?intake=${activeProfile.intake}&asset=${activeAsset.symbol}&amount=${encodedAmount}&purpose=${encodedPurpose}&lane=${lane}&profile=${encodedProfile}`;
   const structuredRequestObject = {
     ...requestPayloadSeed,
     requestRoute: activeRequestDelivery.requestRoute,
@@ -1597,7 +1593,7 @@ export function TreasuryReceiveSurface() {
                   Deliver authoritative request object
                 </button>
                 <Link
-                  href={activeRequestDelivery.telemetryRoute}
+                  href="/network"
                   className={cn(buttonVariants({ size: "sm", variant: "outline" }), !isRequestReady && "pointer-events-none opacity-50")}
                   aria-disabled={!isRequestReady}
                 >
@@ -1654,7 +1650,7 @@ export function TreasuryReceiveSurface() {
                 Download request
               </button>
               <Link
-                href={engagePrimaryHref}
+                href="/engage"
                 className={cn(buttonVariants({ size: "sm", variant: "outline" }), !isRequestReady && "pointer-events-none opacity-50")}
                 aria-disabled={!isRequestReady}
               >
