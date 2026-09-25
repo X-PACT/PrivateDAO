@@ -3231,6 +3231,8 @@ async function invokeMcpAgent(agent, tool, args = {}) {
 }
 
 async function ownedSeller(agentId, ownerToken) {
+  if (!String(agentId || "").trim())
+    throw Object.assign(new Error("agent_id is required"), { statusCode: 400 });
   const storage = await store();
   const agent = await storage.get("Registry", agentId);
   if (!agent || agent.protocol !== "MCP") throw Object.assign(new Error("MCP seller not found"), { statusCode: 404 });
