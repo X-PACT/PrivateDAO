@@ -12,9 +12,8 @@ async function fieldFromCommitment(value: string) { return (BigInt(`0x${value.sl
 
 export async function provePayrollGroth16(input: { manifestCommitment: string; settlementRoot: string; policyHash: string }) {
   const [wasm, zkey, vkey] = await Promise.all(Object.values(ARTIFACTS).map((artifact) => fetch(artifact.url, { cache: "force-cache" }).then(async (response) => { if (!response.ok) throw new Error(`Payroll proving artifact unavailable: ${response.status}`); const bytes = await response.arrayBuffer(); if (await digest(bytes) !== artifact.sha256) throw new Error(`Payroll proving artifact integrity check failed: ${artifact.url}`); return bytes; })));
-  const { buildPoseidon } = await import("circomlibjs");
-  const poseidon = await buildPoseidon();
-  const hash = (...values: string[]) => poseidon.F.toString(poseidon(values.map((value) => BigInt(value))));
+  const { poseidon3 } = await import("poseidon-lite/poseidon3");
+  const hash = (...values: string[]) => poseidon3(values.map((value) => BigInt(value))).toString();
   const payrollKey = await fieldFromCommitment(input.manifestCommitment);
   const batchKey = await fieldFromCommitment(input.settlementRoot);
   const salt = await fieldFromCommitment(input.policyHash);

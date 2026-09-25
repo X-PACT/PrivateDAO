@@ -76,13 +76,19 @@ export async function proveRecordPrivately(
   const verificationKey = JSON.parse(new TextDecoder().decode(vkeyBytes));
 
   onProgress?.("Preparing the private witness in this browser");
-  const { buildPoseidon } = await import("circomlibjs");
-  const poseidon = await buildPoseidon();
+  const [{ poseidon6 }, { poseidon8 }] = await Promise.all([
+    import("poseidon-lite/poseidon6"),
+    import("poseidon-lite/poseidon8"),
+  ]);
   const policySalt = await fieldFromString(POLICY_VERSION);
   const organizationKey = await fieldFromString(input.organizationId);
   const subjectKey = await fieldFromString(input.subjectId);
   const inputSalt = await fieldFromString(`${input.organizationId}:${input.subjectId}:${recordDigest}:${input.records.join(":")}`);
-  const poseidonHash = (...values: bigint[]) => BigInt(poseidon.F.toString(poseidon(values)));
+  const poseidonHash = (...values: bigint[]) => {
+    if (values.length === 6) return poseidon6(values);
+    if (values.length === 8) return poseidon8(values);
+    throw new Error(`Unsupported Poseidon arity: ${values.length}`);
+  };
   const policyCommitment = poseidonHash(POLICY_ID, BigInt("3"), BigInt("7500"), BigInt("3500"), BigInt("72"), policySalt);
   const inputCommitment = poseidonHash(organizationKey, subjectKey, ...input.records.map(BigInt), BigInt(input.liabilitiesUsd), BigInt(input.riskScore), inputSalt);
   const witness = {
