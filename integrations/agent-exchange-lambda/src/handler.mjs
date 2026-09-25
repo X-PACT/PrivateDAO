@@ -2273,6 +2273,15 @@ async function submitExternalPayment(jobId, body) {
   const job = await storage.get("Jobs", jobId);
   if (!job || job.kind !== "external") throw Object.assign(new Error("external job not found"), { statusCode: 404 });
   if (job.status === "completed") return publicJobStatus(job);
+  if (job.status === "recovery_required") {
+    return {
+      job_id: jobId,
+      status: "recovery_required",
+      recovery_required: true,
+      message: "payment was accepted but execution requires recovery; the external service will not be replayed automatically",
+      retryAfterSeconds: 30,
+    };
+  }
   const quote = (await storage.list("Quotes")).find((item) => item.job_id === jobId && item.external);
   if (!quote) throw new Error("external quote not found");
   if (!Number.isFinite(Date.parse(quote.expires_at)) || Date.parse(quote.expires_at) <= Date.now())
@@ -2305,12 +2314,20 @@ async function submitExternalPayment(jobId, body) {
     // Never replay an external MCP call from a stale payment claim. The
     // provider may have completed the side effect before Lambda crashed, so
     // a buyer retry must remain non-executing.
+    const recoveryJob = {
+      ...job,
+      status: "recovery_required",
+      recovery_required_at: now(),
+      recovery_reason: "payment_claim_exists_without_a_completed_receipt",
+      updated_at: now(),
+    };
+    await storage.put("Jobs", job.id, recoveryJob);
     return {
       job_id: jobId,
-      status: "processing",
+      status: "recovery_required",
       recovery_required: true,
-      message: "payment accepted; execution state is being recovered without replaying the external service",
-      retryAfterSeconds: 10,
+      message: "payment was accepted but execution requires recovery; the external service will not be replayed automatically",
+      retryAfterSeconds: 30,
     };
   }
   const agent = await storage.get("Registry", job.seller_agent_id);
@@ -2768,6 +2785,15 @@ async function submitPayment(jobId, body) {
   if (job.status === "completed" && job.receipt_id) {
     return completeJob(job, job.result, null);
   }
+  if (job.status === "recovery_required") {
+    return {
+      job_id: jobId,
+      status: "recovery_required",
+      recovery_required: true,
+      message: "payment was accepted but execution requires recovery; the service will not be replayed automatically",
+      retryAfterSeconds: 30,
+    };
+  }
   if (job.status !== "awaiting_payment")
     throw new Error("job is not awaiting payment");
   if (body.input !== undefined && digest(body.input) !== job.input_hash)
@@ -2835,12 +2861,20 @@ async function submitPayment(jobId, body) {
     // Never replay an external service from a stale payment claim. The
     // provider may have completed the side effect before Lambda crashed, so
     // a buyer retry must remain non-executing.
+    const recoveryJob = {
+      ...job,
+      status: "recovery_required",
+      recovery_required_at: now(),
+      recovery_reason: "payment_claim_exists_without_a_completed_receipt",
+      updated_at: now(),
+    };
+    await storage.put("Jobs", job.id, recoveryJob);
     return {
       job_id: jobId,
-      status: "processing",
+      status: "recovery_required",
       recovery_required: true,
-      message: "payment accepted; execution state is being recovered without replaying the external service",
-      retryAfterSeconds: 10,
+      message: "payment was accepted but execution requires recovery; the service will not be replayed automatically",
+      retryAfterSeconds: 30,
     };
   }
   job.execution_started_at = now();
