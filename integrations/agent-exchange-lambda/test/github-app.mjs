@@ -1,7 +1,17 @@
 import assert from "node:assert/strict";
+import { createHmac } from "node:crypto";
 import test from "node:test";
-import { mergeGithubInstallationRepositories, publicGithubInstallationRecord } from "../src/github-app.mjs";
+import { mergeGithubInstallationRepositories, publicGithubInstallationRecord, verifyGithubWebhook } from "../src/github-app.mjs";
 import { MemoryStore } from "../src/storage.mjs";
+
+test("GitHub webhook verification binds the signature to the exact raw body", () => {
+  const secret = "webhook-test-secret";
+  const rawBody = '{"action":"created","installation":{"id":164152168}}';
+  const signature = `sha256=${createHmac("sha256", secret).update(rawBody).digest("hex")}`;
+  assert.equal(verifyGithubWebhook(rawBody, signature, secret), true);
+  assert.equal(verifyGithubWebhook(`${rawBody} `, signature, secret), false);
+  assert.equal(verifyGithubWebhook(rawBody, signature.replace(/^sha256=/, "sha1="), secret), false);
+});
 
 test("GitHub setup claims are single-use and recover after an expired lease", async () => {
   const store = new MemoryStore();
