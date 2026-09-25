@@ -22,7 +22,7 @@ export class MemoryStore {
 }
 
 export async function createStore(config) {
-  if (config.allowTestStorage || config.tablePrefix === "memory") return new MemoryStore();
+  if (config.allowTestStorage || (config.tablePrefix === "memory" && process.env.AGENT_EXCHANGE_TEST_MODE === "true")) return new MemoryStore();
   try {
     const [{ DynamoDBClient }, { DynamoDBDocumentClient, PutCommand, GetCommand, ScanCommand, UpdateCommand }] = await Promise.all([
       import("@aws-sdk/client-dynamodb"), import("@aws-sdk/lib-dynamodb")
