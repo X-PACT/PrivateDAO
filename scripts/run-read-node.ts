@@ -357,7 +357,20 @@ function writeJson(res: http.ServerResponse, statusCode: number, payload: unknow
 	    "Access-Control-Allow-Headers": "Content-Type, Authorization, x-private-dao-operator-token, x-private-dao-anchor-token",
     "Cache-Control": "no-store",
   });
-  res.end(JSON.stringify(payload, null, 2));
+  res.end(JSON.stringify(publicJsonPayload(payload), null, 2));
+}
+
+function publicJsonPayload(value: unknown, seen = new WeakSet<object>()): unknown {
+  if (value instanceof Error) return { error: "Request could not be completed." };
+  if (value === null || typeof value !== "object") return value;
+  if (seen.has(value)) return "[circular]";
+  seen.add(value);
+  if (Array.isArray(value)) return value.map((entry) => publicJsonPayload(entry, seen));
+  return Object.fromEntries(
+    Object.entries(value)
+      .filter(([key]) => key !== "stack" && key !== "stackTrace" && key !== "cause")
+      .map(([key, entry]) => [key, publicJsonPayload(entry, seen)]),
+  );
 }
 
 function publicReadNodeError(): string {
