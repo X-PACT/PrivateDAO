@@ -533,6 +533,10 @@ test("GitHub App and external seller boundaries fail closed without credentials 
   const setup = await request("/github/setup");
   assert.equal(setup.statusCode, 200);
   assert.match(setup.body, /Connect GitHub/);
+  const oauthCallback = await request("/github/oauth/callback");
+  assert.equal(oauthCallback.statusCode, 200);
+  assert.match(oauthCallback.headers["content-type"], /^text\/html/);
+  assert.match(oauthCallback.body, /GitHub user OAuth is not used/);
   const webhook = await request("/api/github/webhook", "POST", { action: "ping" }, { "x-github-event": "ping" });
   assert.equal(webhook.statusCode, 503);
   assert.doesNotMatch(webhook.body, /PRIVATE_KEY|access_token|client_secret/i);

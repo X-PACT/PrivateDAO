@@ -296,6 +296,9 @@ function githubSetupPage(message, installationId = "") {
   const installUrl = `https://github.com/apps/${encodeURIComponent(config.githubAppSlug)}/installations/new`;
   return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Connect GitHub | PrivateDAO</title><style>body{font-family:system-ui,sans-serif;max-width:720px;margin:8vh auto;padding:24px;color:#071a32}a{color:#1769e0}.panel{border:1px solid #dbe5ef;border-radius:16px;padding:24px}</style></head><body><div class="panel"><p><a href="/">PrivateDAO Agent Exchange</a></p><h1>Connect GitHub</h1><p>${escapeHtml(message)}</p>${installationId ? `<p>Installation: <code>${escapeHtml(installationId)}</code></p>` : `<p><a href="${installUrl}">Install the PrivateDAO GitHub App</a></p>`}<p>GitHub App authentication uses a short-lived installation token. PrivateDAO does not ask for a password, private key, or seed phrase.</p></div></body></html>`;
 }
+function githubSetupResponse(message, installationId = "") {
+  return { statusCode: 200, headers: { "content-type": "text/html; charset=utf-8", "cache-control": "no-store" }, body: githubSetupPage(message, installationId) };
+}
 function sellerPortalPage() {
   return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>List your agent | PrivateDAO Agent Exchange</title><style>body{font-family:system-ui,sans-serif;max-width:900px;margin:0 auto;padding:32px 20px;color:#071a32}a{color:#1769e0}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}.card{border:1px solid #dbe5ef;border-radius:16px;padding:20px}label{display:block;font-weight:700;margin:12px 0 6px}input,textarea,button{font:inherit;width:100%;box-sizing:border-box;padding:10px;border:1px solid #b9c9d8;border-radius:8px}textarea{min-height:150px;font-family:ui-monospace,monospace}button{background:#1769e0;color:white;border:0;cursor:pointer;margin-top:14px}.muted{color:#52657c}code{overflow-wrap:anywhere}</style></head><body><p><a href="/marketplace">PrivateDAO Agent Exchange</a></p><p class="muted">SELLER PORTAL · SELF-SERVICE ONBOARDING</p><h1>List your agent</h1><p>Connect an MCP endpoint, verify its read-only tools, import up to 5 services, then review the PrivateDAO quote before publication.</p><div class="grid"><article class="card"><h2>Basic Listing</h2><strong>$10 once per agent</strong><p>Up to 5 services. The fee is paid to PrivateDAO and is separate from any GitHub Marketplace billing.</p></article><article class="card"><h2>Execution</h2><strong>10% platform fee</strong><p>Applied only to completed paid executions. Quote, receipt, and settlement show gross, fee, and seller net.</p></article><article class="card"><h2>Promotion</h2><strong>Optional sponsored upsell</strong><p>Featured and ecosystem campaigns are disclosed as paid promotion, not a partnership or certification.</p></article></div><section class="card" style="margin-top:24px"><h2>Register and preview</h2><form id="seller"><label for="agent">Existing agent ID (optional)</label><input id="agent" placeholder="agent_…"><label for="credential">Existing owner credential (optional)</label><input id="credential" type="password" autocomplete="off" placeholder="Required when updating an existing agent"><label for="name">Agent name</label><input id="name" required placeholder="Your agent"><label for="endpoint">Public HTTPS MCP endpoint</label><input id="endpoint" type="url" required placeholder="https://example.com/mcp"><label for="metadata">Service metadata JSON</label><textarea id="metadata" required placeholder='[{"id":"audit","tool":"mint_audit","price":0.02,"asset":"USDC","network":"solana-mainnet-beta","schema":{}}]'></textarea><label for="assets">Accepted assets (comma-separated)</label><input id="assets" placeholder="USDC"><label for="payout">Payout JSON (optional)</label><input id="payout" placeholder='{"address":"…","network":"solana-mainnet-beta","asset":"USDC"}'><label><input id="terms" type="checkbox" style="width:auto" required> I accept the PrivateDAO seller terms and the separate GitHub Marketplace billing disclosure.</label><button>Verify endpoint and import metadata</button></form><pre id="result" class="muted" style="white-space:pre-wrap"></pre></section><script>const form=document.querySelector("#seller"),out=document.querySelector("#result");form.onsubmit=async(e)=>{e.preventDefault();out.textContent="Verifying MCP tools and importing metadata…";try{const services=JSON.parse(document.querySelector("#metadata").value);if(!Array.isArray(services)||services.length>5)throw new Error("Basic Listing allows at most 5 services");const payoutText=document.querySelector("#payout").value.trim();const payload={agent_id:document.querySelector("#agent").value.trim()||undefined,owner_token:document.querySelector("#credential").value||undefined,name:document.querySelector("#name").value,mcp_url:document.querySelector("#endpoint").value,commercial_services:services,accepted_assets:document.querySelector("#assets").value.split(",").map(x=>x.trim()).filter(Boolean),payout:payoutText?JSON.parse(payoutText):undefined};const r=await fetch("/api/registry/register",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify(payload)});const data=await r.json();if(!r.ok)throw new Error(data.message||data.error||"registration failed");out.textContent=JSON.stringify({status:"verified",agent_id:data.id,owner_token:data.owner_token||null,credential_notice:data.owner_token?"Save this credential now. PrivateDAO stores only its hash; use authenticated rotation while it is available.":"Existing credential accepted; no credential is returned on update.",next:"Use the owner_token with /api/marketplace/seller-listings/quote, tier=basic, then pay the quoted $10 listing fee."},null,2)}catch(err){out.textContent=err.message||String(err)}};</script></body></html>`;
 }
@@ -416,7 +419,7 @@ async function completeGithubInstallation(storage, stateRecord, installationId) 
     });
   } catch (_error) {
     const existing = await storage.get("Registry", githubRecordId(installationId));
-    return githubSetupPage(
+    return githubSetupResponse(
       existing?.status === "active"
         ? `GitHub installation ${installationId} is already connected. Start a new setup URL for another installation.`
         : "GitHub setup is already being completed. Start again from the setup URL if it does not finish.",
@@ -431,7 +434,7 @@ async function completeGithubInstallation(storage, stateRecord, installationId) 
   };
   await storage.put("Registry", record.id, record);
   await storage.put("Registry", stateRecord.id, { ...stateRecord, installation_id: installationId, consumed_at: now() });
-  return githubSetupPage(`Connected GitHub App installation ${installationId}. Keep this connection token for API context requests: ${connectionToken}`, installationId);
+  return githubSetupResponse(`Connected GitHub App installation ${installationId}. Keep this connection token for API context requests: ${connectionToken}`, installationId);
 }
 async function githubInstallationSetup(e) {
   const params = e.queryStringParameters || {};
@@ -447,9 +450,9 @@ async function githubInstallationSetup(e) {
   }
   const stateRecord = state ? await storage.get("Registry", githubStateId(state)) : null;
   if (!stateRecord || stateRecord.consumed_at || Date.parse(stateRecord.expires_at) < Date.now())
-    return githubSetupPage("The GitHub installation state is missing or expired. Start again from the setup URL.", installationId);
+    return githubSetupResponse("The GitHub installation state is missing or expired. Start again from the setup URL.", installationId);
   if (stateRecord.installation_id && String(stateRecord.installation_id) !== installationId)
-    return githubSetupPage("The GitHub installation does not match the connection state. Start again from the setup URL.");
+    return githubSetupResponse("The GitHub installation does not match the connection state. Start again from the setup URL.");
   return completeGithubInstallation(storage, stateRecord, installationId);
 }
 function trackFunnel(event, details = {}) {
@@ -3482,11 +3485,11 @@ async function handle(e) {
   if (method === "GET" && path === "/github/setup") {
     const installationId = String(e.queryStringParameters?.installation_id || "");
     if (!githubAppConfigured(config))
-      return { statusCode: 200, headers: { "content-type": "text/html; charset=utf-8", "cache-control": "no-store" }, body: githubSetupPage("The GitHub App is not configured in this environment yet.") };
+      return githubSetupResponse("The GitHub App is not configured in this environment yet.");
     return githubInstallationSetup(e);
   }
   if (method === "GET" && path === "/github/oauth/callback")
-    return githubSetupPage("GitHub user OAuth is not used. Start the GitHub App installation from the setup URL.");
+    return githubSetupResponse("GitHub user OAuth is not used. Start the GitHub App installation from the setup URL.");
   if (method === "POST" && path === "/api/github/webhook") {
     const rawBody = e.isBase64Encoded ? Buffer.from(e.body || "", "base64").toString() : String(e.body || JSON.stringify(body));
     const eventName = e.headers?.["x-github-event"] || e.headers?.["X-GitHub-Event"] || "unknown";
