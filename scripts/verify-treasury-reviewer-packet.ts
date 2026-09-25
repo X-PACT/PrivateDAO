@@ -40,7 +40,7 @@ function main() {
 
   assert(packet.project === "PrivateDAO", "treasury reviewer packet project mismatch");
   assert(packet.treasuryNetwork === "Solana Testnet", "treasury reviewer packet network mismatch");
-  assert(packet.custodyStatus === "pending-external", "treasury reviewer packet custody status drifted");
+  assert(packet.custodyStatus === "ready-for-transfer", "treasury reviewer packet custody status drifted");
   assert(packet.productionMainnetClaimAllowed === false, "treasury reviewer packet must not allow mainnet claim");
   assert(packet.trustDecision === "blocked-external-steps", "treasury reviewer packet trust decision mismatch");
   assert(packet.exactBlocker.id === "upgrade-authority-multisig", "treasury reviewer packet blocker mismatch");
@@ -64,8 +64,12 @@ function main() {
     "treasury reviewer packet missing payments alignment",
   );
   assert(
-    packet.exactPendingItems.includes("multisig public address"),
-    "treasury reviewer packet must keep multisig address pending",
+    packet.exactPendingItems.includes("dao authority transfer signature"),
+    "treasury reviewer packet must keep DAO authority transfer pending",
+  );
+  assert(
+    packet.exactPendingItems.includes("treasury operator authority transfer signature"),
+    "treasury reviewer packet must keep treasury operator transfer pending",
   );
   assert(
     packet.canonicalCommands.includes("npm run build:treasury-reviewer-packet"),
