@@ -143,6 +143,9 @@ jobs:
           test -d "$GITHUB_WORKSPACE/node_modules"
           test -x "$GITHUB_WORKSPACE/node_modules/.bin/ts-node"
           test -x "$GITHUB_WORKSPACE/node_modules/.bin/tsc"
+          # npm 11 may rewrite the unrelated Yarn v1 lockfile as a side effect
+          # of npm ci. The repository source of truth for this job is package-lock.json.
+          git restore --source=HEAD --worktree -- yarn.lock
 
       - name: Create local test wallet
         run: |
@@ -159,12 +162,6 @@ jobs:
 
       - name: Anchor test
         run: bash scripts/verify.sh test
-
-      - name: Diagnose lockfile mutation
-        run: |
-          echo "Tracked lockfile changes after Anchor test:"
-          git diff --name-only -- Cargo.lock yarn.lock
-          sha256sum Cargo.lock yarn.lock
 
       - name: Non-real-code scan
         run: bash scripts/verify.sh scan
