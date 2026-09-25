@@ -12,6 +12,12 @@ const rpcCache = new Map();
 const rpcStats = { calls: 0, retries: 0, cacheHits: 0, cacheMisses: 0, byMethod: {} };
 const cacheableMethods = new Set(["eth_getCode", "eth_call"]);
 const MAX_RPC_ATTEMPTS = 2;
+const EVM_EXECUTABLE_SERVICES = new Set([
+  "token.intelligence",
+  "risk.score",
+  "wallet.intelligence",
+  "transaction.simulate",
+]);
 
 function retryableError(message, retryable = false) {
   const error = new Error(message);
@@ -29,6 +35,10 @@ export function evmNetwork(id) {
 
 export function evmNetworks() {
   return Object.entries(EVM_NETWORKS).map(([id, value]) => ({ id, ...value }));
+}
+
+export function isEvmServiceSupported(serviceId) {
+  return EVM_EXECUTABLE_SERVICES.has(serviceId);
 }
 
 export function evmRpcUrl(config, network) {

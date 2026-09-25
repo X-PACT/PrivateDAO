@@ -15,7 +15,7 @@ import {
   treasuryTokenAccount,
   verifyPayment,
 } from "./solana.mjs";
-import { evmNetwork, evmHealth, executeEvmService, evmRuntimeStats } from "./evm.mjs";
+import { evmNetwork, evmHealth, executeEvmService, evmRuntimeStats, isEvmServiceSupported } from "./evm.mjs";
 import { enforceRateLimit, rateLimitKey, resetRuntimeControls } from "./runtime-controls.mjs";
 import {
   researchAsset,
@@ -1212,6 +1212,8 @@ function validateServiceInput(serviceId, input = {}) {
   const solana = /^[1-9A-HJ-NP-Za-km-z]{32,88}$/;
   const evm = /^0x[0-9a-fA-F]{40}$/;
   const isEvm = ["ethereum-mainnet", "base-mainnet", "arbitrum-mainnet"].includes(network);
+  if (isEvm && !isEvmServiceSupported(serviceId) && !["research.asset", "research.wallet", "contract.explain", "transaction.explain", "anomaly.detect", "agent.research.report", "portfolio.intelligence", "market.snapshot"].includes(serviceId))
+    throw new Error(`${serviceId} is not implemented on ${network}`);
   const subject = input.asset || input.mint || input.token || input.contract || input.program || input.address || input.wallet;
   const addressValid = isEvm ? evm.test(String(subject || "")) : solana.test(String(subject || ""));
   if (["token.intelligence", "risk.score", "market.snapshot", "research.asset", "contract.explain"].includes(serviceId) && !addressValid)

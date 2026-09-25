@@ -273,6 +273,13 @@ test("paid jobs validate before quoting and separate payment from target network
   });
   assert.equal(invalidAsset.statusCode, 400);
   assert.doesNotMatch(invalidAsset.body, /payment_intent/);
+  const unsupportedEvm = await request("/api/jobs", "POST", {
+    service_id: "launch.check",
+    input: { network: "ethereum-mainnet", asset: "0x0000000000000000000000000000000000000001" },
+  });
+  assert.equal(unsupportedEvm.statusCode, 400);
+  assert.match(unsupportedEvm.body, /launch\.check is not implemented on ethereum-mainnet/);
+  assert.doesNotMatch(unsupportedEvm.body, /payment_intent/);
 });
 
 test("transaction simulation rejects a transaction hash before payment", async () => {
