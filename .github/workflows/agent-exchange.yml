@@ -3,13 +3,7 @@ name: Agent Exchange
 on:
   push:
     branches: [main, rebrand/enterprise-white]
-    paths:
-      - "integrations/agent-exchange-lambda/**"
-      - ".github/workflows/agent-exchange.yml"
   pull_request:
-    paths:
-      - "integrations/agent-exchange-lambda/**"
-      - ".github/workflows/agent-exchange.yml"
   workflow_dispatch:
 
 concurrency:
