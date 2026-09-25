@@ -64,11 +64,14 @@ export function rpcUrls(config) {
 }
 
 function providerClassForUrl(url) {
-  return url.includes(".g.alchemy.com/")
-    ? "alchemy"
-    : url.includes("api.mainnet-beta.solana.com")
-      ? "public-fallback"
-      : "configured-rpc";
+  try {
+    const hostname = new URL(url).hostname.toLowerCase();
+    if (hostname.endsWith(".g.alchemy.com")) return "alchemy";
+    if (hostname === "api.mainnet-beta.solana.com") return "public-fallback";
+  } catch {
+    // assertMainnetConfig rejects malformed URLs before classification.
+  }
+  return "configured-rpc";
 }
 
 export async function treasuryTokenAccount(config) {
