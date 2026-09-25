@@ -1,6 +1,16 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { mergeGithubInstallationRepositories, publicGithubInstallationRecord } from "../src/github-app.mjs";
+import { MemoryStore } from "../src/storage.mjs";
+
+test("GitHub setup claims are single-use and recover after an expired lease", async () => {
+  const store = new MemoryStore();
+  await store.put("Registry", "state", { id: "state", kind: "github_setup_state" });
+  await store.claim("Registry", "state", { claim_started_at: new Date().toISOString(), claim_expires_at: new Date(Date.now() + 60_000).toISOString(), claim_installation_id: "164152168" });
+  await assert.rejects(() => store.claim("Registry", "state", { claim_started_at: new Date().toISOString(), claim_expires_at: new Date(Date.now() + 60_000).toISOString(), claim_installation_id: "164152168" }));
+  await store.update("Registry", "state", (current) => ({ ...current, claim_expires_at: new Date(Date.now() - 1_000).toISOString() }));
+  await store.claim("Registry", "state", { claim_started_at: new Date().toISOString(), claim_expires_at: new Date(Date.now() + 60_000).toISOString(), claim_installation_id: "164152168" });
+});
 
 test("installation repository webhook deltas preserve existing access and apply additions/removals", () => {
   const merged = mergeGithubInstallationRepositories(

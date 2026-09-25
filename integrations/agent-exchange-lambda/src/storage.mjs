@@ -10,6 +10,14 @@ export class MemoryStore {
   }
   async get(collection, key) { const value = this.map(collection).get(key); return value ? structuredClone(value) : null; }
   async list(collection) { return [...this.map(collection).values()].map((v) => structuredClone(v)); }
+  async claim(collection, key, claim) {
+    const map = this.map(collection);
+    const current = map.get(key);
+    if (current?.claim_expires_at && Date.parse(current.claim_expires_at) > Date.now()) throw new Error("conditional claim failed");
+    const next = { ...(current || {}), ...structuredClone(claim) };
+    map.set(key, next);
+    return next;
+  }
   async update(collection, key, fn) { const current = await this.get(collection, key); const next = await fn(current); return this.put(collection, key, next); }
   async consumeRateLimit(key, limit, windowMs) {
     const now = Date.now();
@@ -50,6 +58,18 @@ export async function createStore(config) {
           ExclusiveStartKey = result.LastEvaluatedKey;
         } while (ExclusiveStartKey);
         return items;
+      },
+      async claim(collection, key, claim) {
+        const result = await client.send(new UpdateCommand({
+          TableName: table(collection),
+          Key: { id: key },
+          UpdateExpression: "SET #claimStartedAt = :claimStartedAt, #claimExpiresAt = :claimExpiresAt, #claimInstallationId = :claimInstallationId",
+          ConditionExpression: "attribute_not_exists(#claimExpiresAt) OR #claimExpiresAt < :now",
+          ExpressionAttributeNames: { "#claimStartedAt": "claim_started_at", "#claimExpiresAt": "claim_expires_at", "#claimInstallationId": "claim_installation_id" },
+          ExpressionAttributeValues: { ":claimStartedAt": claim.claim_started_at, ":claimExpiresAt": claim.claim_expires_at, ":claimInstallationId": claim.claim_installation_id, ":now": new Date().toISOString() },
+          ReturnValues: "ALL_NEW",
+        }));
+        return result.Attributes;
       },
       async update(collection, key, fn) {
         const current = await this.get(collection, key); const next = await fn(current);

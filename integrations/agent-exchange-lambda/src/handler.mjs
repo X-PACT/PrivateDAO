@@ -44,7 +44,6 @@ const now = () => new Date().toISOString();
 const githubSetupStateTtlMs = 15 * 60 * 1000;
 const githubRecordId = (installationId) => `github_installation_${String(installationId)}`;
 const githubStateId = (state) => `github_setup_state_${state}`;
-const githubStateClaimId = (stateId) => `${stateId}:claim`;
 const hashSecret = (value) => digest(String(value || ""));
 function secretMatches(supplied, storedHash) {
   if (!supplied || !storedHash) return false;
@@ -390,18 +389,16 @@ async function githubWebhook(body, rawBody, signature, eventName) {
 async function completeGithubInstallation(storage, stateRecord, installationId) {
   await githubGetInstallation(config, installationId);
   const repositories = await githubInstallationRepositories(config, installationId);
-  const claimId = githubStateClaimId(stateRecord.id);
   try {
     // The callback may be delivered more than once or concurrently. Claim the
-    // one-time state before issuing a new connection credential so a later
-    // callback can never invalidate the credential returned to the first one.
-    await storage.put("Registry", claimId, {
-      id: claimId,
-      kind: "github_setup_claim",
-      state_id: stateRecord.id,
+    // one-time state atomically, with a short lease so a crashed invocation
+    // can be retried without issuing competing credentials.
+    await storage.claim("Registry", stateRecord.id, {
+      claim_started_at: now(),
+      claim_expires_at: new Date(Date.now() + 2 * 60 * 1000).toISOString(),
       installation_id: String(installationId),
-      created_at: now(),
-    }, true);
+      claim_installation_id: String(installationId),
+    });
   } catch (_error) {
     const existing = await storage.get("Registry", githubRecordId(installationId));
     return githubSetupPage(
