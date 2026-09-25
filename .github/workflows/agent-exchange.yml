@@ -2,7 +2,7 @@ name: Agent Exchange
 
 on:
   push:
-    branches: [main]
+    branches: [main, rebrand/enterprise-white]
     paths:
       - "integrations/agent-exchange-lambda/**"
       - ".github/workflows/agent-exchange.yml"
