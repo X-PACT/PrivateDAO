@@ -46,7 +46,7 @@ export async function POST(request: Request) {
       sync: sync ? "true" : "false",
     });
 
-    const response = await fetch(`${ZERION_BASE}/wallets/${walletAddress}/portfolio?${params.toString()}`, {
+    const response = await fetch(`${ZERION_BASE}/wallets/${encodeURIComponent(walletAddress)}/portfolio?${params.toString()}`, {
       method: "GET",
       headers: {
         Accept: "application/json",

@@ -58,7 +58,7 @@ function parseNumeric(value: unknown) {
 }
 
 async function fetchGoldRushBalances(chainName: string, walletAddress: string, apiKey: string) {
-  const url = `${GOLDRUSH_BASE}/${chainName}/address/${walletAddress}/balances_v2/?key=${encodeURIComponent(apiKey)}`;
+  const url = `${GOLDRUSH_BASE}/${encodeURIComponent(chainName)}/address/${encodeURIComponent(walletAddress)}/balances_v2/?key=${encodeURIComponent(apiKey)}`;
   const response = await fetch(url, {
     headers: {
       Accept: "application/json",
@@ -74,7 +74,7 @@ async function fetchGoldRushBalances(chainName: string, walletAddress: string, a
 }
 
 async function fetchSupplementalSolanaTransactions(walletAddress: string, apiKey: string) {
-  const url = `${SUPPLEMENTAL_SOLANA_BASE}/transactions/${walletAddress}`;
+  const url = `${SUPPLEMENTAL_SOLANA_BASE}/transactions/${encodeURIComponent(walletAddress)}`;
   const response = await fetch(url, {
     headers: {
       Accept: "application/json",

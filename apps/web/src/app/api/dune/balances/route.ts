@@ -18,7 +18,7 @@ export async function GET(request: Request) {
   try {
     const url = new URL(request.url);
     const wallet = parseWallet(url.searchParams);
-    const response = await fetch(`${DUNE_SIM_BASE}/balances/${wallet}`, {
+    const response = await fetch(`${DUNE_SIM_BASE}/balances/${encodeURIComponent(wallet)}`, {
       headers: {
         Accept: "application/json",
         "X-Sim-Api-Key": apiKey,
