@@ -406,6 +406,8 @@ test("MCP and A2A machine entrypoints remain callable", async () => {
   assert.deepEqual(api.components.schemas.PaymentRequest.required, ["signature"]);
   assert.ok(api.paths["/api/jobs"].post.requestBody);
   assert.ok(api.paths["/api/jobs/{jobId}/payment"].post.requestBody);
+  assert.equal(api.paths["/api/jobs/{jobId}/payment"].post.responses["409"].description.includes("non-replaying recovery"), true);
+  assert.equal(api.paths["/api/external/jobs/{jobId}/payment"].post.responses["409"].description.includes("non-replaying recovery"), true);
 });
 
 test("MCP lifecycle, schemas, errors, and network aliases are protocol-safe", async () => {
@@ -438,6 +440,10 @@ test("MCP lifecycle, schemas, errors, and network aliases are protocol-safe", as
   assert.deepEqual(byName.logistics_request.required, ["capability"]);
   for (const toolName of ["exchange_overview", "service_recommendation", "provider_integrations", "payment_guide", "execution_guide"])
     assert.ok(byName[toolName], `${toolName} discovery tool`);
+
+  const executionGuide = JSON.parse((await request("/mcp", "POST", { jsonrpc: "2.0", id: 5, method: "tools/call", params: { name: "execution_guide", arguments: {} } })).body);
+  assert.deepEqual(executionGuide.result.structuredContent.states, ["awaiting_payment", "running", "completed", "recovery_required"]);
+  assert.match(executionGuide.result.structuredContent.retry, /must not replay the service/);
 
   const safe = JSON.parse((await request("/mcp", "POST", { jsonrpc: "2.0", id: 3, method: "tools/call", params: { name: "verify_basic", arguments: { record: { test: "mcp" } } } })).body);
   assert.equal(safe.result.isError, undefined);

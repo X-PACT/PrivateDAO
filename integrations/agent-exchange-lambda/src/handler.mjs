@@ -655,7 +655,7 @@ function openapi() {
     "/api/pricing": { get: { operationId: "pricing" } },
     "/api/jobs": { post: { operationId: "createJob", requestBody: { required: true, content: { "application/json": { schema: { $ref: "#/components/schemas/CreateJobRequest" } } } } } },
     "/api/jobs/{jobId}": { get: { operationId: "jobStatus", parameters: [{ $ref: "#/components/parameters/JobId" }] } },
-    "/api/jobs/{jobId}/payment": { post: { operationId: "submitPayment", parameters: [{ $ref: "#/components/parameters/JobId" }], requestBody: { required: true, content: { "application/json": { schema: { $ref: "#/components/schemas/PaymentRequest" } } } } } },
+    "/api/jobs/{jobId}/payment": { post: { operationId: "submitPayment", parameters: [{ $ref: "#/components/parameters/JobId" }], responses: { "200": { description: "Payment accepted or job completed" }, "202": { description: "Payment verification or processing is still in progress" }, "409": { description: "Payment was accepted but execution requires non-replaying recovery" } }, requestBody: { required: true, content: { "application/json": { schema: { $ref: "#/components/schemas/PaymentRequest" } } } } } },
     "/api/receipts/{receiptId}": { get: { operationId: "getReceipt", parameters: [{ $ref: "#/components/parameters/ReceiptId" }] } },
     "/api/network/health": { get: { operationId: "networkHealth", parameters: [{ name: "network", in: "query", schema: { type: "string" } }] } },
     "/api/registry/register": { post: { operationId: "registerAgent", requestBody: { required: true, content: { "application/json": { schema: { $ref: "#/components/schemas/RegisterAgentRequest" } } } } } },
@@ -671,7 +671,7 @@ function openapi() {
     "/api/registry/agents/{agentId}/replace": { post: { operationId: "replaceSellerEndpoint" } },
     "/api/registry/agents/{agentId}/retire": { post: { operationId: "retireSeller" } },
     "/api/external/jobs": { post: { operationId: "createExternalJob" } },
-    "/api/external/jobs/{jobId}/payment": { post: { operationId: "submitExternalPayment" } },
+    "/api/external/jobs/{jobId}/payment": { post: { operationId: "submitExternalPayment", responses: { "200": { description: "Payment accepted or job completed" }, "202": { description: "Payment verification or processing is still in progress" }, "409": { description: "Payment was accepted but execution requires non-replaying recovery" } } } },
     "/api/github/webhook": { post: { operationId: "githubWebhook" } },
     "/api/github/context": { post: { operationId: "githubRepositoryContext" } },
     "/api/discovery": { get: { operationId: "discovery" } },
@@ -764,7 +764,7 @@ ${categories}
 ## Access and payment
 Free: ${free}
 Paid: ${paid}
-All paid services are quote-first. POST /api/jobs with service_id and input. A paid request returns HTTP 402 and payment_intent; do not pay before reading the exact amount, mint, treasury token account, payment reference, expiry, and payment network. The payment rail is finalized Solana Mainnet USDC. The paying agent signs its own transaction. Submit the finalized signature to POST /api/jobs/{jobId}/payment, then poll GET /api/jobs/{jobId}; retrieve and verify GET /api/receipts/{receiptId}. Never send private keys or seed phrases.
+All paid services are quote-first. POST /api/jobs with service_id and input. A paid request returns HTTP 402 and payment_intent; do not pay before reading the exact amount, mint, treasury token account, payment reference, expiry, and payment network. The payment rail is finalized Solana Mainnet USDC. The paying agent signs its own transaction. Submit the finalized signature to POST /api/jobs/{jobId}/payment, then poll GET /api/jobs/{jobId}; retrieve and verify GET /api/receipts/{receiptId}. If payment was accepted but execution returns HTTP 409 with recovery_required, do not resubmit the signature: the service is intentionally not replayed automatically. Never send private keys or seed phrases.
 
 ## Execution boundaries
 Target networks are independent of the Solana payment network. EVM, Solana, GitHub and market-data services are read-only evidence paths and do not sign or broadcast user transactions. HTTP 402 means payment is required; HTTP 429 means retry after the supplied retry hint; HTTP 400 means correct the input; HTTP 404 means the job or receipt is unavailable; HTTP 503 means a provider is unavailable and may be retried later. Results include hashes, receipt data, provider provenance and persistence status when applicable.
@@ -4182,16 +4182,16 @@ async function mcp(request) {
       else if (name === "payment_guide") result = {
         free: "POST /api/jobs with verify.basic or another free service; receive the result and receipt immediately.",
         paid: ["POST /api/jobs", "expect HTTP 402", "read payment_intent exactly", "send exact finalized USDC on Solana Mainnet to the quoted treasury token account with the quoted reference", "POST /api/jobs/{jobId}/payment with the finalized signature", "GET /api/jobs/{jobId}", "GET /api/receipts/{receiptId}"],
-        rules: ["quote first", "do not pay an amount from catalog text alone", "do not send private keys or seed phrases", "target network is separate from payment network", "payment is not execution authorization for writes"],
+        rules: ["quote first", "do not pay an amount from catalog text alone", "do not send private keys or seed phrases", "target network is separate from payment network", "payment is not execution authorization for writes", "HTTP 409 recovery_required means do not replay the payment or service"],
       };
       else if (name === "execution_guide") result = {
-        states: ["awaiting_payment", "running", "completed"],
+        states: ["awaiting_payment", "running", "completed", "recovery_required"],
         create: `POST https://${config.domain}/api/jobs`,
         status: `GET https://${config.domain}/api/jobs/{jobId}`,
         payment_intent: `GET https://${config.domain}/api/jobs/{jobId}/payment-intent`,
         payment_proof: `POST https://${config.domain}/api/jobs/{jobId}/payment`,
         receipt: `GET https://${config.domain}/api/receipts/{receiptId}`,
-        retry: "Retry 429 and transient 503 responses with backoff; correct 400 input errors; do not repeat a payment signature unless the API explicitly reports the job state.",
+        retry: "Retry 429 and transient 503 responses with backoff; correct 400 input errors; do not repeat a payment signature; HTTP 409 recovery_required is terminal for automatic execution and must not replay the service.",
       };
       else if (name === "verify_basic")
         result = await executeService("verify.basic", a);
