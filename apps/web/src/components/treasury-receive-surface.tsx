@@ -19,19 +19,6 @@ import { getTreasuryReceiveConfig } from "@/lib/treasury-receive-config";
 import { useServiceHandoffSnapshot } from "@/lib/use-service-handoff-snapshot";
 import { cn } from "@/lib/utils";
 
-const INTERNAL_ORIGIN = "https://privatedao.internal";
-const INTERNAL_PATHS = new Set(["/engage", "/network", "/services", "/govern"]);
-
-function safeInternalHref(value: string, fallback: string) {
-  try {
-    const candidate = new URL(value, INTERNAL_ORIGIN);
-    if (candidate.origin !== INTERNAL_ORIGIN || !INTERNAL_PATHS.has(candidate.pathname)) return fallback;
-    return `${candidate.pathname}${candidate.search}${candidate.hash}`;
-  } catch {
-    return fallback;
-  }
-}
-
 const assetIconMap = {
   SOL: Wallet,
   USDC: Coins,
@@ -836,12 +823,6 @@ export function TreasuryReceiveSurface() {
     setCopied("structured-request-download");
   }
 
-  const encodedPurpose = encodeURIComponent(purpose);
-  const encodedAmount = encodeURIComponent(amount);
-  const encodedProfile = encodeURIComponent(activeProfile.value);
-  const engagePrimaryHref = `/engage?intake=${activeProfile.intake}&asset=${activeAsset.symbol}&amount=${encodedAmount}&purpose=${encodedPurpose}&lane=${lane}&profile=${encodedProfile}`;
-  const safeEngagePrimaryHref = safeInternalHref(engagePrimaryHref, "/engage");
-  const safeTelemetryHref = safeInternalHref(activeRequestDelivery.telemetryRoute, "/network");
   const structuredRequestObject = {
     ...requestPayloadSeed,
     requestRoute: activeRequestDelivery.requestRoute,
@@ -1612,7 +1593,7 @@ export function TreasuryReceiveSurface() {
                   Deliver authoritative request object
                 </button>
                 <Link
-                  href={safeTelemetryHref}
+                  href="/network"
                   className={cn(buttonVariants({ size: "sm", variant: "outline" }), !isRequestReady && "pointer-events-none opacity-50")}
                   aria-disabled={!isRequestReady}
                 >
@@ -1669,7 +1650,7 @@ export function TreasuryReceiveSurface() {
                 Download request
               </button>
               <Link
-                href={safeEngagePrimaryHref}
+                href="/engage"
                 className={cn(buttonVariants({ size: "sm", variant: "outline" }), !isRequestReady && "pointer-events-none opacity-50")}
                 aria-disabled={!isRequestReady}
               >
