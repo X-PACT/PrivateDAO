@@ -3362,7 +3362,7 @@ async function invokeAgent(body) {
       throw Object.assign(new Error("paid MCP services require a marketplace quote and finalized payment"), { statusCode: 402 });
     return invokeMcpAgent(agent, body.tool, body.arguments || body.payload || {});
   }
-  const response = await fetch(agent.url, {
+  const response = await fetchPublicHttps(agent.url, {
     method: "POST",
     redirect: "manual",
     signal: AbortSignal.timeout(10000),
