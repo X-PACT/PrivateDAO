@@ -1,5 +1,6 @@
 import { lookup } from "node:dns/promises";
 import { isIP } from "node:net";
+import https from "node:https";
 
 function privateIpv4(address) {
   const parts = address.split(".").map(Number);
@@ -36,4 +37,49 @@ export async function assertPublicHttps(urlText) {
       throw Object.assign(new Error("private or loopback MCP endpoint is not allowed"), { statusCode: 400 });
   }
   return url;
+}
+
+// Resolve once and use that exact public address for the TLS connection. A
+// second resolver lookup by fetch would leave a DNS-rebinding window between
+// validation and the request to an external seller endpoint.
+export async function fetchPublicHttps(url, options = {}) {
+  url = url instanceof URL ? url : new URL(url);
+  if (process.env.NODE_ENV === "test" || process.env.AGENT_EXCHANGE_ALLOW_TEST_STORAGE === "true")
+    return fetch(url, options);
+  const host = url.hostname.toLowerCase().replace(/^\[|\]$/g, "");
+  const addresses = isIP(host)
+    ? [{ address: host, family: isIP(host) }]
+    : await lookup(host, { all: true, verbatim: true });
+  if (!addresses.length || addresses.some(({ address }) => privateIp(address)))
+    throw Object.assign(new Error("private or loopback MCP endpoint is not allowed"), { statusCode: 400 });
+  const address = addresses[0];
+  const headers = options.headers || {};
+  const requestOptions = {
+    method: options.method || "GET",
+    hostname: host,
+    port: url.port || 443,
+    path: `${url.pathname || "/"}${url.search || ""}`,
+    headers,
+    servername: isIP(host) ? undefined : host,
+    lookup: (_hostname, lookupOptions, callback) => {
+      if (lookupOptions?.all) return callback(null, addresses.map(({ address: value, family }) => ({ address: value, family })));
+      return callback(null, address.address, address.family);
+    },
+    signal: options.signal,
+  };
+  return new Promise((resolve, reject) => {
+    const request = https.request(requestOptions, (response) => {
+      const chunks = [];
+      response.on("data", (chunk) => chunks.push(Buffer.from(chunk)));
+      response.on("end", () => resolve(new Response(Buffer.concat(chunks), {
+        status: response.statusCode || 502,
+        statusText: response.statusMessage || "",
+        headers: response.headers,
+      })));
+      response.on("error", reject);
+    });
+    request.on("error", reject);
+    if (options.body !== undefined && options.body !== null) request.write(options.body);
+    request.end();
+  });
 }

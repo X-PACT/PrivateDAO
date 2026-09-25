@@ -32,7 +32,7 @@ import { ibmProviderStatus, runWatsonxInference } from "./ibm.mjs";
 import { githubProviderStatus, repositoryEvidence } from "./github.mjs";
 import { githubAppConfigured, githubGetInstallation, githubInstallationRepositories, githubRepositoryContext, mergeGithubInstallationRepositories, publicGithubInstallationRecord, verifyGithubWebhook } from "./github-app.mjs";
 import { mongoProviderStatus, persistEvidence } from "./mongodb.mjs";
-import { assertPublicHttps } from "./url-safety.mjs";
+import { assertPublicHttps, fetchPublicHttps } from "./url-safety.mjs";
 import { integrationDirectory, serviceDetails, serviceRecommendation, SERVICE_CATEGORIES } from "./exchange-metadata.mjs";
 
 const config = getConfig();
@@ -2841,7 +2841,7 @@ async function register(body) {
   if (body.mcpUrl || body.mcp_url || String(body.protocol || "").toUpperCase() === "MCP")
     return registerMcp(body);
   const url = await assertPublicHttps(body.agentCardUrl || body.agent_card_url);
-  const response = await fetch(url, {
+  const response = await fetchPublicHttps(url, {
     redirect: "manual",
     signal: AbortSignal.timeout(5000),
     headers: { accept: "application/json" },
@@ -2880,7 +2880,7 @@ async function mcpHttp(url, request, sessionId = null) {
     "user-agent": "PrivateDAO-Agent-Exchange/1.0 (+https://privatedao.org)",
   };
   if (sessionId) headers["Mcp-Session-Id"] = sessionId;
-  const response = await fetch(url, {
+  const response = await fetchPublicHttps(url, {
     method: "POST",
     redirect: "manual",
     signal: AbortSignal.timeout(MCP_TIMEOUT_MS),
