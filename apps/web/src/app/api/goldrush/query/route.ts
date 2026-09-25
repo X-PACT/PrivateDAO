@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { normalizeWalletForChain } from "@/lib/api/wallet-validation";
 
 export const dynamic = "force-static";
 
@@ -20,17 +21,20 @@ const GOLDRUSH_BASE = "https://api.covalenthq.com/v1";
 const SUPPLEMENTAL_SOLANA_BASE = "https://api.sim.dune.com/beta/svm";
 const FALLBACK_CHAIN = "solana-mainnet";
 
-function normalizeWalletAddress(value: string | undefined) {
-  const wallet = value?.trim() ?? "";
-  if (!wallet || wallet.length < 32 || wallet.length > 64) {
-    throw new Error("Invalid wallet address.");
-  }
-  return wallet;
-}
-
 function normalizeChain(value: string | undefined) {
   const chain = value?.trim() ?? FALLBACK_CHAIN;
-  return chain || FALLBACK_CHAIN;
+  const supportedChains = new Set([
+    "solana-mainnet",
+    "eth-mainnet",
+    "matic-mainnet",
+    "base-mainnet",
+    "arbitrum-mainnet",
+    "optimism-mainnet",
+    "avalanche-mainnet",
+    "bsc-mainnet",
+  ]);
+  if (!supportedChains.has(chain)) throw new Error("Unsupported analytics chain.");
+  return chain;
 }
 
 function pickStableSymbols(requestAssets?: string[]) {
@@ -180,7 +184,7 @@ export async function POST(request: Request) {
     const body = (await request.json()) as GoldRushRequest;
     const queryType = (body.queryType ?? "wallet-history") as GoldRushQueryType;
     const chainName = normalizeChain(body.chainName);
-    const walletAddress = normalizeWalletAddress(body.walletAddress);
+    const walletAddress = normalizeWalletForChain(body.walletAddress, chainName);
     const stableSymbols = pickStableSymbols(body.assets);
 
     const goldRushBalances = await fetchGoldRushBalances(chainName, walletAddress, goldRushApiKey);
@@ -194,7 +198,7 @@ export async function POST(request: Request) {
     let transactionSummary: ReturnType<typeof buildTransactionSummary> | null = null;
     let covalentGoldRushState = "covalent-goldrush-live";
 
-    if (shouldFetchTransactions && supplementalSolanaApiKey) {
+    if (shouldFetchTransactions && chainName === "solana-mainnet" && supplementalSolanaApiKey) {
       try {
         const supplementalRaw = await fetchSupplementalSolanaTransactions(walletAddress, supplementalSolanaApiKey);
         transactionSummary = buildTransactionSummary(supplementalRaw, stableSymbols);
