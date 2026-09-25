@@ -4,12 +4,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const child_process_1 = require("child_process");
+const fs_1 = require("fs");
 const path_1 = __importDefault(require("path"));
+const os_1 = require("os");
 const host = "127.0.0.1";
 const port = 8791;
 const base = `http://${host}:${port}`;
 async function main() {
-    const child = startServer();
+    const runtimeStateDir = (0, fs_1.mkdtempSync)(path_1.default.join((0, os_1.tmpdir)(), "privatedao-read-node-http-"));
+    const child = startServer(runtimeStateDir);
     try {
         const config = await waitForServer();
         const [health, overview, snapshot, profiles, magicblock, metrics, proposals] = await Promise.all([
@@ -51,9 +54,10 @@ async function main() {
     finally {
         child.kill("SIGTERM");
         await onceExit(child);
+        (0, fs_1.rmSync)(runtimeStateDir, { recursive: true, force: true });
     }
 }
-function startServer() {
+function startServer(runtimeStateDir) {
     const tsNodeBin = path_1.default.resolve("node_modules/ts-node/dist/bin.js");
     const child = (0, child_process_1.spawn)(process.execPath, [tsNodeBin, "scripts/run-read-node.ts"], {
         cwd: process.cwd(),
@@ -61,6 +65,7 @@ function startServer() {
             ...process.env,
             PRIVATE_DAO_READ_NODE_HOST: host,
             PRIVATE_DAO_READ_NODE_PORT: String(port),
+            PRIVATE_DAO_RUNTIME_STATE_DIR: runtimeStateDir,
             PRIVATE_DAO_READ_ALLOWED_ORIGIN: "*",
             PRIVATE_DAO_RPC_TIMEOUT_MS: process.env.PRIVATE_DAO_RPC_TIMEOUT_MS || "12000",
             MAGICBLOCK_HTTP_TIMEOUT_MS: process.env.MAGICBLOCK_HTTP_TIMEOUT_MS || "2500",

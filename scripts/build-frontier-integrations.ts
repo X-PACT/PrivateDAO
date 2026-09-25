@@ -423,12 +423,17 @@ async function withConnectionFallback<T>(
 }
 
 function classifyRpcEndpoint(endpoint: string) {
-  const normalized = endpoint.toLowerCase();
-  if (normalized.includes("alchemy")) return "rpc-fast-alchemy";
-  if (normalized.includes("helius")) return "rpc-fast-helius";
-  if (normalized.includes("quicknode")) return "rpc-fast-quicknode";
-  if (normalized.includes("api.testnet.solana.com")) return "public-testnet";
-  if (normalized.includes("api.devnet.solana.com")) return "public-devnet";
+  try {
+    const url = new URL(endpoint);
+    const hostname = url.hostname.toLowerCase();
+    if (hostname.endsWith(".g.alchemy.com")) return "rpc-fast-alchemy";
+    if (hostname.endsWith(".helius-rpc.com")) return "rpc-fast-helius";
+    if (hostname.endsWith(".quiknode.pro") || hostname.endsWith(".quicknode.com")) return "rpc-fast-quicknode";
+    if (hostname === "api.testnet.solana.com") return "public-testnet";
+    if (hostname === "api.devnet.solana.com") return "public-devnet";
+  } catch {
+    // Invalid endpoints are rejected by the caller and remain custom for reporting.
+  }
   return "custom-rpc";
 }
 

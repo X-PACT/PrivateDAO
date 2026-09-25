@@ -360,6 +360,11 @@ function writeJson(res: http.ServerResponse, statusCode: number, payload: unknow
   res.end(JSON.stringify(payload, null, 2));
 }
 
+function publicReadNodeError(error: unknown): string {
+  const message = String((error as Error)?.message || error || "");
+  return message === "Request body too large" ? message : "Request could not be completed.";
+}
+
 function normalizeIp(req: http.IncomingMessage): string {
   const forwarded = String(req.headers["x-forwarded-for"] || "").split(",")[0].trim();
   return forwarded || req.socket.remoteAddress || "unknown";
@@ -7890,7 +7895,7 @@ async function handle(req: http.IncomingMessage, res: http.ServerResponse) {
     routeNotFound(res, pathname);
   } catch (error) {
     metrics.requestsFailed += 1;
-    const errorMessage = String((error as Error)?.message || error || "Unhandled read node error");
+    const errorMessage = publicReadNodeError(error);
     const statusCode = errorMessage.includes("Request body too large") ? 413 : 500;
     writeJson(res, statusCode, {
       ok: false,

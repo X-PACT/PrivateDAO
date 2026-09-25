@@ -296,6 +296,16 @@ function isValidRpcUrl(value?: string): boolean {
   return !isPlaceholderValue(normalized) && /^https?:\/\//.test(normalized);
 }
 
+function isTestnetRpcEndpoint(endpoint: string): boolean {
+  try {
+    const url = new URL(endpoint);
+    const hostname = url.hostname.toLowerCase();
+    return hostname === "api.testnet.solana.com" || /(?:^|[.-])testnet(?:[.-]|$)/i.test(hostname);
+  } catch {
+    return false;
+  }
+}
+
 function rpcTimeoutMs(): number {
   const parsed = Number(process.env.PRIVATE_DAO_RPC_TIMEOUT_MS || 8000);
   return Number.isFinite(parsed) && parsed > 0 ? parsed : 8000;
@@ -1140,9 +1150,7 @@ export class PrivateDaoReadNode {
     let lastError: unknown = null;
     const testnetEndpoints = Array.from(
       new Set([
-        ...resolveClusterRpcEndpoints("testnet").filter((endpoint) =>
-          endpoint.includes("testnet") || endpoint.includes("solana-testnet") || endpoint.includes("api.testnet.solana.com"),
-        ),
+        ...resolveClusterRpcEndpoints("testnet").filter(isTestnetRpcEndpoint),
         "https://api.testnet.solana.com",
       ]),
     );

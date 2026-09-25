@@ -7777,7 +7777,12 @@ function findNavButton(page) {
 }
 
 function normalizeDocPath(docPath) {
-  return String(docPath || '').replace(/^docs\//, '');
+  const raw = String(docPath || '').trim().replace(/^docs\//, '');
+  const pathOnly = raw.split(/[?#]/, 1)[0];
+  if (!pathOnly || pathOnly.startsWith('/') || pathOnly.includes('\\') || pathOnly.includes('..') || pathOnly.includes(':')) {
+    return '';
+  }
+  return /^(?:[A-Za-z0-9_-]+\/)*[A-Za-z0-9._-]+\.(?:md|json)$/i.test(pathOnly) ? pathOnly : '';
 }
 
 function deriveDocLabel(docPath) {
@@ -7789,10 +7794,18 @@ function deriveDocLabel(docPath) {
 
 function isInteractiveDocLink(href) {
   if (!href) return false;
-  if (href.startsWith('http://') || href.startsWith('https://') || href.startsWith('mailto:') || href.startsWith('#') || href.startsWith('?')) {
+  if (/^(?:https?:|mailto:|#|\?)/i.test(href)) {
     return false;
   }
-  return /\.(md|json)(?:[#?].*)?$/i.test(href);
+  return Boolean(normalizeDocPath(href));
+}
+
+function safeMarkdownHref(href) {
+  const raw = String(href || '').trim();
+  if (/^https?:\/\//i.test(raw)) return raw;
+  if (isInteractiveDocLink(raw)) return normalizeDocPath(raw);
+  if (/^(?:#|\?)/.test(raw)) return raw;
+  return '#';
 }
 
 function escapeHtml(value) {
@@ -7808,9 +7821,10 @@ function formatInlineMarkdown(value) {
   let html = escapeHtml(value);
   html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_, label, href) => {
     const safeLabel = escapeHtml(label);
-    const safeHref = escapeHtml(href);
+    const normalizedHref = safeMarkdownHref(href);
+    const safeHref = escapeHtml(normalizedHref);
     const docAttr = isInteractiveDocLink(href) ? ' data-doc-link="1"' : '';
-    const targetAttr = /^https?:\/\//i.test(href) ? ' target="_blank" rel="noopener"' : '';
+    const targetAttr = /^https?:\/\//i.test(normalizedHref) ? ' target="_blank" rel="noopener"' : '';
     return `<a href="${safeHref}"${docAttr}${targetAttr}>${safeLabel}</a>`;
   });
   html = html.replace(/`([^`]+)`/g, '<code>$1</code>');
@@ -7951,6 +7965,10 @@ function renderJsonDocument(raw) {
 
 async function openDocument(docPath, label = null, btn = null) {
   const normalized = normalizeDocPath(docPath);
+  if (!normalized) {
+    showToast('Document path is not allowed.', 'error');
+    return;
+  }
   const viewerTitle = document.getElementById('docViewerTitle');
   const viewerSummary = document.getElementById('docViewerSummary');
   const viewerPath = document.getElementById('docViewerPath');
@@ -7969,13 +7987,18 @@ async function openDocument(docPath, label = null, btn = null) {
   if (viewerFormat) viewerFormat.textContent = normalized.endsWith('.json') ? 'JSON' : 'Markdown';
   if (viewerStatus) viewerStatus.textContent = 'Loading';
   if (viewerLoadedAt) viewerLoadedAt.textContent = 'Fetching live repository artifact...';
-  if (viewerRawLink) viewerRawLink.href = normalized;
+  if (viewerRawLink) {
+    const rawDocumentUrl = new URL(normalized, window.location.href);
+    if (rawDocumentUrl.origin === window.location.origin && rawDocumentUrl.pathname.endsWith(`/${normalized}`)) {
+      viewerRawLink.href = rawDocumentUrl.href;
+    }
+  }
   if (viewerContent) viewerContent.innerHTML = '<div class="doc-viewer-empty">Loading document...</div>';
 
   showPage('docs', btn);
 
   try {
-    const response = await fetch(normalized, { cache: 'no-cache' });
+    const response = await fetch(new URL(normalized, window.location.href), { cache: 'no-cache' });
     if (!response.ok) {
       throw new Error(`Document request failed with ${response.status}`);
     }
@@ -8771,39 +8794,40 @@ function buildCreateProposalCommand() {
   const magicBlockApiBase = (document.getElementById('createProposalMagicBlockApiBase')?.value || '').trim();
 
   if (!dao) return 'Select or paste a DAO PDA to build the create-proposal command.';
+  const shellQuote = (value) => `'${String(value).replace(/'/g, "'\\''")}'`;
   const parts = ['yarn create-proposal --'];
-  parts.push(`--dao ${dao}`);
-  parts.push(`--title "${title.replace(/"/g, '\\"')}"`);
-  if (description) parts.push(`--description "${description.replace(/"/g, '\\"')}"`);
-  if (duration) parts.push(`--duration ${duration}`);
+  parts.push(`--dao ${shellQuote(dao)}`);
+  parts.push(`--title ${shellQuote(title)}`);
+  if (description) parts.push(`--description ${shellQuote(description)}`);
+  if (duration) parts.push(`--duration ${shellQuote(duration)}`);
   if (!confidentialType && recipient && amount) {
-    parts.push(`--treasury-recipient ${recipient}`);
-    parts.push(`--treasury-amount ${amount}`);
+    parts.push(`--treasury-recipient ${shellQuote(recipient)}`);
+    parts.push(`--treasury-amount ${shellQuote(amount)}`);
     parts.push(`--treasury-type sol`);
   }
   if (confidentialType) {
-    parts.push(`--confidential-type ${confidentialType}`);
+    parts.push(`--confidential-type ${shellQuote(confidentialType)}`);
     if (!settlementRecipient && !wallet) return 'Connect a wallet or set a settlement recipient to build the confidential payout command.';
-    parts.push(`--settlement-recipient ${settlementRecipient || wallet}`);
-    parts.push(`--payout-asset ${payoutAsset}`);
+    parts.push(`--settlement-recipient ${shellQuote(settlementRecipient || wallet)}`);
+    parts.push(`--payout-asset ${shellQuote(payoutAsset)}`);
     if (!payoutTotal) return 'Set the payout total to build the confidential payout command.';
-    parts.push(`--payout-total ${payoutTotal}`);
-    parts.push(`--recipient-count ${recipientCount || 1}`);
-    if (payoutAsset === 'token' && payoutMint) parts.push(`--payout-mint ${payoutMint}`);
-    if (manifestUri) parts.push(`--manifest-uri "${manifestUri.replace(/"/g, '\\"')}"`);
-    if (manifestHash) parts.push(`--manifest-hash ${manifestHash}`);
-    if (ciphertextHash) parts.push(`--ciphertext-hash ${ciphertextHash}`);
+    parts.push(`--payout-total ${shellQuote(payoutTotal)}`);
+    parts.push(`--recipient-count ${shellQuote(recipientCount || 1)}`);
+    if (payoutAsset === 'token' && payoutMint) parts.push(`--payout-mint ${shellQuote(payoutMint)}`);
+    if (manifestUri) parts.push(`--manifest-uri ${shellQuote(manifestUri)}`);
+    if (manifestHash) parts.push(`--manifest-hash ${shellQuote(manifestHash)}`);
+    if (ciphertextHash) parts.push(`--ciphertext-hash ${shellQuote(ciphertextHash)}`);
     if (refheModelUri && refhePolicyHash && refheInputCiphertextHash && refheEvaluationKeyHash) {
-      parts.push(`--refhe-model-uri "${refheModelUri.replace(/"/g, '\\"')}"`);
-      parts.push(`--refhe-policy-hash ${refhePolicyHash}`);
-      parts.push(`--refhe-input-ciphertext-hash ${refheInputCiphertextHash}`);
-      parts.push(`--refhe-evaluation-key-hash ${refheEvaluationKeyHash}`);
+      parts.push(`--refhe-model-uri ${shellQuote(refheModelUri)}`);
+      parts.push(`--refhe-policy-hash ${shellQuote(refhePolicyHash)}`);
+      parts.push(`--refhe-input-ciphertext-hash ${shellQuote(refheInputCiphertextHash)}`);
+      parts.push(`--refhe-evaluation-key-hash ${shellQuote(refheEvaluationKeyHash)}`);
     }
     if (magicBlockEnabled) {
       if (payoutAsset !== 'token') return 'MagicBlock private payments require a token payout asset.';
       parts.push(`--magicblock enabled`);
-      parts.push(`--magicblock-owner-wallet ${magicBlockOwnerWallet || wallet}`);
-      parts.push(`--magicblock-api-base "${normalizeMagicBlockApiBase(magicBlockApiBase)}"`);
+      parts.push(`--magicblock-owner-wallet ${shellQuote(magicBlockOwnerWallet || wallet)}`);
+      parts.push(`--magicblock-api-base ${shellQuote(normalizeMagicBlockApiBase(magicBlockApiBase))}`);
     }
   }
   return parts.join(' ');
@@ -8960,9 +8984,9 @@ function buildCreateDaoCommand() {
   const revealWindow = (document.getElementById('builderDaoReveal')?.value || '180').trim() || '180';
   const delay = (document.getElementById('builderDaoDelay')?.value || '5').trim() || '5';
   const mode = (document.getElementById('builderDaoMode')?.value || 'token').trim() || 'token';
-  const safeName = name.replace(/"/g, '\\"');
-  const parts = [`yarn create-dao -- --name "${safeName}" --quorum ${quorum} --reveal-window ${revealWindow} --delay ${delay}`];
-  if (mode !== 'token') parts.push(`--mode ${mode}`);
+  const shellQuote = (value) => `'${String(value).replace(/'/g, "'\\''")}'`;
+  const parts = [`yarn create-dao -- --name ${shellQuote(name)} --quorum ${shellQuote(quorum)} --reveal-window ${shellQuote(revealWindow)} --delay ${shellQuote(delay)}`];
+  if (mode !== 'token') parts.push(`--mode ${shellQuote(mode)}`);
   return parts.join(' ');
 }
 
@@ -9047,7 +9071,8 @@ const READ_API_BASE = (() => {
   if (candidate) {
     return candidate.replace(/\/+$/, '');
   }
-  if (!window.location.hostname.includes('github.io')) {
+  const hostname = window.location.hostname.toLowerCase();
+  if (hostname !== 'github.io' && !hostname.endsWith('.github.io')) {
     return `${window.location.origin}/api/v1`;
   }
   return '';
@@ -11312,6 +11337,7 @@ async function updateDeploymentSnapshot() {
   const statusEl = document.getElementById('deployStatus');
   const slotEl = document.getElementById('deploySlot');
   const ownerEl = document.getElementById('deployOwner');
+  if (!statusEl || !slotEl || !ownerEl) return;
 
   try {
     let slot;
@@ -13087,10 +13113,12 @@ function renderProposalList(proposals) {
         <div class="proposal-desc">The current DAO filter does not match any live proposal accounts. Switch back to <strong>All DAOs</strong> or pick a different DAO.</div>
         <div class="proposal-phase-copy">
           <strong>Current filter</strong>
-          <span>${currentDaoFilter === 'all' ? 'All DAOs' : currentDaoFilter}</span>
+          <span id="activeDaoFilterLabel"></span>
         </div>
       </div>
     `;
+    const filterLabel = document.getElementById('activeDaoFilterLabel');
+    if (filterLabel) filterLabel.textContent = currentDaoFilter === 'all' ? 'All DAOs' : currentDaoFilter;
     return;
   }
 
