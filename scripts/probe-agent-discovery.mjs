@@ -10,7 +10,24 @@ const surfaces = [
 
 const results = [];
 for (const [name, path] of surfaces) {
-  const response = await fetch(`${baseUrl}${path}`, { signal: AbortSignal.timeout(10_000) });
+  const isMcp = name === "mcp";
+  const response = await fetch(`${baseUrl}${path}`, isMcp
+    ? {
+        method: "POST",
+        headers: { "content-type": "application/json", accept: "application/json" },
+        body: JSON.stringify({
+          jsonrpc: "2.0",
+          id: 1,
+          method: "initialize",
+          params: {
+            protocolVersion: "2025-03-26",
+            capabilities: {},
+            clientInfo: { name: "privatedao-discovery-probe", version: "1.0.0" },
+          },
+        }),
+        signal: AbortSignal.timeout(10_000),
+      }
+    : { signal: AbortSignal.timeout(10_000) });
   const contentType = response.headers.get("content-type") || "";
   const body = await response.text();
   let payload;
@@ -27,6 +44,12 @@ for (const [name, path] of surfaces) {
     if (payload.protocolVersion !== "0.3.0") throw new Error("Agent Card protocolVersion is not 0.3.0");
     if (payload.name !== "PrivateDAO Agent Exchange") throw new Error("Unexpected Agent Card name");
     if (typeof payload.serviceCatalog !== "string" || payload.serviceCatalog.trim().length === 0) throw new Error("Agent Card has no service catalog description");
+  }
+  if (name === "mcp") {
+    if (payload.jsonrpc !== "2.0" || payload.id !== 1 || payload.error)
+      throw new Error("MCP initialize returned an invalid JSON-RPC response");
+    if (!payload.result?.protocolVersion || !payload.result?.serverInfo?.name)
+      throw new Error("MCP initialize has no protocol or server information");
   }
   if (name === "openapi" && !String(payload.openapi || "").startsWith("3.")) throw new Error("OpenAPI document is missing a 3.x version");
   if (name === "services" && !Array.isArray(payload.services)) throw new Error("Service catalog has no services array");
