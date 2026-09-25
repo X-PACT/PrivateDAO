@@ -5256,8 +5256,8 @@ async function buildQvacRuntimeProof() {
         sdkLoaded: false,
         source: "qvac-runtime-proof-missing",
         nextAction: "Install the web dependencies or run npm run probe:qvac-runtime before publishing the read node.",
-        error: String((error as Error)?.message || error),
-        fileError: String((fileError as Error)?.message || fileError),
+        error: "The QVAC runtime proof is unavailable.",
+        fileError: "The QVAC runtime proof file is unavailable.",
       }));
   }
 }
@@ -6582,7 +6582,7 @@ async function handle(req: http.IncomingMessage, res: http.ServerResponse) {
       try {
         result = await handleCreditLimitWorkflow(body as Record<string, unknown>);
       } catch (error) {
-        const errorMessage = String((error as Error)?.message || error || "Customer data import failed.");
+        const errorMessage = "Customer data import failed.";
         result = {
           ok: false,
           source: "privatedao-proof-workflows-credit-limit",
@@ -6636,7 +6636,7 @@ async function handle(req: http.IncomingMessage, res: http.ServerResponse) {
           error: "Proof was not issued because the private policy proof could not be generated and verified.",
           workflowId: stringField(body as Record<string, unknown>, "workflowId", "unissued-blind-policy"),
           publicOutcome: "proof-not-issued",
-          validationErrors: [String((error as Error)?.message || error || "Blind policy proof failed.")],
+          validationErrors: ["Blind policy proof failed."],
           privateDataExcluded: [
             "raw subject identity",
             "private record values",
@@ -6713,7 +6713,7 @@ async function handle(req: http.IncomingMessage, res: http.ServerResponse) {
           ok: false,
           source: "solana-anchor-receipt-registry",
           status: "onchain-receipt-failed",
-          error: String((error as Error)?.message || error || "Failed to submit blind policy receipt on-chain."),
+          error: "Failed to submit the blind policy receipt on-chain.",
         };
       }
       writeJson(res, result.ok ? 200 : 422, result);
@@ -6726,7 +6726,7 @@ async function handle(req: http.IncomingMessage, res: http.ServerResponse) {
       try {
         result = await handleRecordReceiptAnchor(body as Record<string, unknown>);
       } catch (error) {
-        result = { ok: false, anchorStatus: "failed", error: String((error as Error)?.message || error || "Record anchor failed") };
+        result = { ok: false, anchorStatus: "failed", error: "Record anchoring failed." };
       }
       writeJson(res, result.ok ? 200 : 502, result);
       return;
@@ -6738,7 +6738,7 @@ async function handle(req: http.IncomingMessage, res: http.ServerResponse) {
       try {
         result = await reconcileRecordReceiptAnchor(body as Record<string, unknown>);
       } catch (error) {
-        result = { ok: false, anchorStatus: "failed", error: String((error as Error)?.message || error || "Record anchor reconciliation failed") };
+        result = { ok: false, anchorStatus: "failed", error: "Record anchor reconciliation failed." };
       }
       writeJson(res, result.ok ? 200 : 502, result);
       return;
@@ -6888,7 +6888,7 @@ async function handle(req: http.IncomingMessage, res: http.ServerResponse) {
           status: "guest-session-failed",
           txlineApiBase,
           guestAuthUrl: txlineGuestAuthUrl,
-          error: String((error as Error)?.message || error || "Unable to start TxLINE guest session."),
+          error: "Unable to start the TxLINE guest session.",
         };
       }
       writeJson(res, result.ok ? 200 : 502, result);
@@ -6916,7 +6916,7 @@ async function handle(req: http.IncomingMessage, res: http.ServerResponse) {
           source: "privatedao-txline-settlement",
           providerMode: txlineProviderMode(),
           status: "settlement-proof-not-issued",
-          error: String((error as Error)?.message || error || "TxLINE settlement failed."),
+          error: "TxLINE settlement failed.",
         };
       }
       writeJson(res, result.ok ? 200 : 422, result);
@@ -6963,7 +6963,7 @@ async function handle(req: http.IncomingMessage, res: http.ServerResponse) {
           ok: false,
           source: "privatedao-txline-settlement-receipt",
           status: "onchain-receipt-failed",
-          error: String((error as Error)?.message || error || "Failed to submit TxLINE settlement receipt on Solana."),
+          error: "Failed to submit the TxLINE settlement receipt on Solana.",
         };
       }
       writeJson(res, result.ok ? 200 : 422, result);
@@ -7302,7 +7302,7 @@ async function handle(req: http.IncomingMessage, res: http.ServerResponse) {
       try {
         result = await handleAmazonBedrockAnalysis(body as Record<string, unknown>);
       } catch (error) {
-        result = { ok: false, status: "unavailable", provider: "amazon-bedrock", error: String((error as Error)?.message || error || "Amazon AI analysis failed.") };
+        result = { ok: false, status: "unavailable", provider: "amazon-bedrock", error: "Amazon AI analysis failed." };
       }
       writeJson(res, result.ok ? 200 : 422, result);
       return;
