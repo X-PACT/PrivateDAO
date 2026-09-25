@@ -72,15 +72,20 @@ test("EVM services are read-only and use the configured provider", async () => {
 
 test("upstream infrastructure errors are sanitized and classified as temporary", async () => {
   const originalFetch = global.fetch;
+  const originalConsoleError = console.error;
+  const logLines = [];
   resetForTests();
   global.fetch = async () => { throw Object.assign(new Error("internal provider path /secret=super-secret"), { statusCode: 500 }); };
+  console.error = (line) => logLines.push(String(line));
   try {
     const response = await handler({ requestContext: { http: { method: "GET", path: "/api/network/stats" } } });
     assert.equal(response.statusCode, 500);
     assert.match(response.body, /upstream service temporarily unavailable/);
     assert.doesNotMatch(response.body, /secret-provider|super-secret/);
+    assert.doesNotMatch(logLines.join("\n"), /secret-provider|super-secret/);
   } finally {
     global.fetch = originalFetch;
+    console.error = originalConsoleError;
   }
 });
 

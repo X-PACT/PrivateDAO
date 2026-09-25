@@ -4304,7 +4304,6 @@ export async function handler(event) {
       path: pathOf(event),
       status: error.statusCode || 400,
       error: error.name || "Error",
-      message: String(error.message || "request failed").slice(0, 240),
       upstreamStatus: error.upstreamStatus || null,
     }));
     return withSecurityHeaders(errorResponse(error));
